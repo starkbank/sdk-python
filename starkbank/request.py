@@ -101,7 +101,7 @@ def _get_base_url():
     env = Settings.env
 
     if not env:
-        raise RuntimeError("please an environment with starkbank.default.env = \"env\"")
+        raise RuntimeError("please set an environment with starkbank.default.env = \"env\"")
 
     if env == Environment.production:
         return "https://api.starkbank.com/v2/"
