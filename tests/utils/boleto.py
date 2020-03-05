@@ -18,7 +18,7 @@ def generateExampleBoletos(n=1, amount=None):
             amount = randint(5, 100)
         boleto["name"] = get_full_name()
         boleto["amount"] = amount
-        boleto["dueDate"] = str(randomFutureDate(days=7))
+        boleto["due"] = str(randomFutureDate(days=7))
         boleto["taxId"] = generateCpf() if randint(0, 1) else generateCnpj()
         boleto["tags"] = [sha256(str(amount).encode('utf-8')).hexdigest()]
         boletos.append(deepcopy(boleto))

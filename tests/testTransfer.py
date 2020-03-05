@@ -13,6 +13,15 @@ class TestTransferPost(TestCase):
         print(content)
         self.assertEqual(200, status)
 
+    def testFailInvalidArraySize(self):
+        transfersJson = generateExampleTransfers(n=105)
+        content, status = postTransfer(exampleMember, transfersJson=transfersJson)
+        print(content)
+        errors = content["errors"]
+        self.assertEqual(1, len(errors))
+        for error in errors:
+            self.assertEqual('invalidJson', error["code"])
+
     def testFailInvalidJson(self):
         transfersJson = {}
         content, status = postTransfer(exampleMember, transfersJson=transfersJson)
@@ -34,6 +43,8 @@ class TestTransferPost(TestCase):
         content, status = postTransfer(exampleMember, transfersJson=transfersJson)
         print(content)
         errors = content["errors"]
+        for error in errors:
+            print(error)
         self.assertEqual(7, len(errors))
         for error in errors:
             self.assertEqual('invalidJson', error["code"])
@@ -48,6 +59,8 @@ class TestTransferPost(TestCase):
         content, status = postTransfer(exampleMember, transfersJson=transfersJson)
         print(content)
         errors = content["errors"]
+        for error in errors:
+            print(error)
         self.assertEqual(5, len(errors))
         for error in errors:
             self.assertEqual('invalidTaxId', error["code"])
@@ -62,6 +75,8 @@ class TestTransferPost(TestCase):
         content, status = postTransfer(exampleMember, transfersJson=transfersJson)
         print(content)
         errors = content["errors"]
+        for error in errors:
+            print(error)
         self.assertEqual(5, len(errors))
         for error in errors:
             self.assertEqual('invalidAmount', error["code"])

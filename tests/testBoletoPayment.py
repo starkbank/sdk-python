@@ -18,6 +18,17 @@ class TestBoletoPaymentPost(TestCase):
         else:
             self.assertEqual(200, status)
 
+    def testFailInvalidArraySize(self):
+        paymentsJson = generateExampleBoletoPayments(n=50)
+        paymentsJson2 = generateExampleBoletoPayments(n=55)
+        paymentsJson["payments"] = paymentsJson["payments"] + paymentsJson2["payments"]
+        content, status = postBoletoPayment(exampleMember, paymentsJson=paymentsJson)
+        print(content)
+        errors = content["errors"]
+        self.assertEqual(1, len(errors))
+        for error in errors:
+            self.assertEqual('invalidJson', error["code"])
+
     def testFailInvalidJson(self):
         paymentsJson = {}
         content, status = postBoletoPayment(exampleMember, paymentsJson=paymentsJson)
@@ -36,6 +47,8 @@ class TestBoletoPaymentPost(TestCase):
         content, status = postBoletoPayment(exampleMember, paymentsJson=paymentsJson)
         print(content)
         errors = content["errors"]
+        for error in errors:
+            print(error)
         self.assertEqual(4, len(errors))
         for error in errors:
             self.assertTrue(error["code"] in ["invalidJson", "invalidPayment", "invalidDate"])
@@ -50,6 +63,8 @@ class TestBoletoPaymentPost(TestCase):
         content, status = postBoletoPayment(exampleMember, paymentsJson=paymentsJson)
         print(content)
         errors = content["errors"]
+        for error in errors:
+            print(error)
         self.assertEqual(5, len(errors))
         for error in errors:
             self.assertEqual('invalidTaxId', error["code"])

@@ -12,6 +12,7 @@ def generateExampleTransactions(n=1):
     for _ in range(n):
         amount = randint(1, 10)
         transaction["receiverId"] = "5168326472892416"
+        transaction["senderId"] = "5647143184367616"
         transaction["amount"] = amount
         transaction["externalId"] = str(datetime.now())
         transaction["tags"] = [sha256(str(amount).encode('utf-8')).hexdigest()]

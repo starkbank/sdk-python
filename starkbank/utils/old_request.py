@@ -64,7 +64,10 @@ def post(url, headers=None, payload=None):
     print("POST", url, "Payload:", payload)
     response = requests.request('POST', url, headers=headers, data=payload.encode(), allow_redirects=False)
     status = response.status_code
-    content = loads(response.content)
+    try:
+        content = loads(response.content)
+    except:
+        raise Exception(response.content)
     print("Status:", status)
     return content, status
 
