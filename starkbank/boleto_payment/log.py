@@ -37,7 +37,7 @@ def list(limit=100, cursor=None, user=None):
     if errors:
         return None, errors
 
-    return [BoletoPaymentLog.from_json(boleto) for boleto in response["logs"]], []
+    return [BoletoPaymentLog.from_json(boleto) for boleto in response["logs"]], response["cursor"], []
 
 
 def retrieve(id, user=None):

@@ -11,7 +11,7 @@ class Base:
         self._id = id
 
     def __repr__(self):
-        return "{classname}[id]".format(
+        return "{classname}[{id}]".format(
             classname=self.__class__.__name__,
             id=self.id,
         )

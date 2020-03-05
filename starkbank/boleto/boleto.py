@@ -111,7 +111,7 @@ def list(limit=100, cursor=None, user=None):
     if errors:
         return None, errors
 
-    return [Boleto.from_json(boleto) for boleto in response["boletos"]], []
+    return [Boleto.from_json(boleto) for boleto in response["boletos"]], response["cursor"], []
 
 
 def delete(id, user=None):

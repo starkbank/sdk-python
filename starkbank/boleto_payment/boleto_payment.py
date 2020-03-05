@@ -91,7 +91,7 @@ def list(limit=100, cursor=None, user=None):
     if errors:
         return None, errors
 
-    return [BoletoPayment.from_json(payment) for payment in response["payments"]], []
+    return [BoletoPayment.from_json(payment) for payment in response["payments"]], response["cursor"], []
 
 
 def delete(id, user=None):
