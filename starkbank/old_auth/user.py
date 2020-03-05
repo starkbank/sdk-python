@@ -4,8 +4,8 @@ from ellipticcurve.ecdsa import Ecdsa
 from ellipticcurve.privateKey import PrivateKey
 from ellipticcurve.publicKey import PublicKey
 
-from starkbank.auth.project import postProject
-from starkbank.auth.session import postSession
+from starkbank.old_auth.project import postProject
+from starkbank.old_auth.session import postSession
 
 
 class User:

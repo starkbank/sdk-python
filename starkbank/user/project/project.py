@@ -13,6 +13,14 @@ class Project(User):
             self,
             Credentials(
                 access_id="project/{project_id}".format(project_id=project_id),
-                private_key=private_key,
+                private_key_pem=private_key,
             )
+        )
+
+    def __str__(self):
+        return "Project(project_id={project_id}, name={name}, allowed_ips={allowed_ips}, credentials={credentials})".format(
+            project_id=self.project_id,
+            name=self.name,
+            allowed_ips=self.allowed_ips,
+            credentials=self.credentials,
         )

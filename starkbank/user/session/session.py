@@ -14,6 +14,13 @@ class Session(User):
             self,
             Credentials(
                 access_id="session/{session_id}".format(session_id=session_id),
-                private_key=private_key,
+                private_key_pem=private_key,
             )
+        )
+
+    def __str__(self):
+        return "Session(session_id={session_id}, expiration={expiration}, credentials={credentials})".format(
+            session_id=self.session_id,
+            expiration=self.expiration,
+            credentials=self.credentials,
         )

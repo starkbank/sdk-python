@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.boletoPayment.boletoPayment import getBoletoPayment, postBoletoPayment, getBoletoPaymentInfo, \
+from starkbank.old_boletoPayment.boletoPayment import getBoletoPayment, postBoletoPayment, getBoletoPaymentInfo, \
     getBoletoPaymentPdf
 from tests.utils.boletoPayment import generateExampleBoletoPayments
 from tests.utils.user import exampleMember

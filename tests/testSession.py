@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.auth.session import postSession, getSession, getSessionInfo, deleteSession
+from starkbank.old_auth.session import postSession, getSession, getSessionInfo, deleteSession
 from tests.utils.session import generateExampleSessionData
 from tests.utils.user import exampleMember
 

@@ -42,7 +42,7 @@ def retrieve(user, project_id):
         private_key=None,
         project_id=project_info["id"],
         name=project_info["name"],
-        allowed_ips=project_info["allowed_ips"]
+        allowed_ips=project_info["allowedIps"]
     ), []
 
 
@@ -70,7 +70,7 @@ def list(limit=100, fields=None, cursor=None, user=None):
         private_key=None,
         project_id=project_info["id"],
         name=project_info["name"],
-        allowed_ips=project_info["allowed_ips"]
+        allowed_ips=project_info["allowedIps"]
     ) for project_info in projects], []
 
 
@@ -89,5 +89,5 @@ def delete(project_id, user=None):
         private_key=None,
         project_id=project_info["id"],
         name=project_info["name"],
-        allowed_ips=project_info["allowed_ips"]
+        allowed_ips=project_info["allowedIps"]
     ), []

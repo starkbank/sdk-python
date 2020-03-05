@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.auth.project import postProject, getProject, getProjectInfo, deleteProject
+from starkbank.old_auth.project import postProject, getProject, getProjectInfo, deleteProject
 from tests.utils.project import generateExampleProjectData
 from tests.utils.user import exampleMember
 

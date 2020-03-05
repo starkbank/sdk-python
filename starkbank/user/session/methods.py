@@ -22,7 +22,7 @@ def create(private_key=None, expiration=3600, user=None):
     session_info = response["session"]
 
     return Session(
-        private_key=private_key,
+        private_key=private_key.toPem(),
         session_id=session_info["id"],
         expiration=session_info["expiration"],
     ), []

@@ -1,4 +1,4 @@
-from starkbank.auth.user import Member
+from starkbank.old_auth.user import Member
 from .examples.credentials.credentials import credentialsJson
 from .examples.keys.keys import memberPrivateKeyString, memberPublicKeyString, sessionPublicKeyString, \
     sessionPrivateKeyString, projectPrivateKeyString, projectPublicKeyString

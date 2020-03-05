@@ -1,4 +1,4 @@
-from starkbank.utils.request import route, get
+from starkbank.utils.old_request import route, get
 
 
 def getBoletoLog(user, params=None):

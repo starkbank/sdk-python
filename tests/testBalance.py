@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.ledger.balance import getBalance
+from starkbank.old_ledger.balance import getBalance
 from tests.utils.user import exampleMember
 
 

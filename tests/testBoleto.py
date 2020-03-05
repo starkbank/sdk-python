@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.boleto.boleto import postBoleto, deleteBoleto, getBoletoInfo, getBoleto, getBoletoPdf
+from starkbank.old_boleto.boleto import postBoleto, deleteBoleto, getBoletoInfo, getBoleto, getBoletoPdf
 from tests.utils.boleto import generateExampleBoletos
 from tests.utils.user import exampleMember
 

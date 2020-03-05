@@ -6,83 +6,78 @@ from starkbank.settings import Settings
 from starkbank.user.base import User
 from starkbank.exceptions import InputError, Houston
 from starkbank.models.environment import Environment
+from starkbank.user.credentials import Credentials
 
 
 def get(user, endpoint, url_params=None):
-    credentials = _get_credentials(user)
-
-    return _treat_request_response(
-        requests.get(
-            url=_get_url(endpoint) + _get_url_params_string(url_params),
-            headers=_headers(credentials),
-        )
-    )
+    return _make_request(user=user, request_method=requests.get, endpoint=endpoint, url_params=url_params)
 
 
 def post(user, endpoint, body):
-    credentials = _get_credentials(user)
-
-    body = dumps(body)
-
-    return _treat_request_response(
-        requests.post(
-            url=_get_url(endpoint),
-            headers=_headers(credentials=credentials, body=body),
-            data=body,
-        )
-    )
+    return _make_request(user=user, request_method=requests.post, endpoint=endpoint, body=body)
 
 
 def patch(user, endpoint, body):
-    credentials = _get_credentials(user)
-
-    body = dumps(body)
-
-    return _treat_request_response(
-        requests.patch(
-            url=_get_url(endpoint),
-            headers=_headers(credentials=credentials, body=body),
-            data=body,
-        )
-    )
+    return _make_request(user=user, request_method=requests.patch, endpoint=endpoint, body=body)
 
 
 def put(user, endpoint, body):
-    credentials = _get_credentials(user)
-
-    body = dumps(body)
-
-    return _treat_request_response(
-        requests.put(
-            url=_get_url(endpoint),
-            headers=_headers(credentials=credentials, body=body),
-            data=body,
-        )
-    )
+    return _make_request(user=user, request_method=requests.put, endpoint=endpoint, body=body)
 
 
 def delete(user, endpoint):
+    return _make_request(user=user, request_method=requests.delete, endpoint=endpoint)
+
+
+def _make_request(user, request_method, endpoint, url_params=None, body=None):
     credentials = _get_credentials(user)
 
-    return _treat_request_response(
-        requests.delete(
-            url=_get_url(endpoint),
-            headers=_headers(credentials=credentials),
+    if body is not None:
+        body = dumps(body)
+
+    url = _get_url(endpoint) + _get_url_params_string(url_params)
+    headers = _headers(credentials=credentials, body=body)
+
+    if Settings.logging == "debug":
+        print(
+            "\nsending /{request_method} to \"{url}\" with:\nheaders: {headers}\nbody: {body}\n".format(
+                request_method=request_method.__name__.upper(),
+                url=url,
+                headers=headers,
+                body=body,
+            )
         )
+
+    response = request_method(
+        url=url,
+        headers=headers,
+        data=body,
     )
 
+    if Settings.logging == "debug":
+        print(
+            "\nretrieved {status}: {content}\n".format(
+                status=response.status_code,
+                content=response.content,
+            )
+        )
 
-def _headers(credentials, body=""):
+    treated = _treat_request_response(response)
+
+    return treated
+
+
+def _headers(credentials, body=None):
     timestamp = str(int(time()))
     message = "{access_id}:{timestamp}:{body}".format(
         access_id=credentials.access_id,
         timestamp=timestamp,
-        body=body,
+        body=body if body else "",
     )
 
     return {
         "Access-Time": timestamp,
-        "Access-Signature": Ecdsa.sign(message=message, privateKey=credentials.private_key).toBase64(),
+        "Access-Signature": Ecdsa.sign(message=message, privateKey=credentials.private_key_object).toBase64(),
         "Access-Id": credentials.access_id,
         "Content-Type": "application/json",
         "User-Agent": "Python-SDK-2.0.0",
@@ -91,6 +86,7 @@ def _headers(credentials, body=""):
 
 def _get_credentials(user):
     assert isinstance(user, User), "user must be the object retrieved from one of starkbank.user methods or classes"
+    assert isinstance(user.credentials, Credentials), "user private key is not loaded"
 
     return user.credentials
 

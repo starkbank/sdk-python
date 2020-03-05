@@ -1,6 +1,6 @@
 from json import dumps
 
-from starkbank.utils.request import route, post, get, delete
+from starkbank.utils.old_request import route, post, get, delete
 
 
 def postWebhook(user, webhookUrl, subscriptions=None):

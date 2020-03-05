@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.webhook.event import getEventInfo, getEvent
+from starkbank.old_webhook.event import getEventInfo, getEvent
 from tests.utils.user import exampleMember
 
 

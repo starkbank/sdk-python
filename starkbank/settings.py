@@ -1,5 +1,6 @@
 
 
 class Settings:
-    default_user = None
     env = None
+    logging = None
+    default_user = None

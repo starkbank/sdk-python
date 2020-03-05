@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.webhook.webhook import getWebhook, getWebhookInfo, postWebhook, deleteWebhook
+from starkbank.old_webhook.webhook import getWebhook, getWebhookInfo, postWebhook, deleteWebhook
 from tests.utils.webhook import generateWebhookUrl
 from tests.utils.user import exampleMember
 

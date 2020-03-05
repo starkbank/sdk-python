@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.ledger.transaction import postTransaction, getTransaction, getTransactionInfo
+from starkbank.old_ledger.transaction import postTransaction, getTransaction, getTransactionInfo
 from tests.utils.transaction import generateExampleTransactions
 from tests.utils.user import exampleMember
 

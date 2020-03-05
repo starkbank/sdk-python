@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.transfer.transfer import postTransfer, getTransfer, getTransferInfo, deleteTransfer, getTransferPdf
+from starkbank.old_transfer.transfer import postTransfer, getTransfer, getTransferInfo, deleteTransfer, getTransferPdf
 from tests.utils.transfer import generateExampleTransfers
 from tests.utils.user import exampleMember
 

@@ -1,6 +1,6 @@
 from unittest import TestCase, main
 
-from starkbank.boleto.boletoLog import getBoletoLog, getBoletoLogInfo
+from starkbank.old_boleto.boletoLog import getBoletoLog, getBoletoLogInfo
 from tests.utils.user import exampleMember
 
 

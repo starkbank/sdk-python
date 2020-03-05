@@ -1,6 +1,6 @@
 from json import dumps
 
-from starkbank.utils.request import route, post, get
+from starkbank.utils.old_request import route, post, get
 
 
 def postTransfer(user, transfersJson):
