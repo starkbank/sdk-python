@@ -2,20 +2,20 @@ from unittest import TestCase, main
 
 from starkbank.old_transfer.transfer import postTransfer, getTransfer, getTransferInfo, deleteTransfer, getTransferPdf
 from tests.utils.transfer import generateExampleTransfers
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleMemberOld
 
 
 class TestTransferPost(TestCase):
 
     def testSuccess(self):
         transfersJson = generateExampleTransfers(n=5)
-        content, status = postTransfer(exampleMember, transfersJson=transfersJson)
+        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
         print(content)
         self.assertEqual(200, status)
 
     def testFailInvalidArraySize(self):
         transfersJson = generateExampleTransfers(n=105)
-        content, status = postTransfer(exampleMember, transfersJson=transfersJson)
+        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
         print(content)
         errors = content["errors"]
         self.assertEqual(1, len(errors))
@@ -24,7 +24,7 @@ class TestTransferPost(TestCase):
 
     def testFailInvalidJson(self):
         transfersJson = {}
-        content, status = postTransfer(exampleMember, transfersJson=transfersJson)
+        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
         print(content)
         errors = content["errors"]
         self.assertEqual(1, len(errors))
@@ -40,7 +40,7 @@ class TestTransferPost(TestCase):
         transfersJson["transfers"][4].pop("branchCode")
         transfersJson["transfers"][5].pop("accountNumber")
         transfersJson["transfers"][6].pop("tags")
-        content, status = postTransfer(exampleMember, transfersJson=transfersJson)
+        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
         print(content)
         errors = content["errors"]
         for error in errors:
@@ -56,7 +56,7 @@ class TestTransferPost(TestCase):
         transfersJson["transfers"][2]["taxId"] = "abc"
         transfersJson["transfers"][3]["taxId"] = 123
         transfersJson["transfers"][4]["taxId"] = {}
-        content, status = postTransfer(exampleMember, transfersJson=transfersJson)
+        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
         print(content)
         errors = content["errors"]
         for error in errors:
@@ -72,7 +72,7 @@ class TestTransferPost(TestCase):
         transfersJson["transfers"][2]["amount"] = 0
         transfersJson["transfers"][3]["amount"] = 1000000000000000
         transfersJson["transfers"][4]["amount"] = {}
-        content, status = postTransfer(exampleMember, transfersJson=transfersJson)
+        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
         print(content)
         errors = content["errors"]
         for error in errors:
@@ -84,7 +84,7 @@ class TestTransferPost(TestCase):
 
 class TestTransferGet(TestCase):
     def testSuccess(self):
-        content, status = getTransfer(exampleMember)
+        content, status = getTransfer(exampleMemberOld)
         self.assertEqual(200, status)
         transfers = content["transfers"]
         print("Number of transfers:", len(transfers))
@@ -94,7 +94,7 @@ class TestTransferGet(TestCase):
     def testFields(self):
         fields = {"amount", "id", "created", "invalid"}
         fieldsParams = {"fields": ",".join(fields)}
-        content, status = getTransfer(exampleMember, params=fieldsParams)
+        content, status = getTransfer(exampleMemberOld, params=fieldsParams)
         self.assertEqual(200, status)
         for transfer in content["transfers"]:
             self.assertTrue(set(transfer.keys()).issubset(fields))
@@ -103,20 +103,20 @@ class TestTransferGet(TestCase):
 
 class TestTransferInfoGet(TestCase):
     def testSuccess(self):
-        content, status = getTransfer(exampleMember)
+        content, status = getTransfer(exampleMemberOld)
         transfers = content["transfers"]
         transferId = transfers[0]["id"]
-        content, status = getTransferInfo(exampleMember, transferId=transferId)
+        content, status = getTransferInfo(exampleMemberOld, transferId=transferId)
         print(content)
         self.assertEqual(200, status)
 
     def testFields(self):
         fields = {"amount", "id", "created", "invalid"}
         fieldsParams = {"fields": ",".join(fields)}
-        content, status = getTransfer(exampleMember)
+        content, status = getTransfer(exampleMemberOld)
         transfers = content["transfers"]
         transferId = transfers[0]["id"]
-        content, status = getTransferInfo(exampleMember, transferId=transferId, params=fieldsParams)
+        content, status = getTransferInfo(exampleMemberOld, transferId=transferId, params=fieldsParams)
         self.assertEqual(200, status)
         transfer = content["transfer"]
         print(content)
@@ -125,10 +125,10 @@ class TestTransferInfoGet(TestCase):
 
 class TestTransferPdfGet(TestCase):
     def testSuccess(self):
-        content, status = getTransfer(exampleMember)
+        content, status = getTransfer(exampleMemberOld)
         transfers = content["transfers"]
         transferId = transfers[0]["id"]
-        content, status = getTransferPdf(exampleMember, transferId=transferId)
+        content, status = getTransferPdf(exampleMemberOld, transferId=transferId)
         print(content)
         if status != 200:
             code = content["errors"][0]["code"]

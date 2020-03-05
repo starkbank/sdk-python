@@ -1,13 +1,13 @@
 from unittest import TestCase, main
 
 from starkbank.old_webhook.event import getEventInfo, getEvent
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleMemberOld
 
 
 class TestEventGet(TestCase):
 
     def testSuccess(self):
-        content, status = getEvent(exampleMember)
+        content, status = getEvent(exampleMemberOld)
         self.assertEqual(200, status)
         events = content["events"]
         print("Number of events:", len(events))
@@ -17,7 +17,7 @@ class TestEventGet(TestCase):
     def testFields(self):
         fields = {"amount", "id", "created", "invalid"}
         fieldsParams = {"fields": ",".join(fields)}
-        content, status = getEvent(exampleMember, params=fieldsParams)
+        content, status = getEvent(exampleMemberOld, params=fieldsParams)
         self.assertEqual(200, status)
         for log in content["events"]:
             self.assertTrue(set(log.keys()).issubset(fields))
@@ -26,20 +26,20 @@ class TestEventGet(TestCase):
 
 class TestEventInfoGet(TestCase):
     def testSuccess(self):
-        content, status = getEvent(exampleMember)
+        content, status = getEvent(exampleMemberOld)
         events = content["events"]
         eventId = events[0]["id"]
-        content, status = getEventInfo(exampleMember, eventId=eventId)
+        content, status = getEventInfo(exampleMemberOld, eventId=eventId)
         print(content)
         self.assertEqual(200, status)
 
     def testFields(self):
         fields = {"amount", "id", "created", "invalid"}
         fieldsParams = {"fields": ",".join(fields)}
-        content, status = getEvent(exampleMember)
+        content, status = getEvent(exampleMemberOld)
         events = content["events"]
         eventId = events[0]["id"]
-        content, status = getEventInfo(exampleMember, eventId=eventId, params=fieldsParams)
+        content, status = getEventInfo(exampleMemberOld, eventId=eventId, params=fieldsParams)
         self.assertEqual(200, status)
         event = content["event"]
         print(content)

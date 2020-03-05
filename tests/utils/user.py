@@ -1,35 +1,36 @@
 from starkbank import settings
 from starkbank.old_auth.user import Member
 from starkbank.user import member, project, session
-from .examples.credentials.credentials import credentialsJson
-from .examples.keys.keys import memberPrivateKeyString, memberPublicKeyString, projectPrivateKeyString, \
+from tests.utils.examples.credentials.credentials import credentialsJson
+from tests.utils.examples.keys.keys import memberPrivateKeyString, memberPublicKeyString, projectPrivateKeyString, \
     projectPublicKeyString, sessionPrivateKeyString, sessionPublicKeyString
 
 settings.env = "development"
-#
-# exampleMember = member.Member(
-#     private_key=memberPrivateKeyString,
-#     workspace_id=credentialsJson["workspace"],
-#     email=credentialsJson["email"],
-# )
-#
-# exampleProject = project.retrieve(
-#     user=exampleMember,
-#     id="4835770477051904"
-# )
-#
-# exampleSession = session.create(
-#     user=exampleMember,
-#     private_key=None,
-#     expiration=3600,
-# )
-exampleMember = Member(
+
+exampleMember = member.Member(
+    private_key=memberPrivateKeyString,
+    workspace_id=credentialsJson["workspaceId"],
+    email=credentialsJson["email"],
+)
+
+exampleProject = project.retrieve(
+    user=exampleMember,
+    id="4835770477051904"
+)
+
+exampleSession = session.create(
+    user=exampleMember,
+    private_key=None,
+    expiration=3600,
+)
+
+exampleMemberOld = Member(
     credentialsJson=credentialsJson,
     privateKeyString=memberPrivateKeyString,
     publicKeyString=memberPublicKeyString,
 )
 
-exampleProject = exampleMember.newProject(
+exampleProjectOld = exampleMemberOld.newProject(
     name="testProject",
     privateKeyString=projectPrivateKeyString,
     publicKeyString=projectPublicKeyString,
@@ -37,7 +38,7 @@ exampleProject = exampleMember.newProject(
     # allowedIps=["123"]
 )
 
-exampleSession = exampleMember.newSession(
+exampleSessionOld = exampleMemberOld.newSession(
     privateKeyString=sessionPrivateKeyString,
     publicKeyString=sessionPublicKeyString,
     platform="web"

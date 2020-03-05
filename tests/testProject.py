@@ -2,7 +2,7 @@ from unittest import TestCase, main
 
 from starkbank.old_auth.project import postProject, getProject, getProjectInfo, deleteProject
 from tests.utils.project import generateExampleProjectData
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleMemberOld
 
 
 class TestProjectPost(TestCase):
@@ -25,22 +25,22 @@ class TestProjectPost(TestCase):
 
 class TestProjectGet(TestCase):
     def testSuccess(self):
-        content, status = getProject(exampleMember)
+        content, status = getProject(exampleMemberOld)
         print(content)
         self.assertEqual(200, status)
         projectId = content["projects"][0]["id"]
-        content, status = getProjectInfo(exampleMember, projectId=projectId)
+        content, status = getProjectInfo(exampleMemberOld, projectId=projectId)
         print(content)
         self.assertEqual(200, status)
 
 
 class TestProjectGetInfo(TestCase):
     def testSuccess(self):
-        content, status = getProject(exampleMember)
+        content, status = getProject(exampleMemberOld)
         print(content)
         self.assertEqual(200, status)
         projectId = content["projects"][0]["id"]
-        content, status = getProjectInfo(exampleMember, projectId=projectId)
+        content, status = getProjectInfo(exampleMemberOld, projectId=projectId)
         print(content)
         self.assertEqual(200, status)
 
@@ -49,7 +49,7 @@ class TestProjectPostAndDelete(TestCase):
     def testSuccess(self):
         publicKeyString, platform, name = generateExampleProjectData()
         content, status = postProject(
-            user=exampleMember,
+            user=exampleMemberOld,
             publicKeyString=publicKeyString,
             platform=platform,
             name=name,
@@ -57,7 +57,7 @@ class TestProjectPostAndDelete(TestCase):
         print(content)
         self.assertEqual(200, status)
         projectId = content["project"]["id"]
-        content, status = deleteProject(exampleMember, projectId=projectId)
+        content, status = deleteProject(exampleMemberOld, projectId=projectId)
         print(content)
         self.assertEqual(200, status)
 

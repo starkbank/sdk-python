@@ -3,14 +3,14 @@ from unittest import TestCase, main
 from starkbank.old_boletoPayment.boletoPayment import getBoletoPayment, postBoletoPayment, getBoletoPaymentInfo, \
     getBoletoPaymentPdf
 from tests.utils.boletoPayment import generateExampleBoletoPayments
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleMemberOld
 
 
 class TestBoletoPaymentPost(TestCase):
 
     def testSuccess(self):
         paymentsJson = generateExampleBoletoPayments(n=5)
-        content, status = postBoletoPayment(exampleMember, paymentsJson=paymentsJson)
+        content, status = postBoletoPayment(exampleMemberOld, paymentsJson=paymentsJson)
         print(content)
         if status != 200:
             code = content["errors"][0]["code"]
@@ -22,7 +22,7 @@ class TestBoletoPaymentPost(TestCase):
         paymentsJson = generateExampleBoletoPayments(n=50)
         paymentsJson2 = generateExampleBoletoPayments(n=55)
         paymentsJson["payments"] = paymentsJson["payments"] + paymentsJson2["payments"]
-        content, status = postBoletoPayment(exampleMember, paymentsJson=paymentsJson)
+        content, status = postBoletoPayment(exampleMemberOld, paymentsJson=paymentsJson)
         print(content)
         errors = content["errors"]
         self.assertEqual(1, len(errors))
@@ -31,7 +31,7 @@ class TestBoletoPaymentPost(TestCase):
 
     def testFailInvalidJson(self):
         paymentsJson = {}
-        content, status = postBoletoPayment(exampleMember, paymentsJson=paymentsJson)
+        content, status = postBoletoPayment(exampleMemberOld, paymentsJson=paymentsJson)
         print(content)
         errors = content["errors"]
         self.assertEqual(1, len(errors))
@@ -44,7 +44,7 @@ class TestBoletoPaymentPost(TestCase):
         paymentsJson["payments"][1].pop("scheduled")
         paymentsJson["payments"][2].pop("description")
         paymentsJson["payments"][3].pop("taxId")
-        content, status = postBoletoPayment(exampleMember, paymentsJson=paymentsJson)
+        content, status = postBoletoPayment(exampleMemberOld, paymentsJson=paymentsJson)
         print(content)
         errors = content["errors"]
         for error in errors:
@@ -60,7 +60,7 @@ class TestBoletoPaymentPost(TestCase):
         paymentsJson["payments"][2]["taxId"] = "abc"
         paymentsJson["payments"][3]["taxId"] = 123
         paymentsJson["payments"][4]["taxId"] = {}
-        content, status = postBoletoPayment(exampleMember, paymentsJson=paymentsJson)
+        content, status = postBoletoPayment(exampleMemberOld, paymentsJson=paymentsJson)
         print(content)
         errors = content["errors"]
         for error in errors:
@@ -72,7 +72,7 @@ class TestBoletoPaymentPost(TestCase):
 
 class TestBoletoPaymentGet(TestCase):
     def testSuccess(self):
-        content, status = getBoletoPayment(exampleMember)
+        content, status = getBoletoPayment(exampleMemberOld)
         self.assertEqual(200, status)
         payments = content["payments"]
         print("Number of payments:", len(payments))
@@ -82,7 +82,7 @@ class TestBoletoPaymentGet(TestCase):
     def testFields(self):
         fields = {"amount", "id", "created", "invalid"}
         fieldsParams = {"fields": ",".join(fields)}
-        content, status = getBoletoPayment(exampleMember, params=fieldsParams)
+        content, status = getBoletoPayment(exampleMemberOld, params=fieldsParams)
         self.assertEqual(200, status)
         for boleto in content["payments"]:
             self.assertTrue(set(boleto.keys()).issubset(fields))
@@ -91,20 +91,20 @@ class TestBoletoPaymentGet(TestCase):
 
 class TestBoletoPaymentInfoGet(TestCase):
     def testSuccess(self):
-        content, status = getBoletoPayment(exampleMember)
+        content, status = getBoletoPayment(exampleMemberOld)
         payments = content["payments"]
         paymentId = payments[0]["id"]
-        content, status = getBoletoPaymentInfo(exampleMember, paymentId=paymentId)
+        content, status = getBoletoPaymentInfo(exampleMemberOld, paymentId=paymentId)
         print(content)
         self.assertEqual(200, status)
 
     def testFields(self):
         fields = {"amount", "id", "created", "invalid"}
         fieldsParams = {"fields": ",".join(fields)}
-        content, status = getBoletoPayment(exampleMember)
+        content, status = getBoletoPayment(exampleMemberOld)
         payments = content["payments"]
         paymentId = payments[0]["id"]
-        content, status = getBoletoPaymentInfo(exampleMember, paymentId=paymentId, params=fieldsParams)
+        content, status = getBoletoPaymentInfo(exampleMemberOld, paymentId=paymentId, params=fieldsParams)
         self.assertEqual(200, status)
         payment = content["payment"]
         print(content)
@@ -113,10 +113,10 @@ class TestBoletoPaymentInfoGet(TestCase):
 
 class TestBoletoPaymentPdfGet(TestCase):
     def testSuccess(self):
-        content, status = getBoletoPayment(exampleMember)
+        content, status = getBoletoPayment(exampleMemberOld)
         payments = content["payments"]
         paymentId = payments[0]["id"]
-        content, status = getBoletoPaymentPdf(exampleMember, paymentId=paymentId)
+        content, status = getBoletoPaymentPdf(exampleMemberOld, paymentId=paymentId)
         print(content)
         if status != 200:
             code = content["errors"][0]["code"]

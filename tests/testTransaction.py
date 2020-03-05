@@ -2,14 +2,14 @@ from unittest import TestCase, main
 
 from starkbank.old_ledger.transaction import postTransaction, getTransaction, getTransactionInfo
 from tests.utils.transaction import generateExampleTransactions
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleMemberOld
 
 
 class TestTransactionPost(TestCase):
 
     def testSuccess(self):
         transactionJson = generateExampleTransactions(n=5)
-        content, status = postTransaction(exampleMember, transactionJson=transactionJson)
+        content, status = postTransaction(exampleMemberOld, transactionJson=transactionJson)
         if status != 200:
             code = content["errors"][0]["code"]
             self.assertEqual('invalidBalance', code)
@@ -19,7 +19,7 @@ class TestTransactionPost(TestCase):
 
     def testFailInvalidArraySize(self):
         transactionJson = generateExampleTransactions(n=105)
-        content, status = postTransaction(exampleMember, transactionJson=transactionJson)
+        content, status = postTransaction(exampleMemberOld, transactionJson=transactionJson)
         print(content)
         errors = content["errors"]
         self.assertEqual(1, len(errors))
@@ -28,14 +28,14 @@ class TestTransactionPost(TestCase):
 
     def testFailInvalidJson(self):
         transactionJson = {}
-        content, status = postTransaction(exampleMember, transactionJson=transactionJson)
+        content, status = postTransaction(exampleMemberOld, transactionJson=transactionJson)
         errors = content["errors"]
         self.assertEqual(1, len(errors))
         for error in errors:
             self.assertEqual('invalidJson', error["code"])
 
     def testFailInvalidJsonTransaction(self):
-        transactionJson = generateExampleTransactions(n=7)
+        transactionJson = generateExampleTransactions(n=6)
         print(transactionJson)
         transactionJson["transactions"][0].pop("amount")  # Required
         transactionJson["transactions"][1].pop("receiverId")  # Required
@@ -43,9 +43,9 @@ class TestTransactionPost(TestCase):
         transactionJson["transactions"][3].pop("description")  # Required
         transactionJson["transactions"][4].pop("tags")  # Required
 
-        transactionJson["transactions"][6]["invalidParameter"] = "invalidValue"
+        transactionJson["transactions"][5]["invalidParameter"] = "invalidValue"
 
-        content, status = postTransaction(exampleMember, transactionJson=transactionJson)
+        content, status = postTransaction(exampleMemberOld, transactionJson=transactionJson)
         print(content)
         errors = content["errors"]
         for error in errors:
@@ -57,7 +57,7 @@ class TestTransactionPost(TestCase):
 
 class TestTransactionGet(TestCase):
     def testSuccess(self):
-        content, status = getTransaction(exampleMember)
+        content, status = getTransaction(exampleMemberOld)
         self.assertEqual(200, status)
         transactions = content["transactions"]
         self.assertIsInstance(transactions, list)
@@ -67,7 +67,7 @@ class TestTransactionGet(TestCase):
     def testFields(self):
         fields = {"amount", "id", "created", "invalid"}
         fieldsParams = {"fields": ",".join(fields)}
-        content, status = getTransaction(exampleMember, params=fieldsParams)
+        content, status = getTransaction(exampleMemberOld, params=fieldsParams)
         self.assertEqual(200, status)
         for transaction in content["transactions"]:
             self.assertTrue(set(transaction.keys()).issubset(fields))
@@ -76,20 +76,20 @@ class TestTransactionGet(TestCase):
 
 class TestTransactionInfoGet(TestCase):
     def testSuccess(self):
-        content, status = getTransaction(exampleMember)
+        content, status = getTransaction(exampleMemberOld)
         transactions = content["transactions"]
         transactionId = transactions[0]["id"]
-        content, status = getTransactionInfo(exampleMember, transactionId=transactionId)
+        content, status = getTransactionInfo(exampleMemberOld, transactionId=transactionId)
         print(content)
         self.assertEqual(200, status)
 
     def testFields(self):
         fields = {"amount", "id", "created", "invalid"}
         fieldsParams = {"fields": ",".join(fields)}
-        content, status = getTransaction(exampleMember)
+        content, status = getTransaction(exampleMemberOld)
         transactions = content["transactions"]
         transactionId = transactions[0]["id"]
-        content, status = getTransactionInfo(exampleMember, transactionId=transactionId, params=fieldsParams)
+        content, status = getTransactionInfo(exampleMemberOld, transactionId=transactionId, params=fieldsParams)
         self.assertEqual(200, status)
         transaction = content["transaction"]
         print(content)

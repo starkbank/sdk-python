@@ -4,14 +4,14 @@ from datetime import date
 
 from starkbank.old_boleto.boleto import postBoleto
 from starkbank.old_auth.user import Member
-from .boleto import generateExampleBoletos
+from .boleto import generateExampleBoletosJsonOld
 from .examples.messages.messages import exampleBoletoPaymentsJson
 from .examples.credentials.credentials import credentialsJson
 from .examples.keys.keys import memberPrivateKeyString, memberPublicKeyString
 
 
 def generateExampleBoletoPayments(n=1):
-    boletosJson = generateExampleBoletos(n=n)
+    boletosJson = generateExampleBoletosJsonOld(n=n)
 
     member = Member(
         credentialsJson=credentialsJson,
