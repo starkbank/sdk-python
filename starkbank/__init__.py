@@ -25,4 +25,7 @@ from . import user
 from . import boleto
 from .boleto import Boleto
 
+from . import boleto_payment
+from .boleto_payment import BoletoPayment
+
 from .utils.passtokey import pass_to_key

@@ -1,7 +1,7 @@
 from starkbank import request
 from starkbank.utils.base import Base
 from starkbank.utils.case import snake_to_camel
-from starkbank.utils.checks import check_user
+from starkbank.utils.checks import check_user, check_datetime
 
 
 class Boleto(Base):
@@ -23,10 +23,14 @@ class Boleto(Base):
         "overdue_limit",
         "tags",
         "descriptions",
+        "line",
+        "bar_code",
+        "status",
+        "created",
     }
     _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
 
-    def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code, due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, id=None):
+    def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code, due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, id=None, line=None, bar_code=None, status=None, created=None):
         Base.__init__(self, id=id)
 
         self.amount = amount
@@ -44,7 +48,10 @@ class Boleto(Base):
         self.overdue_limit = overdue_limit
         self.tags = tags
         self.descriptions = descriptions
-
+        self.line = line
+        self.bar_code = bar_code
+        self.status = status
+        self.created = check_datetime(created)
 
 
 def create(boletos, user=None):
@@ -117,4 +124,3 @@ def delete(id, user=None):
         return None, errors
 
     return Boleto.from_json(response["boleto"]), []
-

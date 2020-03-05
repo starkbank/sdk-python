@@ -51,6 +51,9 @@ def check_integer(integer):
 
 
 def check_datetime(data):
+    if data is None:
+        return None
+
     if isinstance(data, datetime):
         return data
 

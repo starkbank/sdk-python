@@ -11,7 +11,10 @@ class Base:
         self._id = id
 
     def __repr__(self):
-        return self.__class__.__name__ + str(self.id)
+        return "{classname}[id]".format(
+            classname=self.__class__.__name__,
+            id=self.id,
+        )
 
     def __str__(self):
         return "{classname}({fields})".format(
