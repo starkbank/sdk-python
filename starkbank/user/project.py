@@ -62,12 +62,10 @@ def retrieve(user, id):
     ), []
 
 
-def list(limit=100, fields=None, cursor=None, user=None):
+def list(limit=100, cursor=None, user=None):
     url_params = {
         "limit": limit,
     }
-    if fields:
-        url_params["fields"] = check_list_of_strings(fields)
     if cursor:
         url_params["cursor"] = check_string(cursor)
 

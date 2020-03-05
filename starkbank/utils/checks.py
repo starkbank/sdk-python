@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from ellipticcurve.privateKey import PrivateKey
 from ..settings import Settings
 from ..user.base import User

@@ -9,8 +9,8 @@ from starkbank.models.environment import Environment
 from starkbank.user.credentials import Credentials
 
 
-def get(user, endpoint, url_params=None):
-    return _make_request(user=user, request_method=requests.get, endpoint=endpoint, url_params=url_params)
+def get(user, endpoint, url_params=None, json_response=True):
+    return _make_request(user=user, request_method=requests.get, endpoint=endpoint, url_params=url_params, json_response=json_response)
 
 
 def post(user, endpoint, body):
@@ -29,7 +29,7 @@ def delete(user, endpoint):
     return _make_request(user=user, request_method=requests.delete, endpoint=endpoint)
 
 
-def _make_request(user, request_method, endpoint, url_params=None, body=None):
+def _make_request(user, request_method, endpoint, url_params=None, body=None, json_response=True):
     credentials = _get_credentials(user)
 
     if body is not None:
@@ -62,7 +62,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None):
             )
         )
 
-    treated = _treat_request_response(response)
+    treated = _treat_request_response(response=response, json_response=json_response)
 
     return treated
 
@@ -125,7 +125,7 @@ def _get_url_params_string(url_params):
             url_args.append(
                 "{param}={values}".format(
                     param=param,
-                    values=",".join(values)
+                    values=",".join(values) if isinstance(values, list) else values
                 )
             )
 
@@ -135,7 +135,7 @@ def _get_url_params_string(url_params):
     return "?" + "&".join(url_args)
 
 
-def _treat_request_response(response):
+def _treat_request_response(response, json_response):
     status_code = response.status_code
     content = response.content
 
@@ -144,10 +144,11 @@ def _treat_request_response(response):
     except:
         pass
 
-    try:
-        content = loads(content)
-    except:
-        pass
+    if json_response:
+        try:
+            content = loads(content)
+        except:
+            pass
 
     if status_code == 200:
         return content, []

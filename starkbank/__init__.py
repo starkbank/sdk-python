@@ -13,10 +13,16 @@ from .old_webhook.webhook import *
 from .old_webhook.event import *
 
 from .settings import Settings as settings
+
 from .user import project
 from .user import member
 from .user import session
 from .user.project import Project
 from .user.member import Member
 from .user.session import Session
+from . import user
+
+from . import boleto
+from .boleto import Boleto
+
 from .utils.passtokey import pass_to_key

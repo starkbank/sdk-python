@@ -1,5 +1,5 @@
 from starkbank import request
-from starkbank.utils.checks import check_id, check_datetime, check_or_create_private_key, check_user, check_integer, check_string
+from starkbank.utils.checks import check_datetime, check_or_create_private_key, check_user, check_integer, check_string
 from starkbank.user.credentials import Credentials
 from starkbank.user.base import User
 
