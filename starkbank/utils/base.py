@@ -3,8 +3,8 @@
 class Base:
 
     def __init__(self, id):
-        id = str(id)
-        assert id.isdigit()
+        id = str(id) if id else None
+        assert id is None or id.isdigit()
         self._id = id
 
     def __repr__(self):

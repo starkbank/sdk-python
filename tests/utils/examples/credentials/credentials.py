@@ -1,4 +1,3 @@
-import os
 from json import loads
 
 from ellipticcurve.utils.file import File

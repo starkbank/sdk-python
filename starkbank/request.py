@@ -86,7 +86,9 @@ def _headers(credentials, body=None):
 
 def _get_credentials(user):
     assert isinstance(user, User), "user must be the object retrieved from one of starkbank.user methods or classes"
-    assert isinstance(user.credentials, Credentials), "user private key is not loaded"
+    credentials = user.credentials
+    assert isinstance(credentials, Credentials), "user private key is not loaded"
+    assert credentials.private_key_object is not None, "user has no loaded credentials"
 
     return user.credentials
 

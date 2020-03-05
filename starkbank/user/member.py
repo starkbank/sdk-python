@@ -1,4 +1,5 @@
 from hashlib import sha256
+from ellipticcurve.curve import secp256k1
 from ellipticcurve.privateKey import PrivateKey
 from starkbank.user.base import User
 from starkbank.user.credentials import Credentials
@@ -23,17 +24,19 @@ class Member(User):
         self.email = email
 
         if passphrase:
-            secret = int(
-                sha256(
-                    "{email}:STARKBANK:{passphrase}".format(
-                        email=email,
-                        passphrase=passphrase,
-                    )
-                ).hexdigest(),
-                16
+            to_hash = "{email}:STARKBANK:{passphrase}".format(
+                email=email,
+                passphrase=passphrase,
             )
 
-            private_key = PrivateKey(secret=secret, curve="secp256k1")
+            try:
+                to_hash = to_hash.encode()
+            except:
+                pass
+
+            secret = int(sha256(to_hash).hexdigest(), 16)
+
+            private_key = PrivateKey(secret=secret, curve=secp256k1).toPem()
 
         User.__init__(
             self,
