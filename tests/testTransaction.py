@@ -17,12 +17,40 @@ class TestTransactionPost(TestCase):
             self.assertEqual(200, status)
         print(content)
 
-    def testFailInvalidJson(self):
-        transactionJson = {}
+    def testFailInvalidArraySize(self):
+        transactionJson = generateExampleTransactions(n=105)
         content, status = postTransaction(exampleMember, transactionJson=transactionJson)
         print(content)
         errors = content["errors"]
         self.assertEqual(1, len(errors))
+        for error in errors:
+            self.assertEqual('invalidJson', error["code"])
+
+    def testFailInvalidJson(self):
+        transactionJson = {}
+        content, status = postTransaction(exampleMember, transactionJson=transactionJson)
+        errors = content["errors"]
+        self.assertEqual(1, len(errors))
+        for error in errors:
+            self.assertEqual('invalidJson', error["code"])
+
+    def testFailInvalidJsonTransaction(self):
+        transactionJson = generateExampleTransactions(n=7)
+        print(transactionJson)
+        transactionJson["transactions"][0].pop("amount")  # Required
+        transactionJson["transactions"][1].pop("receiverId")  # Required
+        transactionJson["transactions"][2].pop("externalId")  # Required
+        transactionJson["transactions"][3].pop("description")  # Required
+        transactionJson["transactions"][4].pop("tags")  # Required
+
+        transactionJson["transactions"][6]["invalidParameter"] = "invalidValue"
+
+        content, status = postTransaction(exampleMember, transactionJson=transactionJson)
+        print(content)
+        errors = content["errors"]
+        for error in errors:
+            print(error)
+        self.assertEqual(5, len(errors))
         for error in errors:
             self.assertEqual('invalidJson', error["code"])
 
