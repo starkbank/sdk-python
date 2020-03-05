@@ -1,7 +1,7 @@
 from hashlib import sha256
 from ellipticcurve.privateKey import PrivateKey
-from ..base import User
-from ..credentials import Credentials
+from starkbank.user.base import User
+from starkbank.user.credentials import Credentials
 
 
 class Member(User):
