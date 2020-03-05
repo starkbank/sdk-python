@@ -1,30 +1,22 @@
 from starkbank import request
-from starkbank.utils.checks import check_id, check_datetime, check_or_create_private_key, check_user, check_integer, \
-    check_string
+from starkbank.utils.checks import check_id, check_datetime, check_or_create_private_key, check_user, check_integer, check_string
 from starkbank.user.credentials import Credentials
 from starkbank.user.base import User
 
 
 class Session(User):
-    def __init__(self, private_key, session_id, expiration=None):
-        self.session_id = check_id(session_id)
+    def __init__(self, private_key, id, expiration=None):
         if expiration:
             expiration = check_datetime(expiration)
         self.expiration = expiration
 
         User.__init__(
             self,
-            Credentials(
-                access_id="session/{session_id}".format(session_id=session_id),
+            id=id,
+            credentials=Credentials(
+                access_id="session/{id}".format(id=id),
                 private_key_pem=private_key,
             )
-        )
-
-    def __str__(self):
-        return "Session(session_id={session_id}, expiration={expiration}, credentials={credentials})".format(
-            session_id=self.session_id,
-            expiration=self.expiration,
-            credentials=self.credentials,
         )
 
 
@@ -48,7 +40,7 @@ def create(private_key=None, expiration=3600, user=None):
 
     return Session(
         private_key=private_key.toPem(),
-        session_id=session_info["id"],
+        id=session_info["id"],
         expiration=session_info["expiration"],
     ), []
 
@@ -66,7 +58,7 @@ def retrieve(session_id, user=None):
 
     return Session(
         private_key=None,
-        session_id=session_info["id"],
+        id=session_info["id"],
         expiration=session_info["expiration"],
     ), []
 
@@ -91,7 +83,7 @@ def list(limit=100, cursor=None, user=None):
 
     return [Session(
         private_key=None,
-        session_id=session_info["id"],
+        id=session_info["id"],
         expiration=session_info["expiration"],
     ) for session_info in sessions], []
 
@@ -109,6 +101,6 @@ def delete(session_id, user=None):
 
     return Session(
         private_key=None,
-        session_id=session_info["id"],
+        id=session_info["id"],
         expiration=session_info["expiration"],
     ), []
