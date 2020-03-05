@@ -1,0 +1,9 @@
+{
+    "transaction": {
+        "amount": 50,
+        "receiverId": "12345",
+        "externalId": "abcdefghijk",
+        "description": "Transferência para Workspace aleatório",
+        "tags": ["batatinha"]
+    }
+}

@@ -1,0 +1,18 @@
+*.pyc
+*.idea/*
+*.DS_Store
+
+# folder used by virtualenv
+env
+.env
+
+# specific files
+development.json
+sandbox.json
+**/development.json
+**/sandbox.json
+
+# ignore info from all dependencies
+*.dist-info
+*.egg-info
+venv/*

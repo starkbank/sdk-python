@@ -1,0 +1,22 @@
+{
+    "boletos": [
+        {
+            "amount": 10,
+            "dueDate": "2020-03-29",
+            "city": "SJC",
+            "district": "Vila Ema",
+            "email": "abc.def@somewhere.com",
+            "name": "abc def",
+            "phone": "(12) 99125-3490",
+            "stateCode": "SP",
+            "streetLine1": "Rua ABC",
+            "streetLine2": "Ap123",
+            "taxId": "01234567890",
+            "zipCode": "01234-567",
+            "fine": 0.00,
+            "interest": 0.00,
+            "tags": [],
+            "description": "No discount"
+        }
+    ]
+}
