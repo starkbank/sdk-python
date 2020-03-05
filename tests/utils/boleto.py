@@ -1,4 +1,4 @@
-from starkbank.boleto import boleto
+from starkbank import Boleto
 from copy import deepcopy
 from random import randint
 from hashlib import sha256
@@ -28,7 +28,7 @@ def generateExampleBoletosJsonOld(n=1, amount=None):
 
 def generateExampleBoletosJson(n=1, amount=None):
 
-    exampleBoleto = boleto.from_json(exampleBoletosJsonString["boletos"][0])
+    exampleBoleto = Boleto.from_json(exampleBoletosJsonString["boletos"][0])
     boletos = []
     for _ in range(n):
         if amount is None:

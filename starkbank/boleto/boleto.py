@@ -1,31 +1,31 @@
 from starkbank import request
 from starkbank.utils.base import Base
-from starkbank.utils.case import camel_to_snake, snake_to_camel
+from starkbank.utils.case import snake_to_camel
 from starkbank.utils.checks import check_user
-
-known_fields = {
-    "id",
-    "amount",
-    "name",
-    "tax_id",
-    "street_line_1",
-    "street_line_2",
-    "district",
-    "city",
-    "state_code",
-    "zip_code",
-    "due",
-    "fine",
-    "interest",
-    "overdue_limit",
-    "tags",
-    "descriptions",
-}
-
-known_camel_fields = {snake_to_camel(field) for field in known_fields}
 
 
 class Boleto(Base):
+
+    _known_fields = {
+        "id",
+        "amount",
+        "name",
+        "tax_id",
+        "street_line_1",
+        "street_line_2",
+        "district",
+        "city",
+        "state_code",
+        "zip_code",
+        "due",
+        "fine",
+        "interest",
+        "overdue_limit",
+        "tags",
+        "descriptions",
+    }
+    _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
+
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code, due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, id=None):
         Base.__init__(self, id=id)
 
@@ -46,6 +46,7 @@ class Boleto(Base):
         self.descriptions = descriptions
 
 
+
 def create(boletos, user=None):
     response, errors = request.post(
         user=check_user(user),
@@ -61,7 +62,7 @@ def create(boletos, user=None):
         return None, errors
 
     return [
-        from_json(boleto) for boleto in response["boletos"]
+        Boleto.from_json(boleto) for boleto in response["boletos"]
     ], []
 
 
@@ -74,7 +75,7 @@ def retrieve(id, user=None):
     if errors:
         return None, errors
 
-    return from_json(response["boleto"]), []
+    return Boleto.from_json(response["boleto"]), []
 
 
 def retrieve_pdf(id, user=None):
@@ -103,7 +104,7 @@ def list(limit=100, cursor=None, user=None):
     if errors:
         return None, errors
 
-    return [from_json(boleto) for boleto in response["boletos"]], []
+    return [Boleto.from_json(boleto) for boleto in response["boletos"]], []
 
 
 def delete(id, user=None):
@@ -115,10 +116,5 @@ def delete(id, user=None):
     if errors:
         return None, errors
 
-    return from_json(response["boleto"]), []
+    return Boleto.from_json(response["boleto"]), []
 
-
-def from_json(json):
-    return Boleto(**{
-        camel_to_snake(k): v for k, v in json.items() if k in known_camel_fields
-    })

@@ -5,6 +5,7 @@ from tests.utils.user import exampleMember
 
 starkbank.settings.logging = "debug"
 
+
 class TestBoletoPost(TestCase):
     def testSuccess(self):
         boletos = generateExampleBoletosJson(n=5)

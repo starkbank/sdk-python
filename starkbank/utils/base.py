@@ -1,6 +1,9 @@
+from starkbank.utils.case import camel_to_snake
 
 
 class Base:
+    _known_fields = set()
+    _known_camel_fields = set()
 
     def __init__(self, id):
         id = str(id) if id else None
@@ -31,3 +34,9 @@ class Base:
     @property
     def id(self):
         return self._id
+
+    @classmethod
+    def from_json(cls, json):
+        return cls(**{
+            camel_to_snake(k): v for k, v in json.items() if k in cls._known_camel_fields
+        })
