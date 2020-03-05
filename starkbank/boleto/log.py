@@ -2,7 +2,7 @@ from starkbank import request
 from starkbank.utils.base import Base
 from starkbank.utils.case import snake_to_camel, camel_to_snake
 from starkbank.utils.checks import check_user, check_datetime
-from .boleto import Boleto, known_camel_fields as known_boleto_camel_fields
+from .boleto import from_json as boleto_from_json
 
 known_fields = {
     "id",
@@ -22,9 +22,7 @@ class BoletoLog(Base):
         self.created = check_datetime(created)
         self.event = event
         self.errors = errors
-        self.boleto = Boleto(**{
-            camel_to_snake(k): v for k, v in boleto.items() if k in known_boleto_camel_fields
-        })
+        self.boleto = boleto_from_json(boleto)
 
 
 def list(limit=100, cursor=None, user=None):
@@ -40,11 +38,7 @@ def list(limit=100, cursor=None, user=None):
     if errors:
         return None, errors
 
-    return [
-       BoletoLog(**{
-           camel_to_snake(k): v for k, v in boleto.items() if k in known_camel_fields
-       }) for boleto in response["logs"]
-    ], []
+    return [from_json(boleto) for boleto in response["logs"]], []
 
 
 def retrieve(id, user=None):
@@ -56,6 +50,10 @@ def retrieve(id, user=None):
     if errors:
         return None, errors
 
+    return from_json(response["log"]), []
+
+
+def from_json(json):
     return BoletoLog(**{
-        camel_to_snake(k): v for k, v in response["log"].items() if k in known_camel_fields
-    }), []
+        camel_to_snake(k): v for k, v in json.items() if k in known_camel_fields
+    })

@@ -61,9 +61,7 @@ def create(boletos, user=None):
         return None, errors
 
     return [
-       Boleto(**{
-           camel_to_snake(k): v for k, v in boleto.items() if k in known_camel_fields
-        }) for boleto in response["boletos"]
+        from_json(boleto) for boleto in response["boletos"]
     ], []
 
 
@@ -76,9 +74,7 @@ def retrieve(id, user=None):
     if errors:
         return None, errors
 
-    return Boleto(**{
-        camel_to_snake(k): v for k, v in response["boleto"].items() if k in known_camel_fields
-    }), []
+    return from_json(response["boleto"]), []
 
 
 def retrieve_pdf(id, user=None):
@@ -107,11 +103,7 @@ def list(limit=100, cursor=None, user=None):
     if errors:
         return None, errors
 
-    return [
-       Boleto(**{
-           camel_to_snake(k): v for k, v in boleto.items() if k in known_camel_fields
-       }) for boleto in response["boletos"]
-    ], []
+    return [from_json(boleto) for boleto in response["boletos"]], []
 
 
 def delete(id, user=None):
@@ -123,4 +115,10 @@ def delete(id, user=None):
     if errors:
         return None, errors
 
-    return Boleto(**{camel_to_snake(k): v for k, v in response["boleto"].items() if k in known_camel_fields}), []
+    return from_json(response["boleto"]), []
+
+
+def from_json(json):
+    return Boleto(**{
+        camel_to_snake(k): v for k, v in json.items() if k in known_camel_fields
+    })
