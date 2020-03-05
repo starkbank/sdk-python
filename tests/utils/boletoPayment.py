@@ -2,8 +2,8 @@ from copy import deepcopy
 from hashlib import sha256
 from datetime import date
 
-from starkbank.boleto.boleto import postBoleto
-from starkbank.auth.user import Member
+from starkbank.old_boleto.boleto import postBoleto
+from starkbank.old_auth.user import Member
 from .boleto import generateExampleBoletos
 from .examples.messages.messages import exampleBoletoPaymentsJson
 from .examples.credentials.credentials import credentialsJson
