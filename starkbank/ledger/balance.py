@@ -22,13 +22,17 @@ class Balance(Base):
         self.updated = check_datetime(updated)
 
 
-def retrieve(user=None):
+def list(limit=100, cursor=None, user=None):
     response, errors = request.get(
         user=check_user(user),
         endpoint="balance/",
+        url_params={
+            "limit": limit,
+            "cursor": cursor,
+        },
     )
 
     if errors:
         return None, errors
 
-    return [Balance.from_json(balance) for balance in response["balances"]][0], []
+    return [Balance.from_json(balance) for balance in response["balances"]], response["cursor"], []
