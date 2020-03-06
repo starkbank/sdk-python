@@ -30,7 +30,7 @@ class Transaction(Base):
         self.receiver_id = receiver_id
         self.sender_id = sender_id
         self.fee = fee
-        self.created = created
+        self.created = check_datetime(created)
         self.source = source
 
     @classmethod
