@@ -60,7 +60,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
     if debug:
         print(
             "\n[{elapsed} seconds] retrieved {status}: {content}\n".format(
-                elapsed=int(10 * (time() - since)) / 10,
+                elapsed=int(100 * (time() - since)) / 100,
                 status=response.status_code,
                 content=response.content,
             )
