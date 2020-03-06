@@ -49,9 +49,9 @@ class TestBoletoPaymentPost(TestCase):
         errors = content["errors"]
         for error in errors:
             print(error)
-        self.assertEqual(4, len(errors))
+        self.assertTrue(len(errors) == 3 or len(errors) == 6)
         for error in errors:
-            self.assertTrue(error["code"] in ["invalidJson", "invalidPayment", "invalidDate"])
+            self.assertTrue(error["code"] in ["invalidJson", "invalidPayment", "immediatePaymentOutOfTime"])
 
     def testFailInvalidTaxId(self):
         paymentsJson = generateExampleBoletoPayments(n=5)
@@ -67,7 +67,7 @@ class TestBoletoPaymentPost(TestCase):
             print(error)
         self.assertTrue(len(errors) == 5 or len(errors) == 10)
         for error in errors:
-            self.assertEqual('invalidTaxId', error["code"])
+            self.assertTrue(error["code"] in ["invalidTaxId", "immediatePaymentOutOfTime"])
 
 
 class TestBoletoPaymentGet(TestCase):

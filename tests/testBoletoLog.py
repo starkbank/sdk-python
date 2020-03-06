@@ -8,7 +8,7 @@ starkbank.settings.logging = "debug"
 class TestBoletoLogGet(TestCase):
 
     def testSuccess(self):
-        logs, errors = starkbank.boleto.log.list(user=exampleMember)
+        logs, cursor, errors = starkbank.boleto.log.list(user=exampleMember)
         print("Number of logs:", len(logs))
         self.assertEqual(0, len(errors))
 
@@ -25,7 +25,7 @@ class TestBoletoLogGet(TestCase):
 
 class TestBoletoLogInfoGet(TestCase):
     def testSuccess(self):
-        logs, errors = starkbank.boleto.log.list(user=exampleMember)
+        logs, cursor, errors = starkbank.boleto.log.list(user=exampleMember)
         logId = logs[0].id
         logs, errors = starkbank.boleto.log.retrieve(user=exampleMember, id=logId)
         self.assertEqual(0, len(errors))

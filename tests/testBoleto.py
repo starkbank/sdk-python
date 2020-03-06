@@ -119,7 +119,7 @@ class TestBoletoPost(TestCase):
 
 class TestBoletoGet(TestCase):
     def testSuccess(self):
-        boletos, errors = starkbank.boleto.list(user=exampleMember)
+        boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
         for error in errors:
             print(error)
         self.assertEqual(0, len(errors))
@@ -130,7 +130,7 @@ class TestBoletoGet(TestCase):
     #     return NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}
     #     fieldsParams = {"fields": ",".join(fields)}
-    #     boletos, errors = starkbank.boleto.list(user=exampleMember, params=fieldsParams)
+    #     boletos, cursor, errors = starkbank.boleto.list(user=exampleMember, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     for boleto in content["boletos"]:
     #         self.assertTrue(set(boleto.keys()).issubset(fields))
@@ -145,7 +145,7 @@ class TestBoletoPostAndDelete(TestCase):
             print(error)
         self.assertEqual(0, len(errors))
         boletoId = boletos[0].id
-        boletos, errors = starkbank.boleto.delete(user=exampleMember, id=boletoId)
+        boleto, errors = starkbank.boleto.delete(user=exampleMember, id=boletoId)
         for error in errors:
             print(error)
         self.assertEqual(0, len(errors))
@@ -157,11 +157,11 @@ class TestBoletoPostAndDelete(TestCase):
             print(error)
         self.assertEqual(0, len(errors))
         boletoId = boletos[0].id
-        boletos, errors = starkbank.boleto.delete(user=exampleMember, id=boletoId)
+        boleto, errors = starkbank.boleto.delete(user=exampleMember, id=boletoId)
         for error in errors:
             print(error)
         self.assertEqual(0, len(errors))
-        boletos, errors = starkbank.boleto.delete(user=exampleMember, id=boletoId)
+        boleto, errors = starkbank.boleto.delete(user=exampleMember, id=boletoId)
         for error in errors:
             print(error)
         code = errors[0].code
@@ -170,7 +170,7 @@ class TestBoletoPostAndDelete(TestCase):
 
 class TestBoletoInfoGet(TestCase):
     def testSuccess(self):
-        boletos, errors = starkbank.boleto.list(user=exampleMember)
+        boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
         for error in errors:
             print(error)
         boletoId = boletos[0].id
@@ -183,10 +183,10 @@ class TestBoletoInfoGet(TestCase):
     #     raise NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}
     #     fieldsParams = {"fields": ",".join(fields)}
-    #     boletos, errors = starkbank.boleto.list(user=exampleMember)
+    #     boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
     #     boletos = content["boletos"]
     #     boletoId = boletos[0]["id"]
-    #     boletos, errors = starkbank.boleto.retrieve(user=exampleMember, id=boletoId, params=fieldsParams)
+    #     boletos, cursor, errors = starkbank.boleto.retrieve(user=exampleMember, id=boletoId, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     boleto = content["boleto"]
     #     print(content)
@@ -195,7 +195,7 @@ class TestBoletoInfoGet(TestCase):
 
 class TestBoletoPdfGet(TestCase):
     def testSuccess(self):
-        boletos, errors = starkbank.boleto.list(user=exampleMember)
+        boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
         boletoId = boletos[0].id
         pdf, errors = starkbank.boleto.retrieve_pdf(user=exampleMember, id=boletoId)
         for error in errors:
