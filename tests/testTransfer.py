@@ -1,150 +1,135 @@
+import starkbank
 from unittest import TestCase, main
 
-from starkbank.old_transfer.transfer import postTransfer, getTransfer, getTransferInfo, deleteTransfer, getTransferPdf
-from tests.utils.transfer import generateExampleTransfers
-from tests.utils.user import exampleMemberOld
+from tests.utils.transfer import generateExampleTransfersJson
+from tests.utils.user import exampleMember
 
 
 class TestTransferPost(TestCase):
 
     def testSuccess(self):
-        transfersJson = generateExampleTransfers(n=5)
-        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
-        print(content)
-        self.assertEqual(200, status)
+        transfers = generateExampleTransfersJson(n=5)
+        transfers, errors = starkbank.transfer.create(user=exampleMember, transfers=transfers)
+        self.assertEqual(0, len(errors))
 
     def testFailInvalidArraySize(self):
-        transfersJson = generateExampleTransfers(n=105)
-        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
-        print(content)
-        errors = content["errors"]
+        transfers = generateExampleTransfersJson(n=105)
+        transfers, errors = starkbank.transfer.create(user=exampleMember, transfers=transfers)
         self.assertEqual(1, len(errors))
         for error in errors:
-            self.assertEqual('invalidJson', error["code"])
+            self.assertEqual('invalidJson', error.code)
 
     def testFailInvalidJson(self):
-        transfersJson = {}
-        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
-        print(content)
-        errors = content["errors"]
+        transfers = {}
+        transfers, errors = starkbank.transfer.create(user=exampleMember, transfers=transfers)
         self.assertEqual(1, len(errors))
         for error in errors:
-            self.assertEqual('invalidJson', error["code"])
+            self.assertEqual('invalidJson', error.code)
 
     def testFailInvalidJsonTransfer(self):
-        transfersJson = generateExampleTransfers(n=7)
-        transfersJson["transfers"][0].pop("taxId")
-        transfersJson["transfers"][1].pop("amount")
-        transfersJson["transfers"][2].pop("name")
-        transfersJson["transfers"][3].pop("bankCode")
-        transfersJson["transfers"][4].pop("branchCode")
-        transfersJson["transfers"][5].pop("accountNumber")
-        transfersJson["transfers"][6].pop("tags")
-        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
-        print(content)
-        errors = content["errors"]
+        transfers = generateExampleTransfersJson(n=7)
+        transfers[0].tax_id = None
+        transfers[1].amount = None
+        transfers[2].name = None
+        transfers[3].bank_code = None
+        transfers[4].branch_code = None
+        transfers[5].account_number = None
+        transfers[6].tags = None
+        transfers, errors = starkbank.transfer.create(user=exampleMember, transfers=transfers)
         for error in errors:
             print(error)
         self.assertEqual(7, len(errors))
         for error in errors:
-            self.assertEqual('invalidJson', error["code"])
+            self.assertEqual('invalidJson', error.code)
 
     def testFailInvalidTaxId(self):
-        transfersJson = generateExampleTransfers(n=5)
-        transfersJson["transfers"][0]["taxId"] = "000.000.000-00"
-        transfersJson["transfers"][1]["taxId"] = "00.000.000/0000-00"
-        transfersJson["transfers"][2]["taxId"] = "abc"
-        transfersJson["transfers"][3]["taxId"] = 123
-        transfersJson["transfers"][4]["taxId"] = {}
-        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
-        print(content)
-        errors = content["errors"]
+        transfers = generateExampleTransfersJson(n=5)
+        transfers[0].tax_id = "000.000.000-00"
+        transfers[1].tax_id = "00.000.000/0000-00"
+        transfers[2].tax_id = "abc"
+        transfers[3].tax_id = 123
+        transfers[4].tax_id = {}
+        transfers, errors = starkbank.transfer.create(user=exampleMember, transfers=transfers)
         for error in errors:
             print(error)
         self.assertEqual(5, len(errors))
         for error in errors:
-            self.assertEqual('invalidTaxId', error["code"])
+            self.assertEqual('invalidTaxId', error.code)
 
     def testFailInvalidAmount(self):
-        transfersJson = generateExampleTransfers(n=5)
-        transfersJson["transfers"][0]["amount"] = "123"
-        transfersJson["transfers"][1]["amount"] = -5
-        transfersJson["transfers"][2]["amount"] = 0
-        transfersJson["transfers"][3]["amount"] = 1000000000000000
-        transfersJson["transfers"][4]["amount"] = {}
-        content, status = postTransfer(exampleMemberOld, transfersJson=transfersJson)
-        print(content)
-        errors = content["errors"]
+        transfers = generateExampleTransfersJson(n=5)
+        transfers[0].amount = "123"
+        transfers[1].amount = -5
+        transfers[2].amount = 0
+        transfers[3].amount = 1000000000000000
+        transfers[4].amount = {}
+        transfers, errors = starkbank.transfer.create(user=exampleMember, transfers=transfers)
         for error in errors:
             print(error)
         self.assertEqual(5, len(errors))
         for error in errors:
-            self.assertEqual('invalidAmount', error["code"])
+            self.assertEqual('invalidAmount', error.code)
 
 
 class TestTransferGet(TestCase):
     def testSuccess(self):
-        content, status = getTransfer(exampleMemberOld)
-        self.assertEqual(200, status)
-        transfers = content["transfers"]
+        transfers, errors = starkbank.transfer.list(user=exampleMember)
+        self.assertEqual(0, len(errors))
         print("Number of transfers:", len(transfers))
-        print(content)
         self.assertIsInstance(transfers, list)
 
-    def testFields(self):
-        fields = {"amount", "id", "created", "invalid"}
-        fieldsParams = {"fields": ",".join(fields)}
-        content, status = getTransfer(exampleMemberOld, params=fieldsParams)
-        self.assertEqual(200, status)
-        for transfer in content["transfers"]:
-            self.assertTrue(set(transfer.keys()).issubset(fields))
-        print(content)
+    # def testFields(self):
+    #     raise NotImplementedError
+    #     fields = {"amount", "id", "created", "invalid"}
+    #     fieldsParams = {"fields": ",".join(fields)}
+    #     transfers, errors = starkbank.transfer.list(user=exampleMember, params=fieldsParams)
+    #     self.assertEqual(0, len(errors))
+    #     for transfer in content["transfers"]:
+    #         self.assertTrue(set(transfer.keys()).issubset(fields))
+    #     print(content)
 
 
 class TestTransferInfoGet(TestCase):
     def testSuccess(self):
-        content, status = getTransfer(exampleMemberOld)
-        transfers = content["transfers"]
-        transferId = transfers[0]["id"]
-        content, status = getTransferInfo(exampleMemberOld, transferId=transferId)
-        print(content)
-        self.assertEqual(200, status)
+        transfers, errors = starkbank.transfer.list(user=exampleMember)
+        transferId = transfers[0].id
+        transfers, errors = starkbank.transfer.retrieve(user=exampleMember, id=transferId)
+        self.assertEqual(0, len(errors))
 
-    def testFields(self):
-        fields = {"amount", "id", "created", "invalid"}
-        fieldsParams = {"fields": ",".join(fields)}
-        content, status = getTransfer(exampleMemberOld)
-        transfers = content["transfers"]
-        transferId = transfers[0]["id"]
-        content, status = getTransferInfo(exampleMemberOld, transferId=transferId, params=fieldsParams)
-        self.assertEqual(200, status)
-        transfer = content["transfer"]
-        print(content)
-        self.assertTrue(set(transfer.keys()).issubset(fields))
+    # def testFields(self):
+    #     raise NotImplementedError
+    #     fields = {"amount", "id", "created", "invalid"}
+    #     fieldsParams = {"fields": ",".join(fields)}
+    #     transfers, errors = starkbank.transfer.list(user=exampleMember)
+    #     transfers = content["transfers"]
+    #     transferId = transfers[0]["id"]
+    #     transfers, errors = starkbank.transfer.retrieve(user=exampleMember, id=transferId, params=fieldsParams)
+    #     self.assertEqual(0, len(errors))
+    #     transfer = content["transfer"]
+    #     print(content)
+    #     self.assertTrue(set(transfer.keys()).issubset(fields))
 
 
 class TestTransferPdfGet(TestCase):
     def testSuccess(self):
-        content, status = getTransfer(exampleMemberOld)
-        transfers = content["transfers"]
-        transferId = transfers[0]["id"]
-        content, status = getTransferPdf(exampleMemberOld, transferId=transferId)
-        print(content)
-        if status != 200:
-            code = content["errors"][0]["code"]
+        transfers, errors = starkbank.transfer.list(user=exampleMember)
+        transferId = transfers[0].id
+        transfers, errors = starkbank.transfer.retrieve_pdf(user=exampleMember, id=transferId)
+        if len(errors) > 0:
+            code = errors[0].code
             self.assertEqual('invalidTransfer', code)
         else:
-            self.assertEqual(200, status)
+            self.assertEqual(0, len(errors))
 
 
 # class TestTransferPostAndDelete(TestCase):
 #     def testSuccess(self):
-#         transfersJson = generateExampleTransfers(n=1)
-#         content, status = postTransfer(exampleMember, transfersJson=transfersJson)
-#         self.assertEqual(200, status)
+#         transfers = generateExampleTransfers(n=1)
+#         transfers, errors = starkbank.transfer.create(exampleMember, transfers=transfers)
+#         self.assertEqual(0, len(errors))
 #         transferId = content["transfers"][0]["id"]
-#         content, status = deleteTransfer(exampleMember, transferId=transferId)
-#         self.assertEqual(200, status)
+#         transfers, errors = deleteTransfer(exampleMember, id=transferId)
+#         self.assertEqual(0, len(errors))
 #         print(content)
 
 

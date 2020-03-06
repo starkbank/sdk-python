@@ -3,8 +3,6 @@ from .old_auth.member import *
 from .old_auth.project import *
 from .old_auth.session import *
 from .old_auth.project import *
-from .old_boleto.boleto import *
-from .old_boleto.boletoLog import *
 from .old_boletoPayment.boletoPayment import *
 from .old_ledger.balance import *
 from .old_ledger.transaction import *
@@ -21,6 +19,9 @@ from .user.project import Project
 from .user.member import Member
 from .user.session import Session
 from . import user
+
+from . import transfer
+from .transfer import Transfer
 
 from . import boleto
 from .boleto import Boleto
