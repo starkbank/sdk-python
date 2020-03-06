@@ -1,49 +1,47 @@
+import starkbank
 from unittest import TestCase, main
 
-from starkbank.old_webhook.event import getEventInfo, getEvent
-from tests.utils.user import exampleMemberOld
+from tests.utils.user import exampleMember
 
 
 class TestEventGet(TestCase):
 
     def testSuccess(self):
-        content, status = getEvent(exampleMemberOld)
-        self.assertEqual(200, status)
-        events = content["events"]
+        events, cursor, errors = starkbank.webhook.event.list(user=exampleMember)
+        self.assertEqual(0, len(errors))
         print("Number of events:", len(events))
-        print(content)
         self.assertIsInstance(events, list)
 
-    def testFields(self):
-        fields = {"amount", "id", "created", "invalid"}
-        fieldsParams = {"fields": ",".join(fields)}
-        content, status = getEvent(exampleMemberOld, params=fieldsParams)
-        self.assertEqual(200, status)
-        for log in content["events"]:
-            self.assertTrue(set(log.keys()).issubset(fields))
-        print(content)
+    # def testFields(self):
+    #     raise NotImplementedError
+    #     fields = {"amount", "id", "created", "invalid"}
+    #     fieldsParams = {"fields": ",".join(fields)}
+    #     events, errors = starkbank.webhook.event.list(user=exampleMember, params=fieldsParams)
+    #     self.assertEqual(0, len(errors))
+    #     for log in content["events"]:
+    #         self.assertTrue(set(log.keys()).issubset(fields))
+    #     print(content)
 
 
 class TestEventInfoGet(TestCase):
     def testSuccess(self):
-        content, status = getEvent(exampleMemberOld)
-        events = content["events"]
-        eventId = events[0]["id"]
-        content, status = getEventInfo(exampleMemberOld, eventId=eventId)
-        print(content)
-        self.assertEqual(200, status)
+        events, cursor, errors = starkbank.webhook.event.list(user=exampleMember)
+        eventId = events[0].id
+        event, errors = starkbank.webhook.event.retrieve(user=exampleMember, id=eventId)
+        self.assertEqual(0, len(errors))
 
-    def testFields(self):
-        fields = {"amount", "id", "created", "invalid"}
-        fieldsParams = {"fields": ",".join(fields)}
-        content, status = getEvent(exampleMemberOld)
-        events = content["events"]
-        eventId = events[0]["id"]
-        content, status = getEventInfo(exampleMemberOld, eventId=eventId, params=fieldsParams)
-        self.assertEqual(200, status)
-        event = content["event"]
-        print(content)
-        self.assertTrue(set(event.keys()).issubset(fields))
+    # def testFields(self):
+    #     raise NotImplementedError
+    #     fields = {"amount", "id", "created", "invalid"}
+    #     fieldsParams = {"fields": ",".join(fields)}
+    #     events, errors = starkbank.webhook.event.list(user=exampleMember)
+    #     events = content["events"]
+    #     eventId = events[0]["id"]
+    #     events, errors = starkbank.webhook.event.retrieve(user=exampleMember, eventId=eventId, params=fieldsParams)
+    #     self.assertEqual(0, len(errors))
+    #     event = content["event"]
+    #     print(content)
+    #     self.assertTrue(set(event.keys()).issubset(fields))
 
 
 if __name__ == '__main__':
