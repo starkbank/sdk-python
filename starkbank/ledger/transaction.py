@@ -20,7 +20,7 @@ class Transaction(Base):
     }
     _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
 
-    def __init__(self, amount, description, tags, external_id, receiver_id, sender_id=None, id=None, fee=None, created=None, source=None):
+    def __init__(self, amount, description, tags, external_id, receiver_id=None, sender_id=None, id=None, fee=None, created=None, source=None):
         Base.__init__(self, id=id)
 
         self.amount = amount
