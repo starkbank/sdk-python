@@ -2,7 +2,7 @@ import requests
 from time import time
 from json import dumps, loads
 from ellipticcurve.ecdsa import Ecdsa
-from starkbank.settings import Settings
+from starkbank import settings
 from starkbank.user.base import User
 from starkbank.exceptions import InputError, Houston
 from starkbank.models.environment import Environment
@@ -32,13 +32,15 @@ def delete(user, endpoint):
 def _make_request(user, request_method, endpoint, url_params=None, body=None, json_response=True):
     credentials = _get_credentials(user)
 
+    debug = settings.logging == "debug"
+
     if body is not None:
         body = dumps(body)
 
     url = _get_url(endpoint) + _get_url_params_string(url_params)
     headers = _headers(credentials=credentials, body=body)
 
-    if Settings.logging == "debug":
+    if debug:
         since = time()
         print(
             "\nsending /{request_method} to \"{url}\" with:\nheaders: {headers}\nbody: {body}\n".format(
@@ -55,7 +57,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
         data=body,
     )
 
-    if Settings.logging == "debug":
+    if debug:
         print(
             "\n[{elapsed} seconds] retrieved {status}: {content}\n".format(
                 elapsed=int(10 * (time() - since)) / 10,
@@ -87,10 +89,10 @@ def _headers(credentials, body=None):
 
 
 def _get_credentials(user):
-    assert isinstance(user, User), "user must be the object retrieved from one of starkbank.user methods or classes"
+    assert isinstance(user, User), "user must be an object retrieved from one of starkbank.user methods or classes"
     credentials = user.credentials
-    assert isinstance(credentials, Credentials), "user private key is not loaded"
-    assert credentials.private_key_object is not None, "user has no loaded credentials"
+    assert isinstance(credentials, Credentials), "user private key is not loaded in credentials"
+    assert credentials.private_key_object is not None, "user private key is not loaded in credentials"
 
     return user.credentials
 
@@ -100,7 +102,7 @@ def _get_url(endpoint):
 
 
 def _get_base_url():
-    env = Settings.env
+    env = settings.env
 
     if not env:
         raise RuntimeError("please set an environment with starkbank.default.env = \"env\"")

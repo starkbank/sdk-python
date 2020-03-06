@@ -1,12 +1,12 @@
 from datetime import datetime
 from ellipticcurve.privateKey import PrivateKey
-from ..settings import Settings
+from ..settings import settings
 from ..user.base import User
 
 
 def check_user(user):
     if not user:
-        user = Settings.default_user
+        user = settings.default_user
         if not user:
             raise RuntimeError("no user passed and no default user set")
     assert isinstance(user, User)

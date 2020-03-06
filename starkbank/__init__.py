@@ -6,7 +6,7 @@ from .old_auth.project import *
 from .old_webhook.webhook import *
 from .old_webhook.event import *
 
-from .settings import Settings as settings
+from .settings import settings
 
 from .user import project
 from .user import member
