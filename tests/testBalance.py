@@ -1,23 +1,23 @@
+import starkbank
 from unittest import TestCase, main
 
-from starkbank.old_ledger.balance import getBalance
-from tests.utils.user import exampleMemberOld
+from tests.utils.user import exampleMember
 
 
 class TestBalanceGet(TestCase):
     def testSuccess(self):
-        content, status = getBalance(exampleMemberOld)
-        print(content)
-        self.assertEqual(200, status)
-        self.assertIsInstance(content["balances"][0]["amount"], int)
+        balances, cursor, errors = starkbank.balance.list(user=exampleMember)
+        self.assertEqual(0, len(errors))
+        self.assertIsInstance(balances[0].amount, int)
 
-    def testFields(self):
-        fields = {"amount", "id", "created", "invalid"}
-        fieldsParams = {"fields": ",".join(fields)}
-        content, status = getBalance(exampleMemberOld, params=fieldsParams)
-        self.assertEqual(200, status)
-        self.assertIsInstance(content["balances"][0]["amount"], int)
-        print(content)
+    # def testFields(self):
+    #     raise NotImplementedError
+    #     fields = {"amount", "id", "created", "invalid"}
+    #     fieldsParams = {"fields": ",".join(fields)}
+    #     balances, errors = starkbank.balance.retrieve(user=exampleMember, params=fieldsParams)
+    #     self.assertEqual(0, len(errors))
+    #     self.assertIsInstance(balances[0].amount, int)
+    #     print(content)
 
 
 if __name__ == '__main__':

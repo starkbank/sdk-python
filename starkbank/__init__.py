@@ -3,10 +3,6 @@ from .old_auth.member import *
 from .old_auth.project import *
 from .old_auth.session import *
 from .old_auth.project import *
-from .old_boletoPayment.boletoPayment import *
-from .old_ledger.balance import *
-from .old_ledger.transaction import *
-from .old_transfer.transfer import *
 from .old_webhook.webhook import *
 from .old_webhook.event import *
 
