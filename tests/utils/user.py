@@ -1,11 +1,11 @@
-from starkbank import settings
+import starkbank
 from starkbank.old_auth.user import Member
 from starkbank.user import member, project, session
 from tests.utils.examples.credentials.credentials import credentialsJson
 from tests.utils.examples.keys.keys import memberPrivateKeyString, memberPublicKeyString, projectPrivateKeyString, \
     projectPublicKeyString, sessionPrivateKeyString, sessionPublicKeyString
 
-settings.env = "development"
+starkbank.settings.env = "development"
 
 exampleMember = member.Member(
     private_key=memberPrivateKeyString,
@@ -43,3 +43,5 @@ exampleSessionOld = exampleMemberOld.newSession(
     publicKeyString=sessionPublicKeyString,
     platform="web"
 )
+
+starkbank.settings.default_user = exampleMember
