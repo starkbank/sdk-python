@@ -39,6 +39,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
     headers = _headers(credentials=credentials, body=body)
 
     if Settings.logging == "debug":
+        since = time()
         print(
             "\nsending /{request_method} to \"{url}\" with:\nheaders: {headers}\nbody: {body}\n".format(
                 request_method=request_method.__name__.upper(),
@@ -56,7 +57,8 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
 
     if Settings.logging == "debug":
         print(
-            "\nretrieved {status}: {content}\n".format(
+            "\n[{elapsed} seconds] retrieved {status}: {content}\n".format(
+                elapsed=int(10 * (time() - since)) / 10,
                 status=response.status_code,
                 content=response.content,
             )
