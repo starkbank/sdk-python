@@ -4,8 +4,8 @@
 import starkbank
 
 
-private_key, public_key = starkbank.key.create(
-    path="./user/develper/keys"
+private_key = starkbank.key.create(
+    path="./user/project/keys"
 )
 ```
 
@@ -16,7 +16,7 @@ import starkbank
 
 project_user = starkbank.Project(
     id=129837612983,
-    private_key=“...PEM...“,
+    private_key=private_key,
     environment=“sandbox”,
 )
 starkbank.user = project_user
