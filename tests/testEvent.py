@@ -7,10 +7,8 @@ from tests.utils.user import exampleProject
 class TestEventGet(TestCase):
 
     def testSuccess(self):
-        events, cursor, errors = starkbank.webhook.event.list(user=exampleProject)
-        self.assertEqual(0, len(errors))
+        events, cursor = starkbank.webhook.event.list(user=exampleProject)
         print("Number of events:", len(events))
-        self.assertIsInstance(events, list)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -25,10 +23,9 @@ class TestEventGet(TestCase):
 
 class TestEventInfoGet(TestCase):
     def testSuccess(self):
-        events, cursor, errors = starkbank.webhook.event.list(user=exampleProject)
+        events, cursor = starkbank.webhook.event.list(user=exampleProject)
         eventId = events[0].id
-        event, errors = starkbank.webhook.event.retrieve(user=exampleProject, id=eventId)
-        self.assertEqual(0, len(errors))
+        event = starkbank.webhook.event.retrieve(user=exampleProject, id=eventId)
 
     # def testFields(self):
     #     raise NotImplementedError

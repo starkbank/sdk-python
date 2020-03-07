@@ -8,17 +8,14 @@ from tests.utils.user import exampleProject
 class TestWebhookPost(TestCase):
     def testSuccess(self):
         webhook = generateExampleWebhook()
-        webhooks, errors = starkbank.webhook.create(user=exampleProject, webhook=webhook)
-        self.assertEqual(0, len(errors))
-    pass
+        webhook = starkbank.webhook.create(user=exampleProject, webhook=webhook)
+        print(webhook.id)
 
 
 class TestWebhookGet(TestCase):
     def testSuccess(self):
-        webhooks, cursor, errors = starkbank.webhook.list(user=exampleProject)
-        self.assertEqual(0, len(errors))
+        webhooks, cursor = starkbank.webhook.list(user=exampleProject)
         print("Number of webhooks:", len(webhooks))
-        self.assertIsInstance(webhooks, list)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -34,8 +31,7 @@ class TestWebhookInfoGet(TestCase):
     def testSuccess(self):
         webhooks, cursor, errors = starkbank.webhook.list(user=exampleProject)
         webhookId = webhooks[0].id
-        webhook, errors = starkbank.webhook.retrieve(user=exampleProject, id=webhookId)
-        self.assertEqual(0, len(errors))
+        webhook = starkbank.webhook.retrieve(user=exampleProject, id=webhookId)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -51,11 +47,9 @@ class TestWebhookInfoGet(TestCase):
 class TestWebhookPostAndDelete(TestCase):
     def testSuccess(self):
         webhook = generateExampleWebhook()
-        webhook, errors = starkbank.webhook.create(user=exampleProject, webhook=webhook)
-        self.assertEqual(0, len(errors))
+        webhook = starkbank.webhook.create(user=exampleProject, webhook=webhook)
         webhookId = webhook.id
-        webhooks, errors = starkbank.webhook.delete(user=exampleProject, id=webhookId)
-        self.assertEqual(0, len(errors))
+        webhooks = starkbank.webhook.delete(user=exampleProject, ids=[webhookId])
 
 
 if __name__ == '__main__':
