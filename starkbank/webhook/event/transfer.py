@@ -16,13 +16,15 @@ class TransferMessage(Base):
         "workspace_id",
         "id",
         "tags",
+        "errors",
     }
     _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
 
-    def __init__(self, status, name, created, account_number, tax_id, branch_code, amount, id, tags, workspace_id=None):   # TODO: remove None
+    def __init__(self, status, name, created, account_number, tax_id, branch_code, amount, id, tags, errors=None, workspace_id=None):   # TODO: remove None
         Base.__init__(self, id=id)
 
         self.status = status
+        self.errors = errors
         self.name = name
         self.created = check_datetime(created)
         self.account_number = account_number
