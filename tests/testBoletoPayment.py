@@ -9,7 +9,13 @@ class TestBoletoPaymentPost(TestCase):
 
     def testSuccess(self):
         payments = generateExampleBoletoPaymentsJson(n=5)
-        payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+        try:
+            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+        except starkbank.exceptions.InputError as e:
+            errors = e.elements
+            for error in errors:
+                print(error)
+                self.assertEqual('immediatePaymentOutOfTime', error.code)
 
     def testFailInvalidArraySize(self):
         payments = generateExampleBoletoPaymentsJson(n=50)
@@ -19,7 +25,7 @@ class TestBoletoPaymentPost(TestCase):
             payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
         errors = context.exception.elements
         for error in errors:
-            print(errors)
+            print(error)
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(1, len(errors))
 
@@ -29,7 +35,7 @@ class TestBoletoPaymentPost(TestCase):
             payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
         errors = context.exception.elements
         for error in errors:
-            print(errors)
+            print(error)
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(1, len(errors))
 

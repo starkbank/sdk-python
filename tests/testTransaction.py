@@ -17,7 +17,7 @@ class TestTransactionPost(TestCase):
             transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
         errors = context.exception.elements
         for error in errors:
-            print(errors)
+            print(error)
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(1, len(errors))
 
@@ -27,7 +27,7 @@ class TestTransactionPost(TestCase):
             transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
         errors = context.exception.elements
         for error in errors:
-            print(errors)
+            print(error)
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(1, len(errors))
 
