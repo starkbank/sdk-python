@@ -77,10 +77,17 @@ def list(limit=100, cursor=None, user=None):
     return [Transfer.from_json(transfer) for transfer in response["transfers"]]
 
 
-def delete(id, user=None):
-    response = request.delete(
-        user=check_user(user),
-        endpoint="transfer/{id}".format(id=id),
-    )
+def delete(ids, user=None):
+    if len(ids) > 100:
+        raise ValueError("ids cannot have more than 100 elements")
 
-    return Transfer.from_json(response["transfer"])
+    transfers = []
+    for id in ids:
+        response = request.delete(
+            user=check_user(user),
+            endpoint="transfer/{id}".format(id=id),
+        )
+
+        transfers.append(Transfer.from_json(response["transfer"]))
+
+    return transfers

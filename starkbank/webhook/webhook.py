@@ -51,10 +51,17 @@ def list(limit=100, cursor=None, user=None):
     return [Webhook.from_json(transfer) for transfer in response["webhooks"]], response["cursor"]
 
 
-def delete(id, user=None):
-    response = request.delete(
-        user=check_user(user),
-        endpoint="webhook/{id}".format(id=id),
-    )
+def delete(ids, user=None):
+    if len(ids) > 100:
+        raise ValueError("ids cannot have more than 100 elements")
 
-    return Webhook.from_json(response["webhook"])
+    webhooks = []
+    for id in ids:
+        response = request.delete(
+            user=check_user(user),
+            endpoint="webhook/{id}".format(id=id),
+        )
+
+        webhooks.append(Webhook.from_json(response["webhook"]))
+
+    return webhooks

@@ -102,10 +102,17 @@ def list(limit=100, cursor=None, user=None):
     return [Boleto.from_json(boleto) for boleto in response["boletos"]], response["cursor"]
 
 
-def delete(id, user=None):
-    response = request.delete(
-        user=check_user(user),
-        endpoint="boleto/{id}".format(id=id),
-    )
+def delete(ids, user=None):
+    if len(ids) > 100:
+        raise ValueError("ids cannot have more than 100 elements")
 
-    return Boleto.from_json(response["boleto"])
+    boletos = []
+    for id in ids:
+        response = request.delete(
+            user=check_user(user),
+            endpoint="boleto/{id}".format(id=id),
+        )
+
+        boletos.append(Boleto.from_json(response["boleto"]))
+
+    return boletos
