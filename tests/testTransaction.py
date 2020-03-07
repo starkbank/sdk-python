@@ -9,26 +9,27 @@ class TestTransactionPost(TestCase):
 
     def testSuccess(self):
         transactions = generateExampleTransactions(n=5)
-        transactions, errors = starkbank.transaction.create(user=exampleProject, transactions=transactions)
-        if len(errors) != 0:
-            code = errors[0].code
-            self.assertEqual('invalidBalance', code)
-        else:
-            self.assertEqual(0, len(errors))
+        transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
 
     def testFailInvalidArraySize(self):
         transactions = generateExampleTransactions(n=105)
-        transactions, errors = starkbank.transaction.create(user=exampleProject, transactions=transactions)
-        self.assertEqual(1, len(errors))
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
+        errors = context.exception.elements
         for error in errors:
+            print(errors)
             self.assertEqual('invalidJson', error.code)
+        self.assertEqual(1, len(errors))
 
     def testFailInvalidJson(self):
         transactions = {}
-        transactions, errors = starkbank.transaction.create(user=exampleProject, transactions=transactions)
-        self.assertEqual(1, len(errors))
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
+        errors = context.exception.elements
         for error in errors:
+            print(errors)
             self.assertEqual('invalidJson', error.code)
+        self.assertEqual(1, len(errors))
 
     def testFailInvalidJsonTransaction(self):
         transactions = generateExampleTransactions(n=6)
@@ -41,26 +42,25 @@ class TestTransactionPost(TestCase):
 
         transactions[5].invalid_parameter = "invalidValue"
 
-        transactions, errors = starkbank.transaction.create(user=exampleProject, transactions=transactions)
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
+        errors = context.exception.elements
         for error in errors:
             print(error)
-        self.assertEqual(5, len(errors))
-        for error in errors:
             self.assertEqual('invalidJson', error.code)
+        self.assertEqual(5, len(errors))
 
 
 class TestTransactionGet(TestCase):
     def testSuccess(self):
-        transactions, cursor, errors = starkbank.transaction.list(user=exampleProject)
-        self.assertEqual(0, len(errors))
-        self.assertIsInstance(transactions, list)
+        transactions, cursor = starkbank.transaction.list(user=exampleProject)
         print("Number of transactions:", len(transactions))
 
         # def testFields(self):
         #     raise NotImplementedError
         #     fields = {"amount", "id", "created", "invalid"}
         #     fieldsParams = {"fields": ",".join(fields)}
-        #     transactions, cursor, errors = starkbank.transaction.list(user=exampleMember, params=fieldsParams)
+        #     transactions, cursor = starkbank.transaction.list(user=exampleMember, params=fieldsParams)
         #     self.assertEqual(0, len(errors))
         #     for transaction in transactions:
         #         self.assertTrue(set(transaction.keys()).issubset(fields))
@@ -68,19 +68,18 @@ class TestTransactionGet(TestCase):
 
 class TestTransactionInfoGet(TestCase):
     def testSuccess(self):
-        transactions, cursor, errors = starkbank.transaction.list(user=exampleProject)
+        transactions, cursor = starkbank.transaction.list(user=exampleProject)
         transactionId = transactions[0].id
-        transactions, errors = starkbank.transaction.retrieve(user=exampleProject, id=transactionId)
-        self.assertEqual(0, len(errors))
+        transactions = starkbank.transaction.retrieve(user=exampleProject, id=transactionId)
 
     # def testFields(self):
     #     raise NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}
     #     fieldsParams = {"fields": ",".join(fields)}
-    #     transactions, cursor, errors = starkbank.transaction.list(user=exampleMember)
+    #     transactions, cursor = starkbank.transaction.list(user=exampleMember)
     #     transactions = content["transactions"]
     #     transactionId = transactions[0]["id"]
-    #     transactions, errors = starkbank.transaction.retrieve(user=exampleMember, id=transactionId, params=fieldsParams)
+    #     transactions = starkbank.transaction.retrieve(user=exampleMember, id=transactionId, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     transaction = content["transaction"]
     #     print(content)
