@@ -17,7 +17,9 @@ class TestBoletoPost(TestCase):
             boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
         errors = context.exception.elements
         for error in errors:
-            self.assertTrue('invalidJson', error.code)
+            print(error)
+            self.assertEqual("invalidJson", error.code)
+        self.assertEqual(1, len(errors))
 
     def testFailInvalidJson(self):
         boletos = {}
@@ -25,7 +27,9 @@ class TestBoletoPost(TestCase):
             boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
         errors = context.exception.elements
         for error in errors:
-            self.assertTrue('invalidJson', error.code)
+            print(error)
+            self.assertEqual("invalidJson", error.code)
+        self.assertEqual(1, len(errors))
 
     def testFailInvalidJsonBoleto(self):
         boletos = generateExampleBoletosJson(n=16)
@@ -52,7 +56,9 @@ class TestBoletoPost(TestCase):
             boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
         errors = context.exception.elements
         for error in errors:
-            self.assertTrue('invalidJson', error.code)
+            print(error)
+            self.assertEqual("invalidJson", error.code)
+        self.assertEqual(9, len(errors))
 
     def testFailInvalidDescription(self):
         boletos = generateExampleBoletosJson(n=18)
@@ -76,21 +82,26 @@ class TestBoletoPost(TestCase):
         boletos[17].descriptions = [{"text": "abc", "amount": 1, "test": "abc"}]
         with self.assertRaises(starkbank.exceptions.InputError) as context:
             boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
-        for error in context.exception.elements:
+        errors = context.exception.elements
+        for error in errors:
+            print(error)
             self.assertTrue('invalidDescription', error.code)
+        self.assertEqual(12, len(errors))
 
     def testFailInvalidTaxId(self):
         boletos = generateExampleBoletosJson(n=5)
         boletos[0].tax_id = "000.000.000-00"
         boletos[1].tax_id = "00.000.000/0000-00"
         boletos[2].tax_id = "abc"
-        boletos[3].tax_id = 123
-        boletos[4].tax_id = {}
+        boletos[3].tax_id = 123  # 2 errors
+        boletos[4].tax_id = {}  # 2 errors
         with self.assertRaises(starkbank.exceptions.InputError) as context:
             boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
         errors = context.exception.elements
         for error in errors:
+            print(error)
             self.assertTrue('invalidTaxId', error.code)
+        self.assertEqual(7, len(errors))
 
     def testFailInvalidAmount(self):
         boletos = generateExampleBoletosJson(n=5)
@@ -103,7 +114,9 @@ class TestBoletoPost(TestCase):
             boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
         errors = context.exception.elements
         for error in errors:
+            print(error)
             self.assertTrue('invalidAmount', error.code)
+        self.assertEqual(5, len(errors))
 
 
 class TestBoletoGet(TestCase):
@@ -128,19 +141,21 @@ class TestBoletoPostAndDelete(TestCase):
         boletos = generateExampleBoletosJson(n=1)
         boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
         boletoId = boletos[0].id
-        boleto = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
-        print(boleto.id)
+        boletos = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
+        print(boletos[0].id)
 
-    def testTwice(self):
+    def testFailDeleteTwice(self):
         boletos = generateExampleBoletosJson(n=1)
         boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
         boletoId = boletos[0].id
-        boleto = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
+        boletos = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            boleto = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
+            boletos = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
         errors = context.exception.elements
         for error in errors:
-            self.assertTrue('invalidJson', error.code)
+            print(error)
+            self.assertEqual("invalidBoleto", error.code)
+        self.assertEqual(1, len(errors))
 
 
 class TestBoletoInfoGet(TestCase):
