@@ -1,13 +1,12 @@
 import starkbank
 from unittest import TestCase, main
 
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleProject
 
 
 class TestBalanceGet(TestCase):
     def testSuccess(self):
-        balances, cursor, errors = starkbank.balance.list(user=exampleMember)
-        self.assertEqual(0, len(errors))
+        balances, cursor = starkbank.balance.list(user=exampleProject)
         self.assertIsInstance(balances[0].amount, int)
 
     # def testFields(self):

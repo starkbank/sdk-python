@@ -1,3 +1,4 @@
+from builtins import str
 from datetime import datetime
 from ellipticcurve.privateKey import PrivateKey
 from ..settings import settings
@@ -12,6 +13,7 @@ def check_user(user):
     assert isinstance(user, User)
     return user
 
+
 def check_list_of_strings(list_of_strings):
     if not list_of_strings:
         return []
@@ -25,8 +27,7 @@ def check_list_of_strings(list_of_strings):
 
 def check_string(string):
     assert isinstance(string, str)
-
-    return string
+    return str(string)
 
 
 def check_private_key(private_key_pem):

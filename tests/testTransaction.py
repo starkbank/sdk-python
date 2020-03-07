@@ -2,14 +2,14 @@ import starkbank
 from unittest import TestCase, main
 
 from tests.utils.transaction import generateExampleTransactions
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleProject
 
 
 class TestTransactionPost(TestCase):
 
     def testSuccess(self):
         transactions = generateExampleTransactions(n=5)
-        transactions, errors = starkbank.transaction.create(user=exampleMember, transactions=transactions)
+        transactions, errors = starkbank.transaction.create(user=exampleProject, transactions=transactions)
         if len(errors) != 0:
             code = errors[0].code
             self.assertEqual('invalidBalance', code)
@@ -18,14 +18,14 @@ class TestTransactionPost(TestCase):
 
     def testFailInvalidArraySize(self):
         transactions = generateExampleTransactions(n=105)
-        transactions, errors = starkbank.transaction.create(user=exampleMember, transactions=transactions)
+        transactions, errors = starkbank.transaction.create(user=exampleProject, transactions=transactions)
         self.assertEqual(1, len(errors))
         for error in errors:
             self.assertEqual('invalidJson', error.code)
 
     def testFailInvalidJson(self):
         transactions = {}
-        transactions, errors = starkbank.transaction.create(user=exampleMember, transactions=transactions)
+        transactions, errors = starkbank.transaction.create(user=exampleProject, transactions=transactions)
         self.assertEqual(1, len(errors))
         for error in errors:
             self.assertEqual('invalidJson', error.code)
@@ -41,7 +41,7 @@ class TestTransactionPost(TestCase):
 
         transactions[5].invalid_parameter = "invalidValue"
 
-        transactions, errors = starkbank.transaction.create(user=exampleMember, transactions=transactions)
+        transactions, errors = starkbank.transaction.create(user=exampleProject, transactions=transactions)
         for error in errors:
             print(error)
         self.assertEqual(5, len(errors))
@@ -51,7 +51,7 @@ class TestTransactionPost(TestCase):
 
 class TestTransactionGet(TestCase):
     def testSuccess(self):
-        transactions, cursor, errors = starkbank.transaction.list(user=exampleMember)
+        transactions, cursor, errors = starkbank.transaction.list(user=exampleProject)
         self.assertEqual(0, len(errors))
         self.assertIsInstance(transactions, list)
         print("Number of transactions:", len(transactions))
@@ -68,9 +68,9 @@ class TestTransactionGet(TestCase):
 
 class TestTransactionInfoGet(TestCase):
     def testSuccess(self):
-        transactions, cursor, errors = starkbank.transaction.list(user=exampleMember)
+        transactions, cursor, errors = starkbank.transaction.list(user=exampleProject)
         transactionId = transactions[0].id
-        transactions, errors = starkbank.transaction.retrieve(user=exampleMember, id=transactionId)
+        transactions, errors = starkbank.transaction.retrieve(user=exampleProject, id=transactionId)
         self.assertEqual(0, len(errors))
 
     # def testFields(self):

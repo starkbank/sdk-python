@@ -1,7 +1,7 @@
 import starkbank
 from unittest import TestCase, main
 from tests.utils.boleto import generateExampleBoletosJson
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleProject
 
 starkbank.settings.logging = "debug"
 
@@ -9,29 +9,23 @@ starkbank.settings.logging = "debug"
 class TestBoletoPost(TestCase):
     def testSuccess(self):
         boletos = generateExampleBoletosJson(n=5)
-        boletos, errors = starkbank.boleto.create(user=exampleMember, boletos=boletos)
-        for error in errors:
-            print(error)
-        print(boletos)
-        self.assertEqual(0, len(errors))
+        boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
 
     def testFailInvalidArraySize(self):
         boletos = generateExampleBoletosJson(n=105)
-        boletos, errors = starkbank.boleto.create(user=exampleMember, boletos=boletos)
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+        errors = context.exception.elements
         for error in errors:
-            print(error)
-        self.assertEqual(1, len(errors))
-        for error in errors:
-            self.assertEqual('invalidJson', error.code)
+            self.assertTrue('invalidJson', error.code)
 
     def testFailInvalidJson(self):
         boletos = {}
-        boletos, errors = starkbank.boleto.create(user=exampleMember, boletos=boletos)
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+        errors = context.exception.elements
         for error in errors:
-            print(error)
-        self.assertEqual(1, len(errors))
-        for error in errors:
-            self.assertEqual('invalidJson', error.code)
+            self.assertTrue('invalidJson', error.code)
 
     def testFailInvalidJsonBoleto(self):
         boletos = generateExampleBoletosJson(n=16)
@@ -54,12 +48,11 @@ class TestBoletoPost(TestCase):
 
         boletos[15].invalid_parameter = "invalidValue"
 
-        boletos, errors = starkbank.boleto.create(user=exampleMember, boletos=boletos)
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+        errors = context.exception.elements
         for error in errors:
-            print(error)
-        self.assertEqual(9, len(errors))
-        for error in errors:
-            self.assertEqual('invalidJson', error.code)
+            self.assertTrue('invalidJson', error.code)
 
     def testFailInvalidDescription(self):
         boletos = generateExampleBoletosJson(n=18)
@@ -81,12 +74,10 @@ class TestBoletoPost(TestCase):
         boletos[15].descriptions = [{"text": "abc", "amount": {}}]
         boletos[16].descriptions = [{"text": "abc", "amount": "abc"}]
         boletos[17].descriptions = [{"text": "abc", "amount": 1, "test": "abc"}]
-        boletos, errors = starkbank.boleto.create(user=exampleMember, boletos=boletos)
-        for error in errors:
-            print(error)
-        self.assertEqual(12, len(errors))
-        for error in errors:
-            self.assertEqual('invalidDescription', error.code)
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+        for error in context.exception.elements:
+            self.assertTrue('invalidDescription', error.code)
 
     def testFailInvalidTaxId(self):
         boletos = generateExampleBoletosJson(n=5)
@@ -95,12 +86,11 @@ class TestBoletoPost(TestCase):
         boletos[2].tax_id = "abc"
         boletos[3].tax_id = 123
         boletos[4].tax_id = {}
-        boletos, errors = starkbank.boleto.create(user=exampleMember, boletos=boletos)
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+        errors = context.exception.elements
         for error in errors:
-            print(error)
-        self.assertEqual(7, len(errors))
-        for error in errors:
-            self.assertEqual('invalidTaxId', error.code)
+            self.assertTrue('invalidTaxId', error.code)
 
     def testFailInvalidAmount(self):
         boletos = generateExampleBoletosJson(n=5)
@@ -109,20 +99,16 @@ class TestBoletoPost(TestCase):
         boletos[2].amount = 0
         boletos[3].amount = 1000000000000000
         boletos[4].amount = {}
-        boletos, errors = starkbank.boleto.create(user=exampleMember, boletos=boletos)
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+        errors = context.exception.elements
         for error in errors:
-            print(error)
-        self.assertEqual(5, len(errors))
-        for error in errors:
-            self.assertEqual('invalidAmount', error.code)
+            self.assertTrue('invalidAmount', error.code)
 
 
 class TestBoletoGet(TestCase):
     def testSuccess(self):
-        boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
-        for error in errors:
-            print(error)
-        self.assertEqual(0, len(errors))
+        boletos, cursor = starkbank.boleto.list(user=exampleProject)
         print("Number of boletos:", len(boletos))
         self.assertIsInstance(boletos, list)
 
@@ -140,44 +126,28 @@ class TestBoletoGet(TestCase):
 class TestBoletoPostAndDelete(TestCase):
     def testSuccess(self):
         boletos = generateExampleBoletosJson(n=1)
-        boletos, errors = starkbank.boleto.create(user=exampleMember, boletos=boletos)
-        for error in errors:
-            print(error)
-        self.assertEqual(0, len(errors))
+        boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
         boletoId = boletos[0].id
-        boleto, errors = starkbank.boleto.delete(user=exampleMember, id=boletoId)
-        for error in errors:
-            print(error)
-        self.assertEqual(0, len(errors))
+        boleto = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
+        print(boleto.id)
 
     def testTwice(self):
         boletos = generateExampleBoletosJson(n=1)
-        boletos, errors = starkbank.boleto.create(user=exampleMember, boletos=boletos)
-        for error in errors:
-            print(error)
-        self.assertEqual(0, len(errors))
+        boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
         boletoId = boletos[0].id
-        boleto, errors = starkbank.boleto.delete(user=exampleMember, id=boletoId)
+        boleto = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            boleto = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
+        errors = context.exception.elements
         for error in errors:
-            print(error)
-        self.assertEqual(0, len(errors))
-        boleto, errors = starkbank.boleto.delete(user=exampleMember, id=boletoId)
-        for error in errors:
-            print(error)
-        code = errors[0].code
-        self.assertEqual('invalidBoleto', code)
+            self.assertTrue('invalidJson', error.code)
 
 
 class TestBoletoInfoGet(TestCase):
     def testSuccess(self):
-        boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
-        for error in errors:
-            print(error)
+        boletos, cursor = starkbank.boleto.list(user=exampleProject)
         boletoId = boletos[0].id
-        boletos, errors = starkbank.boleto.retrieve(user=exampleMember, id=boletoId)
-        for error in errors:
-            print(error)
-        self.assertEqual(0, len(errors))
+        boleto = starkbank.boleto.retrieve(user=exampleProject, id=boletoId)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -195,13 +165,10 @@ class TestBoletoInfoGet(TestCase):
 
 class TestBoletoPdfGet(TestCase):
     def testSuccess(self):
-        boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
+        boletos, cursor = starkbank.boleto.list(user=exampleProject)
         boletoId = boletos[0].id
-        pdf, errors = starkbank.boleto.retrieve_pdf(user=exampleMember, id=boletoId)
-        for error in errors:
-            print(error)
+        pdf = starkbank.boleto.retrieve_pdf(user=exampleProject, id=boletoId)
         print(pdf)
-        self.assertEqual(0, len(errors))
 
 
 if __name__ == '__main__':

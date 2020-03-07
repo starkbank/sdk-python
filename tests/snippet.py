@@ -4,13 +4,15 @@ from tests.utils.examples.keys.keys import memberPrivateKeyString, memberPublicK
     sessionPublicKeyString
 
 if __name__ == "__main__":
-    member = sb.Member(
-        credentialsJson=credentialsJson,
-        privateKeyString=memberPrivateKeyString,
-        publicKeyString=memberPublicKeyString,
-    )
 
-    # content, status = sb.getBoleto(member, params={"fields": "amount,id"})
+    sb.settings.env = "development"
+    sb.settings.logging = "debug"
+
+    member = sb.Member(
+        private_key=memberPrivateKeyString,
+        workspace_id=credentialsJson["workspaceId"],
+        email=credentialsJson["email"],
+    )
     # content, status = sb.postWebhook(member, "https://teste", subscriptions=["transfer"])
     # webhookId = content["webhook"]["id"]
     # content, status = sb.getWebhookInfo(member, webhookId=webhookId)
@@ -21,5 +23,8 @@ if __name__ == "__main__":
     #     platform="web"
     # )
     # print(content)
-    content, status = sb.getProject(member)
-    print(content)
+    transfers, errors = sb.transfer.list(user=member)
+    # for project in content["projects"]:
+    #     content, status = sb.deleteProject(member, project["id"])
+    #     print(content)
+    print(transfers)

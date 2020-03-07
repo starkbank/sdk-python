@@ -1,6 +1,6 @@
 import starkbank
 from unittest import TestCase, main
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleProject
 
 starkbank.settings.logging = "debug"
 
@@ -8,9 +8,8 @@ starkbank.settings.logging = "debug"
 class TestBoletoLogGet(TestCase):
 
     def testSuccess(self):
-        logs, cursor, errors = starkbank.boleto.log.list(user=exampleMember)
+        logs, cursor = starkbank.boleto.log.list(user=exampleProject)
         print("Number of logs:", len(logs))
-        self.assertEqual(0, len(errors))
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -25,10 +24,9 @@ class TestBoletoLogGet(TestCase):
 
 class TestBoletoLogInfoGet(TestCase):
     def testSuccess(self):
-        logs, cursor, errors = starkbank.boleto.log.list(user=exampleMember)
+        logs, cursor = starkbank.boleto.log.list(user=exampleProject)
         logId = logs[0].id
-        logs, errors = starkbank.boleto.log.retrieve(user=exampleMember, id=logId)
-        self.assertEqual(0, len(errors))
+        logs = starkbank.boleto.log.retrieve(user=exampleProject, id=logId)
 
     # def testFields(self):
     #     raise NotImplementedError

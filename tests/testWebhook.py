@@ -2,20 +2,20 @@ import starkbank
 from unittest import TestCase, main
 
 from tests.utils.webhook import generateExampleWebhook
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleProject
 
 
 class TestWebhookPost(TestCase):
     def testSuccess(self):
         webhook = generateExampleWebhook()
-        webhooks, errors = starkbank.webhook.create(user=exampleMember, webhook=webhook)
+        webhooks, errors = starkbank.webhook.create(user=exampleProject, webhook=webhook)
         self.assertEqual(0, len(errors))
     pass
 
 
 class TestWebhookGet(TestCase):
     def testSuccess(self):
-        webhooks, cursor, errors = starkbank.webhook.list(user=exampleMember)
+        webhooks, cursor, errors = starkbank.webhook.list(user=exampleProject)
         self.assertEqual(0, len(errors))
         print("Number of webhooks:", len(webhooks))
         self.assertIsInstance(webhooks, list)
@@ -32,9 +32,9 @@ class TestWebhookGet(TestCase):
 
 class TestWebhookInfoGet(TestCase):
     def testSuccess(self):
-        webhooks, cursor, errors = starkbank.webhook.list(user=exampleMember)
+        webhooks, cursor, errors = starkbank.webhook.list(user=exampleProject)
         webhookId = webhooks[0].id
-        webhook, errors = starkbank.webhook.retrieve(user=exampleMember, id=webhookId)
+        webhook, errors = starkbank.webhook.retrieve(user=exampleProject, id=webhookId)
         self.assertEqual(0, len(errors))
 
     # def testFields(self):
@@ -51,10 +51,10 @@ class TestWebhookInfoGet(TestCase):
 class TestWebhookPostAndDelete(TestCase):
     def testSuccess(self):
         webhook = generateExampleWebhook()
-        webhook, errors = starkbank.webhook.create(user=exampleMember, webhook=webhook)
+        webhook, errors = starkbank.webhook.create(user=exampleProject, webhook=webhook)
         self.assertEqual(0, len(errors))
         webhookId = webhook.id
-        webhooks, errors = starkbank.webhook.delete(user=exampleMember, id=webhookId)
+        webhooks, errors = starkbank.webhook.delete(user=exampleProject, id=webhookId)
         self.assertEqual(0, len(errors))
 
 

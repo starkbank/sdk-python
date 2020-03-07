@@ -152,7 +152,7 @@ def _treat_request_response(response, json_response):
             return _load_json_string(content)
         return content
 
-    if status_code >= 500 or "Houston" in content:
+    if status_code >= 500 or "Houston" in str(content):
         raise Houston()
 
     loaded_json = _load_json_string(content)

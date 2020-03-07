@@ -1,13 +1,13 @@
 import starkbank
 from unittest import TestCase, main
 
-from tests.utils.user import exampleMember
+from tests.utils.user import exampleProject
 
 
 class TestEventGet(TestCase):
 
     def testSuccess(self):
-        events, cursor, errors = starkbank.webhook.event.list(user=exampleMember)
+        events, cursor, errors = starkbank.webhook.event.list(user=exampleProject)
         self.assertEqual(0, len(errors))
         print("Number of events:", len(events))
         self.assertIsInstance(events, list)
@@ -25,9 +25,9 @@ class TestEventGet(TestCase):
 
 class TestEventInfoGet(TestCase):
     def testSuccess(self):
-        events, cursor, errors = starkbank.webhook.event.list(user=exampleMember)
+        events, cursor, errors = starkbank.webhook.event.list(user=exampleProject)
         eventId = events[0].id
-        event, errors = starkbank.webhook.event.retrieve(user=exampleMember, id=eventId)
+        event, errors = starkbank.webhook.event.retrieve(user=exampleProject, id=eventId)
         self.assertEqual(0, len(errors))
 
     # def testFields(self):
