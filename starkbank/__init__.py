@@ -25,10 +25,10 @@ from .boleto import Boleto
 from . import boleto_payment
 from .boleto_payment import BoletoPayment
 
-from .utils.passtokey import pass_to_key
-
 from . import ledger
 from .ledger import Balance, balance, Transaction, transaction
 
 from . import webhook
 from .webhook import Webhook, Event
+
+from .key import key
