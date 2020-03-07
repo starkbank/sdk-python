@@ -42,7 +42,7 @@ class Transaction(Base):
 
 
 def create(transactions, user=None):
-    response, errors = request.post(
+    response = request.post(
         user=check_user(user),
         endpoint="transaction",
         body={
@@ -52,28 +52,22 @@ def create(transactions, user=None):
         }
     )
 
-    if errors:
-        return None, errors
-
     return [
         Transaction.from_json(transaction) for transaction in response["transactions"]
-    ], []
+    ]
 
 
 def retrieve(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="transaction/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return Transaction.from_json(response["transaction"]), []
+    return Transaction.from_json(response["transaction"])
 
 
 def list(limit=100, cursor=None, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="transaction/",
         url_params={
@@ -82,7 +76,4 @@ def list(limit=100, cursor=None, user=None):
         },
     )
 
-    if errors:
-        return None, errors
-
-    return [Transaction.from_json(transaction) for transaction in response["transactions"]], response["cursor"], []
+    return [Transaction.from_json(transaction) for transaction in response["transactions"]], response["cursor"]

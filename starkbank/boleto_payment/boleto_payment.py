@@ -35,7 +35,7 @@ class BoletoPayment(Base):
 
 
 def create(payments, user=None):
-    response, errors = request.post(
+    response = request.post(
         user=check_user(user),
         endpoint="boleto-payment",
         body={
@@ -45,41 +45,32 @@ def create(payments, user=None):
         }
     )
 
-    if errors:
-        return None, errors
-
     return [
         BoletoPayment.from_json(payment) for payment in response["payments"]
-    ], []
+    ]
 
 
 def retrieve(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="boleto-payment/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return BoletoPayment.from_json(response["payment"]), []
+    return BoletoPayment.from_json(response["payment"])
 
 
 def retrieve_pdf(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="boleto-payment/{id}/pdf".format(id=id),
         json_response=False,
     )
 
-    if errors:
-        return None, errors
-
-    return response, []
+    return response
 
 
 def list(limit=100, cursor=None, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="boleto-payment/",
         url_params={
@@ -88,20 +79,14 @@ def list(limit=100, cursor=None, user=None):
         },
     )
 
-    if errors:
-        return None, errors
-
-    return [BoletoPayment.from_json(payment) for payment in response["payments"]], response["cursor"], []
+    return [BoletoPayment.from_json(payment) for payment in response["payments"]], response["cursor"]
 
 
 def delete(id, user=None):
-    response, errors = request.delete(
+    response = request.delete(
         user=check_user(user),
         endpoint="boleto-payment/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return BoletoPayment.from_json(response["payments"]), []
+    return BoletoPayment.from_json(response["payments"])
 

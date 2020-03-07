@@ -25,7 +25,7 @@ class BoletoPaymentLog(Base):
 
 
 def list(limit=100, cursor=None, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="boleto-payment/log/",
         url_params={
@@ -34,19 +34,13 @@ def list(limit=100, cursor=None, user=None):
         },
     )
 
-    if errors:
-        return None, errors
-
-    return [BoletoPaymentLog.from_json(boleto) for boleto in response["logs"]], response["cursor"], []
+    return [BoletoPaymentLog.from_json(boleto) for boleto in response["logs"]], response["cursor"]
 
 
 def retrieve(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="boleto-payment/log/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return BoletoPaymentLog.from_json(response["log"]), []
+    return BoletoPaymentLog.from_json(response["log"])

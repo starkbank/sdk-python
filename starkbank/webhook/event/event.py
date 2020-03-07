@@ -37,19 +37,16 @@ class Event(Base):
 
 
 def retrieve(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="event/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return Event.from_json(response["event"]), []
+    return Event.from_json(response["event"])
 
 
 def list(limit=100, cursor=None, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="event",
         url_params={
@@ -58,7 +55,4 @@ def list(limit=100, cursor=None, user=None):
         },
     )
 
-    if errors:
-        return None, errors
-
-    return [Event.from_json(transfer) for transfer in response["events"]], response["cursor"], []
+    return [Event.from_json(transfer) for transfer in response["events"]], response["cursor"]

@@ -3,8 +3,9 @@ from time import time
 from json import dumps, loads
 from ellipticcurve.ecdsa import Ecdsa
 from starkbank import settings
+from starkbank.models.logging import Logging
 from starkbank.user.base import User
-from starkbank.exceptions import InputError, Houston
+from starkbank.exceptions import Houston, InputError, UnknownException
 from starkbank.models.environment import Environment
 from starkbank.user.credentials import Credentials
 
@@ -32,7 +33,7 @@ def delete(user, endpoint):
 def _make_request(user, request_method, endpoint, url_params=None, body=None, json_response=True):
     credentials = _get_credentials(user)
 
-    debug = settings.logging == "debug"
+    debug = settings.logging == Logging.debug
 
     if body is not None:
         body = dumps(body)
@@ -66,9 +67,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
             )
         )
 
-    treated = _treat_request_response(response=response, json_response=json_response)
-
-    return treated
+    return _treat_request_response(response=response, json_response=json_response)
 
 
 def _headers(credentials, body=None):
@@ -148,16 +147,25 @@ def _treat_request_response(response, json_response):
     except:
         pass
 
-    if json_response:
-        try:
-            content = loads(content)
-        except:
-            pass
-
     if status_code == 200:
-        return content, []
+        if json_response:
+            return _load_json_string(content)
+        return content
 
     if status_code >= 500 or "Houston" in content:
-        return None, [Houston()]
+        raise Houston()
 
-    return None, [InputError(code=error["code"], message=error["message"]) for error in content["errors"]]
+    loaded_json = _load_json_string(content)
+
+    if isinstance(loaded_json, dict) and "errors" in loaded_json:
+        raise InputError(loaded_json["errors"])
+
+    raise UnknownException(content)
+
+
+def _load_json_string(json):
+    try:
+        return loads(json)
+    except:
+        pass
+    return json

@@ -55,7 +55,7 @@ class Boleto(Base):
 
 
 def create(boletos, user=None):
-    response, errors = request.post(
+    response = request.post(
         user=check_user(user),
         endpoint="boleto",
         body={
@@ -65,41 +65,32 @@ def create(boletos, user=None):
         }
     )
 
-    if errors:
-        return None, errors
-
     return [
         Boleto.from_json(boleto) for boleto in response["boletos"]
-    ], []
+    ]
 
 
 def retrieve(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="boleto/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return Boleto.from_json(response["boleto"]), []
+    return Boleto.from_json(response["boleto"])
 
 
 def retrieve_pdf(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="boleto/{id}/pdf".format(id=id),
         json_response=False,
     )
 
-    if errors:
-        return None, errors
-
-    return response, []
+    return response
 
 
 def list(limit=100, cursor=None, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="boleto/",
         url_params={
@@ -108,19 +99,13 @@ def list(limit=100, cursor=None, user=None):
         },
     )
 
-    if errors:
-        return None, errors
-
-    return [Boleto.from_json(boleto) for boleto in response["boletos"]], response["cursor"], []
+    return [Boleto.from_json(boleto) for boleto in response["boletos"]], response["cursor"]
 
 
 def delete(id, user=None):
-    response, errors = request.delete(
+    response = request.delete(
         user=check_user(user),
         endpoint="boleto/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return Boleto.from_json(response["boleto"]), []
+    return Boleto.from_json(response["boleto"])

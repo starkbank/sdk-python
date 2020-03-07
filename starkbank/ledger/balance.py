@@ -23,7 +23,7 @@ class Balance(Base):
 
 
 def list(limit=100, cursor=None, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="balance/",
         url_params={
@@ -32,7 +32,4 @@ def list(limit=100, cursor=None, user=None):
         },
     )
 
-    if errors:
-        return None, errors
-
-    return [Balance.from_json(balance) for balance in response["balances"]], response["cursor"], []
+    return [Balance.from_json(balance) for balance in response["balances"]], response["cursor"]

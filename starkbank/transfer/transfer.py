@@ -30,7 +30,7 @@ class Transfer(Base):
 
 
 def create(transfers, user=None):
-    response, errors = request.post(
+    response = request.post(
         user=check_user(user),
         endpoint="transfer",
         body={
@@ -40,24 +40,18 @@ def create(transfers, user=None):
         }
     )
 
-    if errors:
-        return None, errors
-
     return [
-               Transfer.from_json(transfer) for transfer in response["transfers"]
-           ], []
+       Transfer.from_json(transfer) for transfer in response["transfers"]
+    ]
 
 
 def retrieve(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="transfer/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return Transfer.from_json(response["transfer"]), []
+    return Transfer.from_json(response["transfer"])
 
 
 def retrieve_pdf(id, user=None):
@@ -67,14 +61,11 @@ def retrieve_pdf(id, user=None):
         json_response=False,
     )
 
-    if errors:
-        return None, errors
-
-    return response, []
+    return response
 
 
 def list(limit=100, cursor=None, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="transfer",
         url_params={
@@ -83,19 +74,13 @@ def list(limit=100, cursor=None, user=None):
         },
     )
 
-    if errors:
-        return None, errors
-
-    return [Transfer.from_json(transfer) for transfer in response["transfers"]], []
+    return [Transfer.from_json(transfer) for transfer in response["transfers"]]
 
 
 def delete(id, user=None):
-    response, errors = request.delete(
+    response = request.delete(
         user=check_user(user),
         endpoint="transfer/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return Transfer.from_json(response["transfer"]), []
+    return Transfer.from_json(response["transfer"])

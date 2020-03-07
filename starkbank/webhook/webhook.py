@@ -20,28 +20,22 @@ class Webhook(Base):
 
 
 def create(webhook, user=None):
-    response, errors = request.post(
+    response = request.post(
         user=check_user(user),
         endpoint="webhook",
         body={snake_to_camel(k): v for k, v in webhook.json().items() if v is not None}
     )
 
-    if errors:
-        return None, errors
-
-    return Webhook.from_json(response["webhook"]), []
+    return Webhook.from_json(response["webhook"])
 
 
 def retrieve(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="webhook/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return Webhook.from_json(response["webhook"]), []
+    return Webhook.from_json(response["webhook"])
 
 
 def list(limit=100, cursor=None, user=None):
@@ -54,19 +48,13 @@ def list(limit=100, cursor=None, user=None):
         },
     )
 
-    if errors:
-        return None, errors
-
-    return [Webhook.from_json(transfer) for transfer in response["webhooks"]], response["cursor"], []
+    return [Webhook.from_json(transfer) for transfer in response["webhooks"]], response["cursor"]
 
 
 def delete(id, user=None):
-    response, errors = request.delete(
+    response = request.delete(
         user=check_user(user),
         endpoint="webhook/{id}".format(id=id),
     )
 
-    if errors:
-        return None, errors
-
-    return Webhook.from_json(response["webhook"]), []
+    return Webhook.from_json(response["webhook"])
