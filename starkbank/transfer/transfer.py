@@ -7,6 +7,7 @@ from starkbank.utils.checks import check_user
 class Transfer(Base):
     _known_fields = {
         "id",
+        "status",
         "tax_id",
         "amount",
         "name",
@@ -17,7 +18,7 @@ class Transfer(Base):
     }
     _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
 
-    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, tags=None, id=None):
+    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, tags=None, status=None, id=None):
         Base.__init__(self, id=id)
 
         self.tax_id = tax_id
@@ -27,6 +28,7 @@ class Transfer(Base):
         self.branch_code = branch_code
         self.account_number = account_number
         self.tags = tags
+        self.status = status
 
 
 def create(transfers, user=None):

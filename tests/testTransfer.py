@@ -1,3 +1,5 @@
+import time
+
 import starkbank
 from unittest import TestCase, main
 
@@ -79,6 +81,15 @@ class TestTransferPost(TestCase):
             print(error)
             self.assertTrue('invalidAmount', error.code)
         self.assertEqual(5, len(errors))
+
+    def testFailInvalidBalance(self):
+        balances, cursor = starkbank.balance.list()
+        transfer = generateExampleTransfersJson(n=1)[0]
+        transfer.amount = 2 * balances[0].amount
+        transfers = starkbank.transfer.create(user=exampleProject, transfers=[transfer])
+        time.sleep(5)
+        transfer = starkbank.transfer.retrieve(user=exampleProject, id=transfers[0].id)
+        self.assertEqual("failed", transfer.status)
 
 
 class TestTransferGet(TestCase):
