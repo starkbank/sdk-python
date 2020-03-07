@@ -55,7 +55,7 @@ def retrieve(id, user=None):
 
 
 def retrieve_pdf(id, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="transfer/{id}/pdf".format(id=id),
         json_response=False,
