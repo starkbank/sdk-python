@@ -1,7 +1,7 @@
 from starkbank import request
 from starkbank.user.base import User
 from starkbank.user.credentials import Credentials
-from starkbank.utils.checks import check_string, check_list_of_strings, check_user, check_private_key
+from starkbank.utils.checks import check_string, check_list_of_strings, check_user
 
 
 class Project(User):
@@ -19,38 +19,11 @@ class Project(User):
         )
 
 
-def create(private_key, name, allowed_ips=None, user=None):
-    response, errors = request.post(
-        user=check_user(user),
-        endpoint="project",
-        body={
-            "name": check_string(name),
-            "publicKey": check_private_key(private_key).publicKey().toPem(),
-            "allowedIps": check_list_of_strings(allowed_ips),
-        }
-    )
-
-    if errors:
-        return None, errors
-
-    project_info = response["project"]
-
-    return Project(
-        private_key=private_key,
-        id=project_info["id"],
-        name=project_info["name"],
-        allowed_ips=project_info["allowed_ips"]
-    ), []
-
-
 def retrieve(user, id):
-    response, errors = request.get(
+    response = request.get(
         user=user,
         endpoint="project/{id}".format(id=id),
     )
-
-    if errors:
-        return None, errors
 
     project_info = response["project"]
 
@@ -59,7 +32,7 @@ def retrieve(user, id):
         id=project_info["id"],
         name=project_info["name"],
         allowed_ips=project_info["allowedIps"]
-    ), []
+    )
 
 
 def list(limit=100, cursor=None, user=None):
@@ -69,14 +42,11 @@ def list(limit=100, cursor=None, user=None):
     if cursor:
         url_params["cursor"] = check_string(cursor)
 
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="project",
         url_params=url_params,
     )
-
-    if errors:
-        return None, errors
 
     projects = response["projects"]
 
@@ -85,17 +55,14 @@ def list(limit=100, cursor=None, user=None):
         id=project_info["id"],
         name=project_info["name"],
         allowed_ips=project_info["allowedIps"]
-    ) for project_info in projects], []
+    ) for project_info in projects]
 
 
 def delete(id, user=None):
-    response, errors = request.delete(
+    response = request.delete(
         user=check_user(user),
         endpoint="project/{id}".format(id=id),
     )
-
-    if errors:
-        return None, errors
 
     project_info = response["project"]
 
@@ -104,4 +71,4 @@ def delete(id, user=None):
         id=project_info["id"],
         name=project_info["name"],
         allowed_ips=project_info["allowedIps"]
-    ), []
+    )
