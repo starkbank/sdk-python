@@ -9,28 +9,29 @@ class TestBoletoPaymentPost(TestCase):
 
     def testSuccess(self):
         payments = generateExampleBoletoPaymentsJson(n=5)
-        payments, errors = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
-        if len(errors) != 0:
-            code = errors[0].code
-            self.assertEqual('immediatePaymentOutOfTime', code)
-        else:
-            self.assertEqual(0, len(errors))
+        payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
 
     def testFailInvalidArraySize(self):
         payments = generateExampleBoletoPaymentsJson(n=50)
         payments2 = generateExampleBoletoPaymentsJson(n=55)
         payments = payments + payments2
-        payments, errors = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
-        self.assertEqual(1, len(errors))
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+        errors = context.exception.elements
         for error in errors:
+            print(errors)
             self.assertEqual('invalidJson', error.code)
+        self.assertEqual(1, len(errors))
 
     def testFailInvalidJson(self):
         payments = {}
-        payments, errors = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
-        self.assertEqual(1, len(errors))
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+        errors = context.exception.elements
         for error in errors:
+            print(errors)
             self.assertEqual('invalidJson', error.code)
+        self.assertEqual(1, len(errors))
 
     def testFailInvalidJsonPayment(self):
         payments = generateExampleBoletoPaymentsJson(n=4)
@@ -38,12 +39,13 @@ class TestBoletoPaymentPost(TestCase):
         payments[1].scheduled = None
         payments[2].description = None
         payments[3].tax_id = None
-        payments, errors = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+        errors = context.exception.elements
         for error in errors:
             print(error)
-        self.assertTrue(len(errors) == 3 or len(errors) == 6)
-        for error in errors:
             self.assertTrue(error.code in ["invalidJson", "invalidPayment", "immediatePaymentOutOfTime"])
+        self.assertTrue(len(errors) == 3 or len(errors) == 6)
 
     def testFailInvalidTaxId(self):
         payments = generateExampleBoletoPaymentsJson(n=5)
@@ -52,26 +54,25 @@ class TestBoletoPaymentPost(TestCase):
         payments[2].tax_id = "abc"
         payments[3].tax_id = 123
         payments[4].tax_id = {}
-        payments, errors = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+        errors = context.exception.elements
         for error in errors:
             print(error)
-        self.assertTrue(len(errors) == 5 or len(errors) == 10)
-        for error in errors:
             self.assertTrue(error.code in ["invalidTaxId", "immediatePaymentOutOfTime"])
+        self.assertTrue(len(errors) == 5 or len(errors) == 10)
 
 
 class TestBoletoPaymentGet(TestCase):
     def testSuccess(self):
-        payments, cursor, errors = starkbank.boleto_payment.list(user=exampleProject)
-        self.assertEqual(0, len(errors))
+        payments, cursor = starkbank.boleto_payment.list(user=exampleProject)
         print("Number of payments:", len(payments))
-        self.assertIsInstance(payments, list)
 
     # def testFields(self):
     #     raise NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}
     #     fieldsParams = {"fields": ",".join(fields)}
-    #     payments, errors = starkbank.boleto_payment.list(user=exampleMember, params=fieldsParams)
+    #     payments = starkbank.boleto_payment.list(user=exampleMember, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     for payment in payments:
     #         self.assertTrue(set(payments.keys()).issubset(fields))
@@ -87,9 +88,9 @@ class TestBoletoPaymentInfoGet(TestCase):
     #     raise NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}
     #     fieldsParams = {"fields": ",".join(fields)}
-    #     payments, errors = starkbank.boleto_payment.list(user=exampleMember)
+    #     payments = starkbank.boleto_payment.list(user=exampleMember)
     #     paymentId = payments[0].id
-    #     payments, errors = starkbank.boleto_payment.retrieve(user=exampleMember, id=paymentId, params=fieldsParams)
+    #     payments = starkbank.boleto_payment.retrieve(user=exampleMember, id=paymentId, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     payment = content["payment"]
     #     print(content)
