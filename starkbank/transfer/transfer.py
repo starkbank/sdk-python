@@ -3,11 +3,12 @@ from starkbank.utils.base import Base, Post, Get, GetId, GetPdf, Delete
 
 class Transfer(Post, Get, GetId, GetPdf, Delete):
 
-    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, tags=None, status=None, id=None):
+    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, fee=None, tags=None, status=None, id=None):
         Base.__init__(self, id=id)
 
         self.tax_id = tax_id
         self.amount = amount
+        self.fee = fee
         self.name = name
         self.bank_code = bank_code
         self.branch_code = branch_code

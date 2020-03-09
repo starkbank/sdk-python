@@ -6,10 +6,11 @@ class Boleto(Post, Get, GetId, GetPdf, Delete):
 
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code,
                  due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, id=None,
-                 line=None, bar_code=None, status=None, created=None):
+                 fee=None, line=None, bar_code=None, status=None, created=None):
         Base.__init__(self, id=id)
 
         self.amount = amount
+        self.fee = fee
         self.name = name
         self.tax_id = tax_id
         self.street_line_1 = street_line_1
