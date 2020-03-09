@@ -2,7 +2,6 @@ import requests
 from time import time
 from json import dumps, loads
 from ellipticcurve.ecdsa import Ecdsa
-from starkbank.models.logging import Logging
 from starkbank.exceptions import Houston, InputError, UnknownException
 from starkbank.models.environment import Environment
 from starkbank.user.credentials import Credentials
@@ -31,16 +30,15 @@ def delete(user, endpoint):
 def _make_request(user, request_method, endpoint, url_params=None, body=None, json_response=True):
     credentials = _get_credentials(user)
 
-    from starkbank import settings
-    debug = settings.logging == Logging.debug
-
     if body is not None:
         body = dumps(body)
 
     url = _get_url(endpoint) + _get_url_params_string(url_params)
     headers = _headers(credentials=credentials, body=body)
 
-    if debug:
+    from starkbank import settings
+
+    if settings.debug:
         since = time()
         print(
             "\nsending /{request_method} to \"{url}\" with:\nheaders: {headers}\nbody: {body}\n".format(
@@ -57,7 +55,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
         data=body,
     )
 
-    if debug:
+    if settings.debug:
         print(
             "\n[{elapsed} seconds] retrieved {status}: {content}\n".format(
                 elapsed=int(100 * (time() - since)) / 100,

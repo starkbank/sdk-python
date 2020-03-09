@@ -1,9 +1,9 @@
 import starkbank
 from unittest import TestCase, main
 from tests.utils.boleto import generateExampleBoletosJson
-from tests.utils.user import exampleProject
 
-starkbank.settings.logging = "debug"
+
+starkbank.settings.debug = True
 
 
 class TestBoletoPost(TestCase):

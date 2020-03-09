@@ -1,12 +1,11 @@
 from starkbank.models.environment import Environment
-from starkbank.models.logging import Logging
 from starkbank.user.base import User
 
 
 class Settings:
     _env = None
-    _logging = Logging.none
-    _default_user = None
+    _debug = False
+    _user = None
 
     @property
     def env(self):
@@ -18,22 +17,21 @@ class Settings:
         self._env = env
 
     @property
-    def logging(self):
-        return self._logging
+    def debug(self):
+        return self._debug
 
-    @logging.setter
-    def logging(self, logging):
-        assert logging in Logging.values(), "logging must be one from {}".format(Logging.values())
-        self._logging = logging
+    @debug.setter
+    def debug(self, debug):
+        self._debug = debug
 
     @property
-    def default_user(self):
-        return self._default_user
+    def user(self):
+        return self._user
 
-    @default_user.setter
-    def default_user(self, default_user):
-        assert isinstance(default_user, User), "default_user must be an object retrieved from one of starkbank.user methods or classes"
-        self._default_user = default_user
+    @user.setter
+    def user(self, user):
+        assert isinstance(user, User), "user must be an object retrieved from one of starkbank.user methods or classes"
+        self._user = user
 
 
 settings = Settings()
