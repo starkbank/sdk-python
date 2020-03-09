@@ -39,7 +39,7 @@ def retrieve(id, user=None):
 
 
 def list(limit=100, cursor=None, user=None):
-    response, errors = request.get(
+    response = request.get(
         user=check_user(user),
         endpoint="webhook",
         url_params={

@@ -55,7 +55,7 @@ def list(limit=100, cursor=None, user=None):
         id=project_info["id"],
         name=project_info["name"],
         allowed_ips=project_info["allowedIps"]
-    ) for project_info in projects]
+    ) for project_info in projects], response["cursor"]
 
 
 def delete(id, user=None):

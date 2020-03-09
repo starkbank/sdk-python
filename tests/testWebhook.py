@@ -29,7 +29,7 @@ class TestWebhookGet(TestCase):
 
 class TestWebhookInfoGet(TestCase):
     def testSuccess(self):
-        webhooks, cursor, errors = starkbank.webhook.list(user=exampleProject)
+        webhooks, cursor = starkbank.webhook.list(user=exampleProject)
         webhookId = webhooks[0].id
         webhook = starkbank.webhook.retrieve(user=exampleProject, id=webhookId)
 
