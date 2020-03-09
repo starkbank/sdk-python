@@ -31,5 +31,5 @@ Transaction._define_known_fields()
 
 
 create = Transaction._post
-list = Transaction._get
+query = Transaction._query
 get = Transaction._get_id

@@ -14,7 +14,7 @@ class TestWebhookPost(TestCase):
 
 class TestWebhookGet(TestCase):
     def testSuccess(self):
-        webhooks, cursor = starkbank.webhook.list()
+        webhooks = list(starkbank.webhook.query(limit=10))
         print("Number of webhooks:", len(webhooks))
 
     # def testFields(self):
@@ -29,8 +29,8 @@ class TestWebhookGet(TestCase):
 
 class TestWebhookInfoGet(TestCase):
     def testSuccess(self):
-        webhooks, cursor = starkbank.webhook.list(user=exampleProject)
-        webhookId = webhooks[0].id
+        webhooks = starkbank.webhook.query(user=exampleProject)
+        webhookId = next(webhooks).id
         webhook = starkbank.webhook.get(user=exampleProject, id=webhookId)
 
     # def testFields(self):

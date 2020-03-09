@@ -121,7 +121,7 @@ class TestBoletoPost(TestCase):
 
 class TestBoletoGet(TestCase):
     def testSuccess(self):
-        boletos, cursor = starkbank.boleto.list()
+        boletos = list(starkbank.boleto.query(limit=100))
         print("Number of boletos:", len(boletos))
         self.assertIsInstance(boletos, list)
 
@@ -160,8 +160,8 @@ class TestBoletoPostAndDelete(TestCase):
 
 class TestBoletoInfoGet(TestCase):
     def testSuccess(self):
-        boletos, cursor = starkbank.boleto.list()
-        boletoId = boletos[0].id
+        boletos = starkbank.boleto.query()
+        boletoId = next(boletos).id
         boleto = starkbank.boleto.get(id=boletoId)
 
     # def testFields(self):
@@ -180,8 +180,8 @@ class TestBoletoInfoGet(TestCase):
 
 class TestBoletoPdfGet(TestCase):
     def testSuccess(self):
-        boletos, cursor = starkbank.boleto.list()
-        boletoId = boletos[0].id
+        boletos = starkbank.boleto.query()
+        boletoId = next(boletos).id
         pdf = starkbank.boleto.get_pdf(id=boletoId)
         print(pdf)
 

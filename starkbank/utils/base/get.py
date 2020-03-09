@@ -23,3 +23,15 @@ class Get(Base):
         )
 
         return [cls.from_json(entity) for entity in response[cls._plural_last_name()]], response["cursor"]
+
+    @classmethod
+    def _query(cls, limit=None, user=None, **kwargs):
+        while True:
+            entity_list, cursor = cls._get(limit=min(limit, 100) if limit else None, user=user, **kwargs)
+
+            for entity in entity_list:
+                yield entity
+
+            limit -= 100
+            if cursor is None or limit <= 0:
+                break

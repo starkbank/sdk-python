@@ -21,5 +21,5 @@ class Project(User):
 Project._define_known_fields()
 
 get = Project._get_id
-list = Project._get
+query = Project._query
 delete = Project._delete

@@ -15,5 +15,5 @@ Webhook._define_known_fields()
 
 create = Webhook._post_single
 get = Webhook._get_id
-list = Webhook._get
+query = Webhook._query
 delete = Webhook._delete

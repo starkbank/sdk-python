@@ -71,7 +71,7 @@ class TestBoletoPaymentPost(TestCase):
 
 class TestBoletoPaymentGet(TestCase):
     def testSuccess(self):
-        payments, cursor = starkbank.boleto_payment.list()
+        payments = list(starkbank.boleto_payment.query(limit=10))
         print("Number of payments:", len(payments))
 
     # def testFields(self):
@@ -86,8 +86,8 @@ class TestBoletoPaymentGet(TestCase):
 
 class TestBoletoPaymentInfoGet(TestCase):
     def testSuccess(self):
-        payments, cursor = starkbank.boleto_payment.list()
-        paymentId = payments[0].id
+        payments = starkbank.boleto_payment.query()
+        paymentId = next(payments).id
         payment = starkbank.boleto_payment.get(id=paymentId)
 
     # def testFields(self):
@@ -105,8 +105,8 @@ class TestBoletoPaymentInfoGet(TestCase):
 
 class TestBoletoPaymentPdfGet(TestCase):
     def testSuccess(self):
-        payments, cursor = starkbank.boleto_payment.list()
-        paymentId = payments[0].id
+        payments = starkbank.boleto_payment.query()
+        paymentId = next(payments).id
         payments = starkbank.boleto_payment.get_pdf(id=paymentId)
 
 

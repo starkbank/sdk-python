@@ -83,9 +83,9 @@ class TestTransferPost(TestCase):
         self.assertEqual(5, len(errors))
 
     def testFailInvalidBalance(self):
-        balances, cursor = starkbank.balance.list()
+        balances = starkbank.balance.query()
         transfer = generateExampleTransfersJson(n=1)[0]
-        transfer.amount = 2 * balances[0].amount
+        transfer.amount = 2 * next(balances).amount
         transfers = starkbank.transfer.create([transfer])
         time.sleep(5)
         transfer = starkbank.transfer.get(id=transfers[0].id)
@@ -94,7 +94,8 @@ class TestTransferPost(TestCase):
 
 class TestTransferGet(TestCase):
     def testSuccess(self):
-        transfers = starkbank.transfer.list(user=exampleProject)
+        transfers = list(starkbank.transfer.query(user=exampleProject, limit=10))
+        assert len(transfers) == 10
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -109,8 +110,8 @@ class TestTransferGet(TestCase):
 
 class TestTransferInfoGet(TestCase):
     def testSuccess(self):
-        transfers, cursor = starkbank.transfer.list(user=exampleProject)
-        transferId = transfers[0].id
+        transfers = starkbank.transfer.query(user=exampleProject)
+        transferId = next(transfers).id
         transfer = starkbank.transfer.get(user=exampleProject, id=transferId)
 
     # def testFields(self):
@@ -129,8 +130,8 @@ class TestTransferInfoGet(TestCase):
 
 class TestTransferPdfGet(TestCase):
     def testSuccess(self):
-        transfers, cursor = starkbank.transfer.list(user=exampleProject)
-        transferId = transfers[0].id
+        transfers = starkbank.transfer.query(user=exampleProject)
+        transferId = next(transfers).id
         try:
             pdf = starkbank.transfer.get_pdf(user=exampleProject, id=transferId)
             print(str(pdf))

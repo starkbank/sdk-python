@@ -34,7 +34,7 @@ Boleto._define_known_fields()
 
 
 create = Boleto._post
-list = Boleto._get
 get = Boleto._get_id
 get_pdf = Boleto._get_pdf
 delete = Boleto._delete
+query = Boleto._query

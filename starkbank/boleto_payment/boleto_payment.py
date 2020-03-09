@@ -22,7 +22,7 @@ BoletoPayment._define_known_fields()
 
 
 create = BoletoPayment._post
-list = BoletoPayment._get
+query = BoletoPayment._query
 get = BoletoPayment._get_id
 get_pdf = BoletoPayment._get_pdf
 delete = BoletoPayment._delete

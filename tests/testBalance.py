@@ -6,8 +6,8 @@ from tests.utils.user import exampleProject
 
 class TestBalanceGet(TestCase):
     def testSuccess(self):
-        balances, cursor = starkbank.balance.list(user=exampleProject)
-        self.assertIsInstance(balances[0].amount, int)
+        balances = starkbank.balance.query(user=exampleProject)
+        self.assertIsInstance(next(balances).amount, int)
 
     # def testFields(self):
     #     raise NotImplementedError

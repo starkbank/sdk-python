@@ -14,4 +14,4 @@ class Balance(Get):
 
 Balance._define_known_fields()
 
-list = Balance._get
+query = Balance._query

@@ -1,5 +1,5 @@
 from .base import Base
-from .delete import Delete
+from .delete_ import Delete
 from .get import Get
 from .getid import GetId
 from .getpdf import GetPdf

@@ -21,5 +21,5 @@ class BoletoPaymentLog(Get, GetId):
 BoletoPaymentLog._define_known_fields()
 
 
-list = BoletoPaymentLog._get
+query = BoletoPaymentLog._query
 get = BoletoPaymentLog._get_id

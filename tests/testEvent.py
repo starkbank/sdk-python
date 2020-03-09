@@ -7,7 +7,7 @@ from tests.utils.user import exampleProject
 class TestEventGet(TestCase):
 
     def testSuccess(self):
-        events, cursor = starkbank.webhook.event.list(user=exampleProject)
+        events = list(starkbank.webhook.event.query(user=exampleProject, limit=10))
         print("Number of events:", len(events))
 
     # def testFields(self):
@@ -23,8 +23,8 @@ class TestEventGet(TestCase):
 
 class TestEventInfoGet(TestCase):
     def testSuccess(self):
-        events, cursor = starkbank.webhook.event.list(user=exampleProject)
-        eventId = events[0].id
+        events = starkbank.webhook.event.query(user=exampleProject)
+        eventId = next(events).id
         event = starkbank.webhook.event.get(user=exampleProject, id=eventId)
 
     # def testFields(self):

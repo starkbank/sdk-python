@@ -20,7 +20,7 @@ Transfer._define_known_fields()
 
 
 create = Transfer._post
-list = Transfer._get
+query = Transfer._query
 get = Transfer._get_id
 get_pdf = Transfer._get_pdf
 delete = Transfer._delete

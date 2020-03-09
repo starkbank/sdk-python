@@ -1,1 +1,1 @@
-from .project import Project, get, list, delete
+from .project import Project, get, query, delete

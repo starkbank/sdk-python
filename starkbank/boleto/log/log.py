@@ -20,5 +20,5 @@ class BoletoLog(Get, GetId):
 BoletoLog._define_known_fields()
 
 
-list = BoletoLog._get
+query = BoletoLog._query
 get = BoletoLog._get_id

@@ -1,1 +1,1 @@
-from .event import Event, list, get
+from .event import Event, query, get

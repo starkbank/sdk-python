@@ -29,4 +29,4 @@ class Event(Get, GetId):
 Event._define_known_fields()
 
 get = Event._get_id
-list = Event._get
+query = Event._query

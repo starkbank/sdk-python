@@ -53,14 +53,14 @@ class TestTransactionPost(TestCase):
 
 class TestTransactionGet(TestCase):
     def testSuccess(self):
-        transactions, cursor = starkbank.transaction.list()
+        transactions = list(starkbank.transaction.query(limit=10))
         print("Number of transactions:", len(transactions))
 
         # def testFields(self):
         #     raise NotImplementedError
         #     fields = {"amount", "id", "created", "invalid"}
         #     fieldsParams = {"fields": ",".join(fields)}
-        #     transactions, cursor = starkbank.transaction.list(user=exampleMember, params=fieldsParams)
+        #     transactions = starkbank.transaction.query(user=exampleMember, params=fieldsParams)
         #     self.assertEqual(0, len(errors))
         #     for transaction in transactions:
         #         self.assertTrue(set(transaction.keys()).issubset(fields))
@@ -68,15 +68,15 @@ class TestTransactionGet(TestCase):
 
 class TestTransactionInfoGet(TestCase):
     def testSuccess(self):
-        transactions, cursor = starkbank.transaction.list()
-        transactionId = transactions[0].id
-        transactions = starkbank.transaction.get(id=transactionId)
+        transactions = starkbank.transaction.query()
+        transactionId = next(transactions).id
+        transaction = starkbank.transaction.get(id=transactionId)
 
     # def testFields(self):
     #     raise NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}
     #     fieldsParams = {"fields": ",".join(fields)}
-    #     transactions, cursor = starkbank.transaction.list(user=exampleMember)
+    #     transactions = starkbank.transaction.query(user=exampleMember)
     #     transactions = content["transactions"]
     #     transactionId = transactions[0]["id"]
     #     transactions = starkbank.transaction.get(user=exampleMember, id=transactionId, params=fieldsParams)
