@@ -100,7 +100,7 @@ def _get_url(endpoint):
 
 def _get_base_url():
     from starkbank import settings
-    env = settings.env
+    env = settings.environment
 
     if not env:
         raise RuntimeError("please set an environment with starkbank.default.env = \"env\"")

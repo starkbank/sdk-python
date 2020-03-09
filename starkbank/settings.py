@@ -3,18 +3,18 @@ from starkbank.user.base import User
 
 
 class Settings:
-    _env = None
+    _environment = None
     _debug = False
     _user = None
 
     @property
-    def env(self):
-        return self._env
+    def environment(self):
+        return self._environment
 
-    @env.setter
-    def env(self, env):
+    @environment.setter
+    def environment(self, env):
         assert env in Environment.values(), "env must be one from {}".format(Environment.values())
-        self._env = env
+        self._environment = env
 
     @property
     def debug(self):

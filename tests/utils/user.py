@@ -1,7 +1,7 @@
 import starkbank
 from tests.utils.examples.keys.keys import projectPrivateKeyString
 
-starkbank.settings.env = "development"
+starkbank.settings.environment = "development"
 starkbank.settings.debug = True
 
 exampleProject = starkbank.Project(
