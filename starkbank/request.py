@@ -33,7 +33,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
     if body is not None:
         body = dumps(body)
 
-    url = _get_url(endpoint) + _get_url_params_string(url_params)
+    url = _get_url(environment=user.environment, endpoint=endpoint) + _get_url_params_string(url_params)
     headers = _headers(credentials=credentials, body=body)
 
     from starkbank import settings
@@ -94,27 +94,16 @@ def _get_credentials(user):
     return user.credentials
 
 
-def _get_url(endpoint):
-    return _get_base_url() + endpoint
+def _get_url(environment, endpoint):
+    return _get_base_url(environment) + endpoint
 
 
-def _get_base_url():
-    from starkbank import settings
-    env = settings.environment
-
-    if not env:
-        raise RuntimeError("please set an environment with starkbank.default.env = \"env\"")
-
-    if env == Environment.production:
-        return "https://api.starkbank.com/v2/"
-
-    if env == Environment.sandbox:
-        return "https://sandbox.api.starkbank.com/v2/"
-
-    if env == Environment.development:
-        return "https://development.api.starkbank.com/v2/"
-
-    raise ValueError("unknown env " + str(env))
+def _get_base_url(environment):
+    return {
+        Environment.production: "https://api.starkbank.com/v2/",
+        Environment.sandbox: "https://sandbox.api.starkbank.com/v2/",
+        Environment.development: "https://development.api.starkbank.com/v2/",
+    }[environment]
 
 
 def _get_url_params_string(url_params):

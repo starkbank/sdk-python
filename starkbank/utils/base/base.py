@@ -4,7 +4,7 @@ from starkbank.utils.case import camel_to_snake, camel_to_kebab, snake_to_camel
 class Base:
     _known_fields = set()
     _known_camel_fields = set()
-    _json_fill = []
+    _json_fill = {}
 
     def __init__(self, id):
         id = str(id) if id else None
@@ -41,8 +41,8 @@ class Base:
 
     @classmethod
     def from_json(cls, json):
-        for fill in cls._json_fill:
-            json.setdefault(fill, None)
+        for fill, value in cls._json_fill.items():
+            json.setdefault(fill, value)
         return cls(**{
             camel_to_snake(k): v for k, v in json.items() if k in cls._known_camel_fields
         })

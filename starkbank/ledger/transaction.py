@@ -4,7 +4,7 @@ from starkbank.utils.checks import check_datetime
 
 class Transaction(Post, Get, GetId):
 
-    _json_fill = ["receiverId"]
+    _json_fill = {"receiverId": None}
 
     def __init__(self, amount, description, tags, external_id, receiver_id, sender_id=None, id=None, fee=None,
                  created=None, source=None):

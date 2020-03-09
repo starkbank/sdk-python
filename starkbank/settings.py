@@ -1,4 +1,3 @@
-from starkbank.models.environment import Environment
 from starkbank.user.base import User
 
 
@@ -6,15 +5,6 @@ class Settings:
     _environment = None
     _debug = False
     _user = None
-
-    @property
-    def environment(self):
-        return self._environment
-
-    @environment.setter
-    def environment(self, env):
-        assert env in Environment.values(), "env must be one from {}".format(Environment.values())
-        self._environment = env
 
     @property
     def debug(self):
