@@ -144,7 +144,7 @@ import starkbank
 
 payments = starkbank.payment.boleto.create([
     starkbank.BoletoPayment(line="...", tax_id="012.345.678-90", ...),
-    starkbank.BoletoPayment(barcode="...", tax_id="012.345.678-90", ...),
+    starkbank.BoletoPayment(bar_code="...", tax_id="012.345.678-90", ...),
 ])
 ```
 
@@ -241,7 +241,12 @@ for transaction in transactions:
 import starkbank
 
 
-webhook = starkbank.webhook.create(url, subscriptions)
+webhook = starkbank.webhook.create(
+    starkbank.Webhook(
+        url="https://webhook.site/dd784f26-1d6a-4ca6-81cb-fda0267761ec",
+        subscriptions=["transfer", "charge"],
+    )
+)
 
 print(webhook.id)
 
@@ -271,29 +276,21 @@ for event in events:
 	print(event.id)
 ```
 
-# Delete webhook events
-```python
-import starkbank
-
-
-event = starkbank.webhook.event.delete("123")
-
-print(event.id)
-```
-
 # Process webhook events
 ```python
 import starkbank
+from mylib import listen
 
+content, signature = listen()
 
 event = starkbank.webhook.Event(content, signature)
 
-if event.subscription == “transfer”:
+if event.subscription == "transfer":
     print(event.log.transfer)
     
-elif event.subscription == “boleto”:
+elif event.subscription == "boleto":
     print(event.log.boleto)
     
-elif event.subscription == “boleto-payment”:
+elif event.subscription == "boleto-payment":
     print(event.log.payment)
 ```
