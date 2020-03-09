@@ -17,11 +17,12 @@ class BoletoLog(Get, GetId):
         return "boleto/log"
 
     @classmethod
-    def _query(cls, limit=100, boleto_ids=None, events=None):
+    def _query(cls, limit=100, boleto_ids=None, events=None, user=None):
         return super(BoletoLog, cls)._query(
             limit=limit,
             boleto_ids=boleto_ids,
             events=events,
+            user=user,
         )
 
 

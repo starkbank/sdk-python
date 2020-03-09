@@ -17,7 +17,7 @@ class Transfer(Post, Get, GetId, GetPdf, Delete):
         self.status = status
 
     @classmethod
-    def _query(cls, limit=100, request_id=None, transaction_ids=None, tags=None, after=None, before=None, status=None, sort=None):
+    def _query(cls, limit=100, request_id=None, transaction_ids=None, tags=None, after=None, before=None, status=None, sort=None, user=None):
         return super(Transfer, cls)._query(
             limit=limit,
             request_id=request_id,
@@ -27,6 +27,7 @@ class Transfer(Post, Get, GetId, GetPdf, Delete):
             before=before,
             status=status,
             sort=sort,
+            user=user,
         )
 
 

@@ -31,7 +31,7 @@ class Boleto(Post, Get, GetId, GetPdf, Delete):
         self.created = check_datetime(created)
 
     @classmethod
-    def _query(cls, limit=100, status=None, tags=None, ids=None, after=None, before=None):
+    def _query(cls, limit=100, status=None, tags=None, ids=None, after=None, before=None, user=None):
         return super(Boleto, cls)._query(
             limit=limit,
             status=status,
@@ -39,6 +39,7 @@ class Boleto(Post, Get, GetId, GetPdf, Delete):
             ids=ids,
             after=after,
             before=before,
+            user=user,
         )
 
 

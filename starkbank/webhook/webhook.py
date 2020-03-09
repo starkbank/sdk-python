@@ -9,6 +9,12 @@ class Webhook(Post, Get, GetId, Delete):
         self.url = url
         self.subscriptions = subscriptions
 
+    def _query(cls, limit=100, user=None):
+        return super(Webhook, cls)._query(
+            limit=limit,
+            user=user,
+        )
+
 
 Webhook._define_known_fields()
 

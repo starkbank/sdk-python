@@ -19,6 +19,13 @@ class Project(User):
             ),
         )
 
+    @classmethod
+    def _query(cls, limit=100, user=None):
+        return super(Project, cls)._query(
+            limit=limit,
+            user=user,
+        )
+
 
 Project._define_known_fields()
 

@@ -21,12 +21,13 @@ class Transaction(Post, Get, GetId):
         self.source = source
 
     @classmethod
-    def _query(cls, limit=100, externalIds=None, after=None, before=None):
+    def _query(cls, limit=100, externalIds=None, after=None, before=None, user=None):
         return super(Transaction, cls)._query(
             limit=limit,
             externalIds=externalIds,
             after=after,
             before=before,
+            user=user,
         )
 
 
