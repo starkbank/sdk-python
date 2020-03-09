@@ -30,6 +30,17 @@ class Boleto(Post, Get, GetId, GetPdf, Delete):
         self.status = status
         self.created = check_datetime(created)
 
+    @classmethod
+    def _query(cls, limit=100, status=None, tags=None, ids=None, after=None, before=None):
+        return super(Boleto, cls)._query(
+            limit=limit,
+            status=status,
+            tags=tags,
+            ids=ids,
+            after=after,
+            before=before,
+        )
+
 
 Boleto._define_known_fields()
 
