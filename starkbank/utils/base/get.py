@@ -26,13 +26,19 @@ class Get(Base):
 
     @classmethod
     def _query(cls, limit=None, user=None, **kwargs):
+        cursor = ""
         while True:
-            entity_list, cursor = cls._get(limit=min(limit, 100) if limit else None, user=user, **kwargs)
+            entity_list, cursor = cls._get(
+                limit=min(limit, 100) if limit else None,
+                cursor=cursor,
+                user=user,
+                **kwargs
+            )
 
             for entity in entity_list:
                 yield entity
 
             if limit:
                 limit -= 100
-            if cursor is None or limit <= 0:
+            if cursor is None or (limit is not None and limit <= 0):
                 break
