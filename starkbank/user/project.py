@@ -4,6 +4,9 @@ from starkbank.utils.checks import check_string, check_list_of_strings, check_us
 
 
 class Project(User):
+
+    _json_fill = ["privateKey"]
+
     def __init__(self, private_key, id, name="", allowed_ips=None):
         self.name = check_string(name)
         self.allowed_ips = check_list_of_strings(allowed_ips)

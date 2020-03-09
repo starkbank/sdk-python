@@ -1,9 +1,10 @@
 from starkbank.utils.base import Base, Post, GetId, Get
-from starkbank.utils.case import camel_to_snake
 from starkbank.utils.checks import check_datetime
 
 
 class Transaction(Post, Get, GetId):
+
+    _json_fill = ["receiverId"]
 
     def __init__(self, amount, description, tags, external_id, receiver_id, sender_id=None, id=None, fee=None,
                  created=None, source=None):
@@ -18,13 +19,6 @@ class Transaction(Post, Get, GetId):
         self.fee = fee
         self.created = check_datetime(created)
         self.source = source
-
-    @classmethod
-    def from_json(cls, json):
-        json.setdefault("receiverId", None)
-        return cls(**{
-            camel_to_snake(k): v for k, v in json.items() if k in cls._known_camel_fields
-        })
 
 
 Transaction._define_known_fields()

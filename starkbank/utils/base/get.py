@@ -32,6 +32,7 @@ class Get(Base):
             for entity in entity_list:
                 yield entity
 
-            limit -= 100
+            if limit:
+                limit -= 100
             if cursor is None or limit <= 0:
                 break
