@@ -1,5 +1,5 @@
 from starkbank.utils.base import Base, Post, GetId, Get
-from starkbank.utils.checks import check_datetime
+from starkbank.utils.checks import check_datetime, check_date_string
 
 
 class Transaction(Post, Get, GetId):
@@ -19,6 +19,16 @@ class Transaction(Post, Get, GetId):
         self.fee = fee
         self.created = check_datetime(created)
         self.source = source
+
+    @classmethod
+    def _query(cls, limit=100, fields=None, externalIds=None, after=None, before=None):
+        return super(Transaction, cls)._query(
+            limit=limit,
+            externalIds=externalIds,
+            fields=fields,
+            after=after,
+            before=before,
+        )
 
 
 Transaction._define_known_fields()

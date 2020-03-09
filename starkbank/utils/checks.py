@@ -1,5 +1,5 @@
 from builtins import str
-from datetime import datetime
+from datetime import datetime, date
 from ellipticcurve.privateKey import PrivateKey
 
 
@@ -55,7 +55,7 @@ def check_datetime(data):
     if data is None:
         return None
 
-    if isinstance(data, datetime):
+    if isinstance(data, (datetime, date)):
         return data
 
     if not isinstance(data, str):
@@ -82,3 +82,12 @@ def check_datetime(data):
         pass
 
     raise RuntimeError("invalid datetime string " + data)
+
+
+def check_date_string(data):
+    if not data:
+        return data
+    if not isinstance(data, (datetime, date)):
+        raise TypeError("invalid datetime or date " + str(data))
+    if data:
+        return data.strftime("%Y-%m-%d")
