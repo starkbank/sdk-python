@@ -1,4 +1,3 @@
-from starkbank import request
 from starkbank.user.base import User
 from starkbank.user.credentials import Credentials
 from starkbank.utils.checks import check_string, check_list_of_strings, check_user
@@ -19,56 +18,8 @@ class Project(User):
         )
 
 
-def retrieve(user, id):
-    response = request.get(
-        user=user,
-        endpoint="project/{id}".format(id=id),
-    )
+Project._define_known_fields()
 
-    project_info = response["project"]
-
-    return Project(
-        private_key=None,
-        id=project_info["id"],
-        name=project_info["name"],
-        allowed_ips=project_info["allowedIps"]
-    )
-
-
-def list(limit=100, cursor=None, user=None):
-    url_params = {
-        "limit": limit,
-    }
-    if cursor:
-        url_params["cursor"] = check_string(cursor)
-
-    response = request.get(
-        user=check_user(user),
-        endpoint="project",
-        url_params=url_params,
-    )
-
-    projects = response["projects"]
-
-    return [Project(
-        private_key=None,
-        id=project_info["id"],
-        name=project_info["name"],
-        allowed_ips=project_info["allowedIps"]
-    ) for project_info in projects], response["cursor"]
-
-
-def delete(id, user=None):
-    response = request.delete(
-        user=check_user(user),
-        endpoint="project/{id}".format(id=id),
-    )
-
-    project_info = response["project"]
-
-    return Project(
-        private_key=None,
-        id=project_info["id"],
-        name=project_info["name"],
-        allowed_ips=project_info["allowedIps"]
-    )
+get = Project._get_id
+list = Project._get
+delete = Project._delete

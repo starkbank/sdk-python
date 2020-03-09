@@ -1,18 +1,9 @@
 from starkbank.boleto_payment.boleto_payment import BoletoPayment
 from starkbank.utils.base import Base, Get, GetId
-from starkbank.utils.case import snake_to_camel
 from starkbank.utils.checks import check_datetime
 
 
 class BoletoPaymentLog(Get, GetId):
-    _known_fields = {
-        "id",
-        "errors",
-        "created",
-        "event",
-        "payment",
-    }
-    _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
 
     def __init__(self, id, created, event, errors, payment):
         Base.__init__(self, id=id)
@@ -23,9 +14,12 @@ class BoletoPaymentLog(Get, GetId):
         self.payment = BoletoPayment.from_json(payment)
 
     @classmethod
-    def endpoint(cls):
+    def _endpoint(cls):
         return "boleto-payment/log"
 
 
-list = BoletoPaymentLog._list
-get = BoletoPaymentLog._get
+BoletoPaymentLog._define_known_fields()
+
+
+list = BoletoPaymentLog._get
+get = BoletoPaymentLog._get_id

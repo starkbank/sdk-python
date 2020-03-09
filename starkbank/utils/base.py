@@ -47,35 +47,40 @@ class Base:
         })
 
     @classmethod
-    def endpoint(cls):
+    def _endpoint(cls):
         return "{entity}".format(
             entity=camel_to_kebab(cls.__name__),
         )
 
     @classmethod
-    def id_endpoint(cls, id):
+    def _id_endpoint(cls, id):
         return "{base_endpoint}/{id}".format(
-            base_endpoint=cls.endpoint(),
+            base_endpoint=cls._endpoint(),
             id=id
         )
 
     @classmethod
-    def last_name(cls):
+    def _last_name(cls):
         route_name = camel_to_kebab(cls.__name__)
         return route_name.split("-")[-1]
 
     @classmethod
-    def plural_last_name(cls):
-        return "{name}s".format(name=cls.last_name())
+    def _plural_last_name(cls):
+        return "{name}s".format(name=cls._last_name())
+
+    @classmethod
+    def _define_known_fields(cls):
+        cls._known_fields = set(cls.__init__.__code__.co_varnames) - {"self"}
+        cls._known_camel_fields = {snake_to_camel(field) for field in cls._known_fields}
 
 
 class Post(Base):
     @classmethod
-    def post_endpoint(cls):
-        return cls.endpoint()
+    def _post_endpoint(cls):
+        return cls._endpoint()
 
     @classmethod
-    def _create(cls, entities, user=None):
+    def _post(cls, entities, user=None):
         entity_list = [
             {
                 snake_to_camel(k): v for k, v in entity.json().items() if v is not None
@@ -83,71 +88,83 @@ class Post(Base):
         ]
         response = request.post(
             user=check_user(user),
-            endpoint=cls.post_endpoint(),
+            endpoint=cls._post_endpoint(),
             body={
-                cls.plural_last_name(): entity_list
+                cls._plural_last_name(): entity_list
             }
         )
         return [
-            cls.from_json(entity) for entity in response[cls.plural_last_name()]
+            cls.from_json(entity) for entity in response[cls._plural_last_name()]
         ]
+
+    @classmethod
+    def _post_single(cls, entity, user=None):
+        response = request.post(
+            user=check_user(user),
+            endpoint=cls._post_endpoint(),
+            body={snake_to_camel(k): v for k, v in entity.json().items() if v is not None},
+        )
+        return cls.from_json(response[cls._last_name()])
 
 
 class Get(Base):
     @classmethod
-    def get_endpoint(cls):
-        return cls.endpoint()
+    def _get_endpoint(cls):
+        return cls._endpoint()
 
     @classmethod
-    def _list(cls, limit=100, cursor=None, user=None):
+    def _get(cls, limit=100, cursor=None, user=None, **kwargs):
+        url_params = {
+            "limit": limit,
+            "cursor": cursor,
+        }
+        url_params.update(kwargs)
+
         response = request.get(
             user=check_user(user),
-            endpoint=cls.get_endpoint(),
-            url_params={
-                "limit": limit,
-                "cursor": cursor,
-            },
+            endpoint=cls._get_endpoint(),
+            url_params=url_params,
         )
 
-        return [cls.from_json(entity) for entity in response[cls.plural_last_name()]], response["cursor"]
+        return [cls.from_json(entity) for entity in response[cls._plural_last_name()]], response["cursor"]
 
 
 class GetId(Base):
     @classmethod
-    def get_info_endpoint(cls, id):
-        return cls.id_endpoint(id)
+    def _get_id_endpoint(cls, id):
+        return cls._id_endpoint(id)
 
     @classmethod
-    def _get(cls, id, user=None):
+    def _get_id(cls, id, user=None):
         response = request.get(
             user=check_user(user),
-            endpoint=cls.get_info_endpoint(id),
+            endpoint=cls._get_id_endpoint(id),
         )
-        return cls.from_json(response[cls.last_name()])
+        return cls.from_json(response[cls._last_name()])
 
 
 class GetPdf(Base):
     @classmethod
-    def pdf_endpoint(cls, id):
+    def _pdf_endpoint(cls, id):
         return "{info_endpoint}/pdf".format(
-            info_endpoint=cls.id_endpoint(id),
+            info_endpoint=cls._id_endpoint(id),
         )
 
     @classmethod
-    def get_pdf(cls, id, user=None):
+    def _get_pdf(cls, id, user=None):
         return request.get(
             user=check_user(user),
-            endpoint=cls.pdf_endpoint(id),
+            endpoint=cls._pdf_endpoint(id),
         )
 
 
-class BaseDelete(Base):
+class Delete(Base):
     @classmethod
-    def delete_endpoint(cls, id):
-        return cls.id_endpoint(id)
+    def _delete_endpoint(cls, id):
+        return cls._id_endpoint(id)
 
     @classmethod
-    def delete(cls, ids, user=None):
+    def _delete(cls, ids, user=None):
         if len(ids) > 100:
             raise ValueError("ids cannot have more than 100 elements")
 
@@ -155,9 +172,9 @@ class BaseDelete(Base):
         for id in ids:
             response = request.delete(
                 user=check_user(user),
-                endpoint=cls.delete_endpoint(id),
+                endpoint=cls._delete_endpoint(id),
             )
 
-            entities.append(cls.from_json(response[cls.last_name()]))
+            entities.append(cls.from_json(response[cls._last_name()]))
 
         return entities

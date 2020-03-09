@@ -8,13 +8,13 @@ from tests.utils.user import exampleProject
 class TestWebhookPost(TestCase):
     def testSuccess(self):
         webhook = generateExampleWebhook()
-        webhook = starkbank.webhook.create(user=exampleProject, webhook=webhook)
+        webhook = starkbank.webhook.create(webhook)
         print(webhook.id)
 
 
 class TestWebhookGet(TestCase):
     def testSuccess(self):
-        webhooks, cursor = starkbank.webhook.list(user=exampleProject)
+        webhooks, cursor = starkbank.webhook.list()
         print("Number of webhooks:", len(webhooks))
 
     # def testFields(self):
@@ -31,7 +31,7 @@ class TestWebhookInfoGet(TestCase):
     def testSuccess(self):
         webhooks, cursor = starkbank.webhook.list(user=exampleProject)
         webhookId = webhooks[0].id
-        webhook = starkbank.webhook.retrieve(user=exampleProject, id=webhookId)
+        webhook = starkbank.webhook.get(user=exampleProject, id=webhookId)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -47,9 +47,9 @@ class TestWebhookInfoGet(TestCase):
 class TestWebhookPostAndDelete(TestCase):
     def testSuccess(self):
         webhook = generateExampleWebhook()
-        webhook = starkbank.webhook.create(user=exampleProject, webhook=webhook)
+        webhook = starkbank.webhook.create(webhook)
         webhookId = webhook.id
-        webhooks = starkbank.webhook.delete(user=exampleProject, ids=[webhookId])
+        webhooks = starkbank.webhook.delete([webhookId])
 
 
 if __name__ == '__main__':

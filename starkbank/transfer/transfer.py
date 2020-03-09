@@ -1,20 +1,7 @@
-from starkbank.utils.base import Base, Post, Get, GetId, GetPdf, BaseDelete
-from starkbank.utils.case import snake_to_camel
+from starkbank.utils.base import Base, Post, Get, GetId, GetPdf, Delete
 
 
-class Transfer(Post, Get, GetId, GetPdf, BaseDelete):
-    _known_fields = {
-        "id",
-        "status",
-        "tax_id",
-        "amount",
-        "name",
-        "bank_code",
-        "branch_code",
-        "account_number",
-        "tags",
-    }
-    _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
+class Transfer(Post, Get, GetId, GetPdf, Delete):
 
     def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, tags=None, status=None, id=None):
         Base.__init__(self, id=id)
@@ -29,8 +16,11 @@ class Transfer(Post, Get, GetId, GetPdf, BaseDelete):
         self.status = status
 
 
-create = Transfer._create
-list = Transfer._list
-get = Transfer._get
-get_pdf = Transfer.get_pdf
-delete = Transfer.delete
+Transfer._define_known_fields()
+
+
+create = Transfer._post
+list = Transfer._get
+get = Transfer._get_id
+get_pdf = Transfer._get_pdf
+delete = Transfer._delete

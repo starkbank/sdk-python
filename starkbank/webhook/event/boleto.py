@@ -1,30 +1,8 @@
 from starkbank.utils.base import Base
-from starkbank.utils.case import snake_to_camel
 from starkbank.utils.checks import check_datetime
 
 
 class BoletoMessage(Base):
-
-    _known_fields = {
-        "status",
-        "amount",
-        "name",
-        "tax_id",
-        "street_line_1",
-        "street_line_2",
-        "district",
-        "city",
-        "state_code",
-        "zip_code",
-        "workspace_id",
-        "created",
-        "interest",
-        "fine",
-        "due_date",
-        "overdue_limit",
-        "id",
-    }
-    _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
 
     def __init__(self, status, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code, workspace_id, created, interest, fine, due_date, overdue_limit, id):
         Base.__init__(self, id=id)
@@ -45,3 +23,6 @@ class BoletoMessage(Base):
         self.fine = fine
         self.due_date = check_datetime(due_date)
         self.overdue_limit = overdue_limit
+
+
+BoletoMessage._define_known_fields()

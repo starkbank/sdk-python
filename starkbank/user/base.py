@@ -1,7 +1,7 @@
-from ..utils.base import Base
+from ..utils.base import Base, Get, Delete, GetId
 
 
-class User(Base):
+class User(Get, GetId, Delete):
     credentials = None
 
     def __init__(self, id, credentials):

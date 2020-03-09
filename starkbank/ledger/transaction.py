@@ -1,22 +1,9 @@
 from starkbank.utils.base import Base, Post, GetId, Get
-from starkbank.utils.case import snake_to_camel, camel_to_snake
+from starkbank.utils.case import camel_to_snake
 from starkbank.utils.checks import check_datetime
 
 
 class Transaction(Post, Get, GetId):
-    _known_fields = {
-        "amount",
-        "description",
-        "tags",
-        "external_id",
-        "receiver_id",
-        "sender_id",
-        "id",
-        "fee",
-        "created",
-        "source",
-    }
-    _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
 
     def __init__(self, amount, description, tags, external_id, receiver_id, sender_id=None, id=None, fee=None,
                  created=None, source=None):
@@ -40,6 +27,9 @@ class Transaction(Post, Get, GetId):
         })
 
 
-create = Transaction._create
-list = Transaction._list
-get = Transaction._get
+Transaction._define_known_fields()
+
+
+create = Transaction._post
+list = Transaction._get
+get = Transaction._get_id

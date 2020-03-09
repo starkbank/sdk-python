@@ -25,7 +25,7 @@ class TestEventInfoGet(TestCase):
     def testSuccess(self):
         events, cursor = starkbank.webhook.event.list(user=exampleProject)
         eventId = events[0].id
-        event = starkbank.webhook.event.retrieve(user=exampleProject, id=eventId)
+        event = starkbank.webhook.event.get(user=exampleProject, id=eventId)
 
     # def testFields(self):
     #     raise NotImplementedError

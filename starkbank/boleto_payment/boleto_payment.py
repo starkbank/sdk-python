@@ -1,24 +1,8 @@
-from starkbank import request
-from starkbank.utils.base import Base, Post, GetId, Get, GetPdf, BaseDelete
-from starkbank.utils.case import snake_to_camel
-from starkbank.utils.checks import check_user, check_datetime
+from starkbank.utils.base import Base, Post, GetId, Get, GetPdf, Delete
+from starkbank.utils.checks import check_datetime
 
 
-class BoletoPayment(Post, Get, GetId, GetPdf, BaseDelete):
-
-    _known_fields = {
-        "id",
-        "line",
-        "barCode",
-        "taxId",
-        "description",
-        "tags",
-        "scheduled",
-        "status",
-        "amount",
-        "created",
-    }
-    _known_camel_fields = {snake_to_camel(field) for field in _known_fields}
+class BoletoPayment(Post, Get, GetId, GetPdf, Delete):
 
     def __init__(self, tax_id, description, tags, line=None, bar_code=None, scheduled=None, id=None, status=None, amount=None, created=None):
         Base.__init__(self, id=id)
@@ -34,8 +18,11 @@ class BoletoPayment(Post, Get, GetId, GetPdf, BaseDelete):
         self.created = check_datetime(created)
 
 
-create = BoletoPayment._create
-list = BoletoPayment._list
-get = BoletoPayment._get
-get_pdf = BoletoPayment.get_pdf
-delete = BoletoPayment.delete
+BoletoPayment._define_known_fields()
+
+
+create = BoletoPayment._post
+list = BoletoPayment._get
+get = BoletoPayment._get_id
+get_pdf = BoletoPayment._get_pdf
+delete = BoletoPayment._delete
