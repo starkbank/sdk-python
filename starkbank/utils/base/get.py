@@ -1,5 +1,6 @@
 from starkbank import request
 from .base import Base
+from ..case import snake_to_camel
 from ..checks import check_user
 
 
@@ -14,7 +15,7 @@ class Get(Base):
             "limit": limit,
             "cursor": cursor,
         }
-        url_params.update(kwargs)
+        url_params.update({snake_to_camel(k): v for k, v in kwargs.items() if v is not None})
 
         response = request.get(
             user=check_user(user),

@@ -16,6 +16,19 @@ class Transfer(Post, Get, GetId, GetPdf, Delete):
         self.tags = tags
         self.status = status
 
+    @classmethod
+    def _query(cls, limit=100, request_id=None, transaction_ids=None, tags=None, after=None, before=None, status=None, sort=None):
+        return super(Transfer, cls)._query(
+            limit=limit,
+            request_id=request_id,
+            transaction_ids=transaction_ids,
+            tags=tags,
+            after=after,
+            before=before,
+            status=status,
+            sort=sort,
+        )
+
 
 Transfer._define_known_fields()
 
