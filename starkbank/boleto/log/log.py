@@ -4,11 +4,11 @@ from starkbank.boleto.boleto import Boleto
 
 
 class BoletoLog(Get, GetId):
-    def __init__(self, id, created, event, errors, boleto):
+    def __init__(self, id, created, type, errors, boleto):
         Base.__init__(self, id=id)
 
         self.created = check_datetime(created)
-        self.event = event
+        self.type = type
         self.errors = errors
         self.boleto = Boleto.from_json(boleto)
 
