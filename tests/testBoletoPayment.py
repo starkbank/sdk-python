@@ -2,7 +2,6 @@ import starkbank
 from unittest import TestCase, main
 
 from tests.utils.boletoPayment import generateExampleBoletoPaymentsJson
-from tests.utils.user import exampleProject
 
 
 class TestBoletoPaymentPost(TestCase):
@@ -10,7 +9,7 @@ class TestBoletoPaymentPost(TestCase):
     def testSuccess(self):
         payments = generateExampleBoletoPaymentsJson(n=5)
         try:
-            payments = starkbank.boleto_payment.create(payments)
+            payments = starkbank.payment.boleto.create(payments)
         except starkbank.exceptions.InputError as e:
             errors = e.elements
             for error in errors:
@@ -22,7 +21,7 @@ class TestBoletoPaymentPost(TestCase):
         payments2 = generateExampleBoletoPaymentsJson(n=55)
         payments = payments + payments2
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            payments = starkbank.boleto_payment.create(payments)
+            payments = starkbank.payment.boleto.create(payments)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -32,7 +31,7 @@ class TestBoletoPaymentPost(TestCase):
     def testFailInvalidJson(self):
         payments = {}
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            payments = starkbank.boleto_payment.create(payments)
+            payments = starkbank.payment.boleto.create(payments)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -46,7 +45,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[2].description = None
         payments[3].tax_id = None
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            payments = starkbank.boleto_payment.create(payments)
+            payments = starkbank.payment.boleto.create(payments)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -61,7 +60,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[3].tax_id = 123
         payments[4].tax_id = {}
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            payments = starkbank.boleto_payment.create(payments)
+            payments = starkbank.payment.boleto.create(payments)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -71,14 +70,14 @@ class TestBoletoPaymentPost(TestCase):
 
 class TestBoletoPaymentGet(TestCase):
     def testSuccess(self):
-        payments = list(starkbank.boleto_payment.query(limit=10))
+        payments = list(starkbank.payment.boleto.query(limit=10))
         print("Number of payments:", len(payments))
 
     # def testFields(self):
     #     raise NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}
     #     fieldsParams = {"fields": ",".join(fields)}
-    #     payments = starkbank.boleto_payment.list(user=exampleMember, params=fieldsParams)
+    #     payments = starkbank.payment.boleto.list(user=exampleMember, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     for payment in payments:
     #         self.assertTrue(set(payments.keys()).issubset(fields))
@@ -86,17 +85,17 @@ class TestBoletoPaymentGet(TestCase):
 
 class TestBoletoPaymentInfoGet(TestCase):
     def testSuccess(self):
-        payments = starkbank.boleto_payment.query()
+        payments = starkbank.payment.boleto.query()
         paymentId = next(payments).id
-        payment = starkbank.boleto_payment.get(id=paymentId)
+        payment = starkbank.payment.boleto.get(id=paymentId)
 
     # def testFields(self):
     #     raise NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}
     #     fieldsParams = {"fields": ",".join(fields)}
-    #     payments = starkbank.boleto_payment.list(user=exampleMember)
+    #     payments = starkbank.payment.boleto.list(user=exampleMember)
     #     paymentId = payments[0].id
-    #     payments = starkbank.boleto_payment.get(user=exampleMember, id=paymentId, params=fieldsParams)
+    #     payments = starkbank.payment.boleto.get(user=exampleMember, id=paymentId, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     payment = content["payment"]
     #     print(content)
@@ -105,9 +104,9 @@ class TestBoletoPaymentInfoGet(TestCase):
 
 class TestBoletoPaymentPdfGet(TestCase):
     def testSuccess(self):
-        payments = starkbank.boleto_payment.query()
+        payments = starkbank.payment.boleto.query()
         paymentId = next(payments).id
-        payments = starkbank.boleto_payment.get_pdf(id=paymentId)
+        payments = starkbank.payment.boleto.get_pdf(id=paymentId)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-# Create public and private keys
+# Create private key
 
 ```python
 import starkbank
@@ -16,11 +16,16 @@ import starkbank
 
 project_user = starkbank.Project(
     id=129837612983,
-    private_key=private_key,
-    environment=“sandbox”,
+    private_key="""
+        -----BEGIN EC PRIVATE KEY-----
+        MHQCAQEEIOJ3xkQ9NRdMPLLSrXOOlaoexG8JZgQyTMdX1dISCXaCoAcGBSuBBAAK
+        oUQDQgAEUneBQJsBhZl8/nPQd4YUe/UqEAtyJRH01YyWrg+nsNcSRlc1GzC3DB+X
+        CPZXBUbsMQAbLoWXIN1pqIX2b/NE9Q==
+        -----END EC PRIVATE KEY-----
+    """,
+    environment="sandbox",
 )
 starkbank.user = project_user
-starkbank.debug = True
 ```
 
 # Get balance
@@ -36,6 +41,7 @@ print(balance.amount)
 # Create boletos
 ```python
 import starkbank
+from datetime import datetime
 
 
 boletos = starkbank.boleto.create([
@@ -49,7 +55,7 @@ boletos = starkbank.boleto.create([
 import starkbank
 
 
-boleto = starkbank.boleto.get("123")
+boleto = starkbank.boleto.get("5155165527080960")
 
 print(boleto)
 ```
@@ -74,7 +80,7 @@ for boleto in boletos:
 import starkbank
 
 
-boleto = starkbank.boleto.log.get("123")
+boleto = starkbank.boleto.log.get("5155165527080960")
 
 print(boleto)
 ```
@@ -99,8 +105,8 @@ import starkbank
 
 
 transfers = starkbank.transfer.create([
-    starkbank.Transfer(amount=100, bank_code="341", ...),
-    starkbank.Transfer(amount=200, bank_code="237", ...),
+    starkbank.Transfer(amount=100, bank_code="200", ...),
+    starkbank.Transfer(amount=200, bank_code="200", ...),
 ])
 
 print([transfer.id for transfer in transfers])
@@ -111,7 +117,7 @@ print([transfer.id for transfer in transfers])
 import starkbank
 
 
-transfer = starkbank.transfer.get("123")
+transfer = starkbank.transfer.get("5155165527080960")
 
 print(transfer)
 ```
@@ -211,7 +217,7 @@ print([transaction.amount for transaction in transactions])
 import starkbank
 
 
-transaction = starkbank.transaction.get("123")
+transaction = starkbank.transaction.get("5155165527080960")
 
 print(transaction)
 ```

@@ -14,4 +14,7 @@ class Balance(Get):
 
 Balance._define_known_fields()
 
-query = Balance._query
+
+def get(user=None):
+    balances, cursor = Balance._get(user=user)
+    return balances[0]

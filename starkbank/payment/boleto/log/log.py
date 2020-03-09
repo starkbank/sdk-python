@@ -1,6 +1,6 @@
-from starkbank.boleto_payment.boleto_payment import BoletoPayment
-from starkbank.utils.base import Base, Get, GetId
-from starkbank.utils.checks import check_datetime
+from ....utils.base import Base, Get, GetId
+from ....utils.checks import check_datetime
+from ..boleto_payment import BoletoPayment
 
 
 class BoletoPaymentLog(Get, GetId):

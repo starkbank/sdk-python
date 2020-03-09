@@ -83,9 +83,9 @@ class TestTransferPost(TestCase):
         self.assertEqual(5, len(errors))
 
     def testFailInvalidBalance(self):
-        balances = starkbank.balance.query()
+        balance = starkbank.balance.get()
         transfer = generateExampleTransfersJson(n=1)[0]
-        transfer.amount = 2 * next(balances).amount
+        transfer.amount = 2 * balance.amount
         transfers = starkbank.transfer.create([transfer])
         time.sleep(5)
         transfer = starkbank.transfer.get(id=transfers[0].id)
