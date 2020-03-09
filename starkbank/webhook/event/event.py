@@ -1,29 +1,27 @@
-from starkbank.utils.base import Base, Get, GetId
-from starkbank.utils.checks import check_datetime
-from .boleto import BoletoMessage
-from .boleto_payment import BoletoPaymentMessage
-from .transfer import TransferMessage
+from ...utils.base import Base, Get, GetId
+from ...utils.checks import check_datetime
+from ...boleto.log import BoletoLog
+from ...transfer.log import TransferLog
+from ...payment.boleto.log import BoletoPaymentLog
 
 
 class Event(Get, GetId):
 
-    def __init__(self, message, created, delivered, id):
+    def __init__(self, log, created, delivered, subscription, id):
         Base.__init__(self, id=id)
 
         self.created = check_datetime(created)
         self.delivered = check_datetime(delivered)
+        self.subscription = subscription
+        self.log = _process_log(log=log, subscription=subscription)
 
-        if "transfer" in message:
-            self.message = TransferMessage.from_json(message["transfer"])
-            self.type = "transfer"
-        elif "boleto" in message:
-            if "issueDate" in message["boleto"]:  # TODO: remove
-                message["boleto"]["created"] = message["boleto"].pop("issueDate")
-            self.message = BoletoMessage.from_json(message["boleto"])
-            self.type = "boleto"
-        elif "boletoPayment" in message:
-            self.message = BoletoPaymentMessage.from_json(message["boletoPayment"])
-            self.type = "boleto_payment"
+
+def _process_log(log, subscription):
+    return {
+        "transfer": TransferLog.from_json(log),
+        "boleto": BoletoLog.from_json(log),
+        "boleto-payment": BoletoPaymentLog.from_json(log),
+    }[subscription]
 
 
 Event._define_known_fields()
