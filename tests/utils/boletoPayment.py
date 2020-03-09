@@ -11,24 +11,6 @@ from .user import exampleProject
 starkbank.settings.user = exampleProject
 
 
-def generateExampleBoletoPaymentsJsonOld(n=1):
-    boletos = generateExampleBoletosJson(n=n)
-
-    boletos, errors = starkbank.boleto.create(boletos)
-
-    lines = [boleto.line for boleto in boletos]
-    ids = [boleto.id for boleto in boletos]
-
-    payment = exampleBoletoPaymentsJson["payments"][0]
-    payments = []
-    for id, line in zip(ids, lines):
-        payment["line"] = line
-        payment["scheduled"] = str(date.today())
-        payment["description"] = sha256(str(id).encode('utf-8')).hexdigest()
-        payments.append(deepcopy(payment))
-    return {"payments": payments}
-
-
 def generateExampleBoletoPaymentsJson(n=1):
     boletos = generateExampleBoletosJson(n=n)
 

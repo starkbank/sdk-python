@@ -24,7 +24,7 @@ class TestBoletoLogGet(TestCase):
 
 class TestBoletoLogInfoGet(TestCase):
     def testSuccess(self):
-        logs = starkbank.boleto.log.query(user=exampleProject)
+        logs = starkbank.boleto.log.query()
         logId = next(logs).id
         logs = starkbank.boleto.log.get(id=logId)
 

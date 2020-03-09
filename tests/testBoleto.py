@@ -3,7 +3,7 @@ from datetime import datetime
 from unittest import TestCase, main
 
 from tests.utils.boleto import generateExampleBoletosJson
-from tests.utils.dateGenerator import randomPastDate, randomDateBetween
+from tests.utils.dateGenerator import randomPastDate
 from tests.utils.user import exampleProject
 
 class TestBoletoPost(TestCase):
