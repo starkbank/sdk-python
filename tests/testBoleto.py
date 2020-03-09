@@ -121,7 +121,7 @@ class TestBoletoPost(TestCase):
 
 class TestBoletoGet(TestCase):
     def testSuccess(self):
-        boletos = list(starkbank.boleto.query(limit=100))
+        boletos = list(starkbank.boleto.query(limit=150))
         print("Number of boletos:", len(boletos))
         self.assertIsInstance(boletos, list)
 
