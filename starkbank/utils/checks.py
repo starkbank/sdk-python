@@ -34,12 +34,6 @@ def check_private_key(private_key_pem):
     return PrivateKey.fromPem(private_key_pem)
 
 
-def check_or_create_private_key(private_key_pem):
-    if private_key_pem:
-        return check_private_key(private_key_pem)
-    return PrivateKey()
-
-
 def check_id(id):
     id = str(id)
     assert id.isdigit()

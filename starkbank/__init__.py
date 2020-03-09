@@ -1,5 +1,4 @@
 from .settings import settings
-from .key import key
 from .user import project
 from .user.project import Project
 from .ledger import Balance, balance, Transaction, transaction

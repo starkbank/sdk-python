@@ -1,14 +1,3 @@
-# Create private key
-
-```python
-import starkbank
-
-
-private_key = starkbank.key.create(
-    path="./user/project/keys"
-)
-```
-
 # Load existing project
 ```python
 import starkbank
