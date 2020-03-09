@@ -17,6 +17,14 @@ class BoletoPaymentLog(Get, GetId):
     def _endpoint(cls):
         return "boleto-payment/log"
 
+    @classmethod
+    def _query(cls, limit=100, payment_ids=None, events=None):
+        return super(BoletoPaymentLog, cls)._query(
+            limit=limit,
+            payment_ids=payment_ids,
+            events=events,
+        )
+
 
 BoletoPaymentLog._define_known_fields()
 

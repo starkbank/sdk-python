@@ -16,12 +16,12 @@ class Event(Get, GetId):
         self.log = _process_log(log=log, subscription=subscription)
 
     @classmethod
-    def _query(cls, limit=100, after=None, before=None, isDelivered=None):
+    def _query(cls, limit=100, after=None, before=None, is_delivered=None):
         return super(Event, cls)._query(
             limit=limit,
             after=after,
             before=before,
-            isDelivered=isDelivered,
+            is_delivered=is_delivered,
         )
 
 

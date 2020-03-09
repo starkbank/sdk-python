@@ -17,6 +17,14 @@ class BoletoPayment(Post, Get, GetId, GetPdf, Delete):
         self.amount = amount
         self.created = check_datetime(created)
 
+    @classmethod
+    def _query(cls, limit=100, status=None, tags=None):
+        return super(BoletoPayment, cls)._query(
+            limit=limit,
+            status=status,
+            tags=tags,
+        )
+
 
 BoletoPayment._define_known_fields()
 
