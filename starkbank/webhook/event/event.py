@@ -15,6 +15,15 @@ class Event(Get, GetId):
         self.subscription = subscription
         self.log = _process_log(log=log, subscription=subscription)
 
+    @classmethod
+    def _query(cls, limit=100, after=None, before=None, isDelivered=None):
+        return super(Event, cls)._query(
+            limit=limit,
+            after=after,
+            before=before,
+            isDelivered=isDelivered,
+        )
+
 
 def _process_log(log, subscription):
     return {
