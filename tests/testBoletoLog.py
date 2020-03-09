@@ -26,7 +26,7 @@ class TestBoletoLogInfoGet(TestCase):
     def testSuccess(self):
         logs, cursor = starkbank.boleto.log.list(user=exampleProject)
         logId = logs[0].id
-        logs = starkbank.boleto.log.retrieve(user=exampleProject, id=logId)
+        logs = starkbank.boleto.log.get(user=exampleProject, id=logId)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -35,7 +35,7 @@ class TestBoletoLogInfoGet(TestCase):
     #     content, status = starkbank.boleto.log.list(user=exampleMember)
     #     logs = content["logs"]
     #     logId = logs[0]["id"]
-    #     content, status = starkbank.boleto.log.retrieve(user=exampleMember, id=logId, params=fieldsParams)
+    #     content, status = starkbank.boleto.log.get(user=exampleMember, id=logId, params=fieldsParams)
     #     self.assertEqual(200, status)
     #     log = content["log"]
     #     print(content)

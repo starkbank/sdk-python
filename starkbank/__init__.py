@@ -1,5 +1,3 @@
-
-
 from .settings import settings
 from .key import key
 from .user import project

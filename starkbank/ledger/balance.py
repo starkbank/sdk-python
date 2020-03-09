@@ -1,11 +1,10 @@
 from starkbank import request
-from starkbank.utils.base import Base
+from starkbank.utils.base import Base, Get
 from starkbank.utils.case import snake_to_camel
 from starkbank.utils.checks import check_user, check_datetime
 
 
-class Balance(Base):
-
+class Balance(Get):
     _known_fields = {
         "id",
         "amount",
@@ -22,14 +21,4 @@ class Balance(Base):
         self.updated = check_datetime(updated)
 
 
-def list(limit=100, cursor=None, user=None):
-    response = request.get(
-        user=check_user(user),
-        endpoint="balance/",
-        url_params={
-            "limit": limit,
-            "cursor": cursor,
-        },
-    )
-
-    return [Balance.from_json(balance) for balance in response["balances"]], response["cursor"]
+list = Balance._list

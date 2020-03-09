@@ -10,7 +10,7 @@ class TestBoletoPaymentPost(TestCase):
     def testSuccess(self):
         payments = generateExampleBoletoPaymentsJson(n=5)
         try:
-            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+            payments = starkbank.boleto_payment.create(payments)
         except starkbank.exceptions.InputError as e:
             errors = e.elements
             for error in errors:
@@ -22,7 +22,7 @@ class TestBoletoPaymentPost(TestCase):
         payments2 = generateExampleBoletoPaymentsJson(n=55)
         payments = payments + payments2
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+            payments = starkbank.boleto_payment.create(payments)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -32,7 +32,7 @@ class TestBoletoPaymentPost(TestCase):
     def testFailInvalidJson(self):
         payments = {}
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+            payments = starkbank.boleto_payment.create(payments)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -46,7 +46,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[2].description = None
         payments[3].tax_id = None
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+            payments = starkbank.boleto_payment.create(payments)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -61,7 +61,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[3].tax_id = 123
         payments[4].tax_id = {}
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            payments = starkbank.boleto_payment.create(user=exampleProject, payments=payments)
+            payments = starkbank.boleto_payment.create(payments)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -71,7 +71,7 @@ class TestBoletoPaymentPost(TestCase):
 
 class TestBoletoPaymentGet(TestCase):
     def testSuccess(self):
-        payments, cursor = starkbank.boleto_payment.list(user=exampleProject)
+        payments, cursor = starkbank.boleto_payment.list()
         print("Number of payments:", len(payments))
 
     # def testFields(self):
@@ -86,9 +86,9 @@ class TestBoletoPaymentGet(TestCase):
 
 class TestBoletoPaymentInfoGet(TestCase):
     def testSuccess(self):
-        payments, cursor = starkbank.boleto_payment.list(user=exampleProject)
+        payments, cursor = starkbank.boleto_payment.list()
         paymentId = payments[0].id
-        payment = starkbank.boleto_payment.retrieve(user=exampleProject, id=paymentId)
+        payment = starkbank.boleto_payment.get(id=paymentId)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -96,7 +96,7 @@ class TestBoletoPaymentInfoGet(TestCase):
     #     fieldsParams = {"fields": ",".join(fields)}
     #     payments = starkbank.boleto_payment.list(user=exampleMember)
     #     paymentId = payments[0].id
-    #     payments = starkbank.boleto_payment.retrieve(user=exampleMember, id=paymentId, params=fieldsParams)
+    #     payments = starkbank.boleto_payment.get(user=exampleMember, id=paymentId, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     payment = content["payment"]
     #     print(content)
@@ -105,9 +105,9 @@ class TestBoletoPaymentInfoGet(TestCase):
 
 class TestBoletoPaymentPdfGet(TestCase):
     def testSuccess(self):
-        payments, cursor = starkbank.boleto_payment.list(user=exampleProject)
+        payments, cursor = starkbank.boleto_payment.list()
         paymentId = payments[0].id
-        payments = starkbank.boleto_payment.retrieve_pdf(user=exampleProject, id=paymentId)
+        payments = starkbank.boleto_payment.get_pdf(id=paymentId)
 
 
 if __name__ == '__main__':

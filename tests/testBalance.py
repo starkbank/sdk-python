@@ -13,7 +13,7 @@ class TestBalanceGet(TestCase):
     #     raise NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}
     #     fieldsParams = {"fields": ",".join(fields)}
-    #     balances, errors = starkbank.balance.retrieve(user=exampleMember, params=fieldsParams)
+    #     balances, errors = starkbank.balance.get(user=exampleMember, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     self.assertIsInstance(balances[0].amount, int)
     #     print(content)

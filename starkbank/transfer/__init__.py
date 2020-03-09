@@ -1,1 +1,1 @@
-from .transfer import Transfer, create, retrieve, retrieve_pdf, list, delete
+from .transfer import Transfer, create, get, get_pdf, list, delete

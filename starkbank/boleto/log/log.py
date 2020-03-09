@@ -1,11 +1,11 @@
 from starkbank import request
-from starkbank.utils.base import Base
+from starkbank.utils.base import Base, Get, GetId
 from starkbank.utils.case import snake_to_camel
 from starkbank.utils.checks import check_user, check_datetime
 from starkbank.boleto.boleto import Boleto
 
 
-class BoletoLog(Base):
+class BoletoLog(Get, GetId):
     _known_fields = {
         "id",
         "errors",
@@ -23,24 +23,10 @@ class BoletoLog(Base):
         self.errors = errors
         self.boleto = Boleto.from_json(boleto)
 
-
-def list(limit=100, cursor=None, user=None):
-    response = request.get(
-        user=check_user(user),
-        endpoint="boleto/log/",
-        url_params={
-            "limit": limit,
-            "cursor": cursor,
-        },
-    )
-
-    return [BoletoLog.from_json(boleto) for boleto in response["logs"]], response["cursor"]
+    @classmethod
+    def endpoint(cls):
+        return "boleto/log"
 
 
-def retrieve(id, user=None):
-    response = request.get(
-        user=check_user(user),
-        endpoint="boleto/log/{id}".format(id=id),
-    )
-
-    return BoletoLog.from_json(response["log"])
+list = BoletoLog._list
+get = BoletoLog._get

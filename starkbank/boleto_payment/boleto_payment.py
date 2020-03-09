@@ -1,10 +1,10 @@
 from starkbank import request
-from starkbank.utils.base import Base
+from starkbank.utils.base import Base, Post, GetId, Get, GetPdf, BaseDelete
 from starkbank.utils.case import snake_to_camel
 from starkbank.utils.checks import check_user, check_datetime
 
 
-class BoletoPayment(Base):
+class BoletoPayment(Post, Get, GetId, GetPdf, BaseDelete):
 
     _known_fields = {
         "id",
@@ -34,65 +34,8 @@ class BoletoPayment(Base):
         self.created = check_datetime(created)
 
 
-def create(payments, user=None):
-    response = request.post(
-        user=check_user(user),
-        endpoint="boleto-payment",
-        body={
-            "payments": [
-                {snake_to_camel(k): v for k, v in payment.json().items() if v is not None} for payment in payments
-            ]
-        }
-    )
-
-    return [
-        BoletoPayment.from_json(payment) for payment in response["payments"]
-    ]
-
-
-def retrieve(id, user=None):
-    response = request.get(
-        user=check_user(user),
-        endpoint="boleto-payment/{id}".format(id=id),
-    )
-
-    return BoletoPayment.from_json(response["payment"])
-
-
-def retrieve_pdf(id, user=None):
-    response = request.get(
-        user=check_user(user),
-        endpoint="boleto-payment/{id}/pdf".format(id=id),
-        json_response=False,
-    )
-
-    return response
-
-
-def list(limit=100, cursor=None, user=None):
-    response = request.get(
-        user=check_user(user),
-        endpoint="boleto-payment/",
-        url_params={
-            "limit": limit,
-            "cursor": cursor,
-        },
-    )
-
-    return [BoletoPayment.from_json(payment) for payment in response["payments"]], response["cursor"]
-
-
-def delete(ids, user=None):
-    if len(ids) > 100:
-        raise ValueError("ids cannot have more than 100 elements")
-
-    payments = []
-    for id in ids:
-        response = request.delete(
-            user=check_user(user),
-            endpoint="boleto-payment/{id}".format(id=id),
-        )
-
-        payments.append(BoletoPayment.from_json(response["payments"]))
-
-    return payments
+create = BoletoPayment._create
+list = BoletoPayment._list
+get = BoletoPayment._get
+get_pdf = BoletoPayment.get_pdf
+delete = BoletoPayment.delete

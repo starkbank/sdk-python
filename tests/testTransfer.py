@@ -11,14 +11,14 @@ class TestTransferPost(TestCase):
 
     def testSuccess(self):
         transfers = generateExampleTransfersJson(n=5)
-        transfers = starkbank.transfer.create(user=exampleProject, transfers=transfers)
+        transfers = starkbank.transfer.create(transfers)
         for transfer in transfers:
             print(transfer.id)
 
     def testFailInvalidArraySize(self):
         transfers = generateExampleTransfersJson(n=105)
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            transfers = starkbank.transfer.create(user=exampleProject, transfers=transfers)
+            transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -28,7 +28,7 @@ class TestTransferPost(TestCase):
     def testFailInvalidJson(self):
         transfers = {}
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            transfers = starkbank.transfer.create(user=exampleProject, transfers=transfers)
+            transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -45,7 +45,7 @@ class TestTransferPost(TestCase):
         transfers[5].account_number = None
         transfers[6].tags = None
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            transfers = starkbank.transfer.create(user=exampleProject, transfers=transfers)
+            transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -60,7 +60,7 @@ class TestTransferPost(TestCase):
         transfers[3].tax_id = 123  # 2 errors
         transfers[4].tax_id = {}  # 2 errors
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            transfers = starkbank.transfer.create(user=exampleProject, transfers=transfers)
+            transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -75,7 +75,7 @@ class TestTransferPost(TestCase):
         transfers[3].amount = 1000000000000000
         transfers[4].amount = {}
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            transfers = starkbank.transfer.create(user=exampleProject, transfers=transfers)
+            transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -86,9 +86,9 @@ class TestTransferPost(TestCase):
         balances, cursor = starkbank.balance.list()
         transfer = generateExampleTransfersJson(n=1)[0]
         transfer.amount = 2 * balances[0].amount
-        transfers = starkbank.transfer.create(user=exampleProject, transfers=[transfer])
+        transfers = starkbank.transfer.create([transfer])
         time.sleep(5)
-        transfer = starkbank.transfer.retrieve(user=exampleProject, id=transfers[0].id)
+        transfer = starkbank.transfer.get(id=transfers[0].id)
         self.assertEqual("failed", transfer.status)
 
 
@@ -109,9 +109,9 @@ class TestTransferGet(TestCase):
 
 class TestTransferInfoGet(TestCase):
     def testSuccess(self):
-        transfers = starkbank.transfer.list(user=exampleProject)
+        transfers, cursor = starkbank.transfer.list(user=exampleProject)
         transferId = transfers[0].id
-        transfer = starkbank.transfer.retrieve(user=exampleProject, id=transferId)
+        transfer = starkbank.transfer.get(user=exampleProject, id=transferId)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -120,7 +120,7 @@ class TestTransferInfoGet(TestCase):
     #     transfers = starkbank.transfer.list(user=exampleMember)
     #     transfers = content["transfers"]
     #     transferId = transfers[0]["id"]
-    #     transfers = starkbank.transfer.retrieve(user=exampleMember, id=transferId, params=fieldsParams)
+    #     transfers = starkbank.transfer.get(user=exampleMember, id=transferId, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     transfer = content["transfer"]
     #     print(content)
@@ -129,10 +129,15 @@ class TestTransferInfoGet(TestCase):
 
 class TestTransferPdfGet(TestCase):
     def testSuccess(self):
-        transfers = starkbank.transfer.list(user=exampleProject)
+        transfers, cursor = starkbank.transfer.list(user=exampleProject)
         transferId = transfers[0].id
-        pdf = starkbank.transfer.retrieve_pdf(user=exampleProject, id=transferId)
-        print(str(pdf))
+        try:
+            pdf = starkbank.transfer.get_pdf(user=exampleProject, id=transferId)
+            print(str(pdf))
+        except starkbank.exceptions.InputError as e:
+            errors = e.elements
+            for error in errors:
+                self.assertEqual("invalidTransfer", error.code)
 
 
 # class TestTransferPostAndDelete(TestCase):

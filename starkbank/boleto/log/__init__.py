@@ -1,1 +1,1 @@
-from .log import BoletoLog, list, retrieve
+from .log import BoletoLog, list, get

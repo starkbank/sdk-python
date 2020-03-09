@@ -2,9 +2,7 @@ import requests
 from time import time
 from json import dumps, loads
 from ellipticcurve.ecdsa import Ecdsa
-from starkbank import settings
 from starkbank.models.logging import Logging
-from starkbank.user.base import User
 from starkbank.exceptions import Houston, InputError, UnknownException
 from starkbank.models.environment import Environment
 from starkbank.user.credentials import Credentials
@@ -33,6 +31,7 @@ def delete(user, endpoint):
 def _make_request(user, request_method, endpoint, url_params=None, body=None, json_response=True):
     credentials = _get_credentials(user)
 
+    from starkbank import settings
     debug = settings.logging == Logging.debug
 
     if body is not None:
@@ -88,6 +87,7 @@ def _headers(credentials, body=None):
 
 
 def _get_credentials(user):
+    from starkbank.user.base import User
     assert isinstance(user, User), "user must be an object retrieved from one of starkbank.user methods or classes"
     credentials = user.credentials
     assert isinstance(credentials, Credentials), "user private key is not loaded in credentials"
@@ -101,6 +101,7 @@ def _get_url(endpoint):
 
 
 def _get_base_url():
+    from starkbank import settings
     env = settings.env
 
     if not env:

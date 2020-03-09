@@ -9,12 +9,12 @@ starkbank.settings.logging = "debug"
 class TestBoletoPost(TestCase):
     def testSuccess(self):
         boletos = generateExampleBoletosJson(n=5)
-        boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+        boletos = starkbank.boleto.create(boletos)
 
     def testFailInvalidArraySize(self):
         boletos = generateExampleBoletosJson(n=105)
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+            boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -24,7 +24,7 @@ class TestBoletoPost(TestCase):
     def testFailInvalidJson(self):
         boletos = {}
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+            boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -53,7 +53,7 @@ class TestBoletoPost(TestCase):
         boletos[15].invalid_parameter = "invalidValue"
 
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+            boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -81,7 +81,7 @@ class TestBoletoPost(TestCase):
         boletos[16].descriptions = [{"text": "abc", "amount": "abc"}]
         boletos[17].descriptions = [{"text": "abc", "amount": 1, "test": "abc"}]
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+            boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -96,7 +96,7 @@ class TestBoletoPost(TestCase):
         boletos[3].tax_id = 123  # 2 errors
         boletos[4].tax_id = {}  # 2 errors
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+            boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -111,7 +111,7 @@ class TestBoletoPost(TestCase):
         boletos[3].amount = 1000000000000000
         boletos[4].amount = {}
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+            boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -121,7 +121,7 @@ class TestBoletoPost(TestCase):
 
 class TestBoletoGet(TestCase):
     def testSuccess(self):
-        boletos, cursor = starkbank.boleto.list(user=exampleProject)
+        boletos, cursor = starkbank.boleto.list()
         print("Number of boletos:", len(boletos))
         self.assertIsInstance(boletos, list)
 
@@ -139,18 +139,18 @@ class TestBoletoGet(TestCase):
 class TestBoletoPostAndDelete(TestCase):
     def testSuccess(self):
         boletos = generateExampleBoletosJson(n=1)
-        boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+        boletos = starkbank.boleto.create(boletos)
         boletoId = boletos[0].id
-        boletos = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
+        boletos = starkbank.boleto.delete(ids=[boletoId])
         print(boletos[0].id)
 
     def testFailDeleteTwice(self):
         boletos = generateExampleBoletosJson(n=1)
-        boletos = starkbank.boleto.create(user=exampleProject, boletos=boletos)
+        boletos = starkbank.boleto.create(boletos)
         boletoId = boletos[0].id
-        boletos = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
+        boletos = starkbank.boleto.delete(ids=[boletoId])
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            boletos = starkbank.boleto.delete(user=exampleProject, ids=[boletoId])
+            boletos = starkbank.boleto.delete(ids=[boletoId])
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -160,9 +160,9 @@ class TestBoletoPostAndDelete(TestCase):
 
 class TestBoletoInfoGet(TestCase):
     def testSuccess(self):
-        boletos, cursor = starkbank.boleto.list(user=exampleProject)
+        boletos, cursor = starkbank.boleto.list()
         boletoId = boletos[0].id
-        boleto = starkbank.boleto.retrieve(user=exampleProject, id=boletoId)
+        boleto = starkbank.boleto.get(id=boletoId)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -171,7 +171,7 @@ class TestBoletoInfoGet(TestCase):
     #     boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
     #     boletos = content["boletos"]
     #     boletoId = boletos[0]["id"]
-    #     boletos, cursor, errors = starkbank.boleto.retrieve(user=exampleMember, id=boletoId, params=fieldsParams)
+    #     boletos, cursor, errors = starkbank.boleto.get(user=exampleMember, id=boletoId, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     boleto = content["boleto"]
     #     print(content)
@@ -180,9 +180,9 @@ class TestBoletoInfoGet(TestCase):
 
 class TestBoletoPdfGet(TestCase):
     def testSuccess(self):
-        boletos, cursor = starkbank.boleto.list(user=exampleProject)
+        boletos, cursor = starkbank.boleto.list()
         boletoId = boletos[0].id
-        pdf = starkbank.boleto.retrieve_pdf(user=exampleProject, id=boletoId)
+        pdf = starkbank.boleto.get_pdf(id=boletoId)
         print(pdf)
 
 

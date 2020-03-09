@@ -1,2 +1,2 @@
-from .boleto import Boleto, create, retrieve, retrieve_pdf, list, delete
+from .boleto import Boleto, create, get, get_pdf, list, delete
 from . import log

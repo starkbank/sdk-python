@@ -14,7 +14,7 @@ starkbank.settings.default_user = exampleProject
 def generateExampleBoletoPaymentsJsonOld(n=1):
     boletos = generateExampleBoletosJson(n=n)
 
-    boletos, errors = starkbank.boleto.create(boletos=boletos)
+    boletos, errors = starkbank.boleto.create(boletos)
 
     lines = [boleto.line for boleto in boletos]
     ids = [boleto.id for boleto in boletos]
@@ -32,7 +32,7 @@ def generateExampleBoletoPaymentsJsonOld(n=1):
 def generateExampleBoletoPaymentsJson(n=1):
     boletos = generateExampleBoletosJson(n=n)
 
-    boletos = starkbank.boleto.create(boletos=boletos)
+    boletos = starkbank.boleto.create(boletos)
 
     lines = [boleto.line for boleto in boletos]
     ids = [boleto.id for boleto in boletos]

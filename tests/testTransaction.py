@@ -9,12 +9,12 @@ class TestTransactionPost(TestCase):
 
     def testSuccess(self):
         transactions = generateExampleTransactions(n=5)
-        transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
+        transactions = starkbank.transaction.create(transactions)
 
     def testFailInvalidArraySize(self):
         transactions = generateExampleTransactions(n=105)
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
+            transactions = starkbank.transaction.create(transactions)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -24,7 +24,7 @@ class TestTransactionPost(TestCase):
     def testFailInvalidJson(self):
         transactions = {}
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
+            transactions = starkbank.transaction.create(transactions)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -43,7 +43,7 @@ class TestTransactionPost(TestCase):
         transactions[5].invalid_parameter = "invalidValue"
 
         with self.assertRaises(starkbank.exceptions.InputError) as context:
-            transactions = starkbank.transaction.create(user=exampleProject, transactions=transactions)
+            transactions = starkbank.transaction.create(transactions)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -53,7 +53,7 @@ class TestTransactionPost(TestCase):
 
 class TestTransactionGet(TestCase):
     def testSuccess(self):
-        transactions, cursor = starkbank.transaction.list(user=exampleProject)
+        transactions, cursor = starkbank.transaction.list()
         print("Number of transactions:", len(transactions))
 
         # def testFields(self):
@@ -68,9 +68,9 @@ class TestTransactionGet(TestCase):
 
 class TestTransactionInfoGet(TestCase):
     def testSuccess(self):
-        transactions, cursor = starkbank.transaction.list(user=exampleProject)
+        transactions, cursor = starkbank.transaction.list()
         transactionId = transactions[0].id
-        transactions = starkbank.transaction.retrieve(user=exampleProject, id=transactionId)
+        transactions = starkbank.transaction.get(id=transactionId)
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -79,7 +79,7 @@ class TestTransactionInfoGet(TestCase):
     #     transactions, cursor = starkbank.transaction.list(user=exampleMember)
     #     transactions = content["transactions"]
     #     transactionId = transactions[0]["id"]
-    #     transactions = starkbank.transaction.retrieve(user=exampleMember, id=transactionId, params=fieldsParams)
+    #     transactions = starkbank.transaction.get(user=exampleMember, id=transactionId, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     transaction = content["transaction"]
     #     print(content)
