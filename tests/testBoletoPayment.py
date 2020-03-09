@@ -89,6 +89,16 @@ class TestBoletoPaymentInfoGet(TestCase):
         paymentId = next(payments).id
         payment = starkbank.payment.boleto.get(id=paymentId)
 
+    def testFailInvalidPayment(self):
+        paymentId = "0"
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            payment = starkbank.payment.boleto.get(paymentId)
+        errors = context.exception.elements
+        for error in errors:
+            print(error)
+            self.assertEqual('invalidPayment', error.code)
+        self.assertEqual(1, len(errors))
+
     # def testFields(self):
     #     raise NotImplementedError
     #     fields = {"amount", "id", "created", "invalid"}

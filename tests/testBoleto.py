@@ -1,7 +1,7 @@
-import starkbank
 from unittest import TestCase, main
+
+import starkbank
 from tests.utils.boleto import generateExampleBoletosJson
-from tests.utils.user import exampleProject
 
 
 class TestBoletoPost(TestCase):

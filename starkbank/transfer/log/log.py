@@ -1,6 +1,6 @@
-from starkbank import Transfer
-from starkbank.utils.base import Base
-from starkbank.utils.checks import check_datetime
+from ..transfer import Transfer
+from ...utils.base import Base
+from ...utils.checks import check_datetime
 
 
 class TransferLog(Base):
