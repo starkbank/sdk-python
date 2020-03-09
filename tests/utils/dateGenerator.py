@@ -1,13 +1,13 @@
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 from random import randint
 
 
 def randomFutureDate(days=7):
-    return date.today() + timedelta(days=randint(1, days))
+    return datetime.today() + timedelta(days=randint(1, days))
 
 
 def randomPastDate(days=7):
-    return date.today() - timedelta(days=randint(1, days))
+    return datetime.today() - timedelta(days=randint(1, days))
 
 
 def randomDateBetween(after, before):

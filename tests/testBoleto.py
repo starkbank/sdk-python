@@ -1,8 +1,10 @@
+import starkbank
+from datetime import datetime
 from unittest import TestCase, main
 
-import starkbank
 from tests.utils.boleto import generateExampleBoletosJson
-
+from tests.utils.dateGenerator import randomPastDate, randomDateBetween
+from tests.utils.user import exampleProject
 
 class TestBoletoPost(TestCase):
     def testSuccess(self):
@@ -119,9 +121,19 @@ class TestBoletoPost(TestCase):
 
 class TestBoletoGet(TestCase):
     def testSuccess(self):
-        boletos = list(starkbank.boleto.query(limit=150))
+        boletos = list(starkbank.boleto.query())
         print("Number of boletos:", len(boletos))
-        self.assertIsInstance(boletos, list)
+
+    def testSuccessAfterBefore(self):
+        after = randomPastDate(days=10)
+        before = datetime.today()
+        boletos = starkbank.boleto.query(after=after.date(), before=before.date())
+        i = 0
+        for i, boleto in enumerate(boletos):
+            self.assertTrue(after.date() <= boleto.created.date() <= before.date())
+            if i >= 200:
+                break
+        print("Number of boletos:", i)
 
     # def testFields(self):
     #     return NotImplementedError

@@ -1,6 +1,9 @@
+from datetime import datetime
+
 import starkbank
 from unittest import TestCase, main
 
+from tests.utils.dateGenerator import randomPastDate, randomDateBetween
 from tests.utils.transaction import generateExampleTransactions
 from tests.utils.user import exampleProject
 
@@ -55,6 +58,17 @@ class TestTransactionGet(TestCase):
     def testSuccess(self):
         transactions = list(starkbank.transaction.query(limit=10))
         print("Number of transactions:", len(transactions))
+
+    def testSuccessAfterBefore(self):
+        after = randomPastDate(days=10)
+        before = datetime.today()
+        transactions = starkbank.transaction.query(after=after.date(), before=before.date())
+        i = 0
+        for i, transaction in enumerate(transactions):
+            self.assertTrue(after.date() <= transaction.created.date() <= before.date())
+            if i >= 200:
+                break
+        print("Number of transactions:", i)
 
         # def testFields(self):
         #     raise NotImplementedError
