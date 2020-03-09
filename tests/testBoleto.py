@@ -1,9 +1,7 @@
 import starkbank
 from unittest import TestCase, main
 from tests.utils.boleto import generateExampleBoletosJson
-
-
-starkbank.settings.debug = True
+from tests.utils.user import exampleProject
 
 
 class TestBoletoPost(TestCase):
@@ -85,7 +83,7 @@ class TestBoletoPost(TestCase):
         errors = context.exception.elements
         for error in errors:
             print(error)
-            self.assertTrue('invalidDescription', error.code)
+            self.assertEqual('invalidDescription', error.code)
         self.assertEqual(12, len(errors))
 
     def testFailInvalidTaxId(self):
@@ -100,7 +98,7 @@ class TestBoletoPost(TestCase):
         errors = context.exception.elements
         for error in errors:
             print(error)
-            self.assertTrue('invalidTaxId', error.code)
+            self.assertEqual('invalidTaxId', error.code)
         self.assertEqual(7, len(errors))
 
     def testFailInvalidAmount(self):
@@ -115,7 +113,7 @@ class TestBoletoPost(TestCase):
         errors = context.exception.elements
         for error in errors:
             print(error)
-            self.assertTrue('invalidAmount', error.code)
+            self.assertEqual('invalidAmount', error.code)
         self.assertEqual(5, len(errors))
 
 
@@ -162,7 +160,17 @@ class TestBoletoInfoGet(TestCase):
     def testSuccess(self):
         boletos = starkbank.boleto.query()
         boletoId = next(boletos).id
-        boleto = starkbank.boleto.get(id=boletoId)
+        boleto = starkbank.boleto.get(boletoId)
+
+    def testFailInvalidBoleto(self):
+        boletoId = "0"
+        with self.assertRaises(starkbank.exceptions.InputError) as context:
+            boleto = starkbank.boleto.get(boletoId)
+        errors = context.exception.elements
+        for error in errors:
+            print(error)
+            self.assertEqual('invalidBoleto', error.code)
+        self.assertEqual(1, len(errors))
 
     # def testFields(self):
     #     raise NotImplementedError
@@ -171,7 +179,7 @@ class TestBoletoInfoGet(TestCase):
     #     boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
     #     boletos = content["boletos"]
     #     boletoId = boletos[0]["id"]
-    #     boletos, cursor, errors = starkbank.boleto.get(user=exampleMember, id=boletoId, params=fieldsParams)
+    #     boletos, cursor, errors = starkbank.boleto.get(user=exampleMember, boletoId, params=fieldsParams)
     #     self.assertEqual(0, len(errors))
     #     boleto = content["boleto"]
     #     print(content)
@@ -182,7 +190,7 @@ class TestBoletoPdfGet(TestCase):
     def testSuccess(self):
         boletos = starkbank.boleto.query()
         boletoId = next(boletos).id
-        pdf = starkbank.boleto.get_pdf(id=boletoId)
+        pdf = starkbank.boleto.get_pdf(boletoId)
         print(pdf)
 
 
