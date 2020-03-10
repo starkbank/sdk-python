@@ -3,11 +3,11 @@ from json import dumps
 from time import time
 import requests
 from ellipticcurve.ecdsa import Ecdsa
-from .compatibility import urlencode
-from starkbank.exceptions import Houston, InputError, UnknownException
-from starkbank.utils.environment import Environment
-from starkbank.utils.checks import check_user
-from starkbank import __version__ as starkbank_version
+from .case import snake_to_camel
+from ..exceptions import Houston, InputError, UnknownException
+from .environment import Environment
+from .checks import check_user
+from .. import __version__ as starkbank_version
 
 
 _version = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
@@ -100,10 +100,11 @@ def _url(user, endpoint, url_params):
     }[user.environment] + endpoint
 
     url_params = {k: v for k, v in url_params.items() if v is not None} if url_params else None
-    url_params = {k: ",".join(v) if isinstance(v, (tuple, list, set)) else v for k, v in url_params.items()} if url_params else None
-    query_string = "?" + urlencode(url_params) if url_params else ""
+    if url_params:
+        url_params = {snake_to_camel(k): ",".join(v) if isinstance(v, (tuple, list, set)) else v for k, v in url_params.items()}
+        base_url += "?" + "&".join("{k}={v}".format(k=k, v=v) for k, v in url_params.items())
 
-    return base_url + query_string
+    return base_url
 
 
 def _treat_request_response(response, json_response):
