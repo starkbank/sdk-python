@@ -27,8 +27,7 @@ def check_datetime(data):
     if isinstance(data, (datetime, date)):
         return data
 
-    if not isinstance(data, str):
-        raise RuntimeError("data must be a string or a datetime")
+    data = str(data)
 
     try:
         return datetime.strptime(data, "%Y-%m-%dT%H:%M:%S.%f+00:00")

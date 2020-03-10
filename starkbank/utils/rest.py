@@ -5,8 +5,8 @@ def get(resource, limit=100, cursor=None, user=None, **kwargs):
     url_params = {
         "limit": limit,
         "cursor": cursor,
-        **kwargs
     }
+    url_params.update(kwargs)
     response = request.get(
         user=user,
         endpoint=resource._endpoint(),
