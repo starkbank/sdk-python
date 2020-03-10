@@ -1,5 +1,5 @@
 import starkbank
-from datetime import datetime
+from datetime import datetime, timedelta
 from unittest import TestCase, main
 
 from tests.utils.boleto import generateExampleBoletosJson
@@ -130,7 +130,7 @@ class TestBoletoGet(TestCase):
         boletos = starkbank.boleto.query(after=after.date(), before=before.date())
         i = 0
         for i, boleto in enumerate(boletos):
-            self.assertTrue(after.date() <= boleto.created.date() <= before.date())
+            self.assertTrue(after.date() <= boleto.created.date() <= (before + timedelta(hours=3)).date())
             if i >= 200:
                 break
         print("Number of boletos:", i)
