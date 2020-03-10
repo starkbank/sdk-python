@@ -3,6 +3,10 @@ from starkbank.exceptions import InputError
 from unittest import TestCase, main
 
 from tests.utils.boletoPayment import generateExampleBoletoPaymentsJson
+from tests.utils.user import exampleProject
+
+starkbank.user = exampleProject
+starkbank.debug = False
 
 
 class TestBoletoPaymentPost(TestCase):
@@ -78,13 +82,13 @@ class TestBoletoPaymentGet(TestCase):
 class TestBoletoPaymentInfoGet(TestCase):
     def test_success(self):
         payments = starkbank.payment.boleto.query()
-        paymentId = next(payments).id
-        payment = starkbank.payment.boleto.get(id=paymentId)
+        payment_id = next(payments).id
+        payment = starkbank.payment.boleto.get(id=payment_id)
 
     def test_fail_invalid_payment(self):
-        paymentId = "0"
+        payment_id = "0"
         with self.assertRaises(InputError) as context:
-            payment = starkbank.payment.boleto.get(paymentId)
+            payment = starkbank.payment.boleto.get(payment_id)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -95,8 +99,8 @@ class TestBoletoPaymentInfoGet(TestCase):
 class TestBoletoPaymentPdfGet(TestCase):
     def test_success(self):
         payments = starkbank.payment.boleto.query()
-        paymentId = next(payments).id
-        payments = starkbank.payment.boleto.get_pdf(id=paymentId)
+        payment_id = next(payments).id
+        payments = starkbank.payment.boleto.get_pdf(id=payment_id)
 
 
 if __name__ == '__main__':

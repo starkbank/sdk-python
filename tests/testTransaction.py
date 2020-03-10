@@ -7,6 +7,9 @@ from tests.utils.dateGenerator import randomPastDate
 from tests.utils.transaction import generateExampleTransactions
 from tests.utils.user import exampleProject
 
+starkbank.user = exampleProject
+starkbank.debug = False
+
 
 class TestTransactionPost(TestCase):
 
@@ -74,8 +77,8 @@ class TestTransactionGet(TestCase):
 class TestTransactionInfoGet(TestCase):
     def test_success(self):
         transactions = starkbank.transaction.query()
-        transactionId = next(transactions).id
-        transaction = starkbank.transaction.get(id=transactionId)
+        transaction_id = next(transactions).id
+        transaction = starkbank.transaction.get(id=transaction_id)
 
 
 if __name__ == '__main__':

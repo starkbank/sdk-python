@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 
 import starkbank
 from starkbank.exceptions import InputError
@@ -7,6 +7,9 @@ from unittest import TestCase, main
 
 from tests.utils.transfer import generateExampleTransfersJson
 from tests.utils.user import exampleProject
+
+starkbank.user = exampleProject
+starkbank.debug = False
 
 
 class TestTransferPost(TestCase):
@@ -124,13 +127,13 @@ class TestTransferGet(TestCase):
 class TestTransferInfoGet(TestCase):
     def test_success(self):
         transfers = starkbank.transfer.query(user=exampleProject)
-        transferId = next(transfers).id
-        transfer = starkbank.transfer.get(id=transferId)
+        transfer_id = next(transfers).id
+        transfer = starkbank.transfer.get(id=transfer_id)
 
     def test_fail_invalid_transfer(self):
-        transferId = "0"
+        transfer_id = "0"
         with self.assertRaises(InputError) as context:
-            transfer = starkbank.transfer.get(id=transferId)
+            transfer = starkbank.transfer.get(id=transfer_id)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -141,9 +144,9 @@ class TestTransferInfoGet(TestCase):
 class TestTransferPdfGet(TestCase):
     def test_success(self):
         transfers = starkbank.transfer.query(user=exampleProject)
-        transferId = next(transfers).id
+        transfer_id = next(transfers).id
         try:
-            pdf = starkbank.transfer.get_pdf(id=transferId)
+            pdf = starkbank.transfer.get_pdf(id=transfer_id)
             print(str(pdf))
         except InputError as e:
             errors = e.elements

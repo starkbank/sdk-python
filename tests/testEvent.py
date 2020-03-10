@@ -3,6 +3,9 @@ from unittest import TestCase, main
 
 from tests.utils.user import exampleProject
 
+starkbank.user = exampleProject
+starkbank.debug = False
+
 
 class TestEventGet(TestCase):
 
@@ -14,8 +17,8 @@ class TestEventGet(TestCase):
 class TestEventInfoGet(TestCase):
     def test_success(self):
         events = starkbank.webhook.event.query(user=exampleProject)
-        eventId = next(events).id
-        event = starkbank.webhook.event.get(user=exampleProject, id=eventId)
+        event_id = next(events).id
+        event = starkbank.webhook.event.get(user=exampleProject, id=event_id)
 
 
 if __name__ == '__main__':

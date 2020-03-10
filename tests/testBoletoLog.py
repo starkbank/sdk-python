@@ -3,6 +3,7 @@ from starkbank.exceptions import InputError
 from unittest import TestCase, main
 from tests.utils.user import exampleProject
 
+starkbank.user = exampleProject
 starkbank.debug = True
 
 
@@ -16,13 +17,13 @@ class TestBoletoLogGet(TestCase):
 class TestBoletoLogInfoGet(TestCase):
     def test_success(self):
         logs = starkbank.boleto.log.query()
-        logId = next(logs).id
-        logs = starkbank.boleto.log.get(id=logId)
+        log_id = next(logs).id
+        logs = starkbank.boleto.log.get(id=log_id)
 
     def test_fail_invalid_log(self):
-        logId = "0"
+        log_id = "0"
         with self.assertRaises(InputError) as context:
-            log = starkbank.boleto.log.get(id=logId)
+            log = starkbank.boleto.log.get(id=log_id)
         errors = context.exception.elements
         for error in errors:
             print(error)

@@ -7,6 +7,9 @@ from tests.utils.boleto import generateExampleBoletosJson
 from tests.utils.dateGenerator import randomPastDate
 from tests.utils.user import exampleProject
 
+starkbank.user = exampleProject
+starkbank.debug = False
+
 
 class TestBoletoPost(TestCase):
     def test_success(self):
@@ -142,17 +145,17 @@ class TestBoletoPostAndDelete(TestCase):
     def test_success(self):
         boletos = generateExampleBoletosJson(n=1)
         boletos = starkbank.boleto.create(boletos)
-        boletoId = boletos[0].id
-        boletos = starkbank.boleto.delete(ids=[boletoId])
+        boleto_id = boletos[0].id
+        boletos = starkbank.boleto.delete(ids=[boleto_id])
         print(boletos[0].id)
 
     def test_fail_delete_twice(self):
         boletos = generateExampleBoletosJson(n=1)
         boletos = starkbank.boleto.create(boletos)
-        boletoId = boletos[0].id
-        boletos = starkbank.boleto.delete(ids=[boletoId])
+        boleto_id = boletos[0].id
+        boletos = starkbank.boleto.delete(ids=[boleto_id])
         with self.assertRaises(InputError) as context:
-            boletos = starkbank.boleto.delete(ids=[boletoId])
+            boletos = starkbank.boleto.delete(ids=[boleto_id])
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -163,13 +166,13 @@ class TestBoletoPostAndDelete(TestCase):
 class TestBoletoInfoGet(TestCase):
     def test_success(self):
         boletos = starkbank.boleto.query()
-        boletoId = next(boletos).id
-        boleto = starkbank.boleto.get(boletoId)
+        boleto_id = next(boletos).id
+        boleto = starkbank.boleto.get(boleto_id)
 
     def test_fail_invalid_boleto(self):
-        boletoId = "0"
+        boleto_id = "0"
         with self.assertRaises(InputError) as context:
-            boleto = starkbank.boleto.get(boletoId)
+            boleto = starkbank.boleto.get(boleto_id)
         errors = context.exception.elements
         for error in errors:
             print(error)
@@ -180,8 +183,8 @@ class TestBoletoInfoGet(TestCase):
 class TestBoletoPdfGet(TestCase):
     def test_success(self):
         boletos = starkbank.boleto.query()
-        boletoId = next(boletos).id
-        pdf = starkbank.boleto.get_pdf(boletoId)
+        boleto_id = next(boletos).id
+        pdf = starkbank.boleto.get_pdf(boleto_id)
         print(pdf)
 
 
