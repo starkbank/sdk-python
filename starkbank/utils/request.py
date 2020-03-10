@@ -1,20 +1,20 @@
+from sys import version_info as python_version
+from json import dumps
+from time import time
 import requests
 from ellipticcurve.ecdsa import Ecdsa
-from json import dumps
-from sys import version_info
-from time import time
+from .compatibility import urlencode
 from starkbank.exceptions import Houston, InputError, UnknownException
 from starkbank.utils.environment import Environment
-from starkbank import __version__
-from starkbank.utils.case import snake_to_camel
 from starkbank.utils.checks import check_user
+from starkbank import __version__ as starkbank_version
 
 
 _version = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
-    major=version_info.major,
-    minor=version_info.minor,
-    micro=version_info.micro,
-    sdk_version=__version__,
+    major=python_version.major,
+    minor=python_version.minor,
+    micro=python_version.micro,
+    sdk_version=starkbank_version,
 )
 
 
@@ -99,19 +99,10 @@ def _url(user, endpoint, url_params):
         Environment.development: "https://development.api.starkbank.com/v2/",
     }[user.environment] + endpoint
 
-    if not url_params:
-        return base_url
+    url_params = {k: v for k, v in url_params.items() if v is not None} if url_params else None
+    query_string = "?" + urlencode(url_params) if url_params else ""
 
-    url_args = []
-    for param, values in url_params.items():
-        if values is not None:
-            url_args.append(
-                "{param}={values}".format(
-                    param=snake_to_camel(param),
-                    values=",".join(values) if isinstance(values, list) else values
-                )
-            )
-    return "{base_url}?{url_args}".format(base_url=base_url, url_args="&".join(url_args))
+    return base_url + query_string
 
 
 def _treat_request_response(response, json_response):
