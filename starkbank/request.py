@@ -23,8 +23,8 @@ def put(user, endpoint, body):
     return _make_request(user=user, request_method=requests.put, endpoint=endpoint, body=body)
 
 
-def delete(user, endpoint):
-    return _make_request(user=user, request_method=requests.delete, endpoint=endpoint)
+def delete(user, endpoint, url_params=None):
+    return _make_request(user=user, request_method=requests.delete, endpoint=endpoint, url_params=url_params)
 
 
 def _make_request(user, request_method, endpoint, url_params=None, body=None, json_response=True):
@@ -33,7 +33,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
     if body is not None:
         body = dumps(body)
 
-    url = _get_url(environment=user.environment, endpoint=endpoint) + _get_url_params_string(url_params)
+    url = _get_url(environment=user.environment, endpoint=endpoint, url_params=url_params)
     headers = _headers(credentials=credentials, body=body)
 
     import starkbank
@@ -67,6 +67,14 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
     return _treat_request_response(response=response, json_response=json_response)
 
 
+def _get_credentials(user):
+    from starkbank.user.base import User
+    assert isinstance(user, User), "user must be an object retrieved from one of starkbank.user methods or classes"
+    credentials = user.credentials
+    assert isinstance(credentials, Credentials) and credentials.private_key_object is not None, "user private key is not loaded in credentials"
+    return user.credentials
+
+
 def _headers(credentials, body=None):
     timestamp = str(int(time()))
     message = "{access_id}:{timestamp}:{body}".format(
@@ -84,26 +92,12 @@ def _headers(credentials, body=None):
     }
 
 
-def _get_credentials(user):
-    from starkbank.user.base import User
-    assert isinstance(user, User), "user must be an object retrieved from one of starkbank.user methods or classes"
-    credentials = user.credentials
-    assert isinstance(credentials, Credentials), "user private key is not loaded in credentials"
-    assert credentials.private_key_object is not None, "user private key is not loaded in credentials"
-
-    return user.credentials
-
-
-def _get_url(environment, endpoint):
-    return _get_base_url(environment) + endpoint
-
-
-def _get_base_url(environment):
+def _get_url(environment, endpoint, url_params):
     return {
         Environment.production: "https://api.starkbank.com/v2/",
         Environment.sandbox: "https://sandbox.api.starkbank.com/v2/",
         Environment.development: "https://development.api.starkbank.com/v2/",
-    }[environment]
+    }[environment] + endpoint + _get_url_params_string(url_params)
 
 
 def _get_url_params_string(url_params):
@@ -119,10 +113,6 @@ def _get_url_params_string(url_params):
                     values=",".join(values) if isinstance(values, list) else values
                 )
             )
-
-    if not url_args:
-        return ""
-
     return "?" + "&".join(url_args)
 
 
@@ -135,16 +125,14 @@ def _treat_request_response(response, json_response):
     except:
         pass
 
+    if status_code == 200 and json_response:
+        return _load_json_string(content)
     if status_code == 200:
-        if json_response:
-            return _load_json_string(content)
         return content
-
     if status_code >= 500 or "Houston" in str(content):
         raise Houston()
 
     loaded_json = _load_json_string(content)
-
     if isinstance(loaded_json, dict) and "errors" in loaded_json:
         raise InputError(loaded_json["errors"])
 
@@ -155,5 +143,4 @@ def _load_json_string(json):
     try:
         return loads(json)
     except:
-        pass
-    return json
+        return json
