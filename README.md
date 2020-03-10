@@ -283,3 +283,11 @@ elif event.subscription == "boleto":
 elif event.subscription == "boleto-payment":
     print(event.log.payment)
 ```
+
+# Generate key pair
+```python
+import starkbank
+
+
+private_key, public_key = starkbank.keys.generate("file/keys/")
+```

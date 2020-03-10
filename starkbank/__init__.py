@@ -12,6 +12,7 @@ from . import payment
 from . import transfer
 from . import webhook
 from . import exceptions
+from . import keys
 
 debug = False
 user = None
