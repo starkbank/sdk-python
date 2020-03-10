@@ -1,8 +1,9 @@
-from starkbank.utils.base import Base, Post, Delete, Get, GetId, GetPdf
 from starkbank.utils.checks import check_datetime
+from starkbank.utils.base import Base
+from starkbank.utils import rest
 
 
-class Boleto(Post, Get, GetId, GetPdf, Delete):
+class Boleto(Base):
 
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code,
                  due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, id=None,
@@ -30,24 +31,25 @@ class Boleto(Post, Get, GetId, GetPdf, Delete):
         self.status = status
         self.created = check_datetime(created)
 
-    @classmethod
-    def _query(cls, limit=100, status=None, tags=None, ids=None, after=None, before=None, user=None):
-        return super(Boleto, cls)._query(
-            limit=limit,
-            status=status,
-            tags=tags,
-            ids=ids,
-            after=after,
-            before=before,
-            user=user,
-        )
-
 
 Boleto._define_known_fields()
 
 
-create = Boleto._post
-get = Boleto._get_id
-get_pdf = Boleto._get_pdf
-delete = Boleto._delete
-query = Boleto._query
+def create(boletos, user=None):
+    return rest.post(resource=Boleto, entities=boletos, user=user)
+
+
+def get(id, user=None):
+    return rest.get_id(resource=Boleto, id=id, user=user)
+
+
+def get_pdf(id, user=None):
+    return rest.get_pdf(resource=Boleto, id=id, user=user)
+
+
+def query(limit=100, status=None, tags=None, ids=None, after=None, before=None, user=None):
+    return rest.query(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids, after=after, before=before)
+
+
+def delete(ids, user=None):
+    return rest.delete(resource=Boleto, ids=ids, user=user)

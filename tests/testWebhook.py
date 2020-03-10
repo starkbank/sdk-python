@@ -8,7 +8,7 @@ from tests.utils.user import exampleProject
 class TestWebhookPost(TestCase):
     def testSuccess(self):
         webhook = generateExampleWebhook()
-        webhook = starkbank.webhook.create(webhook)
+        webhook = starkbank.webhook.create(url=webhook.url, subscriptions=webhook.subscriptions)
         print(webhook.id)
 
 
@@ -28,7 +28,7 @@ class TestWebhookInfoGet(TestCase):
 class TestWebhookPostAndDelete(TestCase):
     def testSuccess(self):
         webhook = generateExampleWebhook()
-        webhook = starkbank.webhook.create(webhook)
+        webhook = starkbank.webhook.create(url=webhook.url, subscriptions=webhook.subscriptions)
         webhookId = webhook.id
         webhooks = starkbank.webhook.delete([webhookId])
 

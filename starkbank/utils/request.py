@@ -1,13 +1,14 @@
 import requests
 from ellipticcurve.ecdsa import Ecdsa
-from json import dumps, loads
+from json import dumps
 from sys import version_info
 from time import time
 from starkbank.exceptions import Houston, InputError, UnknownException
-from starkbank.models.environment import Environment
+from starkbank.utils.environment import Environment
 from starkbank import __version__
 from starkbank.utils.case import snake_to_camel
 from starkbank.utils.checks import check_user
+
 
 _version = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
     major=version_info.major,
@@ -115,29 +116,16 @@ def _url(user, endpoint, url_params):
 
 def _treat_request_response(response, json_response):
     status_code = response.status_code
-    content = response.content
-
-    try:
-        content = content.encode()
-    except:
-        pass
 
     if status_code == 200 and json_response:
-        return _load_json_string(content)
+        return response.json()
     if status_code == 200:
-        return content
-    if status_code >= 500 or "Houston" in str(content):
+        return response.content
+    if status_code >= 500 or "Houston" in str(response.content):
         raise Houston()
 
-    loaded_json = _load_json_string(content)
+    loaded_json = response.json()
     if isinstance(loaded_json, dict) and "errors" in loaded_json:
         raise InputError(loaded_json["errors"])
 
-    raise UnknownException(content)
-
-
-def _load_json_string(json):
-    try:
-        return loads(json)
-    except:
-        return json
+    raise UnknownException(response.content)

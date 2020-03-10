@@ -6,8 +6,7 @@ def check_user(user):
     from ..user.base import User
     from ..user.credentials import Credentials
 
-    if not user:
-        user = starkbank.user
+    user = user or starkbank.user
 
     if not user:
         raise RuntimeError("no user passed and no default user set")

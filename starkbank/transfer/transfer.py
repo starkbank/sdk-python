@@ -1,7 +1,8 @@
-from starkbank.utils.base import Base, Post, Get, GetId, GetPdf, Delete
+from starkbank.utils import rest
+from starkbank.utils.base import Base
 
 
-class Transfer(Post, Get, GetId, GetPdf, Delete):
+class Transfer(Base):
 
     def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, fee=None, tags=None, status=None, id=None):
         Base.__init__(self, id=id)
@@ -16,26 +17,25 @@ class Transfer(Post, Get, GetId, GetPdf, Delete):
         self.tags = tags
         self.status = status
 
-    @classmethod
-    def _query(cls, limit=100, request_id=None, transaction_ids=None, tags=None, after=None, before=None, status=None, sort=None, user=None):
-        return super(Transfer, cls)._query(
-            limit=limit,
-            request_id=request_id,
-            transaction_ids=transaction_ids,
-            tags=tags,
-            after=after,
-            before=before,
-            status=status,
-            sort=sort,
-            user=user,
-        )
-
 
 Transfer._define_known_fields()
 
 
-create = Transfer._post
-query = Transfer._query
-get = Transfer._get_id
-get_pdf = Transfer._get_pdf
-delete = Transfer._delete
+def create(transfers, user=None):
+    return rest.post(resource=Transfer, entities=transfers, user=user)
+
+
+def get(id, user=None):
+    return rest.get_id(resource=Transfer, id=id, user=user)
+
+
+def get_pdf(id, user=None):
+    return rest.get_pdf(resource=Transfer, id=id, user=user)
+
+
+def query(limit=100, request_id=None, transaction_ids=None, tags=None, after=None, before=None, status=None, sort=None, user=None):
+    return rest.query(resource=Transfer, limit=limit, user=user, status=status, tags=tags, after=after, before=before, request_id=request_id, transaction_ids=transaction_ids, sort=sort)
+
+
+def delete(ids, user=None):
+    return rest.delete(resource=Transfer, ids=ids, user=user)

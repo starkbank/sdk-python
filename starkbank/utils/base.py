@@ -36,7 +36,7 @@ class Base:
             json = {k: v for k, v in json.items() if k in fields}
         if api:
             json = {snake_to_camel(k): v for k, v in json.items() if v is not None}
-        
+
         return json
 
     @classmethod

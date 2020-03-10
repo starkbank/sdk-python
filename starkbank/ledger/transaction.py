@@ -1,13 +1,13 @@
-from starkbank.utils.base import Base, Post, GetId, Get
-from starkbank.utils.checks import check_datetime, check_date_string
+from starkbank.utils import rest
+from starkbank.utils.base import Base
+from starkbank.utils.checks import check_datetime
 
 
-class Transaction(Post, Get, GetId):
+class Transaction(Base):
 
     _json_fill = {"receiverId": None}
 
-    def __init__(self, amount, description, tags, external_id, receiver_id, sender_id=None, id=None, fee=None,
-                 created=None, source=None):
+    def __init__(self, amount, description, tags, external_id, receiver_id, sender_id=None, id=None, fee=None, created=None, source=None):
         Base.__init__(self, id=id)
 
         self.amount = amount
@@ -20,20 +20,17 @@ class Transaction(Post, Get, GetId):
         self.created = check_datetime(created)
         self.source = source
 
-    @classmethod
-    def _query(cls, limit=100, externalIds=None, after=None, before=None, user=None):
-        return super(Transaction, cls)._query(
-            limit=limit,
-            externalIds=externalIds,
-            after=after,
-            before=before,
-            user=user,
-        )
-
 
 Transaction._define_known_fields()
 
 
-create = Transaction._post
-query = Transaction._query
-get = Transaction._get_id
+def create(transactions, user=None):
+    return rest.post(resource=Transaction, entities=transactions, user=user)
+
+
+def get(id, user=None):
+    return rest.get_id(resource=Transaction, id=id, user=user)
+
+
+def query(limit=100, external_ids=None, after=None, before=None, user=None):
+    return rest.query(resource=Transaction, limit=limit, user=user, external_ids=external_ids, after=after, before=before)

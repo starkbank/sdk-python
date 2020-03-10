@@ -1,9 +1,10 @@
-from ....utils.base import Base, Get, GetId
+from ....utils import rest
+from ....utils.base import Base
 from ....utils.checks import check_datetime
 from ..boleto_payment import BoletoPayment
 
 
-class BoletoPaymentLog(Get, GetId):
+class BoletoPaymentLog(Base):
 
     def __init__(self, id, created, event, errors, payment):
         Base.__init__(self, id=id)
@@ -17,18 +18,13 @@ class BoletoPaymentLog(Get, GetId):
     def _endpoint(cls):
         return "boleto-payment/log"
 
-    @classmethod
-    def _query(cls, limit=100, payment_ids=None, events=None, user=None):
-        return super(BoletoPaymentLog, cls)._query(
-            limit=limit,
-            payment_ids=payment_ids,
-            events=events,
-            user=user,
-        )
-
 
 BoletoPaymentLog._define_known_fields()
 
 
-query = BoletoPaymentLog._query
-get = BoletoPaymentLog._get_id
+def get(id, user=None):
+    return rest.get_id(resource=BoletoPaymentLog, id=id, user=user)
+
+
+def query(limit=100, payment_ids=None, events=None, user=None):
+    return rest.query(resource=BoletoPaymentLog, limit=limit, user=user, events=events, payment_ids=payment_ids)

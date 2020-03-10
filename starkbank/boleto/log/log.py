@@ -1,9 +1,10 @@
-from starkbank.utils.base import Base, Get, GetId
+from starkbank.utils import rest
+from starkbank.utils.base import Base
 from starkbank.utils.checks import check_datetime
 from starkbank.boleto.boleto import Boleto
 
 
-class BoletoLog(Get, GetId):
+class BoletoLog(Base):
     def __init__(self, id, created, type, errors, boleto):
         Base.__init__(self, id=id)
 
@@ -16,18 +17,13 @@ class BoletoLog(Get, GetId):
     def _endpoint(cls):
         return "boleto/log"
 
-    @classmethod
-    def _query(cls, limit=100, boleto_ids=None, events=None, user=None):
-        return super(BoletoLog, cls)._query(
-            limit=limit,
-            boleto_ids=boleto_ids,
-            events=events,
-            user=user,
-        )
-
 
 BoletoLog._define_known_fields()
 
 
-query = BoletoLog._query
-get = BoletoLog._get_id
+def get(id, user=None):
+    return rest.get_id(resource=BoletoLog, id=id, user=user)
+
+
+def query(limit=100, boleto_ids=None, events=None, user=None):
+    return rest.query(resource=BoletoLog, limit=limit, user=user, events=events, boleto_ids=boleto_ids)

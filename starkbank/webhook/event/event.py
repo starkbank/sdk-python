@@ -1,11 +1,12 @@
-from ...utils.base import Base, Get, GetId
+from ...utils import rest
+from ...utils.base import Base
 from ...utils.checks import check_datetime
 from ...boleto.log import BoletoLog
 from ...transfer.log import TransferLog
 from ...payment.boleto.log import BoletoPaymentLog
 
 
-class Event(Get, GetId):
+class Event(Base):
 
     _json_fill = {"delivered": True}
 
@@ -16,16 +17,6 @@ class Event(Get, GetId):
         self.delivered = check_datetime(delivered)
         self.subscription = subscription
         self.log = _process_log(log=log, subscription=subscription)
-
-    @classmethod
-    def _query(cls, limit=100, after=None, before=None, is_delivered=None, user=None):
-        return super(Event, cls)._query(
-            limit=limit,
-            after=after,
-            before=before,
-            is_delivered=is_delivered,
-            user=user,
-        )
 
 
 def _process_log(log, subscription):
@@ -38,5 +29,10 @@ def _process_log(log, subscription):
 
 Event._define_known_fields()
 
-get = Event._get_id
-query = Event._query
+
+def get(id, user=None):
+    return rest.get_id(resource=Event, id=id, user=user)
+
+
+def query(limit=100, after=None, before=None, is_delivered=None, user=None):
+    return rest.query(resource=Event, limit=limit, user=user, is_delivered=is_delivered, after=after, before=before)

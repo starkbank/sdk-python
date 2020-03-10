@@ -1,9 +1,10 @@
-from ..models.environment import Environment
-from ..utils.base import Base, Get, GetId
+from starkbank.utils.environment import Environment
+from ..utils import rest
+from ..utils.base import Base
 from ..utils.checks import check_user
 
 
-class User(Get, GetId):
+class User(Base):
 
     _json_fill = {
         "environment": "production",
@@ -17,17 +18,17 @@ class User(Get, GetId):
         self.credentials = credentials
         Base.__init__(self, id)
 
-    @classmethod
-    def _get(cls, limit=100, cursor=None, user=None, **kwargs):
-        environment = check_user(user).environment
-        entities, cursor = super(User, cls)._get(limit=limit, cursor=cursor, user=user, **kwargs)
-        for entity in entities:
-            entity.environment = environment
-        return entities, cursor
 
-    @classmethod
-    def _get_id(cls, id, user=None):
-        environment = check_user(user).environment
-        entity = super(User, cls)._get_id(id=id, user=user)
+def get_id(resource, id, user=None):
+    environment = check_user(user).environment
+    entity = rest.get_id(resource=resource, id=id, user=user)
+    entity.environment = environment
+    return entity
+
+
+def query(resource, limit=100, user=None, **kwargs):
+    environment = check_user(user).environment
+    query = rest.query(resource=resource, limit=limit, user=user, **kwargs)
+    for entity in query:
         entity.environment = environment
-        return entity
+        yield entity

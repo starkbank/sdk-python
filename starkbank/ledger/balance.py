@@ -1,8 +1,9 @@
-from starkbank.utils.base import Base, Get
+from starkbank.utils import rest
+from starkbank.utils.base import Base
 from starkbank.utils.checks import check_datetime
 
 
-class Balance(Get):
+class Balance(Base):
 
     def __init__(self, amount, currency, updated, id):
         Base.__init__(self, id=id)
@@ -16,5 +17,5 @@ Balance._define_known_fields()
 
 
 def get(user=None):
-    balances, cursor = Balance._get(user=user)
+    balances, cursor = rest.get(resource=Balance, user=user)
     return balances[0]

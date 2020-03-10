@@ -1,4 +1,4 @@
-from starkbank.user.base import User
+from starkbank.user.base import User, get_id as _user_get_id, query as _user_query
 from starkbank.user.credentials import Credentials
 
 
@@ -18,15 +18,13 @@ class Project(User):
             ),
         )
 
-    @classmethod
-    def _query(cls, limit=100, user=None):
-        return super(Project, cls)._query(
-            limit=limit,
-            user=user,
-        )
-
 
 Project._define_known_fields()
 
-get = Project._get_id
-query = Project._query
+
+def get(id, user=None):
+    return _user_get_id(resource=Project, id=id, user=user)
+
+
+def query(limit=100, user=None):
+    return _user_query(resource=Project, limit=limit, user=user)
