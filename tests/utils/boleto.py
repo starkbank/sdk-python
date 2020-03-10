@@ -6,12 +6,13 @@ from hashlib import sha256
 from .dateGenerator import randomFutureDate
 from tests.utils.examples.messages.messages import exampleBoletosJsonString
 from .taxIdGenerator import generateCpf, generateCnpj
+from starkbank.utils.api import from_api_json
 
 from .names import get_full_name
 
 
 def generateExampleBoletosJson(n=1, amount=None):
-    exampleBoleto = Boleto.from_json(exampleBoletosJsonString["boletos"][0])
+    exampleBoleto = from_api_json(Boleto, exampleBoletosJsonString["boletos"][0])
     boletos = []
     for _ in range(n):
         if amount is None:

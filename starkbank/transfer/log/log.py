@@ -1,6 +1,7 @@
 from ..transfer import Transfer
-from ...utils.base import Base
+from ...utils.api import define_compatibility_fields
 from ...utils.checks import check_datetime
+from ...utils.base import Base
 
 
 class TransferLog(Base):
@@ -13,4 +14,4 @@ class TransferLog(Base):
         self.transfer = Transfer.from_json(transfer)
 
 
-TransferLog._define_known_fields()
+define_compatibility_fields(TransferLog)

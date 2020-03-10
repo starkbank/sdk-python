@@ -1,3 +1,4 @@
+from starkbank.utils.api import define_compatibility_fields
 from starkbank.utils.checks import check_datetime
 from starkbank.utils.base import Base
 from starkbank.utils import rest
@@ -32,7 +33,7 @@ class Boleto(Base):
         self.created = check_datetime(created)
 
 
-Boleto._define_known_fields()
+define_compatibility_fields(Boleto)
 
 
 def create(boletos, user=None):

@@ -1,7 +1,9 @@
 from starkbank.utils import rest
-from starkbank.utils.base import Base
+from starkbank.utils.api import define_compatibility_fields
 from starkbank.utils.checks import check_datetime
 from starkbank.boleto.boleto import Boleto
+from starkbank.utils.api import from_api_json
+from starkbank.utils.base import Base
 
 
 class BoletoLog(Base):
@@ -11,10 +13,10 @@ class BoletoLog(Base):
         self.created = check_datetime(created)
         self.type = type
         self.errors = errors
-        self.boleto = Boleto.from_json(boleto)
+        self.boleto = from_api_json(Boleto, boleto)
 
 
-BoletoLog._define_known_fields()
+define_compatibility_fields(BoletoLog)
 
 
 def get(id, user=None):

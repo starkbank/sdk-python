@@ -1,11 +1,10 @@
 from starkbank.utils import rest
-from starkbank.utils.base import Base
+from starkbank.utils.api import define_compatibility_fields
 from starkbank.utils.checks import check_datetime
+from starkbank.utils.base import Base
 
 
 class Transaction(Base):
-
-    _json_fill = {"receiverId": None}
 
     def __init__(self, amount, description, tags, external_id, receiver_id, sender_id=None, id=None, fee=None, created=None, source=None):
         Base.__init__(self, id=id)
@@ -21,7 +20,7 @@ class Transaction(Base):
         self.source = source
 
 
-Transaction._define_known_fields()
+define_compatibility_fields(Transaction, {"receiverId": None})
 
 
 def create(transactions, user=None):

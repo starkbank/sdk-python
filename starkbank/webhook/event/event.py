@@ -1,4 +1,5 @@
 from ...utils import rest
+from ...utils.api import define_compatibility_fields
 from ...utils.base import Base
 from ...utils.checks import check_datetime
 from ...boleto.log import BoletoLog
@@ -7,8 +8,6 @@ from ...payment.boleto.log import BoletoPaymentLog
 
 
 class Event(Base):
-
-    _json_fill = {"delivered": True}
 
     def __init__(self, log, created, delivered, subscription, id):
         Base.__init__(self, id=id)
@@ -19,15 +18,15 @@ class Event(Base):
         self.log = _process_log(log=log, subscription=subscription)
 
 
+define_compatibility_fields(Event, {"delivered": True})
+
+
 def _process_log(log, subscription):
     return {
         "transfer": TransferLog.from_json(log),
         "boleto": BoletoLog.from_json(log),
         "boleto-payment": BoletoPaymentLog.from_json(log),
     }[subscription]
-
-
-Event._define_known_fields()
 
 
 def get(id, user=None):

@@ -1,4 +1,5 @@
 from starkbank.utils import rest
+from starkbank.utils.api import define_compatibility_fields
 from starkbank.utils.base import Base
 
 
@@ -11,7 +12,7 @@ class Webhook(Base):
         self.subscriptions = subscriptions
 
 
-Webhook._define_known_fields()
+define_compatibility_fields(Webhook)
 
 
 def create(url, subscriptions, user=None):

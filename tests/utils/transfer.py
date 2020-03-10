@@ -3,6 +3,7 @@ from random import randint
 from hashlib import sha256
 
 from starkbank import Transfer
+from starkbank.utils.api import from_api_json
 from .names import get_full_name
 
 from .taxIdGenerator import generateCpf, generateCnpj
@@ -11,7 +12,7 @@ from tests.utils.examples.messages.messages import exampleTransfersJsonString
 
 
 def generateExampleTransfersJson(n=1):
-    transfer = Transfer.from_json(exampleTransfersJsonString["transfers"][0])
+    transfer = from_api_json(Transfer, exampleTransfersJsonString["transfers"][0])
     transfers = []
     for _ in range(n):
         amount = randint(1, 10)

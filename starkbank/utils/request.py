@@ -97,7 +97,7 @@ def _url(user, endpoint, url_params):
         Environment.production: "https://api.starkbank.com/v2/",
         Environment.sandbox: "https://sandbox.api.starkbank.com/v2/",
         Environment.development: "https://development.api.starkbank.com/v2/",
-    }[user.environment] + endpoint
+    }[user.credentials.environment] + endpoint
 
     url_params = {k: v for k, v in url_params.items() if v is not None} if url_params else None
     if url_params:

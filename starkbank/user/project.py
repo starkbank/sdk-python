@@ -1,5 +1,5 @@
 from starkbank.user.base import User, get_id as _user_get_id, query as _user_query
-from starkbank.user.credentials import Credentials
+from starkbank.utils.api import define_compatibility_fields
 
 
 class Project(User):
@@ -11,15 +11,13 @@ class Project(User):
         User.__init__(
             self,
             id=id,
+            access_id="project/{id}".format(id=id),
+            private_key_pem=private_key,
             environment=environment,
-            credentials=Credentials(
-                access_id="project/{id}".format(id=id),
-                private_key_pem=private_key,
-            ),
         )
 
 
-Project._define_known_fields()
+define_compatibility_fields(Project, {"private_key": None, "environment": None})
 
 
 def get(id, user=None):

@@ -4,6 +4,7 @@ from hashlib import sha256
 
 import starkbank
 from starkbank import BoletoPayment
+from starkbank.utils.api import from_api_json
 from .boleto import generateExampleBoletosJson
 from .examples.messages.messages import exampleBoletoPaymentsJson
 from .user import exampleProject
@@ -19,7 +20,7 @@ def generateExampleBoletoPaymentsJson(n=1):
     lines = [boleto.line for boleto in boletos]
     ids = [boleto.id for boleto in boletos]
 
-    payment = BoletoPayment.from_json(exampleBoletoPaymentsJson["payments"][0])
+    payment = from_api_json(BoletoPayment, exampleBoletoPaymentsJson["payments"][0])
     payments = []
     for id, line in zip(ids, lines):
         payment.line = line

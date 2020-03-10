@@ -1,6 +1,7 @@
 from starkbank.utils import rest
-from starkbank.utils.base import Base
+from starkbank.utils.api import define_compatibility_fields
 from starkbank.utils.checks import check_datetime
+from starkbank.utils.base import Base
 
 
 class Transfer(Base):
@@ -20,7 +21,7 @@ class Transfer(Base):
         self.created = check_datetime(created)
 
 
-Transfer._define_known_fields()
+define_compatibility_fields(Transfer)
 
 
 def create(transfers, user=None):
