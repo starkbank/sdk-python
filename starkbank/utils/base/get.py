@@ -13,8 +13,8 @@ class Get(Base):
         url_params = {
             "limit": limit,
             "cursor": cursor,
+            **kwargs
         }
-        url_params.update({snake_to_camel(k): v for k, v in kwargs.items() if v is not None})
 
         response = request.get(
             user=user,

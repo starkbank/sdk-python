@@ -3,7 +3,6 @@ from starkbank.utils.case import camel_to_snake, camel_to_kebab, snake_to_camel
 
 class Base:
     _known_fields = set()
-    _known_camel_fields = set()
     _json_fill = {}
 
     def __init__(self, id):
@@ -27,24 +26,28 @@ class Base:
     def id(self):
         return self._id
 
-    def json(self, fields=None):
+    def json(self, fields=None, api=False):
         json = {
             attribute: getattr(self, attribute)
             for attribute in dir(self)
             if not attribute.startswith('_') and not callable(getattr(self, attribute))
         }
-
         if fields:
             json = {k: v for k, v in json.items() if k in fields}
-
+        if api:
+            json = {snake_to_camel(k): v for k, v in json.items() if v is not None}
+        
         return json
 
     @classmethod
     def from_json(cls, json):
         for fill, value in cls._json_fill.items():
             json.setdefault(fill, value)
+
+        snakes = {camel_to_snake(k): v for k, v in json.items()}
+
         return cls(**{
-            camel_to_snake(k): v for k, v in json.items() if k in cls._known_camel_fields
+            k: v for k, v in snakes.items() if k in cls._known_fields
         })
 
     @classmethod
@@ -72,4 +75,3 @@ class Base:
     @classmethod
     def _define_known_fields(cls):
         cls._known_fields = set(cls.__init__.__code__.co_varnames) - {"self"}
-        cls._known_camel_fields = {snake_to_camel(field) for field in cls._known_fields}

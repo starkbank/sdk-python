@@ -6,6 +6,7 @@ from time import time
 from starkbank.exceptions import Houston, InputError, UnknownException
 from starkbank.models.environment import Environment
 from starkbank import __version__
+from starkbank.utils.case import snake_to_camel
 from starkbank.utils.checks import check_user
 
 _version = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
@@ -102,10 +103,10 @@ def _url(user, endpoint, url_params):
 
     url_args = []
     for param, values in url_params.items():
-        if values:
+        if values is not None:
             url_args.append(
                 "{param}={values}".format(
-                    param=param,
+                    param=snake_to_camel(param),
                     values=",".join(values) if isinstance(values, list) else values
                 )
             )
