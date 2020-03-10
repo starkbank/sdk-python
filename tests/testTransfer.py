@@ -1,4 +1,5 @@
 import time
+from datetime import datetime, timedelta, date
 
 import starkbank
 from starkbank.exceptions import InputError
@@ -106,6 +107,18 @@ class TestTransferGet(TestCase):
     def test_success(self):
         transfers = list(starkbank.transfer.query(limit=10))
         assert len(transfers) == 10
+
+    def test_success_with_params(self):
+        transfers = starkbank.transfer.query(
+            limit=10,
+            after=date.today() - timedelta(days=100),
+            before=date.today(),
+            status="failed",
+            tags=["iron", "bank"],
+            transaction_ids=["1", "2", "3"],
+        )
+        for transfer in transfers:
+            print(transfer.id)
 
 
 class TestTransferInfoGet(TestCase):
