@@ -6,11 +6,11 @@ from ..boleto_payment import BoletoPayment
 
 class BoletoPaymentLog(Base):
 
-    def __init__(self, id, created, event, errors, payment):
+    def __init__(self, id, created, type, errors, payment):
         Base.__init__(self, id=id)
 
         self.created = check_datetime(created)
-        self.event = event
+        self.type = type
         self.errors = errors
         self.payment = BoletoPayment.from_json(payment)
 
