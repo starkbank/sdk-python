@@ -12,9 +12,5 @@ class TransferLog(Base):
         self.errors = errors
         self.transfer = Transfer.from_json(transfer)
 
-    @classmethod
-    def _endpoint(cls):
-        return "transfer/log"
-
 
 TransferLog._define_known_fields()

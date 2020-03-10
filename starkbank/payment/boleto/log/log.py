@@ -14,10 +14,6 @@ class BoletoPaymentLog(Base):
         self.errors = errors
         self.payment = BoletoPayment.from_json(payment)
 
-    @classmethod
-    def _endpoint(cls):
-        return "boleto-payment/log"
-
 
 BoletoPaymentLog._define_known_fields()
 

@@ -51,19 +51,6 @@ class Base:
         cls._known_fields = set(cls.__init__.__code__.co_varnames) - {"self"}
 
     @classmethod
-    def _endpoint(cls):
-        return "{entity}".format(
-            entity=camel_to_kebab(cls.__name__),
-        )
-
-    @classmethod
-    def _id_endpoint(cls, id):
-        return "{base_endpoint}/{id}".format(
-            base_endpoint=cls._endpoint(),
-            id=id
-        )
-
-    @classmethod
     def _last_name(cls):
         return camel_to_kebab(cls.__name__).split("-")[-1]
 

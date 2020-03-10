@@ -13,10 +13,6 @@ class BoletoLog(Base):
         self.errors = errors
         self.boleto = Boleto.from_json(boleto)
 
-    @classmethod
-    def _endpoint(cls):
-        return "boleto/log"
-
 
 BoletoLog._define_known_fields()
 
