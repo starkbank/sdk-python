@@ -100,6 +100,7 @@ def _url(user, endpoint, url_params):
     }[user.environment] + endpoint
 
     url_params = {k: v for k, v in url_params.items() if v is not None} if url_params else None
+    url_params = {k: ",".join(v) if isinstance(v, (tuple, list, set)) else v for k, v in url_params.items()} if url_params else None
     query_string = "?" + urlencode(url_params) if url_params else ""
 
     return base_url + query_string
