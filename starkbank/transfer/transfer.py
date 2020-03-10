@@ -4,7 +4,7 @@ from starkbank.utils.base import Base
 
 class Transfer(Base):
 
-    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, fee=None, tags=None, status=None, id=None):
+    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, fee=None, tags=None, status=None, id=None, created=None):
         Base.__init__(self, id=id)
 
         self.tax_id = tax_id
@@ -16,6 +16,7 @@ class Transfer(Base):
         self.account_number = account_number
         self.tags = tags
         self.status = status
+        self.created = created
 
 
 Transfer._define_known_fields()
