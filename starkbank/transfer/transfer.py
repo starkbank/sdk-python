@@ -1,5 +1,6 @@
 from starkbank.utils import rest
 from starkbank.utils.base import Base
+from starkbank.utils.checks import check_datetime
 
 
 class Transfer(Base):
@@ -16,7 +17,7 @@ class Transfer(Base):
         self.account_number = account_number
         self.tags = tags
         self.status = status
-        self.created = created
+        self.created = check_datetime(created)
 
 
 Transfer._define_known_fields()
