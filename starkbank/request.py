@@ -5,9 +5,8 @@ from sys import version_info
 from time import time
 from starkbank.exceptions import Houston, InputError, UnknownException
 from starkbank.models.environment import Environment
-from starkbank.user.credentials import Credentials
 from starkbank import __version__
-
+from starkbank.utils.checks import check_user
 
 _version = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
     major=version_info.major,
@@ -38,16 +37,14 @@ def delete(user, endpoint, url_params=None):
 
 
 def _request(user, request_method, endpoint, url_params=None, body=None, json_response=True):
-    credentials = _credentials(user)
-
+    user = check_user(user)
     if body is not None:
         body = dumps(body)
 
-    url = _url(environment=user.environment, endpoint=endpoint, url_params=url_params)
-    headers = _headers(credentials=credentials, body=body)
+    headers = _headers(user=user, body=body)
+    url = _url(user=user, endpoint=endpoint, url_params=url_params)
 
     import starkbank
-
     if starkbank.debug:
         since = time()
         print(
@@ -77,42 +74,31 @@ def _request(user, request_method, endpoint, url_params=None, body=None, json_re
     return _treat_request_response(response=response, json_response=json_response)
 
 
-def _credentials(user):
-    from starkbank.user.base import User
-    assert isinstance(user, User), "user must be an object retrieved from one of starkbank.user methods or classes"
-    credentials = user.credentials
-    assert isinstance(credentials, Credentials) and credentials.private_key_object is not None, "user private key is not loaded in credentials"
-    return user.credentials
-
-
-def _headers(credentials, body=None):
+def _headers(user, body=None):
     timestamp = str(int(time()))
     message = "{access_id}:{timestamp}:{body}".format(
-        access_id=credentials.access_id,
+        access_id=user.credentials.access_id,
         timestamp=timestamp,
         body=body if body else "",
     )
-
     return {
         "Access-Time": timestamp,
-        "Access-Signature": Ecdsa.sign(message=message, privateKey=credentials.private_key_object).toBase64(),
-        "Access-Id": credentials.access_id,
+        "Access-Signature": Ecdsa.sign(message=message, privateKey=user.credentials.private_key_object).toBase64(),
+        "Access-Id": user.credentials.access_id,
         "Content-Type": "application/json",
         "User-Agent": _version,
     }
 
 
-def _url(environment, endpoint, url_params):
-    return {
+def _url(user, endpoint, url_params):
+    base_url = {
         Environment.production: "https://api.starkbank.com/v2/",
         Environment.sandbox: "https://sandbox.api.starkbank.com/v2/",
         Environment.development: "https://development.api.starkbank.com/v2/",
-    }[environment] + endpoint + _get_url_params_string(url_params)
+    }[user.environment] + endpoint
 
-
-def _get_url_params_string(url_params):
     if not url_params:
-        return ""
+        return base_url
 
     url_args = []
     for param, values in url_params.items():
@@ -123,7 +109,7 @@ def _get_url_params_string(url_params):
                     values=",".join(values) if isinstance(values, list) else values
                 )
             )
-    return "?" + "&".join(url_args)
+    return "{base_url}?{url_args}".format(base_url=base_url, url_args="&".join(url_args))
 
 
 def _treat_request_response(response, json_response):

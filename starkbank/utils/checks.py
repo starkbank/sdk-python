@@ -1,48 +1,24 @@
-from builtins import str
 from datetime import datetime, date
-from ellipticcurve.privateKey import PrivateKey
 
 
 def check_user(user):
-    if not user:
-        import starkbank
-        user = starkbank.user
-        if not user:
-            raise RuntimeError("no user passed and no default user set")
+    import starkbank
     from ..user.base import User
-    assert isinstance(user, User)
+    from ..user.credentials import Credentials
+
+    if not user:
+        user = starkbank.user
+
+    if not user:
+        raise RuntimeError("no user passed and no default user set")
+
+    if not isinstance(user, User):
+        raise TypeError("user must be an object retrieved from one of starkbank.user methods or classes")
+
+    if (not isinstance(user.credentials, Credentials)) or user.credentials.private_key_object is None:
+        raise ValueError("user private key is not loaded in credentials")
+
     return user
-
-
-def check_list_of_strings(list_of_strings):
-    if not list_of_strings:
-        return []
-
-    assert isinstance(list_of_strings, list)
-    for string in list_of_strings:
-        assert isinstance(string, str)
-
-    return list_of_strings
-
-
-def check_string(string):
-    assert isinstance(string, str)
-    return str(string)
-
-
-def check_private_key(private_key_pem):
-    return PrivateKey.fromPem(private_key_pem)
-
-
-def check_id(id):
-    id = str(id)
-    assert id.isdigit()
-    return id
-
-
-def check_integer(integer):
-    assert isinstance(integer, int)
-    return integer
 
 
 def check_datetime(data):

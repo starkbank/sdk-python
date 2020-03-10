@@ -1,6 +1,5 @@
 from starkbank import request
 from .base import Base
-from ..checks import check_user
 
 
 class GetPdf(Base):
@@ -13,6 +12,6 @@ class GetPdf(Base):
     @classmethod
     def _get_pdf(cls, id, user=None):
         return request.get(
-            user=check_user(user),
+            user=user,
             endpoint=cls._pdf_endpoint(id),
         )

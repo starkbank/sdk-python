@@ -1,7 +1,6 @@
 from starkbank import request
 from .base import Base
 from ..case import snake_to_camel
-from ..checks import check_user
 
 
 class Post(Base):
@@ -17,7 +16,7 @@ class Post(Base):
             } for entity in entities
         ]
         response = request.post(
-            user=check_user(user),
+            user=user,
             endpoint=cls._post_endpoint(),
             body={
                 cls._plural_last_name(): entity_list
@@ -30,7 +29,7 @@ class Post(Base):
     @classmethod
     def _post_single(cls, entity, user=None):
         response = request.post(
-            user=check_user(user),
+            user=user,
             endpoint=cls._post_endpoint(),
             body={snake_to_camel(k): v for k, v in entity.json().items() if v is not None},
         )

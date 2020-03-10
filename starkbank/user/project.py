@@ -1,13 +1,12 @@
 from starkbank.user.base import User
 from starkbank.user.credentials import Credentials
-from starkbank.utils.checks import check_string, check_list_of_strings, check_user
 
 
 class Project(User):
 
     def __init__(self, environment, private_key, id, name="", allowed_ips=None):
-        self.name = check_string(name)
-        self.allowed_ips = check_list_of_strings(allowed_ips)
+        self.name = name
+        self.allowed_ips = allowed_ips
 
         User.__init__(
             self,

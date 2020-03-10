@@ -1,9 +1,5 @@
 from starkbank import request
-from starkbank.utils.case import camel_to_snake, camel_to_kebab, snake_to_camel
-from starkbank.utils.checks import check_user
 from .base import Base
-from ..case import snake_to_camel
-from ..checks import check_user
 
 
 class Delete(Base):
@@ -19,7 +15,7 @@ class Delete(Base):
         entities = []
         for id in ids:
             response = request.delete(
-                user=check_user(user),
+                user=user,
                 endpoint=cls._delete_endpoint(id),
             )
 
