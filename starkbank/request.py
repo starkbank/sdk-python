@@ -1,39 +1,49 @@
 import requests
-from time import time
-from json import dumps, loads
 from ellipticcurve.ecdsa import Ecdsa
+from json import dumps, loads
+from sys import version_info
+from time import time
 from starkbank.exceptions import Houston, InputError, UnknownException
 from starkbank.models.environment import Environment
 from starkbank.user.credentials import Credentials
+from starkbank import __version__
+
+
+_version = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
+    major=version_info.major,
+    minor=version_info.minor,
+    micro=version_info.micro,
+    sdk_version=__version__,
+)
 
 
 def get(user, endpoint, url_params=None, json_response=True):
-    return _make_request(user=user, request_method=requests.get, endpoint=endpoint, url_params=url_params, json_response=json_response)
+    return _request(user=user, request_method=requests.get, endpoint=endpoint, url_params=url_params, json_response=json_response)
 
 
 def post(user, endpoint, body):
-    return _make_request(user=user, request_method=requests.post, endpoint=endpoint, body=body)
+    return _request(user=user, request_method=requests.post, endpoint=endpoint, body=body)
 
 
 def patch(user, endpoint, body):
-    return _make_request(user=user, request_method=requests.patch, endpoint=endpoint, body=body)
+    return _request(user=user, request_method=requests.patch, endpoint=endpoint, body=body)
 
 
 def put(user, endpoint, body):
-    return _make_request(user=user, request_method=requests.put, endpoint=endpoint, body=body)
+    return _request(user=user, request_method=requests.put, endpoint=endpoint, body=body)
 
 
 def delete(user, endpoint, url_params=None):
-    return _make_request(user=user, request_method=requests.delete, endpoint=endpoint, url_params=url_params)
+    return _request(user=user, request_method=requests.delete, endpoint=endpoint, url_params=url_params)
 
 
-def _make_request(user, request_method, endpoint, url_params=None, body=None, json_response=True):
-    credentials = _get_credentials(user)
+def _request(user, request_method, endpoint, url_params=None, body=None, json_response=True):
+    credentials = _credentials(user)
 
     if body is not None:
         body = dumps(body)
 
-    url = _get_url(environment=user.environment, endpoint=endpoint, url_params=url_params)
+    url = _url(environment=user.environment, endpoint=endpoint, url_params=url_params)
     headers = _headers(credentials=credentials, body=body)
 
     import starkbank
@@ -67,7 +77,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
     return _treat_request_response(response=response, json_response=json_response)
 
 
-def _get_credentials(user):
+def _credentials(user):
     from starkbank.user.base import User
     assert isinstance(user, User), "user must be an object retrieved from one of starkbank.user methods or classes"
     credentials = user.credentials
@@ -88,11 +98,11 @@ def _headers(credentials, body=None):
         "Access-Signature": Ecdsa.sign(message=message, privateKey=credentials.private_key_object).toBase64(),
         "Access-Id": credentials.access_id,
         "Content-Type": "application/json",
-        "User-Agent": "Python-SDK-2.0.0",
+        "User-Agent": _version,
     }
 
 
-def _get_url(environment, endpoint, url_params):
+def _url(environment, endpoint, url_params):
     return {
         Environment.production: "https://api.starkbank.com/v2/",
         Environment.sandbox: "https://sandbox.api.starkbank.com/v2/",

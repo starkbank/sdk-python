@@ -1,5 +1,6 @@
 from os import path
 from setuptools import setup, find_packages
+from starkbank import __version__
 
 
 with open(path.join(path.dirname(__file__), "README.md")) as readme:
@@ -18,7 +19,7 @@ setup(
     author="Stark Bank",
     author_email="developers@starkbank.com",
     keywords=["stark bank", "starkbank", "sdk", "open banking", "openbanking"],
-    version="2.0.0"
+    version=__version__,
 )
 
 
