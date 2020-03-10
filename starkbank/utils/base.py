@@ -1,4 +1,4 @@
-from starkbank.utils.case import camel_to_snake, camel_to_kebab, snake_to_camel
+from starkbank.utils.case import camel_to_snake, snake_to_camel
 
 
 class Base:
@@ -49,11 +49,3 @@ class Base:
     @classmethod
     def _define_known_fields(cls):
         cls._known_fields = set(cls.__init__.__code__.co_varnames) - {"self"}
-
-    @classmethod
-    def _last_name(cls):
-        return camel_to_kebab(cls.__name__).split("-")[-1]
-
-    @classmethod
-    def _last_name_plural(cls):
-        return "{name}s".format(name=cls._last_name())

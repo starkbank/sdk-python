@@ -13,7 +13,7 @@ def get(resource, limit=100, cursor=None, user=None, **kwargs):
         endpoint=_endpoint(resource),
         url_params=url_params,
     )
-    return [resource.from_json(entity) for entity in response[resource._last_name_plural()]], response["cursor"]
+    return [resource.from_json(entity) for entity in response[_last_name_plural(resource)]], response["cursor"]
 
 
 def query(resource, limit=None, user=None, **kwargs):
@@ -41,7 +41,7 @@ def get_id(resource, id, user=None):
         user=user,
         endpoint=_id_endpoint(resource, id),
     )
-    return resource.from_json(response[resource._last_name()])
+    return resource.from_json(response[_last_name(resource)])
 
 
 def get_pdf(resource, id, user=None):
@@ -60,11 +60,11 @@ def post(resource, entities, user=None):
         user=user,
         endpoint=_endpoint(resource),
         body={
-            resource._last_name_plural(): entity_list
+            _last_name_plural(resource): entity_list
         }
     )
     return [
-        resource.from_json(entity) for entity in response[resource._last_name_plural()]
+        resource.from_json(entity) for entity in response[_last_name_plural(resource)]
     ]
 
 
@@ -74,7 +74,7 @@ def post_single(resource, entity, user=None):
         endpoint=_endpoint(resource),
         body=entity.json(api=True),
     )
-    return resource.from_json(response[resource._last_name()])
+    return resource.from_json(response[_last_name(resource)])
 
 
 def delete(resource, ids, user=None):
@@ -86,7 +86,7 @@ def delete(resource, ids, user=None):
             user=user,
             endpoint=_id_endpoint(resource, id),
         )
-        entities.append(resource.from_json(response[resource._last_name()]))
+        entities.append(resource.from_json(response[_last_name(resource)]))
     return entities
 
 
@@ -104,3 +104,11 @@ def _id_endpoint(resource, id):
         base_endpoint=_endpoint(resource),
         id=id
     )
+
+
+def _last_name(resource):
+    return camel_to_kebab(resource.__name__).split("-")[-1]
+
+
+def _last_name_plural(resource):
+    return "{name}s".format(name=_last_name(resource))
