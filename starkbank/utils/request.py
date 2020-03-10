@@ -10,7 +10,7 @@ from .checks import check_user
 from .. import __version__ as starkbank_version
 
 
-_version = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
+_user_agent = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
     major=python_version.major,
     minor=python_version.minor,
     micro=python_version.micro,
@@ -88,7 +88,7 @@ def _headers(user, body=None):
         "Access-Signature": Ecdsa.sign(message=message, privateKey=user.credentials.private_key_object).toBase64(),
         "Access-Id": user.credentials.access_id,
         "Content-Type": "application/json",
-        "User-Agent": _version,
+        "User-Agent": _user_agent,
     }
 
 
