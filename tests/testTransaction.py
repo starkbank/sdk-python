@@ -1,22 +1,22 @@
-from datetime import datetime
-
 import starkbank
+from starkbank.exceptions import InputError
+from datetime import datetime
 from unittest import TestCase, main
 
-from tests.utils.dateGenerator import randomPastDate, randomDateBetween
+from tests.utils.dateGenerator import randomPastDate
 from tests.utils.transaction import generateExampleTransactions
 from tests.utils.user import exampleProject
 
 
 class TestTransactionPost(TestCase):
 
-    def testSuccess(self):
+    def test_success(self):
         transactions = generateExampleTransactions(n=5)
         transactions = starkbank.transaction.create(transactions)
 
-    def testFailInvalidArraySize(self):
+    def test_fail_invalid_array_size(self):
         transactions = generateExampleTransactions(n=105)
-        with self.assertRaises(starkbank.exceptions.InputError) as context:
+        with self.assertRaises(InputError) as context:
             transactions = starkbank.transaction.create(transactions)
         errors = context.exception.elements
         for error in errors:
@@ -24,9 +24,9 @@ class TestTransactionPost(TestCase):
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(1, len(errors))
 
-    def testFailInvalidJson(self):
+    def test_fail_invalid_json(self):
         transactions = {}
-        with self.assertRaises(starkbank.exceptions.InputError) as context:
+        with self.assertRaises(InputError) as context:
             transactions = starkbank.transaction.create(transactions)
         errors = context.exception.elements
         for error in errors:
@@ -34,7 +34,7 @@ class TestTransactionPost(TestCase):
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(1, len(errors))
 
-    def testFailInvalidJsonTransaction(self):
+    def test_fail_invalid_json_transaction(self):
         transactions = generateExampleTransactions(n=6)
         print(transactions)
         transactions[0].amount = None  # Required
@@ -45,7 +45,7 @@ class TestTransactionPost(TestCase):
 
         transactions[5].invalid_parameter = "invalidValue"
 
-        with self.assertRaises(starkbank.exceptions.InputError) as context:
+        with self.assertRaises(InputError) as context:
             transactions = starkbank.transaction.create(transactions)
         errors = context.exception.elements
         for error in errors:
@@ -55,11 +55,11 @@ class TestTransactionPost(TestCase):
 
 
 class TestTransactionGet(TestCase):
-    def testSuccess(self):
+    def test_success(self):
         transactions = list(starkbank.transaction.query(limit=10))
         print("Number of transactions:", len(transactions))
 
-    def testSuccessAfterBefore(self):
+    def test_success_after_before(self):
         after = randomPastDate(days=10)
         before = datetime.today()
         transactions = starkbank.transaction.query(after=after.date(), before=before.date())
@@ -72,7 +72,7 @@ class TestTransactionGet(TestCase):
 
 
 class TestTransactionInfoGet(TestCase):
-    def testSuccess(self):
+    def test_success(self):
         transactions = starkbank.transaction.query()
         transactionId = next(transactions).id
         transaction = starkbank.transaction.get(id=transactionId)

@@ -5,14 +5,14 @@ from tests.utils.user import exampleProject
 
 
 class TestProjectGet(TestCase):
-    def testSuccess(self):
+    def test_success(self):
         projects = starkbank.project.query()
         for project in projects:
             print(project.id)
 
 
 class TestProjectGetInfo(TestCase):
-    def testSuccess(self):
+    def test_success(self):
         projects = starkbank.project.query()
         project1 = next(projects)
         project2 = starkbank.project.get(project1.id)

@@ -5,7 +5,7 @@ from tests.utils.user import exampleProject
 
 
 class TestBalanceGet(TestCase):
-    def testSuccess(self):
+    def test_success(self):
         balance = starkbank.balance.get(user=exampleProject)
         self.assertIsInstance(balance.amount, int)
 

@@ -1,6 +1,7 @@
 import time
 
 import starkbank
+from starkbank.exceptions import InputError
 from unittest import TestCase, main
 
 from tests.utils.transfer import generateExampleTransfersJson
@@ -9,15 +10,15 @@ from tests.utils.user import exampleProject
 
 class TestTransferPost(TestCase):
 
-    def testSuccess(self):
+    def test_success(self):
         transfers = generateExampleTransfersJson(n=5)
         transfers = starkbank.transfer.create(transfers)
         for transfer in transfers:
             print(transfer.id)
 
-    def testFailInvalidArraySize(self):
+    def test_fail_invalid_array_size(self):
         transfers = generateExampleTransfersJson(n=105)
-        with self.assertRaises(starkbank.exceptions.InputError) as context:
+        with self.assertRaises(InputError) as context:
             transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
@@ -25,9 +26,9 @@ class TestTransferPost(TestCase):
             self.assertEqual("invalidJson", error.code)
         self.assertEqual(1, len(errors))
 
-    def testFailInvalidJson(self):
+    def test_fail_invalid_json(self):
         transfers = {}
-        with self.assertRaises(starkbank.exceptions.InputError) as context:
+        with self.assertRaises(InputError) as context:
             transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
@@ -35,7 +36,7 @@ class TestTransferPost(TestCase):
             self.assertEqual("invalidJson", error.code)
         self.assertEqual(1, len(errors))
 
-    def testFailInvalidJsonTransfer(self):
+    def test_fail_invalid_json_transfer(self):
         transfers = generateExampleTransfersJson(n=7)
         transfers[0].tax_id = None
         transfers[1].amount = None
@@ -44,7 +45,7 @@ class TestTransferPost(TestCase):
         transfers[4].branch_code = None
         transfers[5].account_number = None
         transfers[6].tags = None
-        with self.assertRaises(starkbank.exceptions.InputError) as context:
+        with self.assertRaises(InputError) as context:
             transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
@@ -52,14 +53,14 @@ class TestTransferPost(TestCase):
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(7, len(errors))
 
-    def testFailInvalidTaxId(self):
+    def test_fail_invalid_tax_id(self):
         transfers = generateExampleTransfersJson(n=5)
         transfers[0].tax_id = "000.000.000-00"
         transfers[1].tax_id = "00.000.000/0000-00"
         transfers[2].tax_id = "abc"
         transfers[3].tax_id = 123  # 2 errors
         transfers[4].tax_id = {}  # 2 errors
-        with self.assertRaises(starkbank.exceptions.InputError) as context:
+        with self.assertRaises(InputError) as context:
             transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
@@ -67,14 +68,14 @@ class TestTransferPost(TestCase):
             self.assertEqual('invalidTaxId', error.code)
         self.assertEqual(5, len(errors))
 
-    def testFailInvalidAmount(self):
+    def test_fail_invalid_amount(self):
         transfers = generateExampleTransfersJson(n=5)
         transfers[0].amount = "123"
         transfers[1].amount = -5
         transfers[2].amount = 0
         transfers[3].amount = 1000000000000000
         transfers[4].amount = {}
-        with self.assertRaises(starkbank.exceptions.InputError) as context:
+        with self.assertRaises(InputError) as context:
             transfers = starkbank.transfer.create(transfers)
         errors = context.exception.elements
         for error in errors:
@@ -82,7 +83,7 @@ class TestTransferPost(TestCase):
             self.assertEqual('invalidAmount', error.code)
         self.assertEqual(5, len(errors))
 
-    def testFailInvalidBalance(self):
+    def test_fail_invalid_balance(self):
         balance = starkbank.balance.get()
         transfer = generateExampleTransfersJson(n=1)[0]
         transfer.amount = 2 * balance.amount
@@ -91,7 +92,7 @@ class TestTransferPost(TestCase):
         transfer = starkbank.transfer.get(id=transfers[0].id)
         self.assertEqual("failed", transfer.status)
 
-    def testFailInvalidBalanceWithFee(self):
+    def test_fail_invalid_balance_with_fee(self):
         balance = starkbank.balance.get()
         transfer = generateExampleTransfersJson(n=1)[0]
         transfer.amount = balance.amount
@@ -102,20 +103,20 @@ class TestTransferPost(TestCase):
 
 
 class TestTransferGet(TestCase):
-    def testSuccess(self):
+    def test_success(self):
         transfers = list(starkbank.transfer.query(limit=10))
         assert len(transfers) == 10
 
 
 class TestTransferInfoGet(TestCase):
-    def testSuccess(self):
+    def test_success(self):
         transfers = starkbank.transfer.query(user=exampleProject)
         transferId = next(transfers).id
         transfer = starkbank.transfer.get(id=transferId)
 
-    def testFailInvalidTransfer(self):
+    def test_fail_invalid_transfer(self):
         transferId = "0"
-        with self.assertRaises(starkbank.exceptions.InputError) as context:
+        with self.assertRaises(InputError) as context:
             transfer = starkbank.transfer.get(id=transferId)
         errors = context.exception.elements
         for error in errors:
@@ -125,13 +126,13 @@ class TestTransferInfoGet(TestCase):
 
 
 class TestTransferPdfGet(TestCase):
-    def testSuccess(self):
+    def test_success(self):
         transfers = starkbank.transfer.query(user=exampleProject)
         transferId = next(transfers).id
         try:
             pdf = starkbank.transfer.get_pdf(id=transferId)
             print(str(pdf))
-        except starkbank.exceptions.InputError as e:
+        except InputError as e:
             errors = e.elements
             for error in errors:
                 self.assertEqual("invalidTransfer", error.code)

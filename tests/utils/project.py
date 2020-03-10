@@ -5,5 +5,5 @@ def generateExampleProjectData():
     return (
         projectPublicKeyString,
         "api",
-        "testProject",
+        "test_project",
     )
