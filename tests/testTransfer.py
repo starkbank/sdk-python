@@ -106,16 +106,6 @@ class TestTransferGet(TestCase):
         transfers = list(starkbank.transfer.query(limit=10))
         assert len(transfers) == 10
 
-    # def testFields(self):
-    #     raise NotImplementedError
-    #     fields = {"amount", "id", "created", "invalid"}
-    #     fieldsParams = {"fields": ",".join(fields)}
-    #     transfers = starkbank.transfer.list(params=fieldsParams)
-    #     self.assertEqual(0, len(errors))
-    #     for transfer in content["transfers"]:
-    #         self.assertTrue(set(transfer.keys()).issubset(fields))
-    #     print(content)
-
 
 class TestTransferInfoGet(TestCase):
     def testSuccess(self):
@@ -133,19 +123,6 @@ class TestTransferInfoGet(TestCase):
             self.assertEqual('invalidTransfer', error.code)
         self.assertEqual(1, len(errors))
 
-    # def testFields(self):
-    #     raise NotImplementedError
-    #     fields = {"amount", "id", "created", "invalid"}
-    #     fieldsParams = {"fields": ",".join(fields)}
-    #     transfers = starkbank.transfer.list(user=exampleMember)
-    #     transfers = content["transfers"]
-    #     transferId = transfers[0]["id"]
-    #     transfers = starkbank.transfer.get(id=transferId, params=fieldsParams)
-    #     self.assertEqual(0, len(errors))
-    #     transfer = content["transfer"]
-    #     print(content)
-    #     self.assertTrue(set(transfer.keys()).issubset(fields))
-
 
 class TestTransferPdfGet(TestCase):
     def testSuccess(self):
@@ -158,17 +135,6 @@ class TestTransferPdfGet(TestCase):
             errors = e.elements
             for error in errors:
                 self.assertEqual("invalidTransfer", error.code)
-
-
-# class TestTransferPostAndDelete(TestCase):
-#     def testSuccess(self):
-#         transfers = generateExampleTransfers(n=1)
-#         transfers = starkbank.transfer.create(transfers=transfers)
-#         self.assertEqual(0, len(errors))
-#         transferId = content["transfers"][0]["id"]
-#         transfers = deleteTransfer(id=transferId)
-#         self.assertEqual(0, len(errors))
-#         print(content)
 
 
 if __name__ == '__main__':

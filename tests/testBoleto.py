@@ -135,16 +135,6 @@ class TestBoletoGet(TestCase):
                 break
         print("Number of boletos:", i)
 
-    # def testFields(self):
-    #     return NotImplementedError
-    #     fields = {"amount", "id", "created", "invalid"}
-    #     fieldsParams = {"fields": ",".join(fields)}
-    #     boletos, cursor, errors = starkbank.boleto.list(user=exampleMember, params=fieldsParams)
-    #     self.assertEqual(0, len(errors))
-    #     for boleto in content["boletos"]:
-    #         self.assertTrue(set(boleto.keys()).issubset(fields))
-    #     print(content)
-
 
 class TestBoletoPostAndDelete(TestCase):
     def testSuccess(self):
@@ -183,19 +173,6 @@ class TestBoletoInfoGet(TestCase):
             print(error)
             self.assertEqual('invalidBoleto', error.code)
         self.assertEqual(1, len(errors))
-
-    # def testFields(self):
-    #     raise NotImplementedError
-    #     fields = {"amount", "id", "created", "invalid"}
-    #     fieldsParams = {"fields": ",".join(fields)}
-    #     boletos, cursor, errors = starkbank.boleto.list(user=exampleMember)
-    #     boletos = content["boletos"]
-    #     boletoId = boletos[0]["id"]
-    #     boletos, cursor, errors = starkbank.boleto.get(user=exampleMember, boletoId, params=fieldsParams)
-    #     self.assertEqual(0, len(errors))
-    #     boleto = content["boleto"]
-    #     print(content)
-    #     self.assertTrue(set(boleto.keys()).issubset(fields))
 
 
 class TestBoletoPdfGet(TestCase):

@@ -73,15 +73,6 @@ class TestBoletoPaymentGet(TestCase):
         payments = list(starkbank.payment.boleto.query(limit=10))
         print("Number of payments:", len(payments))
 
-    # def testFields(self):
-    #     raise NotImplementedError
-    #     fields = {"amount", "id", "created", "invalid"}
-    #     fieldsParams = {"fields": ",".join(fields)}
-    #     payments = starkbank.payment.boleto.list(user=exampleMember, params=fieldsParams)
-    #     self.assertEqual(0, len(errors))
-    #     for payment in payments:
-    #         self.assertTrue(set(payments.keys()).issubset(fields))
-
 
 class TestBoletoPaymentInfoGet(TestCase):
     def testSuccess(self):
@@ -98,18 +89,6 @@ class TestBoletoPaymentInfoGet(TestCase):
             print(error)
             self.assertEqual('invalidPayment', error.code)
         self.assertEqual(1, len(errors))
-
-    # def testFields(self):
-    #     raise NotImplementedError
-    #     fields = {"amount", "id", "created", "invalid"}
-    #     fieldsParams = {"fields": ",".join(fields)}
-    #     payments = starkbank.payment.boleto.list(user=exampleMember)
-    #     paymentId = payments[0].id
-    #     payments = starkbank.payment.boleto.get(user=exampleMember, id=paymentId, params=fieldsParams)
-    #     self.assertEqual(0, len(errors))
-    #     payment = content["payment"]
-    #     print(content)
-    #     self.assertTrue(set(payment.keys()).issubset(fields))
 
 
 class TestBoletoPaymentPdfGet(TestCase):

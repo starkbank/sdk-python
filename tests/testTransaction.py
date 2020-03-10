@@ -70,34 +70,12 @@ class TestTransactionGet(TestCase):
                 break
         print("Number of transactions:", i)
 
-        # def testFields(self):
-        #     raise NotImplementedError
-        #     fields = {"amount", "id", "created", "invalid"}
-        #     fieldsParams = {"fields": ",".join(fields)}
-        #     transactions = starkbank.transaction.query(user=exampleMember, params=fieldsParams)
-        #     self.assertEqual(0, len(errors))
-        #     for transaction in transactions:
-        #         self.assertTrue(set(transaction.keys()).issubset(fields))
-
 
 class TestTransactionInfoGet(TestCase):
     def testSuccess(self):
         transactions = starkbank.transaction.query()
         transactionId = next(transactions).id
         transaction = starkbank.transaction.get(id=transactionId)
-
-    # def testFields(self):
-    #     raise NotImplementedError
-    #     fields = {"amount", "id", "created", "invalid"}
-    #     fieldsParams = {"fields": ",".join(fields)}
-    #     transactions = starkbank.transaction.query(user=exampleMember)
-    #     transactions = content["transactions"]
-    #     transactionId = transactions[0]["id"]
-    #     transactions = starkbank.transaction.get(user=exampleMember, id=transactionId, params=fieldsParams)
-    #     self.assertEqual(0, len(errors))
-    #     transaction = content["transaction"]
-    #     print(content)
-    #     self.assertTrue(set(transaction.keys()).issubset(fields))
 
 
 if __name__ == '__main__':
