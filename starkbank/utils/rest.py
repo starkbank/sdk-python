@@ -12,7 +12,7 @@ def get(resource, limit=100, cursor=None, user=None, **kwargs):
         endpoint=resource._endpoint(),
         url_params=url_params,
     )
-    return [resource.from_json(entity) for entity in response[resource._plural_last_name()]], response["cursor"]
+    return [resource.from_json(entity) for entity in response[resource._last_name_plural()]], response["cursor"]
 
 
 def query(resource, limit=None, user=None, **kwargs):
@@ -59,11 +59,11 @@ def post(resource, entities, user=None):
         user=user,
         endpoint=resource._endpoint(),
         body={
-            resource._plural_last_name(): entity_list
+            resource._last_name_plural(): entity_list
         }
     )
     return [
-        resource.from_json(entity) for entity in response[resource._plural_last_name()]
+        resource.from_json(entity) for entity in response[resource._last_name_plural()]
     ]
 
 

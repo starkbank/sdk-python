@@ -8,7 +8,7 @@ class Base:
     def __init__(self, id):
         id = str(id) if id else None
         assert id is None or id.isdigit()
-        self._id = id
+        self.id = id
 
     def __repr__(self):
         return "{classname}[{id}]".format(
@@ -17,14 +17,10 @@ class Base:
         )
 
     def __str__(self):
-        return "{classname}({fields})".format(
+        return "{classname}(\n\t{fields}\n)".format(
             classname=self.__class__.__name__,
-            fields=", ".join("{key}={value}".format(key=key, value=value) for key, value in self.json().items())
+            fields=",\n\t".join("{key}={value}".format(key=key, value=value) for key, value in self.json().items())
         )
-
-    @property
-    def id(self):
-        return self._id
 
     def json(self, fields=None, api=False):
         json = {
@@ -51,6 +47,10 @@ class Base:
         })
 
     @classmethod
+    def _define_known_fields(cls):
+        cls._known_fields = set(cls.__init__.__code__.co_varnames) - {"self"}
+
+    @classmethod
     def _endpoint(cls):
         return "{entity}".format(
             entity=camel_to_kebab(cls.__name__),
@@ -65,13 +65,8 @@ class Base:
 
     @classmethod
     def _last_name(cls):
-        route_name = camel_to_kebab(cls.__name__)
-        return route_name.split("-")[-1]
+        return camel_to_kebab(cls.__name__).split("-")[-1]
 
     @classmethod
-    def _plural_last_name(cls):
+    def _last_name_plural(cls):
         return "{name}s".format(name=cls._last_name())
-
-    @classmethod
-    def _define_known_fields(cls):
-        cls._known_fields = set(cls.__init__.__code__.co_varnames) - {"self"}
