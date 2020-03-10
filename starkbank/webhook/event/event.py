@@ -7,6 +7,8 @@ from ...payment.boleto.log import BoletoPaymentLog
 
 class Event(Get, GetId):
 
+    _json_fill = {"delivered": True}
+
     def __init__(self, log, created, delivered, subscription, id):
         Base.__init__(self, id=id)
 
