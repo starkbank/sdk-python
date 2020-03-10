@@ -1,5 +1,5 @@
 from ellipticcurve.privateKey import PrivateKey
-from pathlib import Path
+from os import path as os_path
 
 
 def generate(path=None):
@@ -10,10 +10,9 @@ def generate(path=None):
     public_pem = public.toPem()
 
     if path is not None:
-        path = Path(path)
-        with open(path / "private-key.pem", "w") as file:
+        with open(os_path.join(path, "private-key.pem"), "w") as file:
             file.write(private_pem)
-        with open(path / "public-key.pem", "w") as file:
+        with open(os_path.join(path, "public-key.pem"), "w") as file:
             file.write(public_pem)
 
     return private_pem, public_pem
