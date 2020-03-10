@@ -1,4 +1,3 @@
-from .settings import settings
 from .user import project
 from .user.project import Project
 from .ledger import Balance, balance, Transaction, transaction
@@ -11,6 +10,8 @@ from . import ledger
 from . import boleto
 from . import payment
 from . import transfer
-from . import user
 from . import webhook
 from . import exceptions
+
+debug = False
+user = None

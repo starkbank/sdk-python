@@ -36,9 +36,9 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
     url = _get_url(environment=user.environment, endpoint=endpoint) + _get_url_params_string(url_params)
     headers = _headers(credentials=credentials, body=body)
 
-    from starkbank import settings
+    import starkbank
 
-    if settings.debug:
+    if starkbank.debug:
         since = time()
         print(
             "\nsending /{request_method} to \"{url}\" with:\nheaders: {headers}\nbody: {body}\n".format(
@@ -55,7 +55,7 @@ def _make_request(user, request_method, endpoint, url_params=None, body=None, js
         data=body,
     )
 
-    if settings.debug:
+    if starkbank.debug:
         print(
             "\n[{elapsed} seconds] retrieved {status}: {content}\n".format(
                 elapsed=int(100 * (time() - since)) / 100,

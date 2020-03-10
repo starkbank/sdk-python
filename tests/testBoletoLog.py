@@ -2,7 +2,7 @@ import starkbank
 from unittest import TestCase, main
 from tests.utils.user import exampleProject
 
-starkbank.settings.debug = True
+starkbank.debug = True
 
 
 class TestBoletoLogGet(TestCase):

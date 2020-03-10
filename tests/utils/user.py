@@ -7,5 +7,5 @@ exampleProject = starkbank.Project(
     private_key=projectPrivateKeyString,
 )
 
-starkbank.settings.user = exampleProject
-starkbank.settings.debug = True
+starkbank.user = exampleProject
+starkbank.debug = True

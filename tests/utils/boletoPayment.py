@@ -8,7 +8,7 @@ from .boleto import generateExampleBoletosJson
 from .examples.messages.messages import exampleBoletoPaymentsJson
 from .user import exampleProject
 
-starkbank.settings.user = exampleProject
+starkbank.user = exampleProject
 
 
 def generateExampleBoletoPaymentsJson(n=1):

@@ -5,8 +5,8 @@ from ellipticcurve.privateKey import PrivateKey
 
 def check_user(user):
     if not user:
-        from ..settings import settings
-        user = settings.user
+        import starkbank
+        user = starkbank.user
         if not user:
             raise RuntimeError("no user passed and no default user set")
     from ..user.base import User
