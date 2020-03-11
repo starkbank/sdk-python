@@ -10,7 +10,7 @@ starkbank.debug = False
 class TestEventGet(TestCase):
 
     def test_success(self):
-        events = list(starkbank.webhook.event.query(user=exampleProject, limit=10))
+        events = list(starkbank.webhook.event.query(user=exampleProject, limit=10, after="2020-03-10"))
         print("Number of events:", len(events))
 
 
