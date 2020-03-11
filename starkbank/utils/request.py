@@ -79,14 +79,14 @@ def _request(user, request_method, endpoint, url_params=None, body=None, json_re
 def _headers(user, body=None):
     timestamp = str(int(time()))
     message = "{access_id}:{timestamp}:{body}".format(
-        access_id=user.credentials.access_id,
+        access_id=user.credentials.id,
         timestamp=timestamp,
         body=body if body else "",
     )
     return {
         "Access-Time": timestamp,
         "Access-Signature": Ecdsa.sign(message=message, privateKey=user.credentials.private_key_object).toBase64(),
-        "Access-Id": user.credentials.access_id,
+        "Access-Id": user.credentials.id,
         "Content-Type": "application/json",
         "User-Agent": _user_agent,
     }

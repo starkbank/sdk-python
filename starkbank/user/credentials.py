@@ -18,7 +18,6 @@ class Credentials(Base):
             public_key_pem = private_key.publicKey().toPem()
 
         self.environment = environment
-        self.access_id = access_id
         self.private_key_object = private_key
         self.private_key = private_key_pem
         self.public_key = public_key_pem
