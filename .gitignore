@@ -11,6 +11,7 @@ development.json
 sandbox.json
 **/development.json
 **/sandbox.json
+**/snippet.py
 
 # ignore info from all dependencies
 *.dist-info
