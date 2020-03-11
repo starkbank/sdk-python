@@ -24,7 +24,7 @@ def get(id, user=None):
     return rest.get_id(resource=Webhook, id=id, user=user)
 
 
-def query(limit=100, user=None):
+def query(limit=None, user=None):
     return rest.query(resource=Webhook, limit=limit, user=user)
 
 

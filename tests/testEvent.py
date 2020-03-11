@@ -16,7 +16,7 @@ class TestEventGet(TestCase):
 
 class TestEventInfoGet(TestCase):
     def test_success(self):
-        events = starkbank.webhook.event.query(user=exampleProject)
+        events = starkbank.webhook.event.query(user=exampleProject, after="2020-03-10")
         event_id = next(events).id
         event = starkbank.webhook.event.get(user=exampleProject, id=event_id)
 

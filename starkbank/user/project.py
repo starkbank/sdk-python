@@ -24,5 +24,5 @@ def get(id, user=None):
     return _user_get_id(resource=Project, id=id, user=user)
 
 
-def query(limit=100, user=None):
+def query(limit=None, user=None):
     return _user_query(resource=Project, limit=limit, user=user)

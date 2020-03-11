@@ -126,7 +126,7 @@ class TestBoletoPost(TestCase):
 
 class TestBoletoGet(TestCase):
     def test_success(self):
-        boletos = list(starkbank.boleto.query())
+        boletos = list(starkbank.boleto.query(limit=100))
         print("Number of boletos:", len(boletos))
 
     def test_success_after_before(self):

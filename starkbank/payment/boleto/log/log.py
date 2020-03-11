@@ -23,5 +23,5 @@ def get(id, user=None):
     return rest.get_id(resource=BoletoPaymentLog, id=id, user=user)
 
 
-def query(limit=100, payment_ids=None, events=None, user=None):
+def query(limit=None, payment_ids=None, events=None, user=None):
     return rest.query(resource=BoletoPaymentLog, limit=limit, user=user, events=events, payment_ids=payment_ids)

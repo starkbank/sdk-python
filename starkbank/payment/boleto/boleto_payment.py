@@ -35,7 +35,7 @@ def get_pdf(id, user=None):
     return rest.get_pdf(resource=BoletoPayment, id=id, user=user)
 
 
-def query(limit=100, status=None, tags=None, user=None):
+def query(limit=None, status=None, tags=None, user=None):
     return rest.query(resource=BoletoPayment, limit=limit, user=user, status=status, tags=tags)
 
 

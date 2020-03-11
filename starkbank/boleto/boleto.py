@@ -48,7 +48,7 @@ def get_pdf(id, user=None):
     return rest.get_pdf(resource=Boleto, id=id, user=user)
 
 
-def query(limit=100, status=None, tags=None, ids=None, after=None, before=None, user=None):
+def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):
     return rest.query(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids, after=after, before=before)
 
 

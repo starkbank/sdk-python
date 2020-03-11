@@ -23,5 +23,5 @@ def get(id, user=None):
     return rest.get_id(resource=BoletoLog, id=id, user=user)
 
 
-def query(limit=100, boleto_ids=None, events=None, user=None):
+def query(limit=None, boleto_ids=None, events=None, user=None):
     return rest.query(resource=BoletoLog, limit=limit, user=user, events=events, boleto_ids=boleto_ids)

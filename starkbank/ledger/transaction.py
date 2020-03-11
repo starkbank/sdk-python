@@ -31,5 +31,5 @@ def get(id, user=None):
     return rest.get_id(resource=Transaction, id=id, user=user)
 
 
-def query(limit=100, external_ids=None, after=None, before=None, user=None):
+def query(limit=None, external_ids=None, after=None, before=None, user=None):
     return rest.query(resource=Transaction, limit=limit, user=user, external_ids=external_ids, after=after, before=before)
