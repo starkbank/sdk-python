@@ -1,5 +1,5 @@
 import starkbank
-from starkbank.exceptions import InputError
+from starkbank.exceptions import InputErrors
 from datetime import datetime, timedelta
 from unittest import TestCase, main
 
@@ -18,7 +18,7 @@ class TestBoletoPost(TestCase):
 
     def test_fail_invalid_array_size(self):
         boletos = generateExampleBoletosJson(n=105)
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
@@ -28,7 +28,7 @@ class TestBoletoPost(TestCase):
 
     def test_fail_invalid_json(self):
         boletos = {}
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
@@ -57,7 +57,7 @@ class TestBoletoPost(TestCase):
 
         boletos[15].invalid_parameter = "invalidValue"
 
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
@@ -85,7 +85,7 @@ class TestBoletoPost(TestCase):
         boletos[15].descriptions = [{"text": "abc", "amount": {}}]
         boletos[16].descriptions = [{"text": "abc", "amount": "abc"}]
         boletos[17].descriptions = [{"text": "abc", "amount": 1, "test": "abc"}]
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
@@ -100,7 +100,7 @@ class TestBoletoPost(TestCase):
         boletos[2].tax_id = "abc"
         boletos[3].tax_id = 123  # 2 errors
         boletos[4].tax_id = {}  # 2 errors
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
@@ -115,7 +115,7 @@ class TestBoletoPost(TestCase):
         boletos[2].amount = 0
         boletos[3].amount = 1000000000000000
         boletos[4].amount = {}
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             boletos = starkbank.boleto.create(boletos)
         errors = context.exception.elements
         for error in errors:
@@ -154,7 +154,7 @@ class TestBoletoPostAndDelete(TestCase):
         boletos = starkbank.boleto.create(boletos)
         boleto_id = boletos[0].id
         boletos = starkbank.boleto.delete(ids=[boleto_id])
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             boletos = starkbank.boleto.delete(ids=[boleto_id])
         errors = context.exception.elements
         for error in errors:
@@ -171,7 +171,7 @@ class TestBoletoInfoGet(TestCase):
 
     def test_fail_invalid_boleto(self):
         boleto_id = "0"
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             boleto = starkbank.boleto.get(boleto_id)
         errors = context.exception.elements
         for error in errors:

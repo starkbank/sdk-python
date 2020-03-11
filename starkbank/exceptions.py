@@ -5,7 +5,7 @@ class ErrorElement(Exception):
         self.message = message
 
 
-class InputError(Exception):
+class InputErrors(Exception):
     def __init__(self, content):
         self.elements = [ErrorElement(code=error["code"], message=error["message"]) for error in content]
         super(Exception, self).__init__(str(content))

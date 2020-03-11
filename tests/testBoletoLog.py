@@ -1,5 +1,5 @@
 import starkbank
-from starkbank.exceptions import InputError
+from starkbank.exceptions import InputErrors
 from unittest import TestCase, main
 from tests.utils.user import exampleProject
 
@@ -22,7 +22,7 @@ class TestBoletoLogInfoGet(TestCase):
 
     def test_fail_invalid_log(self):
         log_id = "0"
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             log = starkbank.boleto.log.get(id=log_id)
         errors = context.exception.elements
         for error in errors:

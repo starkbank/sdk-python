@@ -1,5 +1,5 @@
 import starkbank
-from starkbank.exceptions import InputError
+from starkbank.exceptions import InputErrors
 from unittest import TestCase, main
 
 from tests.utils.boletoPayment import generateExampleBoletoPaymentsJson
@@ -15,7 +15,7 @@ class TestBoletoPaymentPost(TestCase):
         payments = generateExampleBoletoPaymentsJson(n=5)
         try:
             payments = starkbank.payment.boleto.create(payments)
-        except InputError as e:
+        except InputErrors as e:
             errors = e.elements
             for error in errors:
                 print(error)
@@ -25,7 +25,7 @@ class TestBoletoPaymentPost(TestCase):
         payments = generateExampleBoletoPaymentsJson(n=50)
         payments2 = generateExampleBoletoPaymentsJson(n=55)
         payments = payments + payments2
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.boleto.create(payments)
         errors = context.exception.elements
         for error in errors:
@@ -35,7 +35,7 @@ class TestBoletoPaymentPost(TestCase):
 
     def test_fail_invalid_json(self):
         payments = {}
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.boleto.create(payments)
         errors = context.exception.elements
         for error in errors:
@@ -49,7 +49,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[1].scheduled = None
         payments[2].description = None
         payments[3].tax_id = None
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.boleto.create(payments)
         errors = context.exception.elements
         for error in errors:
@@ -64,7 +64,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[2].tax_id = "abc"
         payments[3].tax_id = 123
         payments[4].tax_id = {}
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.boleto.create(payments)
         errors = context.exception.elements
         for error in errors:
@@ -87,7 +87,7 @@ class TestBoletoPaymentInfoGet(TestCase):
 
     def test_fail_invalid_payment(self):
         payment_id = "0"
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             payment = starkbank.payment.boleto.get(payment_id)
         errors = context.exception.elements
         for error in errors:

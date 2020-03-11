@@ -4,7 +4,7 @@ from time import time
 import requests
 from ellipticcurve.ecdsa import Ecdsa
 from .case import snake_to_camel
-from ..exceptions import Houston, InputError, UnknownException
+from ..exceptions import Houston, InputErrors, UnknownException
 from .environment import Environment
 from .checks import check_user
 from .. import __version__ as starkbank_version
@@ -119,6 +119,6 @@ def _treat_request_response(response, json_response):
 
     loaded_json = response.json()
     if isinstance(loaded_json, dict) and "errors" in loaded_json:
-        raise InputError(loaded_json["errors"])
+        raise InputErrors(loaded_json["errors"])
 
     raise UnknownException(response.content)

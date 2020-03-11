@@ -194,8 +194,8 @@ import starkbank
 Transaction = starkbank.Transaction
 
 transactions = starkbank.transaction.create([
-    Transaction(amount=100, receiver_id=200, ...),
-    Transaction(amount=200, receiver_id=200, ...),
+    Transaction(amount=100, receiver_id="1029378109327810", ...),
+    Transaction(amount=200, receiver_id="2093029347820947", ...),
 ])
 
 print([transaction.amount for transaction in transactions])
@@ -282,6 +282,22 @@ elif event.subscription == "boleto":
     
 elif event.subscription == "boleto-payment":
     print(event.log.payment)
+```
+
+# Handler errors
+```python
+from starkbank.exceptions import InputErrors
+from starkbank import Transaction, transaction
+
+try:
+    transactions = transaction.create([
+        Transaction(amount=9999999999, receiver_id="1028937190837", ...),
+    ])
+except InputErrors as input_errors:
+    error_elements = input_errors.elements
+    for element in error_elements:
+        print(element.code)
+        print(element.message)
 ```
 
 # Generate key pair

@@ -1,5 +1,5 @@
 import starkbank
-from starkbank.exceptions import InputError
+from starkbank.exceptions import InputErrors
 from datetime import datetime
 from unittest import TestCase, main
 
@@ -19,7 +19,7 @@ class TestTransactionPost(TestCase):
 
     def test_fail_invalid_array_size(self):
         transactions = generateExampleTransactions(n=105)
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             transactions = starkbank.transaction.create(transactions)
         errors = context.exception.elements
         for error in errors:
@@ -29,7 +29,7 @@ class TestTransactionPost(TestCase):
 
     def test_fail_invalid_json(self):
         transactions = {}
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             transactions = starkbank.transaction.create(transactions)
         errors = context.exception.elements
         for error in errors:
@@ -48,7 +48,7 @@ class TestTransactionPost(TestCase):
 
         transactions[5].invalid_parameter = "invalidValue"
 
-        with self.assertRaises(InputError) as context:
+        with self.assertRaises(InputErrors) as context:
             transactions = starkbank.transaction.create(transactions)
         errors = context.exception.elements
         for error in errors:
