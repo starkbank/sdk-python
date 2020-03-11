@@ -8,13 +8,6 @@ starkbank.user = exampleProject
 starkbank.debug = False
 
 
-class TestWebhookPost(TestCase):
-    def test_success(self):
-        webhook = generateExampleWebhook()
-        webhook = starkbank.webhook.create(url=webhook.url, subscriptions=webhook.subscriptions)
-        print(webhook.id)
-
-
 class TestWebhookGet(TestCase):
     def test_success(self):
         webhooks = list(starkbank.webhook.query(limit=10))
