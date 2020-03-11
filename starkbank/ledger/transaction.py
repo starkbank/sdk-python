@@ -1,5 +1,5 @@
 from starkbank.utils import rest
-from starkbank.utils.checks import check_datetime, check_date_string
+from starkbank.utils.checks import check_datetime, check_date
 from starkbank.utils.base import Base
 
 
@@ -28,6 +28,4 @@ def get(id, user=None):
 
 
 def query(limit=None, external_ids=None, after=None, before=None, user=None):
-    after = check_date_string(after)
-    before = check_date_string(before)
-    return rest.query(resource=Transaction, limit=limit, user=user, external_ids=external_ids, after=after, before=before)
+    return rest.query(resource=Transaction, limit=limit, user=user, external_ids=external_ids, after=check_date(after), before=check_date(before))

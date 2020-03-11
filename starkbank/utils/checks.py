@@ -24,15 +24,32 @@ def check_datetime(data):
     if data is None:
         return None
 
-    if isinstance(data, (datetime, date)):
+    if isinstance(data, datetime):
         return data
 
-    data = str(data)
+    if isinstance(data, date):
+        return datetime(data.year, data.month, data.day)
 
-    try:
-        return datetime.strptime(data, "%Y-%m-%dT%H:%M:%S.%f+00:00")
-    except:
-        pass
+    return check_datetime_string(data)
+
+
+def check_date(data):
+    if data is None:
+        return None
+
+    if isinstance(data, date):
+        return data
+
+    if isinstance(data, datetime):
+        return data.date()
+
+    data = check_datetime_string(data)
+
+    return data.date()
+
+
+def check_datetime_string(data):
+    data = str(data)
 
     try:
         return datetime.strptime(data, "%Y-%m-%d")
@@ -49,13 +66,9 @@ def check_datetime(data):
     except:
         pass
 
+    try:
+        return datetime.strptime(data, "%Y-%m-%dT%H:%M:%S.%f+00:00")
+    except:
+        pass
+
     raise RuntimeError("invalid datetime string " + data)
-
-
-def check_date_string(data):
-    if not data or isinstance(data, str):
-        return data
-    if not isinstance(data, (datetime, date)):
-        raise TypeError("invalid datetime or date " + str(data))
-    if data:
-        return data.strftime("%Y-%m-%d")

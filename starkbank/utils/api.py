@@ -1,4 +1,5 @@
 from starkbank.utils.case import camel_to_kebab, snake_to_camel, camel_to_snake
+from datetime import date, datetime
 
 
 def api_json(entity):
@@ -7,8 +8,15 @@ def api_json(entity):
         for attribute in dir(entity)
         if not attribute.startswith('_') and not callable(getattr(entity, attribute))
     }
-    json = {snake_to_camel(k): v for k, v in json.items() if v is not None}
-    return json
+    return {snake_to_camel(k): _date_to_string(v) for k, v in json.items() if v is not None}
+
+
+def _date_to_string(data):
+    if isinstance(data, date):
+        return data.strftime("%Y-%m-%d")
+    if isinstance(data, datetime):
+        return data.strftime("%Y-%m-%d %H:%M:%S.%f")
+    return data
 
 
 def from_api_json(resource, json):

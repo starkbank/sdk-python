@@ -1,4 +1,4 @@
-from starkbank.utils.checks import check_datetime, check_date_string
+from starkbank.utils.checks import check_date, check_datetime
 from starkbank.utils.base import Base
 from starkbank.utils import rest
 
@@ -20,7 +20,7 @@ class Boleto(Base):
         self.city = city
         self.state_code = state_code
         self.zip_code = zip_code
-        self.due = check_datetime(due)
+        self.due = check_date(due)
         self.fine = fine
         self.interest = interest
         self.overdue_limit = overdue_limit
@@ -45,9 +45,7 @@ def get_pdf(id, user=None):
 
 
 def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):
-    after = check_date_string(after)
-    before = check_date_string(before)
-    return rest.query(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids, after=after, before=before)
+    return rest.query(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids, after=check_date(after), before=check_date(before))
 
 
 def delete(ids, user=None):
