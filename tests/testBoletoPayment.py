@@ -1,5 +1,5 @@
 import starkbank
-from starkbank.exceptions import InputErrors
+from starkbank.exception import InputErrors
 from unittest import TestCase, main
 
 from tests.utils.boletoPayment import generateExampleBoletoPaymentsJson

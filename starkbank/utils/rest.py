@@ -2,7 +2,7 @@ from starkbank.utils.api import endpoint, id_endpoint, last_name, last_name_plur
 from starkbank.utils import request
 
 
-def get(resource, limit=100, cursor=None, user=None, **kwargs):
+def get(resource, user=None, limit=100, cursor=None, **kwargs):
     url_params = {
         "limit": limit,
         "cursor": cursor,

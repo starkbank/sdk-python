@@ -4,7 +4,7 @@ from time import time
 import requests
 from ellipticcurve.ecdsa import Ecdsa
 from .case import snake_to_camel
-from ..exceptions import Houston, InputErrors, UnknownException
+from ..exception import Houston, InputErrors, UnknownException
 from .environment import Environment
 from .checks import check_user
 from .. import __version__ as starkbank_version

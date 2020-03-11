@@ -53,7 +53,7 @@ def check_datetime(data):
 
 
 def check_date_string(data):
-    if not data:
+    if not data or isinstance(data, str):
         return data
     if not isinstance(data, (datetime, date)):
         raise TypeError("invalid datetime or date " + str(data))

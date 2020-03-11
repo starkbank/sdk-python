@@ -1,5 +1,5 @@
 import starkbank
-from starkbank.exceptions import InputErrors
+from starkbank.exception import InputErrors
 from datetime import datetime
 from unittest import TestCase, main
 

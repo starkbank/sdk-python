@@ -79,10 +79,7 @@ print(boleto)
 import starkbank
 from datetime import datetime
 
-logs = starkbank.boleto.log.query(
-    after=datetime(2020, 1, 1),
-    before=datetime(2020, 3, 1)
-)
+logs = starkbank.boleto.log.query(limit=150)
 
 for log in logs:
 	print(log.id)
@@ -286,7 +283,7 @@ elif event.subscription == "boleto-payment":
 
 # Handler errors
 ```python
-from starkbank.exceptions import InputErrors
+from starkbank.exception import InputErrors
 from starkbank import Transaction, transaction
 
 try:

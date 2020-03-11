@@ -1,7 +1,7 @@
 from ...utils import rest
 from ...utils.api import from_api_json
 from ...utils.base import Base
-from ...utils.checks import check_datetime
+from ...utils.checks import check_datetime, check_date_string
 from ...boleto.log import BoletoLog
 from ...transfer.log import TransferLog
 from ...payment.boleto.log import BoletoPaymentLog
@@ -31,4 +31,6 @@ def get(id, user=None):
 
 
 def query(limit=None, after=None, before=None, is_delivered=None, user=None):
+    after = check_date_string(after)
+    before = check_date_string(before)
     return rest.query(resource=Event, limit=limit, user=user, is_delivered=is_delivered, after=after, before=before)

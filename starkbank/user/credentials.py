@@ -6,7 +6,7 @@ from starkbank.utils.base import Base
 class Credentials(Base):
     def __init__(self, environment, access_id, private_key_pem, public_key_pem=None):
         Base.__init__(self, access_id)
-        if environment not in Environment.values():
+        if not Environment.is_valid(environment):
             raise ValueError("environment {} is not in {}".format(environment, Environment.values()))
 
         private_key = None

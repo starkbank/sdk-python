@@ -12,8 +12,7 @@ class Webhook(Base):
 
 
 def create(url, subscriptions, user=None):
-    webhook = Webhook(url=url, subscriptions=subscriptions)
-    return rest.post_single(resource=Webhook, entity=webhook, user=user)
+    return rest.post_single(resource=Webhook, entity=Webhook(url=url, subscriptions=subscriptions), user=user)
 
 
 def get(id, user=None):

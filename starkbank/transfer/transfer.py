@@ -1,5 +1,5 @@
 from starkbank.utils import rest
-from starkbank.utils.checks import check_datetime
+from starkbank.utils.checks import check_datetime, check_date_string
 from starkbank.utils.base import Base
 
 
@@ -33,6 +33,8 @@ def get_pdf(id, user=None):
 
 
 def query(limit=None, request_id=None, transaction_ids=None, tags=None, after=None, before=None, status=None, sort=None, user=None):
+    after = check_date_string(after)
+    before = check_date_string(before)
     return rest.query(resource=Transfer, limit=limit, user=user, status=status, tags=tags, after=after, before=before, request_id=request_id, transaction_ids=transaction_ids, sort=sort)
 
 
