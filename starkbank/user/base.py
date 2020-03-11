@@ -1,6 +1,5 @@
 from .credentials import Credentials
 from ..utils import rest
-from ..utils.api import define_compatibility_fields
 from ..utils.base import Base
 from ..utils.checks import check_user
 
@@ -18,9 +17,6 @@ class User(Base):
                 private_key_pem=private_key_pem,
                 environment=environment,
             )
-
-
-define_compatibility_fields(User)
 
 
 def get_id(resource, id, user=None):

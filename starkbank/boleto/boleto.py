@@ -1,4 +1,3 @@
-from starkbank.utils.api import define_compatibility_fields
 from starkbank.utils.checks import check_datetime
 from starkbank.utils.base import Base
 from starkbank.utils import rest
@@ -31,9 +30,6 @@ class Boleto(Base):
         self.bar_code = bar_code
         self.status = status
         self.created = check_datetime(created)
-
-
-define_compatibility_fields(Boleto)
 
 
 def create(boletos, user=None):

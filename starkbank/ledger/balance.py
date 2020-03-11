@@ -1,5 +1,4 @@
 from starkbank.utils import rest
-from starkbank.utils.api import define_compatibility_fields
 from starkbank.utils.base import Base
 from starkbank.utils.checks import check_datetime
 
@@ -12,9 +11,6 @@ class Balance(Base):
         self.amount = amount
         self.currency = currency
         self.updated = check_datetime(updated)
-
-
-define_compatibility_fields(Balance)
 
 
 def get(user=None):

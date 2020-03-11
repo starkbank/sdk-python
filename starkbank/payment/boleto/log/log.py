@@ -1,5 +1,5 @@
 from ....utils import rest
-from ....utils.api import define_compatibility_fields, from_api_json
+from ....utils.api import from_api_json
 from ....utils.checks import check_datetime
 from ....utils.base import Base
 from ..boleto_payment import BoletoPayment
@@ -14,9 +14,6 @@ class BoletoPaymentLog(Base):
         self.type = type
         self.errors = errors
         self.payment = from_api_json(BoletoPayment, payment)
-
-
-define_compatibility_fields(BoletoPaymentLog)
 
 
 def get(id, user=None):

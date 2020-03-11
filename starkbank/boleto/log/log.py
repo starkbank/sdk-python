@@ -1,5 +1,4 @@
 from starkbank.utils import rest
-from starkbank.utils.api import define_compatibility_fields
 from starkbank.utils.checks import check_datetime
 from starkbank.boleto.boleto import Boleto
 from starkbank.utils.api import from_api_json
@@ -14,9 +13,6 @@ class BoletoLog(Base):
         self.type = type
         self.errors = errors
         self.boleto = from_api_json(Boleto, boleto)
-
-
-define_compatibility_fields(BoletoLog)
 
 
 def get(id, user=None):

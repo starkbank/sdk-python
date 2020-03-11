@@ -1,12 +1,6 @@
 from starkbank.utils.case import camel_to_kebab, snake_to_camel, camel_to_snake
 
 
-def define_compatibility_fields(resource, json_fill=None):
-    json_fill = json_fill or {}
-    resource._json_fill = json_fill
-    resource._known_fields = set(resource.__init__.__code__.co_varnames) - {"self"}
-
-
 def api_json(entity):
     json = {
         attribute: getattr(entity, attribute)
@@ -18,14 +12,15 @@ def api_json(entity):
 
 
 def from_api_json(resource, json):
-    for fill, value in resource._json_fill.items():
-        json.setdefault(fill, value)
-
     snakes = {camel_to_snake(k): v for k, v in json.items()}
 
-    return resource(**{
-        k: v for k, v in snakes.items() if k in resource._known_fields
-    })
+    params = set(resource.__init__.__code__.co_varnames) - {"self"}
+
+    snakes = {k: v for k, v in snakes.items() if k in params}
+    for param in params - set(snakes):
+        snakes[param] = None
+
+    return resource(**snakes)
 
 
 def endpoint(resource):

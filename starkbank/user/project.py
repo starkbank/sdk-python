@@ -1,5 +1,4 @@
 from starkbank.user.base import User, get_id as _user_get_id, query as _user_query
-from starkbank.utils.api import define_compatibility_fields
 
 
 class Project(User):
@@ -15,9 +14,6 @@ class Project(User):
             private_key_pem=private_key,
             environment=environment,
         )
-
-
-define_compatibility_fields(Project, {"private_key": None, "environment": None})
 
 
 def get(id, user=None):

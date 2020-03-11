@@ -1,5 +1,4 @@
 from starkbank.utils import rest
-from starkbank.utils.api import define_compatibility_fields
 from starkbank.utils.checks import check_datetime
 from starkbank.utils.base import Base
 
@@ -18,9 +17,6 @@ class Transaction(Base):
         self.fee = fee
         self.created = check_datetime(created)
         self.source = source
-
-
-define_compatibility_fields(Transaction, {"receiverId": None})
 
 
 def create(transactions, user=None):

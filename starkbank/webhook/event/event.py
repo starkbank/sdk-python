@@ -1,5 +1,5 @@
 from ...utils import rest
-from ...utils.api import define_compatibility_fields, from_api_json
+from ...utils.api import from_api_json
 from ...utils.base import Base
 from ...utils.checks import check_datetime
 from ...boleto.log import BoletoLog
@@ -16,9 +16,6 @@ class Event(Base):
         self.delivered = check_datetime(delivered)
         self.subscription = subscription
         self.log = _process_log(log=log, subscription=subscription)
-
-
-define_compatibility_fields(Event, {"delivered": True})
 
 
 def _process_log(log, subscription):
