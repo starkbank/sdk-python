@@ -30,7 +30,7 @@ To install the package with pip, run:
 pip install starkbank
 ```
 
-To install from source, run:
+To install from source, clone the repo and run:
 
 ```sh
 python setup.py install
@@ -125,7 +125,7 @@ value to be credited to your account.
 
 # Get boleto
 
-After it's creation, information on a boleto may be retrieved by passing its id. 
+After its creation, information on a boleto may be retrieved by passing its id. 
 Its status indicates whether it's been paid.
 
 ```python
