@@ -187,6 +187,10 @@ class TestBoletoPdfGet(TestCase):
         pdf = starkbank.boleto.get_pdf(boleto_id)
         print(pdf)
 
+    def test_fail_invalid_boleto(self):
+        with self.assertRaises(InputErrors) as context:
+            pdf = starkbank.boleto.get_pdf("123")
+
 
 if __name__ == '__main__':
     main()
