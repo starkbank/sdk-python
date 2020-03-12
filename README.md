@@ -20,7 +20,7 @@ This library supports the following Python implementations:
 
 ## Stark Bank API documentation
 
-If want to take a look at our API, follow [this link](https://docs.api.starkbank.com/?version=latest).
+If you want to take a look at our API, follow [this link](https://docs.api.starkbank.com/?version=latest).
 
 ## Installation
 
@@ -43,7 +43,7 @@ special type of user made specially for direct API integrations.
 To create your first project in our Sandbox environment, 
 [click here](https://www.sandbox.web.starkbank.com/project).
 
-Once you have your project created, load it in the SDK:
+Once you've created your project, load it in the SDK:
 
 ```python
 import starkbank
@@ -58,7 +58,7 @@ project = starkbank.Project(
         CPZXBUbsMQAbLoWXIN1pqIX2b/NE9Q==
         -----END EC PRIVATE KEY-----
     """,
-    environment="sandbox",  # or production, once you are done testing
+    environment="sandbox",  # or "production", once you are done testing
 )
 ```
 
@@ -125,7 +125,7 @@ value to be credited to your account.
 
 # Get boleto
 
-After creating, information on a boleto may be retrieved by passing its id. 
+After it's creation, information on a boleto may be retrieved by passing its id. 
 Its status indicates whether it's been paid.
 
 ```python
