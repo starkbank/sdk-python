@@ -1,18 +1,33 @@
 # Stark Bank Python SDK
 
-The Stark Bank Python SDK serves as an easy integration tool for applications written in Python.
-This version of the SDK is compatible with the Stark Bank API v2.
+Welcome to the Stark Bank Python SDK! This tool is made for Python 
+developers who want to easily integrate with our API.
+This SDK version is compatible with the Stark Bank API v2.
+
+If you have no idea what Stark Bank is, check our [website](https://www.starkbank.com/) 
+and discover a world where receiving or making payments 
+is as easy as sending a text message to your client!
+
+## Supported Python Versions
+
+This library supports the following Python implementations:
+
+* Python 2.7
+* Python 3.5
+* Python 3.6
+* Python 3.7
+* Python 3.8
 
 ## Stark Bank API documentation
 
-If you want to take a look at our API, follow [this link](https://docs.api.starkbank.com/?version=latest)
+If want to take a look at our API, follow [this link](https://docs.api.starkbank.com/?version=latest).
 
 ## Installation
 
 To install the package with pip, run:
 
 ```sh
-pip install --upgrade starkbank
+pip install starkbank
 ```
 
 To install from source, run:
@@ -23,10 +38,12 @@ python setup.py install
 
 ## Usage
 
-To use the SDK, you need to create a project, which is a special type of user made specially for direct API integrations.
-To create your first project, follow [this link](https://www.starkbank.com/project).
+To use the SDK, the first thing you need is a project, which is a 
+special type of user made specially for direct API integrations.
+To create your first project in our Sandbox environment, 
+[click here](https://www.sandbox.web.starkbank.com/project).
 
-Once you have your project, load it in the SDK:
+Once you have your project created, load it in the SDK:
 
 ```python
 import starkbank
@@ -60,6 +77,7 @@ balance = starkbank.balance.get()
 ```
 
 ### Get balance
+
 ```python
 balance = starkbank.balance.get()
 
@@ -68,34 +86,17 @@ print(balance.amount)
 print(balance)
 ```
 
+Your initial balance is zero. For many operations in Stark Bank you'll need funds
+in your account, which can be added to your balance by creating a boleto.
+
 # Create boletos
+
 ```python
 import starkbank
 from datetime import datetime
 
 
 boletos = starkbank.boleto.create([
-    starkbank.Boleto(
-        amount=10000,  # R$ 100,00 
-        name="Buzz Aldrin", 
-        tax_id="012.345.678-90", 
-        street_line_1="Av. Paulista, 200", 
-        street_line_2="10 andar", 
-        district="Bela Vista", 
-        city="São Paulo", 
-        state_code="SP", 
-        zip_code="01310-000",
-        descriptions=[
-            {
-                "amount": 0,
-                "text": "não aceitar após o vencimento",
-            },
-            {
-                "amount": 100,
-                "text": "impostos",
-            }
-        ]
-    ),
     starkbank.Boleto(
         amount=23571,  # R$ 235,71 
         name="Buzz Aldrin",
@@ -107,17 +108,30 @@ boletos = starkbank.boleto.create([
         state_code="SP",
         zip_code="01310-000",
         due=datetime(2020, 3, 20),
-        fine=10,
-        interest=5,
+        fine=5,  # 5%
+        interest=2.5,  # 2.5% per month
     ),
 ])
+
+for boleto in boletos:
+    print(boleto.id)
 ```
 
+For the Sandbox environment, 90% of the boletos created will be
+automatically paid, so there's nothing else you need to do to add funds to your account.
+
+For Production, you (or your client) will need to pay this boleto for the
+value to be credited to your account.
+
 # Get boleto
+
+After creating, information on a boleto may be retrieved by passing its id. 
+Its status indicates whether it's been paid.
+
 ```python
 boleto = starkbank.boleto.get("5155165527080960")
 
-print(boleto)
+print(boleto.status)
 ```
 
 # Query boletos
@@ -149,11 +163,28 @@ for log in logs:
 # Create transfers
 ```python
 transfers = starkbank.transfer.create([
-    starkbank.Transfer(amount=100, bank_code="200", ...),
-    starkbank.Transfer(amount=200, bank_code="200", ...),
+    starkbank.Transfer(
+        amount=100,
+        bank_code="200",
+        branchCode="0001",
+        accountNumber="10000-0",
+        taxId="012.345.678-90",
+        name="Tony Stark",
+        tags=["iron", "suit"]
+    ),
+    starkbank.Transfer(
+        amount=200,
+        bank_code="341",
+        branchCode="1234",
+        accountNumber="123456-7",
+        taxId="012.345.678-90",
+        name="Jon Snow",
+        tags=[]
+    )
 ])
 
-print([transfer.id for transfer in transfers])
+for transfer in transfers:
+    print(transfer.id)
 ```
 
 # Get transfer
