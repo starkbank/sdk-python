@@ -3,6 +3,19 @@ from ..utils.resource import Resource
 
 
 class Webhook(Resource):
+    """Description: Webhook subscription object
+
+    A Webhook is used to subscribe to receive notification events on
+    a user-selected endpoint for the specified list of services.
+    Currently available services for subscription are transfer,
+    charge and charge-payment
+
+    Parameters (required):
+        url [string]: BoletoPayment entity to which the log refers to.
+        subscriptions [list of strings]: list of any non-empty combination of the three available services. ex: ["transfer", "charge"]
+    Attributes:
+        id [string, default None]: unique id returned when log is created. ex: "5656565656565656"
+    """
 
     def __init__(self, url, subscriptions, id=None):
         Resource.__init__(self, id=id)

@@ -15,6 +15,19 @@ from ...utils import cache
 
 
 class Event(Resource):
+    """Description: Webhook Event object
+
+    An Event is the notification received from the subscription
+    to the Webhook. Events cannot be created, but may be retrieved
+    from the Stark Bank API to list all generated updates on entities.
+
+    Attributes:
+        log [Log]: a Log object from one the subscription services (BoletoLog, TransferLog or BoletoPaymentLog)
+        created [datetime.datetime, default None]: creation datetime for the notification Event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        delivered [datetime.datetime, default None]: delivery datetime of the notification event on user endpoint. Is None if there have been no successful attempts on delivery. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        subscription [string]: service to which this notification event refers to. ex: "transfer" or "charge"
+        id [string, default None]: unique id returned when log is created. ex: "5656565656565656"
+    """
 
     def __init__(self, log, created, delivered, subscription, id):
         Resource.__init__(self, id=id)

@@ -1,3 +1,4 @@
+# import sys
 from .api import api_json
 
 
@@ -19,10 +20,12 @@ class Resource:
             for attribute in dir(self)
             if not attribute.startswith('_') and not callable(getattr(self, attribute))
         }
-        return "{classname}(\n\t{fields}\n)".format(
+        fields = u",\n\t".join(u"{key}={value}".format(key=key, value=value) for key, value in dict_.items())
+        string = u"{classname}(\n\t{fields}\n)".format(
             classname=self.__class__.__name__,
-            fields=",\n\t".join("{key}={value}".format(key=key, value=value) for key, value in dict_.items())
+            fields=fields
         )
+        return string
 
     def json(self):
         return api_json(self)

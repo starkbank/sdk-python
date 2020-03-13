@@ -19,7 +19,7 @@ class Transfer(Resource):
         branch_code [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
         account_number [string]: Receiver Bank Account number. Use '-' before the verifier digit. ex: "876543-2"
         tags [list of strings]: list of strings for reference when searching transactions (may be empty). ex: ["abc", "transfer"]
-    Attrtibutes (return-only):
+    Attributes (return-only):
         id [string, default None]: unique id returned when Boleto is created. ex: "5656565656565656"
         fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)
         status [string, default None]: current boleto status. ex: "registered" or "paid"

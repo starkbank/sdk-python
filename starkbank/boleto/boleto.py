@@ -28,7 +28,7 @@ class Boleto(Resource):
         interest [float, default 0.0]: optional, boleto monthly interest for overdue payment in %. ex: 5.2
         overdue_limit [integer, default 59]: optional, limit in days for automatic boleto cancel after due date. ex: 7 (max: 59)
         descriptions [list of dictionaries, default None]: optional, list of dictionary descriptions with "text":string and (optional) "amount":int pairs
-    Attrtibutes (return-only):
+    Attributes (return-only):
         id [string, default None]: unique id returned when Boleto is created. ex: "5656565656565656"
         fee [integer, default None]: fee charged when boleto is paid. ex: 200 (= R$ 2.00)
         line [string, default None]: generated boleto line for payment. ex: "34191.09008 63571.277308 71444.640008 5 81960000000062"
