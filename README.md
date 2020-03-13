@@ -166,18 +166,18 @@ transfers = starkbank.transfer.create([
     starkbank.Transfer(
         amount=100,
         bank_code="200",
-        branchCode="0001",
-        accountNumber="10000-0",
-        taxId="012.345.678-90",
+        branch_code="0001",
+        account_number="10000-0",
+        tax_id="012.345.678-90",
         name="Tony Stark",
         tags=["iron", "suit"]
     ),
     starkbank.Transfer(
         amount=200,
         bank_code="341",
-        branchCode="1234",
-        accountNumber="123456-7",
-        taxId="012.345.678-90",
+        branch_code="1234",
+        account_number="123456-7",
+        tax_id="012.345.678-90",
         name="Jon Snow",
         tags=[]
     )
