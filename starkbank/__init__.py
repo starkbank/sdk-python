@@ -4,7 +4,7 @@ from .user import project
 from .user.project import Project
 from .ledger import Balance, balance, Transaction, transaction
 from .boleto import Boleto
-from .payment import BoletoPayment
+from .payment import BoletoPayment, UtilityPayment
 from .transfer import Transfer
 from .webhook import Webhook, Event
 from . import keys

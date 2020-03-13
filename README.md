@@ -280,7 +280,7 @@ for payment in payments:
 
 ### Get boleto payment logs
 ```python
-log = starkbank.payment.boleto.log.get("123")
+log = starkbank.payment.boleto.log.get("5155165527080960")
 
 print(log)
 ```
@@ -288,7 +288,75 @@ print(log)
 ### Query boleto payment logs
 ```python
 logs = starkbank.payment.boleto.log.query(
-    payment_ids=["123", "456"],
+    payment_ids=["5155165527080960", "76551659167801921"],
+)
+
+for log in logs:
+    print(log.type)
+```
+
+### Pay a utility bill
+```python
+payments = starkbank.payment.utility.create([
+    starkbank.UtilityPayment(
+        line="34191.09008 61207.727308 71444.640008 5 81310001234321",
+        scheduled="2020-03-13",
+        due="2020-03-13",
+        description="take my money",
+        tags=["take", "my", "money"],
+    ),
+    starkbank.UtilityPayment(
+        bar_code="34197819200000000011090063609567307144464000",
+        scheduled="2020-03-14",
+        due="2020-03-13",
+        description="take my money one more time",
+        tags=["again"],
+    ),
+])
+
+for payment in payments:
+    print(payment)
+```
+
+### Get a utility bill payment
+```python
+payment = starkbank.payment.utility.get("5155165527080960")
+
+print(payment)
+```
+
+### Get a utility bill payment PDF
+
+After its creation, a boleto payment PDF may be retrieved by passing its id. 
+
+```python
+utility_payment_pdf = starkbank.payment.utility.pdf("5155165527080960")
+
+with open("electricity_payment.pdf", "w") as file:
+    file.write(utility_payment_pdf)
+```
+
+### Query utility bill payments
+```python
+payments = starkbank.payment.utility.query(
+    tags=["electricity", "gas"]
+)
+
+for payment in payments:
+    print(payment.id)
+```
+
+### Get utility bill payment logs
+```python
+log = starkbank.payment.utility.log.get("1902837198237992")
+
+print(log)
+```
+
+### Query utility bill payment logs
+```python
+logs = starkbank.payment.utility.log.query(
+    payment_ids=["102893710982379182", "92837912873981273"],
 )
 
 for log in logs:
