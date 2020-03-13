@@ -365,9 +365,9 @@ for event in events:
 
 ### Process webhook events
 ```python
-content, signature = listen()
+response = listen()
 
-event = starkbank.webhook.Event(content, signature)
+event = starkbank.webhook.event.process(content=response.content, signature=response.headers["Digital-Signature"])
 
 if event.subscription == "transfer":
     print(event.log.transfer)

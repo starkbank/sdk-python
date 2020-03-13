@@ -25,3 +25,7 @@ class UnknownException(Exception):
 
     def __init__(self, message):
         super(Exception, self).__init__("Unknown exception encountered: {}".format(message))
+
+
+class InvalidSignatureException(Exception):
+    pass

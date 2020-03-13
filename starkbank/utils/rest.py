@@ -60,3 +60,7 @@ def delete_id(resource, id, user=None):
     json = fetch(path="/{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), method=DELETE, user=user).json()
     entity = json[last_name(resource)]
     return from_api_json(resource, entity)
+
+
+def get_public_key(service_id, user=None):
+    return fetch(path="/public-key",  method=GET, query={"service_id": service_id}, user=user).json()["publicKey"]
