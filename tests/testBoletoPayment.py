@@ -104,5 +104,24 @@ class TestBoletoPaymentPdfGet(TestCase):
         payments = starkbank.payment.boleto.pdf(id=payment_id)
 
 
+class TestBoletoPaymentDelete(TestCase):
+
+    def test_success(self):
+        payments = generateExampleBoletoPaymentsJson(n=1)
+        try:
+            payments = starkbank.payment.boleto.create(payments)
+        except InputErrors as e:
+            for error in e.errors:
+                print(error)
+                self.assertEqual('immediatePaymentOutOfTime', error.code)
+        else:
+            try:
+                starkbank.payment.boleto.delete([payments[0].id])
+            except InputErrors as e:
+                for error in e.errors:
+                    print(error)
+                    self.assertEqual('invalidAction', error.code)
+
+
 if __name__ == '__main__':
     main()
