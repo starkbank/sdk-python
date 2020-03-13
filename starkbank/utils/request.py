@@ -58,11 +58,14 @@ def _request(user, request_method, endpoint, url_params=None, body=None, json_re
             )
         )
 
-    response = request_method(
-        url=url,
-        headers=headers,
-        data=body,
-    )
+    try:
+        response = request_method(
+            url=url,
+            headers=headers,
+            data=body,
+        )
+    except Exception as exception:
+        raise UnknownException("{}: {}".format(type(exception), str(exception)))
 
     if starkbank.debug:
         print(

@@ -89,7 +89,7 @@ print(balance)
 Your initial balance is zero. For many operations in Stark Bank you'll need funds
 in your account, which can be added to your balance by creating a boleto.
 
-# Create boletos
+### Create boletos
 
 ```python
 import starkbank
@@ -123,7 +123,7 @@ automatically paid, so there's nothing else you need to do to add funds to your 
 For Production, you (or your client) will need to pay this boleto for the
 value to be credited to your account.
 
-# Get boleto
+### Get boleto
 
 After its creation, information on a boleto may be retrieved by passing its id. 
 Its status indicates whether it's been paid.
@@ -134,7 +134,7 @@ boleto = starkbank.boleto.get("5155165527080960")
 print(boleto.status)
 ```
 
-# Query boletos
+### Query boletos
 ```python
 boletos = starkbank.boleto.query(
     after=datetime(2020, 1, 1),
@@ -145,14 +145,14 @@ for boleto in boletos:
 	print(boleto)
 ```
 
-# Get boleto-log
+### Get boleto-log
 ```python
 boleto = starkbank.boleto.log.get("5155165527080960")
 
 print(boleto)
 ```
 
-# Query boleto-logs
+### Query boleto-logs
 ```python
 logs = starkbank.boleto.log.query(limit=150)
 
@@ -160,7 +160,7 @@ for log in logs:
 	print(log.id)
 ```
 
-# Create transfers
+### Create transfers
 ```python
 transfers = starkbank.transfer.create([
     starkbank.Transfer(
@@ -187,14 +187,14 @@ for transfer in transfers:
     print(transfer.id)
 ```
 
-# Get transfer
+### Get transfer
 ```python
 transfer = starkbank.transfer.get("5155165527080960")
 
 print(transfer)
 ```
 
-# Query transfers
+### Query transfers
 ```python
 transfers = starkbank.transfer.query(
     after=datetime(2020, 1, 1),
@@ -205,7 +205,7 @@ for transfer in transfers:
 	print(transfer.name)
 ```
 
-# Create boleto-payments
+### Create boleto-payments
 ```python
 payments = starkbank.payment.boleto.create([
     starkbank.BoletoPayment(line="...", tax_id="012.345.678-90", ...),
@@ -216,14 +216,14 @@ for payment in payments:
     print(payment)
 ```
 
-# Get boleto-payment
+### Get boleto-payment
 ```python
 payment = starkbank.payment.boleto.get("123")
 
 print(payment)
 ```
 
-# Query boleto-payments
+### Query boleto-payments
 ```python
 payments = starkbank.payment.boleto.query(
     tags=["company_1", "company_2"]
@@ -234,14 +234,14 @@ for payment in payments:
 ```
 
 
-# Get boleto-payment-log
+### Get boleto-payment-log
 ```python
 log = starkbank.payment.boleto.log.get("123")
 
 print(log)
 ```
 
-# Query boleto-payment-logs
+### Query boleto-payment-logs
 ```python
 logs = starkbank.payment.boleto.log.query(
     payment_ids=["123", "456"],
@@ -251,7 +251,7 @@ for log in logs:
 	print(log.type)
 ```
 
-# Create transactions
+### Create transactions
 ```python
 transactions = starkbank.transaction.create([
     starkbank.Transaction(amount=100, receiver_id="1029378109327810", ...),
@@ -261,14 +261,14 @@ transactions = starkbank.transaction.create([
 print([transaction.amount for transaction in transactions])
 ```
 
-# Get transactions
+### Get transactions
 ```python
 transaction = starkbank.transaction.get("5155165527080960")
 
 print(transaction)
 ```
 
-# Query transactions
+### Query transactions
 ```python
 transactions = starkbank.transaction.query(
     after="2020-01-01",
@@ -279,7 +279,7 @@ for transaction in transactions:
 	print(transaction)
 ```
 
-# Create webhook subscription
+### Create webhook subscription
 ```python
 webhook = starkbank.webhook.create(
     starkbank.Webhook(
@@ -292,7 +292,7 @@ print(webhook.id)
 
 ```
 
-# Query webhook
+### Query webhook
 ```python
 webhooks = starkbank.webhook.query()
 
@@ -300,7 +300,7 @@ for webhook in webhooks:
 	print(webhook.id)
 ```
 
-# Query webhook events
+### Query webhook events
 ```python
 events = starkbank.webhook.event.query(
 	is_delivered=False
@@ -310,7 +310,7 @@ for event in events:
 	print(event.id)
 ```
 
-# Process webhook events
+### Process webhook events
 ```python
 content, signature = listen()
 
@@ -326,7 +326,15 @@ elif event.subscription == "boleto-payment":
     print(event.log.payment)
 ```
 
-# Handler errors
+## Handling errors
+
+The SDK may raise one of three types of errors: __InputErrors__, __Houston__, __UnknownException__
+
+__InputErrors__ will be raised whenever the API detects an error in your request (status code 400).
+If you catch such an error, you get get its elements to verify each of the
+individual errors that were detected by the API.
+For example:
+
 ```python
 try:
     transactions = transaction.create([
@@ -339,10 +347,22 @@ except InputErrors as input_errors:
         print(element.message)
 ```
 
-# Generate key pair
-```python
+__Houston__ will be raised if the API runs into an internal error.
+If you ever stumble upon this one, rest assured that the development team
+is probably already rushing in to fix the mistake and get you back up to speed.
 
-private_key, public_key = starkbank.keys.generate("file/keys/")
+__UnknownException__ will be raised if a request encounters an error that is neither
+an __InputError__ nor a __Houston__.
+
+
+## Generate key pair
+
+The SDK provides a helper to allow you to easily create ECDSA secp256k1 keys to use
+within our API. If you ever need a new pair of keys, just run:
+```python
+private_key, public_key = starkbank.keys.generate()
+# or 
+private_key, public_key = starkbank.keys.generate("file/keys/")  # also saves .pem files in file/keys
 ```
 
 
