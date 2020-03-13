@@ -1,1 +1,1 @@
-from . import api, base, case, checks, enum, environment, request, rest
+from . import api, resource, case, checks, enum, environment, request, rest

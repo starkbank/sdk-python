@@ -1,6 +1,7 @@
+from .api import api_json
 
 
-class Base:
+class Resource:
 
     def __init__(self, id):
         id = str(id) if id else None
@@ -22,3 +23,6 @@ class Base:
             classname=self.__class__.__name__,
             fields=",\n\t".join("{key}={value}".format(key=key, value=value) for key, value in dict_.items())
         )
+
+    def json(self):
+        return api_json(self)

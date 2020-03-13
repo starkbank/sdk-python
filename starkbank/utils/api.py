@@ -1,5 +1,5 @@
-from starkbank.utils.case import camel_to_kebab, snake_to_camel, camel_to_snake
 from datetime import date, datetime
+from .case import camel_to_kebab, snake_to_camel, camel_to_snake
 
 
 def api_json(entity):
@@ -12,11 +12,7 @@ def api_json(entity):
 
 
 def _date_to_string(data):
-    if isinstance(data, date):
-        return data.strftime("%Y-%m-%d")
-    if isinstance(data, datetime):
-        return data.strftime("%Y-%m-%d %H:%M:%S.%f")
-    return data
+    return data.strftime("%Y-%m-%d") if isinstance(data, (date, datetime)) else data
 
 
 def from_api_json(resource, json):
@@ -32,18 +28,7 @@ def from_api_json(resource, json):
 
 
 def endpoint(resource):
-    endpoint_ = camel_to_kebab(resource.__name__)
-    split = endpoint_.split("-")
-    if split[-1] == "log":
-        endpoint_ = "-".join(split[:-1]) + "/log"
-    return endpoint_
-
-
-def id_endpoint(resource, id):
-    return "{base_endpoint}/{id}".format(
-        base_endpoint=endpoint(resource),
-        id=id
-    )
+    return camel_to_kebab(resource.__name__).replace("-log", "/log")
 
 
 def last_name(resource):

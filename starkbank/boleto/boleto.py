@@ -1,9 +1,9 @@
-from starkbank.utils.checks import check_date, check_datetime
-from starkbank.utils.base import Base
-from starkbank.utils import rest
+from ..utils.checks import check_date, check_datetime
+from ..utils.resource import Resource
+from ..utils import rest
 
 
-class Boleto(Base):
+class Boleto(Resource):
     """Description: Boleto object
 
     When you initialize a Boleto, the entity will not necessarily be
@@ -40,7 +40,7 @@ class Boleto(Base):
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code,
                  due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, id=None,
                  fee=None, line=None, bar_code=None, status=None, created=None):
-        Base.__init__(self, id=id)
+        Resource.__init__(self, id=id)
 
         self.amount = amount
         self.fee = fee
@@ -72,13 +72,13 @@ def get(id, user=None):
     return rest.get_id(resource=Boleto, id=id, user=user)
 
 
-def get_pdf(id, user=None):
+def pdf(id, user=None):
     return rest.get_pdf(resource=Boleto, id=id, user=user)
 
 
 def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):
-    return rest.query(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids, after=check_date(after), before=check_date(before))
+    return rest.get_list(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids, after=check_date(after), before=check_date(before))
 
 
 def delete(ids, user=None):
-    return rest.delete(resource=Boleto, ids=ids, user=user)
+    return rest.delete_list(resource=Boleto, ids=ids, user=user)

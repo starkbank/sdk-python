@@ -1,9 +1,9 @@
 import starkbank
 from starkbank.exception import InputErrors
 from unittest import TestCase, main
-
 from tests.utils.boletoPayment import generateExampleBoletoPaymentsJson
 from tests.utils.user import exampleProject
+
 
 starkbank.user = exampleProject
 starkbank.debug = False
@@ -16,8 +16,7 @@ class TestBoletoPaymentPost(TestCase):
         try:
             payments = starkbank.payment.boleto.create(payments)
         except InputErrors as e:
-            errors = e.elements
-            for error in errors:
+            for error in e.errors:
                 print(error)
                 self.assertEqual('immediatePaymentOutOfTime', error.code)
 
@@ -27,7 +26,7 @@ class TestBoletoPaymentPost(TestCase):
         payments = payments + payments2
         with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.boleto.create(payments)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual('invalidJson', error.code)
@@ -37,7 +36,7 @@ class TestBoletoPaymentPost(TestCase):
         payments = {}
         with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.boleto.create(payments)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual('invalidJson', error.code)
@@ -51,7 +50,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[3].tax_id = None
         with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.boleto.create(payments)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertTrue(error.code in ["invalidJson", "invalidPayment", "immediatePaymentOutOfTime"])
@@ -66,7 +65,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[4].tax_id = {}
         with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.boleto.create(payments)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertTrue(error.code in ["invalidTaxId", "immediatePaymentOutOfTime"])
@@ -74,12 +73,14 @@ class TestBoletoPaymentPost(TestCase):
 
 
 class TestBoletoPaymentGet(TestCase):
+
     def test_success(self):
         payments = list(starkbank.payment.boleto.query(limit=10))
         print("Number of payments:", len(payments))
 
 
 class TestBoletoPaymentInfoGet(TestCase):
+
     def test_success(self):
         payments = starkbank.payment.boleto.query()
         payment_id = next(payments).id
@@ -89,7 +90,7 @@ class TestBoletoPaymentInfoGet(TestCase):
         payment_id = "0"
         with self.assertRaises(InputErrors) as context:
             payment = starkbank.payment.boleto.get(payment_id)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual('invalidPayment', error.code)
@@ -97,10 +98,11 @@ class TestBoletoPaymentInfoGet(TestCase):
 
 
 class TestBoletoPaymentPdfGet(TestCase):
+
     def test_success(self):
         payments = starkbank.payment.boleto.query()
         payment_id = next(payments).id
-        payments = starkbank.payment.boleto.get_pdf(id=payment_id)
+        payments = starkbank.payment.boleto.pdf(id=payment_id)
 
 
 if __name__ == '__main__':

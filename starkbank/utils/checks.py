@@ -1,22 +1,31 @@
 from datetime import datetime, date
 
 
+def check_environment(environment):
+    from .environment import Environment
+    environments = Environment.values()
+    assert environment in environments, "Select one valid environment: {}".format(", ".join(environments))
+    return environment
+
+
+def check_user_kind(kind):
+    kinds = ["project", "session", "member"]
+    assert kind in kinds, "Select one valid user kind: {}".format(", ".join(kinds))
+    return kind
+
+
+def check_private_key(pem):
+    from ellipticcurve.privateKey import PrivateKey
+    try:
+        PrivateKey.fromPem(pem)
+    except:
+        raise Exception("This private key is invalid. Try another one")
+    return pem
+
+
 def check_user(user):
-    import starkbank
-    from ..user.base import User
-    from ..user.credentials import Credentials
-
-    user = user or starkbank.user
-
-    if not user:
-        raise RuntimeError("no user passed and no default user set")
-
-    if not isinstance(user, User):
-        raise TypeError("user must be an object retrieved from one of starkbank.user methods or classes")
-
-    if (not isinstance(user.credentials, Credentials)) or user.credentials.private_key_object is None:
-        raise ValueError("user private key is not loaded in credentials")
-
+    from ..user.user import User
+    assert isinstance(user, User), "It's required to have a user to access our API. Check our docs: https://github.com/starkbank/sdk-python/"
     return user
 
 
@@ -53,16 +62,6 @@ def check_datetime_string(data):
 
     try:
         return datetime.strptime(data, "%Y-%m-%d")
-    except:
-        pass
-
-    try:
-        return datetime.strptime(data, "%Y-%m-%d %H:%M:%S")
-    except:
-        pass
-
-    try:
-        return datetime.strptime(data, "%Y-%m-%d %H:%M:%S.%f")
     except:
         pass
 

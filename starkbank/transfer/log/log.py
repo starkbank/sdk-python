@@ -1,12 +1,13 @@
 from ..transfer import Transfer
 from ...utils.api import from_api_json
 from ...utils.checks import check_datetime
-from ...utils.base import Base
+from ...utils.resource import Resource
 
 
-class TransferLog(Base):
+class TransferLog(Resource):
+
     def __init__(self, id, created, type, errors, transfer):
-        Base.__init__(self, id=id)
+        Resource.__init__(self, id=id)
 
         self.created = check_datetime(created)
         self.type = type

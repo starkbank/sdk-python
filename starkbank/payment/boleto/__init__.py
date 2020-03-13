@@ -1,2 +1,2 @@
-from .boleto_payment import BoletoPayment, create, get, get_pdf, query, delete
+from .boletoPayment import BoletoPayment, create, get, pdf, query, delete
 from . import log

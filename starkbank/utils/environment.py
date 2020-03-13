@@ -1,4 +1,4 @@
-from starkbank.utils.enum import Enum
+from .enum import Enum
 
 
 class Environment(Enum):

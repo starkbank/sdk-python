@@ -1,7 +1,7 @@
-import re
+from re import compile
 
 
-pattern = re.compile(r"(?<!^)(?=[A-Z0-9])")
+pattern = compile(r"(?<!^)(?=[A-Z0-9])")
 
 
 def camel_to_snake(string):

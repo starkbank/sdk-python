@@ -142,7 +142,7 @@ boletos = starkbank.boleto.query(
 )
 
 for boleto in boletos:
-	print(boleto)
+    print(boleto)
 ```
 
 ### Get boleto-log
@@ -157,7 +157,7 @@ print(boleto)
 logs = starkbank.boleto.log.query(limit=150)
 
 for log in logs:
-	print(log.id)
+    print(log.id)
 ```
 
 ### Create transfers
@@ -202,7 +202,7 @@ transfers = starkbank.transfer.query(
 )
 
 for transfer in transfers:
-	print(transfer.name)
+    print(transfer.name)
 ```
 
 ### Create boleto-payments
@@ -230,7 +230,7 @@ payments = starkbank.payment.boleto.query(
 )
 
 for payment in payments:
-	print(payment.id)
+    print(payment.id)
 ```
 
 
@@ -248,7 +248,7 @@ logs = starkbank.payment.boleto.log.query(
 )
 
 for log in logs:
-	print(log.type)
+    print(log.type)
 ```
 
 ### Create transactions
@@ -276,16 +276,14 @@ transactions = starkbank.transaction.query(
 )
 
 for transaction in transactions:
-	print(transaction)
+    print(transaction)
 ```
 
 ### Create webhook subscription
 ```python
 webhook = starkbank.webhook.create(
-    starkbank.Webhook(
-        url="https://webhook.site/dd784f26-1d6a-4ca6-81cb-fda0267761ec",
-        subscriptions=["transfer", "charge"],
-    )
+    url="https://webhook.site/dd784f26-1d6a-4ca6-81cb-fda0267761ec",
+    subscriptions=["transfer", "charge"],
 )
 
 print(webhook.id)
@@ -297,17 +295,17 @@ print(webhook.id)
 webhooks = starkbank.webhook.query()
 
 for webhook in webhooks:
-	print(webhook.id)
+    print(webhook.id)
 ```
 
 ### Query webhook events
 ```python
 events = starkbank.webhook.event.query(
-	is_delivered=False
+    is_delivered=False
 )
 
 for event in events:
-	print(event.id)
+    print(event.id)
 ```
 
 ### Process webhook events
@@ -340,19 +338,18 @@ try:
     transactions = transaction.create([
         Transaction(amount=9999999999, receiver_id="1028937190837", ...),
     ])
-except InputErrors as input_errors:
-    error_elements = input_errors.elements
-    for element in error_elements:
-        print(element.code)
-        print(element.message)
+except InputErrors as exception:
+    for error in exception.errors:
+        print(error.code)
+        print(error.message)
 ```
 
-__Houston__ will be raised if the API runs into an internal error.
+__InternalServerError__ will be raised if the API runs into an internal error.
 If you ever stumble upon this one, rest assured that the development team
 is probably already rushing in to fix the mistake and get you back up to speed.
 
 __UnknownException__ will be raised if a request encounters an error that is neither
-an __InputError__ nor a __Houston__.
+an __InputErrors__ nor a __InternalServerError__.
 
 
 ## Generate key pair

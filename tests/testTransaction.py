@@ -2,10 +2,10 @@ import starkbank
 from starkbank.exception import InputErrors
 from datetime import datetime
 from unittest import TestCase, main
-
 from tests.utils.dateGenerator import randomPastDate
 from tests.utils.transaction import generateExampleTransactions
 from tests.utils.user import exampleProject
+
 
 starkbank.user = exampleProject
 starkbank.debug = False
@@ -21,9 +21,8 @@ class TestTransactionPost(TestCase):
         transactions = generateExampleTransactions(n=105)
         with self.assertRaises(InputErrors) as context:
             transactions = starkbank.transaction.create(transactions)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
-            print(error)
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(1, len(errors))
 
@@ -31,15 +30,13 @@ class TestTransactionPost(TestCase):
         transactions = {}
         with self.assertRaises(InputErrors) as context:
             transactions = starkbank.transaction.create(transactions)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
-            print(error)
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(1, len(errors))
 
     def test_fail_invalid_json_transaction(self):
         transactions = generateExampleTransactions(n=6)
-        print(transactions)
         transactions[0].amount = None  # Required
         transactions[1].receiver_id = None  # Required
         transactions[2].external_id = None  # Required
@@ -50,14 +47,14 @@ class TestTransactionPost(TestCase):
 
         with self.assertRaises(InputErrors) as context:
             transactions = starkbank.transaction.create(transactions)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
-            print(error)
             self.assertEqual('invalidJson', error.code)
         self.assertEqual(5, len(errors))
 
 
 class TestTransactionGet(TestCase):
+
     def test_success(self):
         transactions = list(starkbank.transaction.query(limit=10))
         print("Number of transactions:", len(transactions))
@@ -75,6 +72,7 @@ class TestTransactionGet(TestCase):
 
 
 class TestTransactionInfoGet(TestCase):
+
     def test_success(self):
         transactions = starkbank.transaction.query()
         transaction_id = next(transactions).id

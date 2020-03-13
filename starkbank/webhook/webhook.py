@@ -1,11 +1,11 @@
-from starkbank.utils import rest
-from starkbank.utils.base import Base
+from ..utils import rest
+from ..utils.resource import Resource
 
 
-class Webhook(Base):
+class Webhook(Resource):
 
     def __init__(self, url, subscriptions, id=None):
-        Base.__init__(self, id=id)
+        Resource.__init__(self, id=id)
 
         self.url = url
         self.subscriptions = subscriptions
@@ -20,8 +20,8 @@ def get(id, user=None):
 
 
 def query(limit=None, user=None):
-    return rest.query(resource=Webhook, limit=limit, user=user)
+    return rest.get_list(resource=Webhook, limit=limit, user=user)
 
 
 def delete(ids, user=None):
-    return rest.delete(resource=Webhook, ids=ids, user=user)
+    return rest.delete_list(resource=Webhook, ids=ids, user=user)

@@ -1,9 +1,9 @@
-from starkbank.utils import rest
-from starkbank.utils.checks import check_datetime, check_date
-from starkbank.utils.base import Base
+from ..utils import rest
+from ..utils.checks import check_datetime, check_date
+from ..utils.resource import Resource
 
 
-class Transfer(Base):
+class Transfer(Resource):
     """Description: Transfer object
 
     When you initialize a Transfer, the entity will not necessarily be
@@ -27,7 +27,7 @@ class Transfer(Base):
     """
 
     def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, fee=None, tags=None, status=None, id=None, created=None):
-        Base.__init__(self, id=id)
+        Resource.__init__(self, id=id)
 
         self.tax_id = tax_id
         self.amount = amount
@@ -49,13 +49,13 @@ def get(id, user=None):
     return rest.get_id(resource=Transfer, id=id, user=user)
 
 
-def get_pdf(id, user=None):
+def pdf(id, user=None):
     return rest.get_pdf(resource=Transfer, id=id, user=user)
 
 
 def query(limit=None, request_id=None, transaction_ids=None, tags=None, after=None, before=None, status=None, sort=None, user=None):
-    return rest.query(resource=Transfer, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), request_id=request_id, transaction_ids=transaction_ids, sort=sort)
+    return rest.get_list(resource=Transfer, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), request_id=request_id, transaction_ids=transaction_ids, sort=sort)
 
 
 def delete(ids, user=None):
-    return rest.delete(resource=Transfer, ids=ids, user=user)
+    return rest.delete_list(resource=Transfer, ids=ids, user=user)

@@ -1,12 +1,12 @@
-from starkbank.utils import rest
-from starkbank.utils.base import Base
-from starkbank.utils.checks import check_datetime
+from ..utils import rest
+from ..utils.resource import Resource
+from ..utils.checks import check_datetime
 
 
-class Balance(Base):
+class Balance(Resource):
 
     def __init__(self, amount, currency, updated, id):
-        Base.__init__(self, id=id)
+        Resource.__init__(self, id=id)
 
         self.amount = amount
         self.currency = currency
@@ -14,5 +14,4 @@ class Balance(Base):
 
 
 def get(user=None):
-    balances, cursor = rest.get(resource=Balance, user=user)
-    return balances[0]
+    return next(rest.get_list(resource=Balance, user=user))

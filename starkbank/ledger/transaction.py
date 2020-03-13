@@ -1,12 +1,12 @@
 from starkbank.utils import rest
 from starkbank.utils.checks import check_datetime, check_date
-from starkbank.utils.base import Base
+from starkbank.utils.resource import Resource
 
 
-class Transaction(Base):
+class Transaction(Resource):
 
     def __init__(self, amount, description, tags, external_id, receiver_id, sender_id=None, id=None, fee=None, created=None, source=None):
-        Base.__init__(self, id=id)
+        Resource.__init__(self, id=id)
 
         self.amount = amount
         self.description = description
@@ -28,4 +28,4 @@ def get(id, user=None):
 
 
 def query(limit=None, external_ids=None, after=None, before=None, user=None):
-    return rest.query(resource=Transaction, limit=limit, user=user, external_ids=external_ids, after=check_date(after), before=check_date(before))
+    return rest.get_list(resource=Transaction, limit=limit, user=user, external_ids=external_ids, after=check_date(after), before=check_date(before))

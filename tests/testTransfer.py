@@ -1,12 +1,11 @@
 import time
-from datetime import timedelta, date
-
 import starkbank
+from datetime import timedelta, date
 from starkbank.exception import InputErrors
 from unittest import TestCase, main
-
 from tests.utils.transfer import generateExampleTransfersJson
 from tests.utils.user import exampleProject
+
 
 starkbank.user = exampleProject
 starkbank.debug = False
@@ -24,7 +23,7 @@ class TestTransferPost(TestCase):
         transfers = generateExampleTransfersJson(n=105)
         with self.assertRaises(InputErrors) as context:
             transfers = starkbank.transfer.create(transfers)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual("invalidJson", error.code)
@@ -34,7 +33,7 @@ class TestTransferPost(TestCase):
         transfers = {}
         with self.assertRaises(InputErrors) as context:
             transfers = starkbank.transfer.create(transfers)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual("invalidJson", error.code)
@@ -51,7 +50,7 @@ class TestTransferPost(TestCase):
         transfers[6].tags = None
         with self.assertRaises(InputErrors) as context:
             transfers = starkbank.transfer.create(transfers)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual('invalidJson', error.code)
@@ -66,7 +65,7 @@ class TestTransferPost(TestCase):
         transfers[4].tax_id = {}  # 2 errors
         with self.assertRaises(InputErrors) as context:
             transfers = starkbank.transfer.create(transfers)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual('invalidTaxId', error.code)
@@ -81,7 +80,7 @@ class TestTransferPost(TestCase):
         transfers[4].amount = {}
         with self.assertRaises(InputErrors) as context:
             transfers = starkbank.transfer.create(transfers)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual('invalidAmount', error.code)
@@ -107,6 +106,7 @@ class TestTransferPost(TestCase):
 
 
 class TestTransferGet(TestCase):
+
     def test_success(self):
         transfers = list(starkbank.transfer.query(limit=10))
         assert len(transfers) == 10
@@ -134,7 +134,7 @@ class TestTransferInfoGet(TestCase):
         transfer_id = "0"
         with self.assertRaises(InputErrors) as context:
             transfer = starkbank.transfer.get(id=transfer_id)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual('invalidTransfer', error.code)
@@ -142,14 +142,15 @@ class TestTransferInfoGet(TestCase):
 
 
 class TestTransferPdfGet(TestCase):
+
     def test_success(self):
         transfers = starkbank.transfer.query(user=exampleProject)
         transfer_id = next(transfers).id
         try:
-            pdf = starkbank.transfer.get_pdf(id=transfer_id)
+            pdf = starkbank.transfer.pdf(id=transfer_id)
             print(str(pdf))
         except InputErrors as e:
-            errors = e.elements
+            errors = e.errors
             for error in errors:
                 self.assertEqual("invalidTransfer", error.code)
 

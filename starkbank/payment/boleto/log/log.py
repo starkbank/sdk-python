@@ -1,14 +1,14 @@
 from ....utils import rest
 from ....utils.api import from_api_json
 from ....utils.checks import check_datetime
-from ....utils.base import Base
-from ..boleto_payment import BoletoPayment
+from ....utils.resource import Resource
+from ..boletoPayment import BoletoPayment
 
 
-class BoletoPaymentLog(Base):
+class BoletoPaymentLog(Resource):
 
     def __init__(self, id, created, type, errors, payment):
-        Base.__init__(self, id=id)
+        Resource.__init__(self, id=id)
 
         self.created = check_datetime(created)
         self.type = type
@@ -21,4 +21,4 @@ def get(id, user=None):
 
 
 def query(limit=None, payment_ids=None, events=None, user=None):
-    return rest.query(resource=BoletoPaymentLog, limit=limit, user=user, events=events, payment_ids=payment_ids)
+    return rest.get_list(resource=BoletoPaymentLog, limit=limit, user=user, events=events, payment_ids=payment_ids)

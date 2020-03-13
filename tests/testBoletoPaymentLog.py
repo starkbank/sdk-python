@@ -1,8 +1,8 @@
 import starkbank
 from starkbank.exception import InputErrors
 from unittest import TestCase, main
-
 from tests.utils.user import exampleProject
+
 
 starkbank.user = exampleProject
 starkbank.debug = False
@@ -16,6 +16,7 @@ class TestBoletoPaymentLogGet(TestCase):
 
 
 class TestBoletoPaymentLogInfoGet(TestCase):
+
     def test_success(self):
         logs = starkbank.payment.boleto.log.query()
         log_id = next(logs).id
@@ -25,7 +26,7 @@ class TestBoletoPaymentLogInfoGet(TestCase):
         log_id = "0"
         with self.assertRaises(InputErrors) as context:
             log = starkbank.payment.boleto.log.get(log_id)
-        errors = context.exception.elements
+        errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual('invalidPaymentLog', error.code)

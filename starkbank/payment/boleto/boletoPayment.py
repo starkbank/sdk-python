@@ -1,12 +1,12 @@
-from starkbank.utils import rest
-from starkbank.utils.checks import check_datetime
-from starkbank.utils.base import Base
+from ...utils import rest
+from ...utils.checks import check_datetime
+from ...utils.resource import Resource
 
 
-class BoletoPayment(Base):
+class BoletoPayment(Resource):
 
     def __init__(self, tax_id, description, tags, line=None, bar_code=None, scheduled=None, id=None, status=None, amount=None, created=None):
-        Base.__init__(self, id=id)
+        Resource.__init__(self, id=id)
 
         self.line = line
         self.bar_code = bar_code
@@ -19,21 +19,21 @@ class BoletoPayment(Base):
         self.created = check_datetime(created)
 
 
-def create(boleto_payments, user=None):
-    return rest.post(resource=BoletoPayment, entities=boleto_payments, user=user)
+def create(payments, user=None):
+    return rest.post(resource=BoletoPayment, entities=payments, user=user)
 
 
 def get(id, user=None):
     return rest.get_id(resource=BoletoPayment, id=id, user=user)
 
 
-def get_pdf(id, user=None):
+def pdf(id, user=None):
     return rest.get_pdf(resource=BoletoPayment, id=id, user=user)
 
 
 def query(limit=None, status=None, tags=None, user=None):
-    return rest.query(resource=BoletoPayment, limit=limit, user=user, status=status, tags=tags)
+    return rest.get_list(resource=BoletoPayment, limit=limit, user=user, status=status, tags=tags)
 
 
 def delete(ids, user=None):
-    return rest.delete(resource=BoletoPayment, ids=ids, user=user)
+    return rest.delete_list(resource=BoletoPayment, ids=ids, user=user)
