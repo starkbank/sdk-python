@@ -27,6 +27,10 @@ def get(id, user=None):
     return rest.get_id(resource=UtilityPayment, id=id, user=user)
 
 
+def pdf(id, user=None):
+    return rest.get_pdf(resource=UtilityPayment, id=id, user=user)
+
+
 def query(limit=None, status=None, after=None, before=None, tags=None, ids=None, user=None):
     return rest.get_list(resource=UtilityPayment, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), ids=ids)
 
