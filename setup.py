@@ -18,8 +18,12 @@ setup(
     url="https://github.com/starkbank/sdk-python.git",
     author="Stark Bank",
     author_email="developers@starkbank.com",
-    keywords=["stark bank", "starkbank", "sdk", "open banking", "openbanking"],
+    keywords=["stark bank", "starkbank", "sdk", "open banking", "openbanking", "banking", "open", "stark"],
     version=__version__,
+    install_requires=[
+        "requests==2.22.0",
+        "starkbank-ecdsa==0.1.9",
+    ],
 )
 
 
