@@ -1,2 +1,2 @@
-from .utilityPayment import UtilityPayment, create, get, query, delete
+from .utilityPayment import UtilityPayment, create, get, pdf, query, delete
 from . import log
