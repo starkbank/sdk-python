@@ -12,7 +12,7 @@ class Webhook(Resource):
 
     Parameters (required):
         url [string]: BoletoPayment entity to which the log refers to.
-        subscriptions [list of strings]: list of any non-empty combination of the three available services. ex: ["transfer", "charge"]
+        subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "boleto-payment"]
     Attributes:
         id [string, default None]: unique id returned when log is created. ex: "5656565656565656"
     """
