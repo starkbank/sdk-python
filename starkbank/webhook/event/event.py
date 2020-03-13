@@ -11,9 +11,7 @@ from ...boleto.log import BoletoLog
 from ...transfer.log import TransferLog
 from ...exception import InvalidSignatureException
 from ...payment.boleto.log import BoletoPaymentLog
-
-
-_webhook_public_key = None
+from ...utils import cache
 
 
 class Event(Resource):
@@ -51,10 +49,9 @@ def process(content, signature, user=None):
 
 
 def _verify_signature(content, signature, user=None, refresh=False):
-    global _webhook_public_key
     signature = Signature.fromBase64(signature)
-    public_key = _webhook_public_key
+    public_key = cache.get("webhook-public-key")
     if public_key is None or refresh:
         public_key = PublicKey.fromPem(get_public_key(service_id="webhook", user=user))
-        _webhook_public_key = public_key
+        cache["webhook-public-key"] = public_key
     return Ecdsa.verify(message=content, signature=signature, publicKey=public_key)
