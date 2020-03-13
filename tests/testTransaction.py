@@ -8,7 +8,6 @@ from tests.utils.user import exampleProject
 
 
 starkbank.user = exampleProject
-starkbank.debug = False
 
 
 class TestTransactionPost(TestCase):

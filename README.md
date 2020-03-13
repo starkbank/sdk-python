@@ -134,6 +134,17 @@ boleto = starkbank.boleto.get("5155165527080960")
 print(boleto.status)
 ```
 
+### Get boleto PDF
+
+After its creation, a boleto PDF may be retrieved by passing its id. 
+
+```python
+boleto_pdf = starkbank.boleto.pdf("5155165527080960")
+
+with open("boleto.pdf", "w") as file:
+    file.write(boleto_pdf)
+```
+
 ### Query boletos
 ```python
 boletos = starkbank.boleto.query(
@@ -145,14 +156,14 @@ for boleto in boletos:
     print(boleto)
 ```
 
-### Get boleto-log
+### Get boleto logs
 ```python
 boleto = starkbank.boleto.log.get("5155165527080960")
 
 print(boleto)
 ```
 
-### Query boleto-logs
+### Query boleto logs
 ```python
 logs = starkbank.boleto.log.query(limit=150)
 
@@ -194,6 +205,17 @@ transfer = starkbank.transfer.get("5155165527080960")
 print(transfer)
 ```
 
+### Get transfer PDF
+
+After its creation, a transfer PDF may be retrieved by passing its id. 
+
+```python
+transfer_pdf = starkbank.transfer.pdf("5155165527080960")
+
+with open("transfer.pdf", "w") as file:
+    file.write(transfer_pdf)
+```
+
 ### Query transfers
 ```python
 transfers = starkbank.transfer.query(
@@ -205,25 +227,48 @@ for transfer in transfers:
     print(transfer.name)
 ```
 
-### Create boleto-payments
+### Pay a boleto
 ```python
 payments = starkbank.payment.boleto.create([
-    starkbank.BoletoPayment(line="...", tax_id="012.345.678-90", ...),
-    starkbank.BoletoPayment(bar_code="...", tax_id="012.345.678-90", ...),
+    starkbank.BoletoPayment(
+        line="34191.09008 61207.727308 71444.640008 5 81310001234321",
+        tax_id="012.345.678-90",
+        scheduled="2020-03-13",
+        description="take my money",
+        tags=["take", "my", "money"],
+    ),
+    starkbank.BoletoPayment(
+        bar_code="34197819200000000011090063609567307144464000",
+        tax_id="012.345.678-90",
+        scheduled="2020-03-14",
+        description="take my money one more time",
+        tags=["again"],
+    ),
 ])
 
 for payment in payments:
     print(payment)
 ```
 
-### Get boleto-payment
+### Get a boleto payment
 ```python
 payment = starkbank.payment.boleto.get("123")
 
 print(payment)
 ```
 
-### Query boleto-payments
+### Get a boleto payment PDF
+
+After its creation, a boleto payment PDF may be retrieved by passing its id. 
+
+```python
+boleto_payment_pdf = starkbank.payment.boleto.pdf("5155165527080960")
+
+with open("boleto_payment.pdf", "w") as file:
+    file.write(boleto_payment_pdf)
+```
+
+### Query boleto payments
 ```python
 payments = starkbank.payment.boleto.query(
     tags=["company_1", "company_2"]
@@ -233,15 +278,14 @@ for payment in payments:
     print(payment.id)
 ```
 
-
-### Get boleto-payment-log
+### Get boleto payment logs
 ```python
 log = starkbank.payment.boleto.log.get("123")
 
 print(log)
 ```
 
-### Query boleto-payment-logs
+### Query boleto payment logs
 ```python
 logs = starkbank.payment.boleto.log.query(
     payment_ids=["123", "456"],
@@ -254,8 +298,20 @@ for log in logs:
 ### Create transactions
 ```python
 transactions = starkbank.transaction.create([
-    starkbank.Transaction(amount=100, receiver_id="1029378109327810", ...),
-    starkbank.Transaction(amount=200, receiver_id="2093029347820947", ...),
+    starkbank.Transaction(
+        amount=100,  # (R$ 1.00)
+        receiver_id="1029378109327810",
+        description="Transaction to dear provider",
+        external_id="12345",  # so we can block anything you send twice by mistake
+        tags=["provider"]
+    ),
+    starkbank.Transaction(
+        amount=234,  # (R$ 2.34)
+        receiver_id="2093029347820947",
+        description="Transaction to the other provider",
+        external_id="12346",  # so we can block anything you send twice by mistake
+        tags=["provider"]
+    ),
 ])
 
 print([transaction.amount for transaction in transactions])
@@ -287,7 +343,6 @@ webhook = starkbank.webhook.create(
 )
 
 print(webhook.id)
-
 ```
 
 ### Query webhook
@@ -329,16 +384,22 @@ elif event.subscription == "boleto-payment":
 The SDK may raise one of three types of errors: __InputErrors__, __Houston__, __UnknownException__
 
 __InputErrors__ will be raised whenever the API detects an error in your request (status code 400).
-If you catch such an error, you get get its elements to verify each of the
-individual errors that were detected by the API.
+If you catch such an error, you can get its elements to verify each of the
+individual errors that were detected in your request by the API.
 For example:
 
 ```python
 try:
     transactions = transaction.create([
-        Transaction(amount=9999999999, receiver_id="1028937190837", ...),
+        starkbank.Transaction(
+            amount=99999999999999,  # (R$ 1.00)
+            receiver_id="1029378109327810",
+            description=".",
+            external_id="12345",  # so we can block anything you send twice by mistake
+            tags=["provider"]
+        ),
     ])
-except InputErrors as exception:
+except starkbank.exception.InputErrors as exception:
     for error in exception.errors:
         print(error.code)
         print(error.message)
@@ -348,11 +409,10 @@ __InternalServerError__ will be raised if the API runs into an internal error.
 If you ever stumble upon this one, rest assured that the development team
 is probably already rushing in to fix the mistake and get you back up to speed.
 
-__UnknownException__ will be raised if a request encounters an error that is neither
-an __InputErrors__ nor a __InternalServerError__.
+__UnknownException__ will be raised if a request encounters an error that is neither __InputErrors__ nor an __InternalServerError__.
 
 
-## Generate key pair
+## Key pair generation
 
 The SDK provides a helper to allow you to easily create ECDSA secp256k1 keys to use
 within our API. If you ever need a new pair of keys, just run:

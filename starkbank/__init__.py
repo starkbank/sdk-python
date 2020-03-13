@@ -10,5 +10,4 @@ from .webhook import Webhook, Event
 from . import keys
 from . import exception
 
-debug = False
 user = None

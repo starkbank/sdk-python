@@ -10,7 +10,7 @@ from ..utils.environment import Environment
 import starkbank
 
 
-class Response(object):
+class Response:
 
     def __init__(self, status, content):
         self.status = status
@@ -23,41 +23,48 @@ class Response(object):
 def fetch(path="/", payload=None, method=GET, query=None, user=None, version="v2"):
     user = check_user(user or starkbank.user)
     url = {
-        Environment.production:  "https://api.starkbank.com/{version}".format(version=version),
-        Environment.sandbox:     "https://sandbox.api.starkbank.com/{version}".format(version=version),
-        Environment.development: "https://development.api.starkbank.com/{version}".format(version=version),
-    }.get(user.environment)
-    queryString = "?{params}".format(params=urlencode(query)) if query else ""
-    userAgent = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
+        Environment.production:  "https://api.starkbank.com/" + version,
+        Environment.sandbox:     "https://sandbox.api.starkbank.com/" + version,
+        Environment.development: "https://development.api.starkbank.com/" + version,
+    }[user.environment]
+
+    query_string = "?" + urlencode(query) if query else ""
+    url = "{baseUrl}{path}{query}".format(baseUrl=url, path=path, query=query_string)
+
+    agent = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
         major=python_version.major,
         minor=python_version.minor,
         micro=python_version.micro,
         sdk_version=starkbank.__version__,
     )
-    return _fetch(url=url, path=path, method=method, payload=payload, query=queryString, user=user, agent=userAgent)
 
-
-def _fetch(url=None, path="/", method=GET, payload=None, query=None, user=None, agent=None):
-    accessTime = time()
-    body = dumps(payload) if isinstance(payload, dict) else ""
-    message = "{accessId}:{accessTime}:{body}".format(accessId=user.access_id(), accessTime=accessTime, body=body)
+    access_time = str(time())
+    body = dumps(payload) if payload else ""
+    message = "{access_id}:{access_time}:{body}".format(access_id=user.access_id(), access_time=access_time, body=body)
     signature = Ecdsa.sign(message=message, privateKey=user.private_key()).toBase64()
-    request = method(
-        url="{baseUrl}{path}{query}".format(baseUrl=url, path=path, query=query),
-        data=body,
-        headers={
-            "Access-Id": user.access_id(),
-            "Access-Time": str(accessTime),
-            "Access-Signature": signature,
-            "Content-Type": "application/json",
-            "User-Agent": agent,
-        }
-    )
+
+    try:
+        request = method(
+            url=url,
+            data=body,
+            headers={
+                "Access-Id": user.access_id(),
+                "Access-Time": access_time,
+                "Access-Signature": signature,
+                "Content-Type": "application/json",
+                "User-Agent": agent,
+            }
+        )
+    except Exception as exception:
+        raise UnknownException("{}: {}".format(exception.__class__.__name__, str(exception)))
+
     response = Response(status=request.status_code, content=request.content)
+
     if response.status == 500:
-        raise InternalServerError(response.json()["errors"][0]["message"])
+        raise InternalServerError()
     if response.status == 400:
         raise InputErrors(response.json()["errors"])
     if response.status != 200:
         raise UnknownException(response.content)
+
     return response
