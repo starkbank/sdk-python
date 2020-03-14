@@ -227,6 +227,21 @@ for transfer in transfers:
     print(transfer.name)
 ```
 
+### Get transfer logs
+```python
+transfer = starkbank.transfer.log.get("5155165527080960")
+
+print(transfer)
+```
+
+### Query transfer logs
+```python
+logs = starkbank.transfer.log.query(limit=50)
+
+for log in logs:
+    print(log.id)
+```
+
 ### Pay a boleto
 ```python
 payments = starkbank.payment.boleto.create([
