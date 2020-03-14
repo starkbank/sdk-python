@@ -50,6 +50,10 @@ def query(limit=None, after=None, before=None, is_delivered=None, user=None):
     return rest.get_list(resource=Event, limit=limit, user=user, is_delivered=is_delivered, after=check_date(after), before=check_date(before))
 
 
+def delete(ids, user=None):
+    return rest.delete_list(resource=Event, ids=ids, user=user)
+
+
 def process(content, signature, user=None):
     event = from_api_json(Event, loads(content)["event"])
 

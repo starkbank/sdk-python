@@ -39,5 +39,13 @@ class TesteEventProcess(TestCase):
             )
 
 
+class TestWebhookDelete(TestCase):
+
+    def test_success(self):
+        event = next(starkbank.webhook.event.query(limit=1))
+        event = starkbank.webhook.event.delete([event.id])
+        print(event)
+
+
 if __name__ == '__main__':
     main()
