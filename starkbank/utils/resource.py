@@ -20,7 +20,7 @@ class Resource:
             for attribute in dir(self)
             if not attribute.startswith('_') and not callable(getattr(self, attribute))
         }
-        fields = u",\n\t".join(u"{key}={value}".format(key=key, value=value) for key, value in dict_.items())
+        fields = u",\n\t".join(u"{key}={value}".format(key=key, value="\n\t".join(str(value).splitlines())) for key, value in dict_.items())
         string = u"{classname}(\n\t{fields}\n)".format(
             classname=self.__class__.__name__,
             fields=fields
