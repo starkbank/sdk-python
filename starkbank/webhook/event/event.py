@@ -73,6 +73,6 @@ def _verify_signature(content, signature, user=None, refresh=False):
     signature = Signature.fromBase64(signature)
     public_key = cache.get("webhook-public-key")
     if public_key is None or refresh:
-        public_key = PublicKey.fromPem(get_public_key(service_id="webhook", user=user))
+        public_key = PublicKey.fromPem(get_public_key(limit=1, user=user)[0]["content"])
         cache["webhook-public-key"] = public_key
     return Ecdsa.verify(message=content, signature=signature, publicKey=public_key)
