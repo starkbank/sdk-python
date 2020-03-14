@@ -15,6 +15,8 @@ class TestBoletoPost(TestCase):
     def test_success(self):
         boletos = generateExampleBoletosJson(n=5)
         boletos = starkbank.boleto.create(boletos)
+        for boleto in boletos:
+            print(boleto)
 
     def test_fail_invalid_array_size(self):
         boletos = generateExampleBoletosJson(n=105)
