@@ -58,5 +58,4 @@ def query(limit=None, status=None, after=None, before=None, tags=None, ids=None,
 
 
 def delete(ids, user=None):
-    assert isinstance(ids, (list, tuple, set)), "ids must be a list"
     return rest.delete_list(resource=UtilityPayment, ids=ids, user=user)

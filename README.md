@@ -447,6 +447,20 @@ elif event.subscription == "boleto-payment":
     print(event.log.payment)
 ```
 
+### Set webhook events as delivered
+
+This can be used in case you've lost events.
+With this function, you can manually set events retrieved from the API as "delivered" to help future queries.
+
+```python
+events = starkbank.webhook.event.set_delivered(
+    ids=["129837198237192", "928371982730922"]
+)
+
+for event in events:
+    print(event)
+```
+
 ## Handling errors
 
 The SDK may raise one of three types of errors: __InputErrors__, __Houston__, __UnknownException__

@@ -54,6 +54,10 @@ def delete(ids, user=None):
     return rest.delete_list(resource=Event, ids=ids, user=user)
 
 
+def set_delivered(ids, user=None):
+    return rest.patch_list(resource=Event, ids=ids, user=user)
+
+
 def process(content, signature, user=None):
     event = from_api_json(Event, loads(content)["event"])
 
