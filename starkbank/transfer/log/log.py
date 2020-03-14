@@ -1,4 +1,5 @@
 from ..transfer import Transfer
+from ...utils import rest
 from ...utils.api import from_api_json
 from ...utils.checks import check_datetime
 from ...utils.resource import Resource
@@ -26,3 +27,11 @@ class TransferLog(Resource):
         self.type = type
         self.errors = errors
         self.transfer = from_api_json(Transfer, transfer)
+
+
+def get(id, user=None):
+    return rest.get_id(resource=TransferLog, id=id, user=user)
+
+
+def query(limit=None, transfer_ids=None, events=None, user=None):
+    return rest.get_list(resource=TransferLog, limit=limit, user=user, events=events, transfer_ids=transfer_ids)
