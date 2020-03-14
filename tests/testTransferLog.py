@@ -10,7 +10,8 @@ starkbank.user = exampleProject
 class TestTransferLogGet(TestCase):
 
     def test_success(self):
-        logs = list(starkbank.transfer.log.query(limit=10))
+        logs = starkbank.transfer.log.query(limit=10)
+        logs = list(starkbank.transfer.log.query(limit=10, transfer_ids={log.transfer.id for log in logs}, events={log.event for log in logs}))
         print("Number of logs:", len(logs))
 
 
