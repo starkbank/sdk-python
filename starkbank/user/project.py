@@ -31,5 +31,4 @@ class Project(User):
             id=id,
             private_key=private_key,
             environment=environment,
-            kind="project"
         )
