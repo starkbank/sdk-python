@@ -30,8 +30,31 @@ class TransferLog(Resource):
 
 
 def get(id, user=None):
+    """Retrieve a single TransferLog
+
+    Receive a single TransferLog object previously created by the Stark Bank API by passing its id
+
+    Parameters (required):
+        id [string]: object unique id. ex: "5656565656565656"
+    Parameters (optional):
+        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        TransferLog object with updated return-only attributes
+    """
     return rest.get_id(resource=TransferLog, id=id, user=user)
 
 
 def query(limit=None, transfer_ids=None, events=None, user=None):
+    """Retrieve TransferLogs
+
+    Receive a generator of TransferLog objects previously created in the Stark Bank API
+
+    Parameters (optional):
+        limit [integer, default None]: optional number of objects to be retrieved. Unlimited if None. ex: 35
+        transfer_ids [list of strings, default None]: optional list of ids to filter selected objects. ex: ["5656565656565656", "4545454545454545"]
+        events [string, default None]: optional filter for events of objects retrieved. ex: "success" or "failed"
+        user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of TransferLog objects with updated return-only attributes
+    """
     return rest.get_list(resource=TransferLog, limit=limit, user=user, events=events, transfer_ids=transfer_ids)

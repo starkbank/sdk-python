@@ -34,6 +34,8 @@ def create(url, subscriptions, user=None):
         subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "boleto-payment"]
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        Webhook object with updated return-only attributes
     """
     return rest.post_single(resource=Webhook, entity=Webhook(url=url, subscriptions=subscriptions), user=user)
 
@@ -47,6 +49,8 @@ def get(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        Webhook object with updated return-only attributes
     """
     return rest.get_id(resource=Webhook, id=id, user=user)
 
@@ -59,18 +63,22 @@ def query(limit=None, user=None):
     Parameters (optional):
         limit [integer, default None]: optional number of objects to be retrieved. Unlimited if None. ex: 35
         user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        generator of Webhook objects with updated return-only attributes
     """
     return rest.get_list(resource=Webhook, limit=limit, user=user)
 
 
 def delete(ids, user=None):
-    """Delete a single Webhook subcription entity
+    """Delete list of Webhook subscription entities
 
-    Delete a single Webhook subcription entity previously created in the Stark Bank API by passing its id
+    Delete list of Webhook subscription entities previously created in the Stark Bank API
 
     Parameters (required):
-        id [string]: object unique id. ex: "5656565656565656"
+        ids [list of strings]: list of object unique ids. ex: ["5656565656565656", "4545454545454545"]
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of deleted objects with updated return-only attributes
     """
     return rest.delete_list(resource=Webhook, ids=ids, user=user)

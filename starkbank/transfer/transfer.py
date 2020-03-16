@@ -50,6 +50,8 @@ def create(transfers, user=None):
         transfers [list of Transfer objects]: list of Transfer objects to be created in the API
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of Transfer objects with updated return-only attributes
     """
     return rest.post(resource=Transfer, entities=transfers, user=user)
 
@@ -63,6 +65,8 @@ def get(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        Transfer object with updated return-only attributes
     """
     return rest.get_id(resource=Transfer, id=id, user=user)
 
@@ -70,7 +74,8 @@ def get(id, user=None):
 def pdf(id, user=None):
     """Retrieve a single Transfer pdf file
 
-    Receive a single Transfer pdf file generated in the Stark Bank API by passing its id
+    Receive a single Transfer pdf receipt file generated in the Stark Bank API by passing its id.
+    Only valid for transfers with "success" status
 
     Send a list of Transfer objects for creation in the Stark Bank API
 
@@ -78,6 +83,8 @@ def pdf(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        Transfer pdf file
     """
     return rest.get_pdf(resource=Transfer, id=id, user=user)
 
@@ -95,18 +102,22 @@ def query(limit=None, transaction_ids=None, tags=None, after=None, before=None, 
         after [datetime.date, default None] optional date filter for objects only after specified date. ex: datetime.date(2020, 3, 10)
         before [datetime.date, default None] optional date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
         user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        generator of Transfer objects with updated return-only attributes
     """
     return rest.get_list(resource=Transfer, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), transaction_ids=transaction_ids, sort=sort)
 
 
 def delete(ids, user=None):
-    """Delete a single Transfer entity
+    """Delete list of Transfer entities
 
-    Delete a single Transfer entity previously created in the Stark Bank API by passing its id
+    Delete list of Transfer entities previously created in the Stark Bank API
 
     Parameters (required):
-        id [string]: object unique id. ex: "5656565656565656"
+        ids [list of strings]: list of object unique ids. ex: ["5656565656565656", "4545454545454545"]
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of deleted objects with updated return-only attributes
     """
     return rest.delete_list(resource=Transfer, ids=ids, user=user)

@@ -51,6 +51,8 @@ def get(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        Event object with updated return-only attributes
     """
     return rest.get_id(resource=Event, id=id, user=user)
 
@@ -66,6 +68,8 @@ def query(limit=None, after=None, before=None, is_delivered=None, user=None):
         after [datetime.date, default None] optional date filter for objects only after specified date. ex: datetime.date(2020, 3, 10)
         before [datetime.date, default None] optional date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
         user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        generator of Event objects with updated return-only attributes
     """
     return rest.get_list(resource=Event, limit=limit, user=user, is_delivered=is_delivered, after=check_date(after), before=check_date(before))
 
@@ -73,12 +77,14 @@ def query(limit=None, after=None, before=None, is_delivered=None, user=None):
 def delete(ids, user=None):
     """Delete a single notification Event entity
 
-    Delete a single notification Event entity previously created in the Stark Bank API by passing its id
+    Delete a list of notification Event entities previously created in the Stark Bank API
 
     Parameters (required):
-        id [string]: object unique id. ex: "5656565656565656"
+        ids [list of strings]: list of object unique ids. ex: ["5656565656565656", "4545454545454545"]
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of deleted objects with updated return-only attributes
     """
     return rest.delete_list(resource=Event, ids=ids, user=user)
 
@@ -97,6 +103,18 @@ def set_delivered(ids, user=None):
 
 
 def process(content, signature, user=None):
+    """Process single notification Event
+
+    Process a single notification Event object received from event listening at subscribed user endpoint
+
+    Parameters (required):
+        content [string]: response content from request received at user endpoint
+        signature [string]: base-64 digital signature from received response header
+    Parameters (optional):
+        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        Event object with updated return-only attributes
+    """
     event = from_api_json(Event, loads(content)["event"])
 
     if _verify_signature(content=content, signature=signature, user=user):

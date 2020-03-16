@@ -47,9 +47,11 @@ def create(payments, user=None):
     Send a list of BoletoPayment objects for creation in the Stark Bank API
 
     Parameters (required):
-        ppayments [list of BoletoPayment objects]: list of BoletoPayment objects to be created in the API
+        payments [list of BoletoPayment objects]: list of BoletoPayment objects to be created in the API
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of BoletoPayment objects with updated return-only attributes
     """
     return rest.post(resource=BoletoPayment, entities=payments, user=user)
 
@@ -63,6 +65,8 @@ def get(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        BoletoPayment object with updated return-only attributes
     """
     return rest.get_id(resource=BoletoPayment, id=id, user=user)
 
@@ -78,6 +82,8 @@ def pdf(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        BoletoPayment pdf file
     """
     return rest.get_pdf(resource=BoletoPayment, id=id, user=user)
 
@@ -89,21 +95,25 @@ def query(limit=None, status=None, tags=None, user=None):
 
     Parameters (optional):
         limit [integer, default None]: optional number of objects to be retrieved. Unlimited if None. ex: 35
-        status [string, default None]: optional filter for status of objects retrieved. ex: "paid" or "registered"
+        status [string, default None]: optional filter for status of objects retrieved. ex: "paid"
         tags [list of strings, default None]: optional tags to filter retrieved objects. ex: ["tony", "stark"]
         user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        generator of BoletoPayment objects with updated return-only attributes
     """
     return rest.get_list(resource=BoletoPayment, limit=limit, user=user, status=status, tags=tags)
 
 
 def delete(ids, user=None):
-    """Delete a single BoletoPayment entity
+    """Delete list of BoletoPayment entities
 
-    Delete a single BoletoPayment entity previously created in the Stark Bank API by passing its id
+    Delete list of BoletoPayment entities previously created in the Stark Bank API
 
     Parameters (required):
-        id [string]: object unique id. ex: "5656565656565656"
+        ids [list of strings]: list of object unique ids. ex: ["5656565656565656", "4545454545454545"]
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of deleted objects with updated return-only attributes
     """
     return rest.delete_list(resource=BoletoPayment, ids=ids, user=user)

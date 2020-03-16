@@ -39,6 +39,8 @@ def get(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        UtilityPaymentLog object with updated return-only attributes
     """
     return rest.get_id(resource=UtilityPaymentLog, id=id, user=user)
 
@@ -53,5 +55,7 @@ def query(limit=None, payment_ids=None, events=None, user=None):
         payment_ids [list of strings, default None]: optional list of ids to filter selected objects. ex: ["5656565656565656", "4545454545454545"]
         events [string, default None]: optional filter for events of objects retrieved. ex: "paid" or "registered"
         user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of UtilityPaymentLog objects with updated return-only attributes
     """
     return rest.get_list(resource=UtilityPaymentLog, limit=limit, user=user, events=events, payment_ids=payment_ids)

@@ -47,9 +47,11 @@ def create(payments, user=None):
     Send a list of UtilityPayment objects for creation in the Stark Bank API
 
     Parameters (required):
-        ppayments [list of UtilityPayment objects]: list of UtilityPayment objects to be created in the API
+        payments [list of UtilityPayment objects]: list of UtilityPayment objects to be created in the API
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of UtilityPayment objects with updated return-only attributes
     """
     return rest.post(resource=UtilityPayment, entities=payments, user=user)
 
@@ -89,21 +91,25 @@ def query(limit=None, status=None, after=None, before=None, tags=None, ids=None,
 
     Parameters (optional):
         limit [integer, default None]: optional number of objects to be retrieved. Unlimited if None. ex: 35
-        status [string, default None]: optional filter for status of objects retrieved. ex: "paid" or "registered"
+        status [string, default None]: optional filter for status of objects retrieved. ex: "paid"
         tags [list of strings, default None]: optional tags to filter retrieved objects. ex: ["tony", "stark"]
         user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        generator of UtilityPayment objects with updated return-only attributes
     """
     return rest.get_list(resource=UtilityPayment, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), ids=ids)
 
 
 def delete(ids, user=None):
-    """Delete a single UtilityPayment entity
+    """Delete list of UtilityPayment entities
 
-    Delete a single UtilityPayment entity previously created in the Stark Bank API by passing its id
+    Delete list of UtilityPayment entities previously created in the Stark Bank API
 
     Parameters (required):
-        id [string]: object unique id. ex: "5656565656565656"
+        ids [list of strings]: list of object unique ids. ex: ["5656565656565656", "4545454545454545"]
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of deleted objects with updated return-only attributes
     """
     return rest.delete_list(resource=UtilityPayment, ids=ids, user=user)

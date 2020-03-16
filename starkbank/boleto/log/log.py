@@ -39,6 +39,8 @@ def get(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        BoletoLog object with updated return-only attributes
     """
     return rest.get_id(resource=BoletoLog, id=id, user=user)
 
@@ -53,5 +55,7 @@ def query(limit=None, boleto_ids=None, events=None, after=None, before=None, use
         boleto_ids [list of strings, default None]: optional list of ids to filter selected objects. ex: ["5656565656565656", "4545454545454545"]
         events [string, default None]: optional filter for events of objects retrieved. ex: "paid" or "registered"
         user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of BoletoLog objects with updated return-only attributes
     """
     return rest.get_list(resource=BoletoLog, limit=limit, user=user, events=events, boleto_ids=boleto_ids, after=check_date(after), before=check_date(before))

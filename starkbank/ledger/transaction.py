@@ -53,6 +53,8 @@ def create(transactions, user=None):
         transactions [list of Transaction objects]: list of Transaction objects to be created in the API
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        list of Transaction objects with updated return-only attributes
     """
     return rest.post(resource=Transaction, entities=transactions, user=user)
 
@@ -66,6 +68,8 @@ def get(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        Transaction object with updated return-only attributes
     """
     return rest.get_id(resource=Transaction, id=id, user=user)
 
@@ -81,5 +85,7 @@ def query(limit=None, external_ids=None, after=None, before=None, user=None):
         after [datetime.date, default None] optional date filter for objects only after specified date. ex: datetime.date(2020, 3, 10)
         before [datetime.date, default None] optional date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
         user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        generator of Transaction objects with updated return-only attributes
     """
     return rest.get_list(resource=Transaction, limit=limit, user=user, external_ids=external_ids, after=check_date(after), before=check_date(before))

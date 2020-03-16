@@ -33,5 +33,7 @@ def get(user=None):
 
     Parameters (optional):
         user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    Return
+        Balance object with updated return-only attributes
     """
     return next(rest.get_list(resource=Balance, user=user))
