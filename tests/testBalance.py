@@ -1,9 +1,9 @@
-import starkbank
 from unittest import TestCase, main
+
+import starkbank
 from tests.utils.user import exampleProject
 
 starkbank.user = exampleProject
-starkbank.debug = True
 
 
 class TestBalanceGet(TestCase):

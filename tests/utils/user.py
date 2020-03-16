@@ -1,6 +1,5 @@
 import starkbank
 
-
 exampleProject = starkbank.Project(
     environment="development",
     id="4835770477051904",

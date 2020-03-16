@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from starkbank.utils.request import fetch
 from tests.utils.user import exampleProject
 

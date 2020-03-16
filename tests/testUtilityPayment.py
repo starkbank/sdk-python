@@ -1,11 +1,11 @@
+from unittest import TestCase, main
+
 import starkbank
 from starkbank.exception import InputErrors
-from unittest import TestCase, main
-from tests.utils.utilityPayment import generateExampleUtilityPaymentsJson
 from tests.utils.user import exampleProject
+from tests.utils.utilityPayment import generateExampleUtilityPaymentsJson
 
 starkbank.user = exampleProject
-starkbank.debug = True
 
 
 class TestUtilityPaymentPost(TestCase):

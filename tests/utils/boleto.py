@@ -1,14 +1,13 @@
-from starkbank import Boleto
 from copy import deepcopy
-from random import randint
 from hashlib import sha256
+from random import randint
 
-from .dateGenerator import randomFutureDate
-from tests.utils.examples.messages.messages import exampleBoletosJsonString
-from .taxIdGenerator import generateCpf, generateCnpj
+from starkbank import Boleto
 from starkbank.utils.api import from_api_json
-
+from tests.utils.examples.messages.messages import exampleBoletosJsonString
+from .dateGenerator import randomFutureDate
 from .names import get_full_name
+from .taxIdGenerator import generateCpf, generateCnpj
 
 
 def generateExampleBoletosJson(n=1, amount=None):

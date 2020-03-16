@@ -1,7 +1,8 @@
 from copy import deepcopy
-from random import randint
 from hashlib import sha256
+from random import randint
 from uuid import uuid4
+
 from starkbank import Transaction
 from starkbank.utils.api import from_api_json
 from tests.utils.examples.messages.messages import exampleTransactionsJson

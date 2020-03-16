@@ -1,10 +1,10 @@
-import starkbank
 from unittest import TestCase, main
-from tests.utils.webhook import generateExampleWebhook
+
+import starkbank
 from tests.utils.user import exampleProject
+from tests.utils.webhook import generateExampleWebhook
 
 starkbank.user = exampleProject
-starkbank.debug = True
 
 
 class TestWebhookGet(TestCase):

@@ -1,14 +1,12 @@
 from copy import deepcopy
-from random import randint
 from hashlib import sha256
+from random import randint
 
 from starkbank import Transfer
 from starkbank.utils.api import from_api_json
-from .names import get_full_name
-
-from .taxIdGenerator import generateCpf, generateCnpj
-
 from tests.utils.examples.messages.messages import exampleTransfersJsonString
+from .names import get_full_name
+from .taxIdGenerator import generateCpf, generateCnpj
 
 
 def generateExampleTransfersJson(n=1):

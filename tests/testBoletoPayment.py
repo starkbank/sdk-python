@@ -1,11 +1,11 @@
+from unittest import TestCase, main
+
 import starkbank
 from starkbank.exception import InputErrors
-from unittest import TestCase, main
 from tests.utils.boletoPayment import generateExampleBoletoPaymentsJson
 from tests.utils.user import exampleProject
 
 starkbank.user = exampleProject
-starkbank.debug = True
 
 
 class TestBoletoPaymentPost(TestCase):
