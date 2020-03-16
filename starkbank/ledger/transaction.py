@@ -24,7 +24,7 @@ class Transaction(Resource):
     Parameters (optional):
         senderId [string]: unique id of the sending workspace
     Attributes (return-only):
-        id [string, default None]: unique id returned when Boleto is created. ex: "5656565656565656"
+        id [string, default None]: unique id returned when Transaction is created. ex: "5656565656565656"
         fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)
         status [string, default None]: current boleto status. ex: "registered" or "paid"
         created [datetime.datetime, default None]: creation datetime for the boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
@@ -45,12 +45,41 @@ class Transaction(Resource):
 
 
 def create(transactions, user=None):
+    """Create Transactions
+
+    Send a list of Transaction objects for creation in the Stark Bank API
+
+    Parameters (required):
+        transactions [list of Transaction objects]: list of Transaction objects to be created in the API
+    Parameters (optional):
+        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    """
     return rest.post(resource=Transaction, entities=transactions, user=user)
 
 
 def get(id, user=None):
+    """Retrieve a single Transaction
+
+    Receive a single Transaction object previously created in the Stark Bank API by passing its id
+
+    Parameters (required):
+        id [string]: object unique id. ex: "5656565656565656"
+    Parameters (optional):
+        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    """
     return rest.get_id(resource=Transaction, id=id, user=user)
 
 
 def query(limit=None, external_ids=None, after=None, before=None, user=None):
+    """Retrieve Transactions
+
+    Receive a generator of Transaction objects previously created in the Stark Bank API
+
+    Parameters (optional):
+        limit [integer, default None]: optional number of objects to be retrieved. Unlimited if None. ex: 35
+        external_ids [list of strings, default None]: optional list of ids to filter selected objects. ex: ["5656565656565656", "4545454545454545"]
+        after [datetime.date, default None] optional date filter for objects only after specified date. ex: datetime.date(2020, 3, 10)
+        before [datetime.date, default None] optional date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
+        user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    """
     return rest.get_list(resource=Transaction, limit=limit, user=user, external_ids=external_ids, after=check_date(after), before=check_date(before))

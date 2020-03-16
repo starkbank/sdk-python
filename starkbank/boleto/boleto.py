@@ -1,6 +1,6 @@
+from ..utils import rest
 from ..utils.checks import check_date, check_datetime
 from ..utils.resource import Resource
-from ..utils import rest
 
 
 class Boleto(Resource):
@@ -65,20 +65,72 @@ class Boleto(Resource):
 
 
 def create(boletos, user=None):
+    """Create Boletos
+
+    Send a list of Boleto objects for creation in the Stark Bank API
+
+    Parameters (required):
+        boletos [list of Boleto objects]: list of Boleto objects to be created in the API
+    Parameters (optional):
+        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    """
     return rest.post(resource=Boleto, entities=boletos, user=user)
 
 
 def get(id, user=None):
+    """Retrieve a single Boleto
+
+    Receive a single Boleto object previously created in the Stark Bank API by passing its id
+
+    Parameters (required):
+        id [string]: object unique id. ex: "5656565656565656"
+    Parameters (optional):
+        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    """
     return rest.get_id(resource=Boleto, id=id, user=user)
 
 
 def pdf(id, user=None):
+    """Retrieve a single Boleto pdf file
+
+    Receive a single Boleto pdf file generated in the Stark Bank API by passing its id
+
+    Send a list of Boleto objects for creation in the Stark Bank API
+
+    Parameters (required):
+        id [string]: object unique id. ex: "5656565656565656"
+    Parameters (optional):
+        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    """
     return rest.get_pdf(resource=Boleto, id=id, user=user)
 
 
 def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):
-    return rest.get_list(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids, after=check_date(after), before=check_date(before))
+    """Retrieve Boletos
+
+    Receive a generator of Boleto objects previously created in the Stark Bank API
+
+    Parameters (optional):
+        limit [integer, default None]: optional number of objects to be retrieved. Unlimited if None. ex: 35
+        status [string, default None]: optional filter for status of objects retrieved. ex: "paid" or "registered"
+        tags [list of strings, default None]: optional tags to filter retrieved objects. ex: ["tony", "stark"]
+        ids [list of strings, default None]: optional list of ids to filter selected objects. ex: ["5656565656565656", "4545454545454545"]
+        after [datetime.date, default None] optional date filter for objects only after specified date. ex: datetime.date(2020, 3, 10)
+        before [datetime.date, default None] optional date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
+        user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
+    """
+    return rest.get_list(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids,
+                         after=check_date(after), before=check_date(before))
 
 
 def delete(ids, user=None):
+    """Delete a single Boleto entity
+
+    Delete a single Boleto entity previously created in the Stark Bank API by passing its id
+
+    Parameters (required):
+        id [string]: object unique id. ex: "5656565656565656"
+    Parameters (optional):
+        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    """
     return rest.delete_list(resource=Boleto, ids=ids, user=user)

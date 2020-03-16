@@ -27,4 +27,11 @@ class Balance(Resource):
 
 
 def get(user=None):
+    """Retrieve first Balance object
+
+    Receive the first Balance object available in the Stark Bank API
+
+    Parameters (optional):
+        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+    """
     return next(rest.get_list(resource=Balance, user=user))
