@@ -4,7 +4,7 @@ from ..utils.checks import check_datetime
 
 
 class Balance(Resource):
-    """Description: Balance object
+    """Balance object
 
     The Balance object displays the current balance of the workspace,
     which is the result of the sum of all transactions within this
@@ -27,13 +27,13 @@ class Balance(Resource):
 
 
 def get(user=None):
-    """Retrieve first Balance object
+    """Retrieve the Balance object
 
-    Receive the first Balance object available in the Stark Bank API
+    Receive the Balance object linked to your workspace in the Stark Bank API
 
     Parameters (optional):
-        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
-    Return
-        Balance object with updated return-only attributes
+        user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    Return:
+        Balance object with updated attributes
     """
     return next(rest.get_list(resource=Balance, user=user))

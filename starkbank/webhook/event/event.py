@@ -16,18 +16,18 @@ from ...utils import cache
 
 
 class Event(Resource):
-    """Description: Webhook Event object
+    """Webhook Event object
 
-    An Event is the notification received from the subscription
-    to the Webhook. Events cannot be created, but may be retrieved
-    from the Stark Bank API to list all generated updates on entities.
+    An Event is the notification received from the subscription to the Webhook.
+    Events cannot be created, but may be retrieved from the Stark Bank API to
+    list all generated updates on entities.
 
     Attributes:
-        log [Log]: a Log object from one the subscription services (notification EventLog, TransferLog or notification EventPaymentLog)
-        created [datetime.datetime, default None]: creation datetime for the notification Event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-        delivered [datetime.datetime, default None]: delivery datetime of the notification event on user endpoint. Is None if there have been no successful attempts on delivery. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-        subscription [string]: service to which this notification event refers to. ex: "transfer" or "charge"
-        id [string, default None]: unique id returned when log is created. ex: "5656565656565656"
+        id [string, default None]: unique id returned when the log is created. ex: "5656565656565656"
+        log [Log]: a Log object from one the subscription services (TransferLog, BoletoLog, BoletoPaymentlog or UtilityPaymentLog)
+        created [datetime.datetime, default None]: creation datetime for the notification event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        delivered [datetime.datetime, default None]: delivery datetime when the notification was delivered to the user url. Will be None if no successful attempts to deliver the event occurred. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        subscription [string]: service that triggered this event. ex: "transfer", "utility-payment"
     """
 
     def __init__(self, log, created, delivered, subscription, id):
@@ -45,16 +45,16 @@ class Event(Resource):
 
 
 def get(id, user=None):
-    """Retrieve a single notification Event
+    """Retrieve a specific notification Event
 
     Receive a single notification Event object previously created in the Stark Bank API by passing its id
 
     Parameters (required):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
-        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
-    Return
-        Event object with updated return-only attributes
+        user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    Return:
+        Event object with updated attributes
     """
     return rest.get_id(resource=Event, id=id, user=user)
 
@@ -65,28 +65,28 @@ def query(limit=None, after=None, before=None, is_delivered=None, user=None):
     Receive a generator of notification Event objects previously created in the Stark Bank API
 
     Parameters (optional):
-        limit [integer, default None]: optional number of objects to be retrieved. Unlimited if None. ex: 35
-        is_delivered [bool, default None]: optional bool to filter successfully delivered events. ex: True or False
-        after [datetime.date, default None] optional date filter for objects only after specified date. ex: datetime.date(2020, 3, 10)
-        before [datetime.date, default None] optional date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
-        user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
-    Return
-        generator of Event objects with updated return-only attributes
+        limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
+        is_delivered [bool, default None]: bool to filter successfully delivered events. ex: True or False
+        after [datetime.date, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+        before [datetime.date, default None]: date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
+        user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    Return:
+        generator of Event objects with updated attributes
     """
     return rest.get_list(resource=Event, limit=limit, user=user, is_delivered=is_delivered, after=check_date(after), before=check_date(before))
 
 
 def delete(ids, user=None):
-    """Delete a single notification Event entity
+    """Delete notification Events
 
     Delete a list of notification Event entities previously created in the Stark Bank API
 
     Parameters (required):
-        ids [list of strings]: list of object unique ids. ex: ["5656565656565656", "4545454545454545"]
+        ids [list of strings]: list of Event unique ids. ex: ["5656565656565656", "4545454545454545"]
     Parameters (optional):
-        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
-    Return
-        list of deleted objects with updated return-only attributes
+        user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    Return:
+        list of deleted Events with updated attributes
     """
     return rest.delete_list(resource=Event, ids=ids, user=user)
 
@@ -94,12 +94,13 @@ def delete(ids, user=None):
 def set_delivered(ids, user=None):
     """Set notification Event entities as delivered
 
-    Set list of notification Event entities as delivered with delivery datetime at update time by passing id
+    Set list of notification Event entities as delivered at the current timestamp, if it was not yet delivered, by passing id.
+    After this is set, these events will no longer be returned on queries with is_delivered=False.
 
     Parameters (required):
-        ids [list of strings]: list of object unique ids. ex: ["5656565656565656", "4545454545454545"]
+        ids [list of strings]: list of Event unique ids. ex: ["5656565656565656", "4545454545454545"]
     Parameters (optional):
-        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
+        user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     """
     return rest.patch_list(resource=Event, ids=ids, user=user)
 
@@ -107,15 +108,17 @@ def set_delivered(ids, user=None):
 def process(content, signature, user=None):
     """Process single notification Event
 
-    Process a single notification Event object received from event listening at subscribed user endpoint
+    Process a single notification Event object received from event listening at subscribed user endpoint.
+    If the provided digital signature does not check out with the StarkBank public key, a
+    starkbank.exception.InvalidSignatureException will be raised.
 
     Parameters (required):
-        content [string]: response content from request received at user endpoint
-        signature [string]: base-64 digital signature from received response header
+        content [string]: response content from request received at user endpoint (not parsed)
+        signature [string]: base-64 digital signature received at response header "Digital-Signature"
     Parameters (optional):
-        user [Project object]: optional Project object. Not necessary if starkbank.user was set before function call
-    Return
-        Event object with updated return-only attributes
+        user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    Return:
+        Event object with updated attributes
     """
     event = from_api_json(Event, loads(content)["event"])
 
