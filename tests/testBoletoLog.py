@@ -5,6 +5,7 @@ from tests.utils.user import exampleProject
 
 
 starkbank.user = exampleProject
+starkbank.debug = True
 
 
 class TestBoletoLogGet(TestCase):

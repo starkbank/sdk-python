@@ -6,8 +6,8 @@ from tests.utils.boleto import generateExampleBoletosJson
 from tests.utils.dateGenerator import randomPastDate
 from tests.utils.user import exampleProject
 
-
 starkbank.user = exampleProject
+starkbank.debug = True
 
 
 class TestBoletoPost(TestCase):

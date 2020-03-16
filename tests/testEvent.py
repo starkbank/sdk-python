@@ -3,8 +3,8 @@ from starkbank.exception import InvalidSignatureException
 from unittest import TestCase, main
 from tests.utils.user import exampleProject
 
-
 starkbank.user = exampleProject
+starkbank.debug = True
 
 
 class TestEventGet(TestCase):
@@ -19,7 +19,6 @@ class TestEventInfoGet(TestCase):
         events = starkbank.webhook.event.query(user=exampleProject, after="2020-03-10")
         event_id = next(events).id
         event = starkbank.webhook.event.get(user=exampleProject, id=event_id)
-
 
 
 class TesteEventProcess(TestCase):
