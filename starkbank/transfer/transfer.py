@@ -96,7 +96,7 @@ def query(limit=None, transaction_ids=None, tags=None, after=None, before=None, 
         before [datetime.date, default None] optional date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
         user [Project object, default None]: optional Project object. Not necessary if starkbank.user was set before function call
     """
-    return rest.get_list(resource=Transfer, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), request_id=request_id, transaction_ids=transaction_ids, sort=sort)
+    return rest.get_list(resource=Transfer, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), transaction_ids=transaction_ids, sort=sort)
 
 
 def delete(ids, user=None):
