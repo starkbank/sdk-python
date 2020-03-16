@@ -11,6 +11,7 @@ from ...boleto.log import BoletoLog
 from ...transfer.log import TransferLog
 from ...exception import InvalidSignatureException
 from ...payment.boleto.log import BoletoPaymentLog
+from ...payment.utility.log import UtilityPaymentLog
 from ...utils import cache
 
 
@@ -39,6 +40,7 @@ class Event(Resource):
             "transfer": (TransferLog, log),
             "boleto": (BoletoLog, log),
             "boleto-payment": (BoletoPaymentLog, log),
+            "utility-payment": (UtilityPaymentLog, log),
         }[subscription])
 
 
