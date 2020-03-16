@@ -26,7 +26,7 @@ class UtilityPayment(Resource):
         created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, line, bar_code, tags, description, due, scheduled, id=None, amount=None, status=None, created=None):
+    def __init__(self, line, bar_code, tags, description, due, scheduled=None, id=None, amount=None, status=None, created=None):
         Resource.__init__(self, id=id)
 
         self.line = line
