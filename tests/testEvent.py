@@ -6,17 +6,19 @@ from tests.utils.user import exampleProject
 
 starkbank.user = exampleProject
 
+after = "2020-03-10"
+
 
 class TestEventGet(TestCase):
 
     def test_success(self):
-        events = list(starkbank.webhook.event.query(user=exampleProject, limit=10, after="2020-03-10"))
+        events = list(starkbank.webhook.event.query(user=exampleProject, limit=10, after=after))
         print("Number of events:", len(events))
 
 
 class TestEventInfoGet(TestCase):
     def test_success(self):
-        events = starkbank.webhook.event.query(user=exampleProject, after="2020-03-10")
+        events = starkbank.webhook.event.query(user=exampleProject, after=after)
         event_id = next(events).id
         event = starkbank.webhook.event.get(user=exampleProject, id=event_id)
 
@@ -41,7 +43,7 @@ class TesteEventProcess(TestCase):
 class TestEventDelete(TestCase):
 
     def test_success(self):
-        event = next(starkbank.webhook.event.query(limit=1))
+        event = next(starkbank.webhook.event.query(limit=1, after=after))
         event = starkbank.webhook.event.delete([event.id])
         print(event)
 
@@ -49,7 +51,7 @@ class TestEventDelete(TestCase):
 class TestEventSetDelivered(TestCase):
 
     def test_success(self):
-        event = next(starkbank.webhook.event.query(limit=1))
+        event = next(starkbank.webhook.event.query(limit=1, after=after))
         event = starkbank.webhook.event.set_delivered([event.id])
         print(event[0])
 
