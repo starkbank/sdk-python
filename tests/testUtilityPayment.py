@@ -44,31 +44,14 @@ class TestUtilityPaymentPost(TestCase):
     def test_fail_invalid_json_payment(self):
         payments = generateExampleUtilityPaymentsJson(n=4)
         payments[0].line = None
-        payments[1].scheduled = None
         payments[2].description = None
-        payments[3].tax_id = None
         with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.utility.create(payments)
         errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertTrue(error.code in ["invalidJson", "invalidPayment", "immediatePaymentOutOfTime"])
-        self.assertTrue(len(errors) == 3 or len(errors) == 6)
-
-    def test_fail_invalid_tax_id(self):
-        payments = generateExampleUtilityPaymentsJson(n=5)
-        payments[0].tax_id = "000.000.000-00"
-        payments[1].tax_id = "00.000.000/0000-00"
-        payments[2].tax_id = "abc"
-        payments[3].tax_id = 123
-        payments[4].tax_id = {}
-        with self.assertRaises(InputErrors) as context:
-            payments = starkbank.payment.utility.create(payments)
-        errors = context.exception.errors
-        for error in errors:
-            print(error)
-            self.assertTrue(error.code in ["invalidTaxId", "immediatePaymentOutOfTime"])
-        self.assertTrue(len(errors) == 5 or len(errors) == 10)
+        self.assertTrue(len(errors) == 2)
 
 
 class TestUtilityPaymentGet(TestCase):

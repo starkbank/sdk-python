@@ -70,4 +70,9 @@ def check_datetime_string(data):
     except:
         pass
 
+    try:
+        return datetime.strptime(data, "%Y-%m-%dT%H:%M:%S+00:00")
+    except:
+        pass
+
     raise RuntimeError("invalid datetime string " + data)
