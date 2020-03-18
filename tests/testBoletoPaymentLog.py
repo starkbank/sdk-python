@@ -11,7 +11,16 @@ class TestBoletoPaymentLogGet(TestCase):
 
     def test_success(self):
         logs = list(starkbank.payment.boleto.log.query(limit=10))
+        logs = list(starkbank.payment.boleto.log.query(limit=10, payment_ids={log.payment.id for log in logs}, types={log.type for log in logs}))
         print("Number of logs:", len(logs))
+
+    def test_fail(self):
+        with self.assertRaises(InputErrors) as context:
+            list(starkbank.payment.boleto.log.query(limit=10, types=["random"]))
+        errors = context.exception.errors
+        for error in errors:
+            print(error)
+            self.assertEqual('invalidPaymentLog', error.code)
 
 
 class TestBoletoPaymentLogInfoGet(TestCase):

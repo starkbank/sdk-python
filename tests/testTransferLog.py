@@ -10,10 +10,17 @@ starkbank.user = exampleProject
 class TestTransferLogGet(TestCase):
 
     def test_success(self):
-        logs = starkbank.transfer.log.query(limit=10)
-        logs = list(starkbank.transfer.log.query(limit=10, transfer_ids={log.transfer.id for log in logs},
-                                                 types={log.type for log in logs}))
+        logs = list(starkbank.transfer.log.query(limit=10))
+        logs = list(starkbank.transfer.log.query(limit=10, transfer_ids={log.transfer.id for log in logs}, types={log.type for log in logs}))
         print("Number of logs:", len(logs))
+
+    def test_fail(self):
+        with self.assertRaises(InputErrors) as context:
+            list(starkbank.transfer.log.query(limit=10, types=["random"]))
+        errors = context.exception.errors
+        for error in errors:
+            print(error)
+            self.assertEqual('invalidTransferLog', error.code)
 
 
 class TestTransferLogInfoGet(TestCase):
