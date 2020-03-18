@@ -99,7 +99,7 @@ class TestBoletoPaymentInfoGet(TestCase):
 class TestBoletoPaymentPdfGet(TestCase):
 
     def test_success(self):
-        payments = starkbank.payment.boleto.query(status="created")
+        payments = starkbank.payment.boleto.query(status="processing")
         payment_id = next(payments).id
         payments = starkbank.payment.boleto.pdf(id=payment_id)
 
