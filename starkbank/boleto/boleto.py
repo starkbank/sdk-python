@@ -21,12 +21,12 @@ class Boleto(Resource):
         state_code [string]: payer address state. ex: GO
         zip_code [string]: payer address zip code. ex: 01311-200
         due [datetime.date, default today + 2 days]: Boleto due date in ISO format. ex: 2020-04-30
-        tags [list of strings]: list of strings for tagging (may be empty)
     Parameters (optional):
         fine [float, default 0.0]: Boleto fine for overdue payment in %. ex: 2.5
         interest [float, default 0.0]: Boleto monthly interest for overdue payment in %. ex: 5.2
         overdue_limit [integer, default 59]: limit in days for automatic Boleto cancellation after due date. ex: 7 (max: 59)
         descriptions [list of dictionaries, default None]: list of dictionaries with "text":string and (optional) "amount":int pairs
+        tags [list of strings]: list of strings for tagging
     Attributes (return-only):
         id [string, default None]: unique id returned when Boleto is created. ex: "5656565656565656"
         fee [integer, default None]: fee charged when Boleto is paid. ex: 200 (= R$ 2.00)

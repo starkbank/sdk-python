@@ -17,7 +17,8 @@ class Transfer(Resource):
         bank_code [string]: receiver 1 to 3 digits of the bank institution in Brazil. ex: "200" or "341"
         branch_code [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
         account_number [string]: Receiver Bank Account number. Use '-' before the verifier digit. ex: "876543-2"
-        tags [list of strings]: list of strings for reference when searching transactions (may be empty). ex: ["abc", "transfer"]
+    Parameters (optional):
+        tags [list of strings]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
     Attributes (return-only):
         id [string, default None]: unique id returned when Transfer is created. ex: "5656565656565656"
         fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)

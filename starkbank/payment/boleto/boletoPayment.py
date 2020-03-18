@@ -16,9 +16,9 @@ class BoletoPayment(Resource):
     Parameters (required):
         tax_id [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
         description [string]: Text to be displayed in your statement (min. 10 characters). ex: "payment ABC"
-        tags [list of strings]: list of strings for tagging (may be empty)
     Parameters (optional):
         scheduled [datetime.date, default today]: payment scheduled date. ex: datetime.date(2020, 3, 10)
+        tags [list of strings]: list of strings for tagging
     Attributes (return-only):
         id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
         status [string, default None]: current payment status. ex: "registered" or "paid"
@@ -26,7 +26,7 @@ class BoletoPayment(Resource):
         created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, tax_id, description, tags, line=None, bar_code=None, scheduled=None, id=None, status=None, amount=None, created=None):
+    def __init__(self, tax_id, description, line=None, bar_code=None, scheduled=None, tags=None, id=None, status=None, amount=None, created=None):
         Resource.__init__(self, id=id)
 
         self.line = line

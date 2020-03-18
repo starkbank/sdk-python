@@ -6,8 +6,7 @@
             "name": "John",
             "bankCode": "01",
             "branchCode": "0001",
-            "accountNumber": "10000-0",
-            "tags": []
+            "accountNumber": "10000-0"
         }
     ]
 }

@@ -17,6 +17,5 @@ def generateExampleTransfersJson(n=1):
         transfer.name = get_full_name()
         transfer.amount = amount
         transfer.tax_id = generateCpf() if randint(0, 1) else generateCnpj()
-        transfer.tags = [sha256(str(amount).encode('utf-8')).hexdigest()]
         transfers.append(deepcopy(transfer))
     return transfers

@@ -39,21 +39,20 @@ class TestTransferPost(TestCase):
         self.assertEqual(1, len(errors))
 
     def test_fail_invalid_json_transfer(self):
-        transfers = generateExampleTransfersJson(n=7)
+        transfers = generateExampleTransfersJson(n=6)
         transfers[0].tax_id = None
         transfers[1].amount = None
         transfers[2].name = None
         transfers[3].bank_code = None
         transfers[4].branch_code = None
         transfers[5].account_number = None
-        transfers[6].tags = None
         with self.assertRaises(InputErrors) as context:
             transfers = starkbank.transfer.create(transfers)
         errors = context.exception.errors
         for error in errors:
             print(error)
             self.assertEqual('invalidJson', error.code)
-        self.assertEqual(7, len(errors))
+        self.assertEqual(6, len(errors))
 
     def test_fail_invalid_tax_id(self):
         transfers = generateExampleTransfersJson(n=5)

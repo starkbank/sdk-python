@@ -20,6 +20,5 @@ def generateExampleBoletosJson(n=1, amount=None):
         exampleBoleto.amount = amount
         exampleBoleto.due = str(randomFutureDate(days=7).date())
         exampleBoleto.tax_id = generateCpf() if randint(0, 1) else generateCnpj()
-        exampleBoleto.tags = [sha256(str(amount).encode('utf-8')).hexdigest()]
         boletos.append(deepcopy(exampleBoleto))
     return boletos

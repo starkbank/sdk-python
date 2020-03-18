@@ -15,16 +15,16 @@ class UtilityPayment(Resource):
         bar_code [string, default None]: Bar code number that describes the payment. Either 'line' or 'barCode' parameters are required. If both are sent, they must match. ex: "34195819600000000621090063571277307144464000"
     Parameters (required):
         description [string]: Text to be displayed in your statement (min. 10 characters). ex: "payment ABC"
-        tags [list of strings]: list of strings for tagging (may be empty)
     Parameters (optional):
         scheduled [datetime.date, default today]: payment scheduled date. ex: datetime.date(2020, 3, 10)
+        tags [list of strings]: list of strings for tagging
     Attributes (return-only):
         id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
         status [string, default None]: current payment status. ex: "registered" or "paid"
         created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, tags, description, line=None, bar_code=None, scheduled=None, id=None, amount=None, status=None, created=None):
+    def __init__(self, description, line=None, bar_code=None, tags=None, scheduled=None, id=None, amount=None, status=None, created=None):
         Resource.__init__(self, id=id)
 
         self.line = line

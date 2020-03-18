@@ -17,6 +17,5 @@ def generateExampleTransactions(n=1):
         transaction.sender_id = "5647143184367616"
         transaction.amount = amount
         transaction.external_id = str(uuid4())
-        transaction.tags = [sha256(str(amount).encode('utf-8')).hexdigest()]
         transactions.append(deepcopy(transaction))
     return transactions
