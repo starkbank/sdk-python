@@ -100,6 +100,7 @@ def query(limit=None, transaction_ids=None, tags=None, after=None, before=None, 
         transaction_ids [list of strings, default None]: list of Transaction ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         after [datetime.date, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
         before [datetime.date, default None]: date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
+        sort [string, default "-created"]: sort order considered in response. Valid options are 'created', '-created', 'updated' or '-updated'.
         user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         generator of Transfer objects with updated attributes
