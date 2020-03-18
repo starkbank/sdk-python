@@ -52,7 +52,7 @@ def query(limit=None, payment_ids=None, types=None, user=None):
     Parameters (optional):
         limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
         payment_ids [list of strings, default None]: list of UtilityPayment ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        types [string, default None]: filter retrieved objects by event types. ex: "paid" or "registered"
+        types [list of strings, default None]: filter retrieved objects by event types. ex: "paid" or "registered"
         user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of UtilityPaymentLog objects with updated attributes

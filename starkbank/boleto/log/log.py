@@ -53,7 +53,7 @@ def query(limit=None, boleto_ids=None, types=None, after=None, before=None, user
     Parameters (optional):
         limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
         boleto_ids [list of strings, default None]: list of Boleto ids to filter logs. ex: ["5656565656565656", "4545454545454545"]
-        types [string, default None]: filter for log event types. ex: "paid" or "registered"
+        types [list of strings, default None]: filter for log event types. ex: "paid" or "registered"
         user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of BoletoLog objects with updated attributes

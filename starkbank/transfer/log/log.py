@@ -52,7 +52,7 @@ def query(limit=None, transfer_ids=None, types=None, user=None):
     Parameters (optional):
         limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
         transfer_ids [list of strings, default None]: list of Transfer ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        types [string, default None]: filter retrieved objects by types. ex: "success" or "failed"
+        types [list of strings, default None]: filter retrieved objects by types. ex: "success" or "failed"
         user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of TransferLog objects with updated attributes
