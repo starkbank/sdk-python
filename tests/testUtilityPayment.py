@@ -43,7 +43,7 @@ class TestUtilityPaymentPost(TestCase):
 
     def test_fail_invalid_json_payment(self):
         payments = generateExampleUtilityPaymentsJson(n=4)
-        payments[0].line = None
+        payments[0].bar_code = None
         payments[2].description = None
         with self.assertRaises(InputErrors) as context:
             payments = starkbank.payment.utility.create(payments)
