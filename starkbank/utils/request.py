@@ -13,7 +13,6 @@ import starkbank
 class Response:
 
     def __init__(self, status, content):
-        print(content)
         self.status = status
         self.content = content
 
@@ -32,8 +31,6 @@ def fetch(path="/", payload=None, method=GET, query=None, user=None, version="v2
     query_string = "?" + urlencode(query) if query else ""
     url = "{baseUrl}{path}{query}".format(baseUrl=url, path=path, query=query_string)
 
-    print(url)
-
     agent = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
         major=python_version.major,
         minor=python_version.minor,
@@ -45,8 +42,6 @@ def fetch(path="/", payload=None, method=GET, query=None, user=None, version="v2
     body = dumps(payload) if payload else ""
     message = "{access_id}:{access_time}:{body}".format(access_id=user.access_id(), access_time=access_time, body=body)
     signature = Ecdsa.sign(message=message, privateKey=user.private_key()).toBase64()
-
-    print(body)
 
     try:
         request = method(
