@@ -4,14 +4,14 @@ from random import randint
 
 from starkbank import Boleto
 from starkbank.utils.api import from_api_json
-from tests.utils.examples.messages.messages import exampleBoletosJsonString
+from tests.utils.examples.messages.messages import exampleBoletosJson
 from .dateGenerator import randomFutureDate
 from .names import get_full_name
 from .taxIdGenerator import generateCpf, generateCnpj
 
 
 def generateExampleBoletosJson(n=1, amount=None):
-    exampleBoleto = from_api_json(Boleto, exampleBoletosJsonString["boletos"][0])
+    exampleBoleto = from_api_json(Boleto, exampleBoletosJson["boletos"][0])
     boletos = []
     for _ in range(n):
         if amount is None:
