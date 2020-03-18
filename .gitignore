@@ -6,6 +6,9 @@
 env
 .env
 
+# specific folders
+v1
+
 # specific files
 development.json
 sandbox.json
