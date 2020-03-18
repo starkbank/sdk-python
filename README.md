@@ -141,7 +141,7 @@ After its creation, a boleto PDF may be retrieved by passing its id.
 ```python
 boleto_pdf = starkbank.boleto.pdf("5155165527080960")
 
-with open("boleto.pdf", "w") as file:
+with open("boleto.pdf", "wb") as file:
     file.write(boleto_pdf)
 ```
 
@@ -212,7 +212,7 @@ After its creation, a transfer PDF may be retrieved by passing its id.
 ```python
 transfer_pdf = starkbank.transfer.pdf("5155165527080960")
 
-with open("transfer.pdf", "w") as file:
+with open("transfer.pdf", "wb") as file:
     file.write(transfer_pdf)
 ```
 
@@ -279,7 +279,7 @@ After its creation, a boleto payment PDF may be retrieved by passing its id.
 ```python
 boleto_payment_pdf = starkbank.payment.boleto.pdf("5155165527080960")
 
-with open("boleto_payment.pdf", "w") as file:
+with open("boleto_payment.pdf", "wb") as file:
     file.write(boleto_payment_pdf)
 ```
 
@@ -347,7 +347,7 @@ After its creation, a boleto payment PDF may be retrieved by passing its id.
 ```python
 utility_payment_pdf = starkbank.payment.utility.pdf("5155165527080960")
 
-with open("electricity_payment.pdf", "w") as file:
+with open("electricity_payment.pdf", "wb") as file:
     file.write(utility_payment_pdf)
 ```
 
