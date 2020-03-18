@@ -45,7 +45,7 @@ def get(id, user=None):
     return rest.get_id(resource=BoletoPaymentLog, id=id, user=user)
 
 
-def query(limit=None, payment_ids=None, events=None, user=None):
+def query(limit=None, payment_ids=None, types=None, user=None):
     """Retrieve BoletoPaymentLogs
 
     Receive a generator of BoletoPaymentLog objects previously created in the Stark Bank API
@@ -53,9 +53,9 @@ def query(limit=None, payment_ids=None, events=None, user=None):
     Parameters (optional):
         limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
         payment_ids [list of strings, default None]: list of BoletoPayment ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        events [string, default None]: filter retrieved objects by events. ex: "paid" or "registered"
+        types [string, default None]: filter retrieved objects by event types. ex: "paid" or "registered"
         user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of BoletoPaymentLog objects with updated attributes
     """
-    return rest.get_list(resource=BoletoPaymentLog, limit=limit, user=user, events=events, payment_ids=payment_ids)
+    return rest.get_list(resource=BoletoPaymentLog, limit=limit, user=user, types=types, payment_ids=payment_ids)

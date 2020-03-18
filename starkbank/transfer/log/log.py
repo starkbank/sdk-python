@@ -44,7 +44,7 @@ def get(id, user=None):
     return rest.get_id(resource=TransferLog, id=id, user=user)
 
 
-def query(limit=None, transfer_ids=None, events=None, user=None):
+def query(limit=None, transfer_ids=None, types=None, user=None):
     """Retrieve TransferLogs
 
     Receive a generator of TransferLog objects previously created in the Stark Bank API
@@ -52,9 +52,9 @@ def query(limit=None, transfer_ids=None, events=None, user=None):
     Parameters (optional):
         limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
         transfer_ids [list of strings, default None]: list of Transfer ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        events [string, default None]: filter retrieved objects by events. ex: "success" or "failed"
+        types [string, default None]: filter retrieved objects by types. ex: "success" or "failed"
         user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of TransferLog objects with updated attributes
     """
-    return rest.get_list(resource=TransferLog, limit=limit, user=user, events=events, transfer_ids=transfer_ids)
+    return rest.get_list(resource=TransferLog, limit=limit, user=user, types=types, transfer_ids=transfer_ids)
