@@ -15,9 +15,11 @@ def generateExampleBoletosJson(n=1, amount=None):
     boletos = []
     for _ in range(n):
         if amount is None:
-            amount = randint(5, 100)
+            boletoAmount = randint(5, 100)
+        else:
+            boletoAmount = int(amount)
         exampleBoleto.name = get_full_name()
-        exampleBoleto.amount = amount
+        exampleBoleto.amount = boletoAmount
         exampleBoleto.due = str(randomFutureDate(days=7).date())
         exampleBoleto.tax_id = generateCpf() if randint(0, 1) else generateCnpj()
         boletos.append(deepcopy(exampleBoleto))
