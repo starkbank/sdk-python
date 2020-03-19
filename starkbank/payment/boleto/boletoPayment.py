@@ -87,7 +87,7 @@ def pdf(id, user=None):
     return rest.get_pdf(resource=BoletoPayment, id=id, user=user)
 
 
-def query(limit=None, status=None, tags=None, user=None):
+def query(limit=None, ids=None, status=None, tags=None, user=None):
     """Retrieve BoletoPayments
 
     Receive a generator of BoletoPayment objects previously created in the Stark Bank API
@@ -100,7 +100,7 @@ def query(limit=None, status=None, tags=None, user=None):
     Return:
         generator of BoletoPayment objects with updated attributes
     """
-    return rest.get_list(resource=BoletoPayment, limit=limit, user=user, status=status, tags=tags)
+    return rest.get_list(resource=BoletoPayment, limit=limit, user=user, ids=ids, status=status, tags=tags)
 
 
 def delete(ids, user=None):
