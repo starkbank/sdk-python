@@ -11,7 +11,7 @@ setup(
     name="starkbank",
     packages=find_packages(),
     include_package_data=True,
-    description="SDK to facilitate python integrations with Stark Bank",
+    description="SDK to facilitate Python integrations with Stark Bank",
     long_description=README,
     long_description_content_type="text/markdown",
     license="MIT License",
