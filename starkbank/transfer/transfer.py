@@ -26,7 +26,7 @@ class Transfer(Resource):
         created [datetime.datetime, default None]: creation datetime for the boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, fee=None, tags=None, status=None, id=None, created=None):
+    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, transaction_ids=None, fee=None, tags=None, status=None, id=None, created=None):
         Resource.__init__(self, id=id)
 
         self.tax_id = tax_id
@@ -39,6 +39,7 @@ class Transfer(Resource):
         self.tags = tags
         self.status = status
         self.created = check_datetime(created)
+        self.transaction_ids = transaction_ids
 
 
 def create(transfers, user=None):
