@@ -2,7 +2,7 @@ from ellipticcurve.privateKey import PrivateKey
 from os import path as os_path
 
 
-def generate(path=None):
+def create(path=None):
     """Generates a secp256k1 ECDSA private/public key pair to be used in the API authentications
 
     Parameters (optional):

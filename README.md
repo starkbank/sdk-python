@@ -598,9 +598,9 @@ within our API. If you ever need a new pair of keys, just run:
 ```python
 import starkbank
 
-private_key, public_key = starkbank.key.generate()
+private_key, public_key = starkbank.key.create()
 # or 
-private_key, public_key = starkbank.key.generate("file/keys/")  # also saves .pem files in file/keys
+private_key, public_key = starkbank.key.create("file/keys/")  # also saves .pem files in file/keys
 ```
 
 
