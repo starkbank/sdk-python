@@ -13,10 +13,7 @@ is as easy as sending a text message to your client!
 This library supports the following Python implementations:
 
 * Python 2.7
-* Python 3.5
-* Python 3.6
-* Python 3.7
-* Python 3.8
+* Python 3.5+
 
 ## Stark Bank API documentation
 
@@ -38,16 +35,15 @@ python setup.py install
 
 ## Usage
 
-To use the SDK, the first thing you need is a project, which is a 
-special type of user made specially for direct API integrations.
-To create your first project in our Sandbox environment, 
+To connect to Stark Bank API, you need to have a user credentials. We have 3 kinds of users: Members, Projects and Apps.
+Given the purpose of this SDK, here we will only use projects which is a special type of user made specially for direct 
+API integrations. To create your first project in our Sandbox environment, 
 [click here](https://www.sandbox.web.starkbank.com/project).
 
 Once you've created your project, load it in the SDK:
 
 ```python
 import starkbank
-
 
 project = starkbank.Project(
     id=129817512982,
@@ -62,13 +58,17 @@ project = starkbank.Project(
 )
 ```
 
-You should pass this project in the user argument of your requests, such as:
+NOTE: Never save your private key hard coded. Get it from a environment variable. 
+
+You can pass the project user by two different way.
+
+The first ways is passing user argument in all methods such as:
 
 ```python
 balance = starkbank.balance.get(user=project)
 ```
 
-Alternatively, if you want to use the same project on all requests, we recommend you set it as the default user by doing:
+Or alternatively, if you want to use the same project on all requests, we recommend you set it as the default user by doing:
 
 ```python
 starkbank.user = project
@@ -76,18 +76,27 @@ starkbank.user = project
 balance = starkbank.balance.get()
 ```
 
+Select the way of passing the project user that more convenient for you.
+
 ### Get balance
 
+Your initial balance is zero. For many operations in Stark Bank you'll need funds
+in your account, which can be added to your balance by creating a boleto. 
+
+For the Sandbox environment, 90% of the boletos created will be
+automatically paid, so there's nothing else you need to do to add funds to your account.
+
+For Production, you (or your client) will need to pay this boleto for the
+value to be credited to your account.
+
 ```python
+import starkbank
+
 balance = starkbank.balance.get()
 
-print(balance.amount)
-# or simply:
 print(balance)
 ```
 
-Your initial balance is zero. For many operations in Stark Bank you'll need funds
-in your account, which can be added to your balance by creating a boleto.
 
 ### Create boletos
 
@@ -114,14 +123,8 @@ boletos = starkbank.boleto.create([
 ])
 
 for boleto in boletos:
-    print(boleto.id)
+    print(boleto)
 ```
-
-For the Sandbox environment, 90% of the boletos created will be
-automatically paid, so there's nothing else you need to do to add funds to your account.
-
-For Production, you (or your client) will need to pay this boleto for the
-value to be credited to your account.
 
 ### Get boleto
 
@@ -129,9 +132,11 @@ After its creation, information on a boleto may be retrieved by passing its id.
 Its status indicates whether it's been paid.
 
 ```python
+import starkbank
+
 boleto = starkbank.boleto.get("5155165527080960")
 
-print(boleto.status)
+print(boleto)
 ```
 
 ### Get boleto PDF
@@ -139,14 +144,22 @@ print(boleto.status)
 After its creation, a boleto PDF may be retrieved by passing its id. 
 
 ```python
-boleto_pdf = starkbank.boleto.pdf("5155165527080960")
+import starkbank
+
+pdf = starkbank.boleto.pdf("5155165527080960")
 
 with open("boleto.pdf", "wb") as file:
-    file.write(boleto_pdf)
+    file.write(pdf)
 ```
 
 ### Query boletos
+
+We allow you get the list of created boletos given some filters
+
 ```python
+import starkbank
+from datetime import datetime
+
 boletos = starkbank.boleto.query(
     after=datetime(2020, 1, 1),
     before=datetime(2020, 3, 1)
@@ -156,23 +169,35 @@ for boleto in boletos:
     print(boleto)
 ```
 
-### Get boleto logs
+### Query boleto logs
+
+Logs are pretty important to you understand the life cycle of a boleto.
+
 ```python
+import starkbank
+
+logs = starkbank.boleto.log.query(limit=150)
+
+for log in logs:
+    print(log)
+```
+
+### Get a boleto log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
 boleto = starkbank.boleto.log.get("5155165527080960")
 
 print(boleto)
 ```
 
-### Query boleto logs
-```python
-logs = starkbank.boleto.log.query(limit=150)
-
-for log in logs:
-    print(log.id)
-```
-
 ### Create transfers
 ```python
+import starkbank
+
 transfers = starkbank.transfer.create([
     starkbank.Transfer(
         amount=100,
@@ -195,11 +220,13 @@ transfers = starkbank.transfer.create([
 ])
 
 for transfer in transfers:
-    print(transfer.id)
+    print(transfer)
 ```
 
 ### Get transfer
 ```python
+import starkbank
+
 transfer = starkbank.transfer.get("5155165527080960")
 
 print(transfer)
@@ -210,14 +237,19 @@ print(transfer)
 After its creation, a transfer PDF may be retrieved by passing its id. 
 
 ```python
-transfer_pdf = starkbank.transfer.pdf("5155165527080960")
+import starkbank
+
+pdf = starkbank.transfer.pdf("5155165527080960")
 
 with open("transfer.pdf", "wb") as file:
-    file.write(transfer_pdf)
+    file.write(pdf)
 ```
 
 ### Query transfers
 ```python
+import starkbank
+from datetime import datetime
+
 transfers = starkbank.transfer.query(
     after=datetime(2020, 1, 1),
     before=datetime(2020, 4, 1)
@@ -227,8 +259,10 @@ for transfer in transfers:
     print(transfer.name)
 ```
 
-### Get transfer logs
+### Get a transfer log
 ```python
+import starkbank
+
 transfer = starkbank.transfer.log.get("5155165527080960")
 
 print(transfer)
@@ -236,6 +270,8 @@ print(transfer)
 
 ### Query transfer logs
 ```python
+import starkbank
+
 logs = starkbank.transfer.log.query(limit=50)
 
 for log in logs:
@@ -244,6 +280,8 @@ for log in logs:
 
 ### Pay a boleto
 ```python
+import starkbank
+
 payments = starkbank.payment.boleto.create([
     starkbank.BoletoPayment(
         line="34191.09008 61207.727308 71444.640008 5 81310001234321",
@@ -267,6 +305,8 @@ for payment in payments:
 
 ### Get a boleto payment
 ```python
+import starkbank
+
 payment = starkbank.payment.boleto.get("123")
 
 print(payment)
@@ -277,24 +317,30 @@ print(payment)
 After its creation, a boleto payment PDF may be retrieved by passing its id. 
 
 ```python
-boleto_payment_pdf = starkbank.payment.boleto.pdf("5155165527080960")
+import starkbank
+
+pdf = starkbank.payment.boleto.pdf("5155165527080960")
 
 with open("boleto_payment.pdf", "wb") as file:
-    file.write(boleto_payment_pdf)
+    file.write(pdf)
 ```
 
 ### Query boleto payments
 ```python
+import starkbank
+
 payments = starkbank.payment.boleto.query(
     tags=["company_1", "company_2"]
 )
 
 for payment in payments:
-    print(payment.id)
+    print(payment)
 ```
 
-### Get boleto payment logs
+### Get a boleto payment log
 ```python
+import starkbank
+
 log = starkbank.payment.boleto.log.get("5155165527080960")
 
 print(log)
@@ -302,28 +348,30 @@ print(log)
 
 ### Query boleto payment logs
 ```python
+import starkbank
+
 logs = starkbank.payment.boleto.log.query(
     payment_ids=["5155165527080960", "76551659167801921"],
 )
 
 for log in logs:
-    print(log.type)
+    print(log)
 ```
 
 ### Pay a utility bill
 ```python
+import starkbank
+
 payments = starkbank.payment.utility.create([
     starkbank.UtilityPayment(
         line="34191.09008 61207.727308 71444.640008 5 81310001234321",
         scheduled="2020-03-13",
-        due="2020-03-13",
         description="take my money",
         tags=["take", "my", "money"],
     ),
     starkbank.UtilityPayment(
         bar_code="34197819200000000011090063609567307144464000",
         scheduled="2020-03-14",
-        due="2020-03-13",
         description="take my money one more time",
         tags=["again"],
     ),
@@ -335,6 +383,8 @@ for payment in payments:
 
 ### Get a utility bill payment
 ```python
+import starkbank
+
 payment = starkbank.payment.utility.get("5155165527080960")
 
 print(payment)
@@ -345,24 +395,30 @@ print(payment)
 After its creation, a boleto payment PDF may be retrieved by passing its id. 
 
 ```python
-utility_payment_pdf = starkbank.payment.utility.pdf("5155165527080960")
+import starkbank
+
+pdf = starkbank.payment.utility.pdf("5155165527080960")
 
 with open("electricity_payment.pdf", "wb") as file:
-    file.write(utility_payment_pdf)
+    file.write(pdf)
 ```
 
 ### Query utility bill payments
 ```python
+import starkbank
+
 payments = starkbank.payment.utility.query(
     tags=["electricity", "gas"]
 )
 
 for payment in payments:
-    print(payment.id)
+    print(payment)
 ```
 
-### Get utility bill payment logs
+### Get a utility bill payment log
 ```python
+import starkbank
+
 log = starkbank.payment.utility.log.get("1902837198237992")
 
 print(log)
@@ -370,16 +426,20 @@ print(log)
 
 ### Query utility bill payment logs
 ```python
+import starkbank
+
 logs = starkbank.payment.utility.log.query(
     payment_ids=["102893710982379182", "92837912873981273"],
 )
 
 for log in logs:
-    print(log.type)
+    print(log)
 ```
 
 ### Create transactions
 ```python
+import starkbank
+
 transactions = starkbank.transaction.create([
     starkbank.Transaction(
         amount=100,  # (R$ 1.00)
@@ -397,11 +457,14 @@ transactions = starkbank.transaction.create([
     ),
 ])
 
-print([transaction.amount for transaction in transactions])
+for transaction in transactions:
+    print(transaction)
 ```
 
-### Get transactions
+### Get a transaction
 ```python
+import starkbank
+
 transaction = starkbank.transaction.get("5155165527080960")
 
 print(transaction)
@@ -409,6 +472,8 @@ print(transaction)
 
 ### Query transactions
 ```python
+import starkbank
+
 transactions = starkbank.transaction.query(
     after="2020-01-01",
     before="2020-03-01"
@@ -420,37 +485,45 @@ for transaction in transactions:
 
 ### Create webhook subscription
 ```python
+import starkbank
+
 webhook = starkbank.webhook.create(
     url="https://webhook.site/dd784f26-1d6a-4ca6-81cb-fda0267761ec",
     subscriptions=["transfer", "charge"],
 )
 
-print(webhook.id)
+print(webhook)
 ```
 
-### Query webhook
+### Query webhooks
 ```python
+import starkbank
+
 webhooks = starkbank.webhook.query()
 
 for webhook in webhooks:
-    print(webhook.id)
+    print(webhook)
 ```
 
 ### Query webhook events
 ```python
+import starkbank
+
 events = starkbank.webhook.event.query(
     is_delivered=False
 )
 
 for event in events:
-    print(event.id)
+    print(event)
 ```
 
 ### Process webhook events
 ```python
+import starkbank
+
 response = listen()
 
-event = starkbank.webhook.event.process(content=response.content, signature=response.headers["Digital-Signature"])
+event = starkbank.webhook.event.parse(content=response.content, signature=response.headers["Digital-Signature"])
 
 if event.subscription == "transfer":
     print(event.log.transfer)
@@ -468,6 +541,8 @@ This can be used in case you've lost events.
 With this function, you can manually set events retrieved from the API as "delivered" to help future queries.
 
 ```python
+import starkbank
+
 events = starkbank.webhook.event.set_delivered(
     ids=["129837198237192", "928371982730922"]
 )
@@ -478,7 +553,7 @@ for event in events:
 
 ## Handling errors
 
-The SDK may raise one of three types of errors: __InputErrors__, __Houston__, __UnknownException__
+The SDK may raise one of three types of errors: __InputErrors__, __InternalServerError__, __UnknownException__
 
 __InputErrors__ will be raised whenever the API detects an error in your request (status code 400).
 If you catch such an error, you can get its elements to verify each of the
@@ -486,8 +561,10 @@ individual errors that were detected in your request by the API.
 For example:
 
 ```python
+import starkbank
+
 try:
-    transactions = transaction.create([
+    transactions = starkbank.transaction.create([
         starkbank.Transaction(
             amount=99999999999999,  # (R$ 1.00)
             receiver_id="1029378109327810",
@@ -513,10 +590,13 @@ __UnknownException__ will be raised if a request encounters an error that is nei
 
 The SDK provides a helper to allow you to easily create ECDSA secp256k1 keys to use
 within our API. If you ever need a new pair of keys, just run:
+
 ```python
-private_key, public_key = starkbank.keys.generate()
+import starkbank
+
+private_key, public_key = starkbank.key.generate()
 # or 
-private_key, public_key = starkbank.keys.generate("file/keys/")  # also saves .pem files in file/keys
+private_key, public_key = starkbank.key.generate("file/keys/")  # also saves .pem files in file/keys
 ```
 
 

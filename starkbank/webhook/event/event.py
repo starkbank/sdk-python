@@ -4,8 +4,8 @@ from ellipticcurve.signature import Signature
 from ellipticcurve.publicKey import PublicKey
 from ...utils import rest
 from ...utils.api import from_api_json
+from ...utils.request import fetch
 from ...utils.resource import Resource
-from ...utils.rest import get_public_key
 from ...utils.checks import check_datetime, check_date
 from ...boleto.log import BoletoLog
 from ...transfer.log import TransferLog
@@ -105,10 +105,10 @@ def set_delivered(ids, user=None):
     return rest.patch_list(resource=Event, ids=ids, user=user)
 
 
-def process(content, signature, user=None):
-    """Process single notification Event
+def parse(content, signature, user=None):
+    """Create single notification Event from a content string
 
-    Process a single notification Event object received from event listening at subscribed user endpoint.
+    Create a single Event object received from event listening at subscribed user endpoint.
     If the provided digital signature does not check out with the StarkBank public key, a
     starkbank.exception.InvalidSignatureException will be raised.
 
@@ -127,13 +127,18 @@ def process(content, signature, user=None):
     if _verify_signature(content=content, signature=signature, user=user, refresh=True):
         return event
 
-    raise InvalidSignatureException("the provided signature and message were not verified by the Stark Bank public key")
+    raise InvalidSignatureException("The provided signature and message were not verified by the Stark Bank public key")
 
 
 def _verify_signature(content, signature, user=None, refresh=False):
     signature = Signature.fromBase64(signature)
     public_key = cache.get("starkbank-public-key")
     if public_key is None or refresh:
-        public_key = PublicKey.fromPem(get_public_key(limit=1, user=user)[0]["content"])
+        pem = _get_public_key_pem(user)
+        public_key = PublicKey.fromPem(pem)
         cache["starkbank-public-key"] = public_key
     return Ecdsa.verify(message=content, signature=signature, publicKey=public_key)
+
+
+def _get_public_key_pem(user):
+    return fetch(path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]

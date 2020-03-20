@@ -1,1 +1,1 @@
-from .event import Event, query, get, process, delete, set_delivered
+from .event import Event, query, get, parse, delete, set_delivered

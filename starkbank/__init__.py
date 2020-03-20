@@ -7,7 +7,7 @@ from .boleto import Boleto
 from .payment import BoletoPayment, UtilityPayment
 from .transfer import Transfer
 from .webhook import Webhook, Event
-from . import keys
+from . import key
 from . import exception
 
 user = None

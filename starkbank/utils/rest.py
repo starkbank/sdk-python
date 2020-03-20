@@ -78,7 +78,3 @@ def patch_id(resource, id, user=None):
     json = fetch(path="/{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), method=PATCH, user=user).json()
     entity = json[last_name(resource)]
     return from_api_json(resource, entity)
-
-
-def get_public_key(cursor=None, limit=100, user=None):
-    return fetch(path="/public-key",  method=GET, query={"limit": limit, "cursor": cursor}, user=user).json()["publicKeys"]
