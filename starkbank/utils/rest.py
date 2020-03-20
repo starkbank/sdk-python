@@ -46,17 +46,6 @@ def post_single(resource, entity, user=None):
     return from_api_json(resource, entity_json)
 
 
-def delete_list(resource, ids, user=None):
-    assert isinstance(ids, (list, tuple, set)), "ids must be a list"
-    if len(ids) > 100:
-        raise ValueError("ids cannot have more than 100 elements")
-    entities = []
-    for id in ids:
-        entity = delete_id(resource, id, user)
-        entities.append(entity)
-    return entities
-
-
 def delete_id(resource, id, user=None):
     json = fetch(path="/{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), method=DELETE, user=user).json()
     entity = json[last_name(resource)]

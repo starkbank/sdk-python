@@ -103,16 +103,16 @@ def query(limit=None, ids=None, status=None, tags=None, user=None):
     return rest.get_list(resource=BoletoPayment, limit=limit, user=user, ids=ids, status=status, tags=tags)
 
 
-def delete(ids, user=None):
+def delete(id, user=None):
     """Delete list of BoletoPayment entities
 
     Delete list of BoletoPayment entities previously created in the Stark Bank API
 
     Parameters (required):
-        ids [list of strings]: list of BoletoPayment unique ids. ex: ["5656565656565656", "4545454545454545"]
+        id [string]: BoletoPayment unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of deleted BoletoPayments with updated attributes
     """
-    return rest.delete_list(resource=BoletoPayment, ids=ids, user=user)
+    return rest.delete_id(resource=BoletoPayment, id=id, user=user)

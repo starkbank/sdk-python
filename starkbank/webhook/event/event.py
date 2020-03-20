@@ -76,19 +76,19 @@ def query(limit=None, after=None, before=None, is_delivered=None, user=None):
     return rest.get_list(resource=Event, limit=limit, user=user, is_delivered=is_delivered, after=check_date(after), before=check_date(before))
 
 
-def delete(ids, user=None):
+def delete(id, user=None):
     """Delete notification Events
 
     Delete a list of notification Event entities previously created in the Stark Bank API
 
     Parameters (required):
-        ids [list of strings]: list of Event unique ids. ex: ["5656565656565656", "4545454545454545"]
+        id [string]: Event unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of deleted Events with updated attributes
     """
-    return rest.delete_list(resource=Event, ids=ids, user=user)
+    return rest.delete_id(resource=Event, id=id, user=user)
 
 
 def set_delivered(ids, user=None):

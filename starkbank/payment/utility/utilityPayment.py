@@ -99,16 +99,16 @@ def query(limit=None, status=None, after=None, before=None, tags=None, ids=None,
     return rest.get_list(resource=UtilityPayment, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), ids=ids)
 
 
-def delete(ids, user=None):
+def delete(id, user=None):
     """Delete list of UtilityPayment entities
 
     Delete list of UtilityPayment entities previously created in the Stark Bank API
 
     Parameters (required):
-        ids [list of strings]: list of UtilityPayment unique ids. ex: ["5656565656565656", "4545454545454545"]
+        id [string]: UtilityPayment unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of deleted UtilityPayments with updated attributes
     """
-    return rest.delete_list(resource=UtilityPayment, ids=ids, user=user)
+    return rest.delete_id(resource=UtilityPayment, id=id, user=user)

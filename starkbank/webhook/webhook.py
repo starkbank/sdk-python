@@ -68,16 +68,16 @@ def query(limit=None, user=None):
     return rest.get_list(resource=Webhook, limit=limit, user=user)
 
 
-def delete(ids, user=None):
+def delete(id, user=None):
     """Delete list of Webhook subscription entities
 
     Delete list of Webhook subscription entities previously created in the Stark Bank API
 
     Parameters (required):
-        ids [list of strings]: list of Webhook unique ids. ex: ["5656565656565656", "4545454545454545"]
+        id [string]: Webhook unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of deleted Webhooks with updated attributes
     """
-    return rest.delete_list(resource=Webhook, ids=ids, user=user)
+    return rest.delete_id(resource=Webhook, id=id, user=user)

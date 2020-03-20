@@ -116,7 +116,7 @@ class TestBoletoPaymentDelete(TestCase):
                 self.assertEqual('immediatePaymentOutOfTime', error.code)
         else:
             try:
-                starkbank.payment.boleto.delete([payments[0].id])
+                starkbank.payment.boleto.delete(payments[0].id)
             except InputErrors as e:
                 for error in e.errors:
                     print(error)

@@ -150,16 +150,16 @@ class TestBoletoPostAndDelete(TestCase):
         boletos = generateExampleBoletosJson(n=1)
         boletos = starkbank.boleto.create(boletos)
         boleto_id = boletos[0].id
-        boletos = starkbank.boleto.delete(ids=[boleto_id])
-        print(boletos[0].id)
+        boleto = starkbank.boleto.delete(id=boleto_id)
+        print(boleto.id)
 
     def test_fail_delete_twice(self):
         boletos = generateExampleBoletosJson(n=1)
         boletos = starkbank.boleto.create(boletos)
         boleto_id = boletos[0].id
-        boletos = starkbank.boleto.delete(ids=[boleto_id])
+        boletos = starkbank.boleto.delete(id=boleto_id)
         with self.assertRaises(InputErrors) as context:
-            boletos = starkbank.boleto.delete(ids=[boleto_id])
+            boletos = starkbank.boleto.delete(id=boleto_id)
         errors = context.exception.errors
         for error in errors:
             print(error)

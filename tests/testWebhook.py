@@ -26,7 +26,7 @@ class TestWebhookPostAndDelete(TestCase):
     def test_success(self):
         webhook = generateExampleWebhook()
         webhook = starkbank.webhook.create(url=webhook.url, subscriptions=webhook.subscriptions)
-        webhooks = starkbank.webhook.delete([webhook.id])
+        webhook = starkbank.webhook.delete(webhook.id)
 
 
 if __name__ == '__main__':
