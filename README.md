@@ -33,7 +33,7 @@ To install from source, clone the repo and run:
 python setup.py install
 ```
 
-## Usage
+## Creating a Project
 
 To connect to Stark Bank API, you need to have a user credentials. We have 3 kinds of users: Members, Projects and Apps.
 Given the purpose of this SDK, here we will only use projects which is a special type of user made specially for direct 
@@ -60,6 +60,8 @@ project = starkbank.Project(
 
 NOTE: Never save your private key hard coded. Get it from a environment variable. 
 
+### Set the user
+
 You can pass the project user by two different way.
 
 The first ways is passing user argument in all methods such as:
@@ -78,7 +80,7 @@ balance = starkbank.balance.get()
 
 Select the way of passing the project user that more convenient for you.
 
-### Get balance
+### Testing in Sandbox
 
 Your initial balance is zero. For many operations in Stark Bank you'll need funds
 in your account, which can be added to your balance by creating a boleto. 
@@ -89,6 +91,9 @@ automatically paid, so there's nothing else you need to do to add funds to your 
 For Production, you (or your client) will need to pay this boleto for the
 value to be credited to your account.
 
+
+### Get balance
+
 ```python
 import starkbank
 
@@ -96,7 +101,6 @@ balance = starkbank.balance.get()
 
 print(balance)
 ```
-
 
 ### Create boletos
 
