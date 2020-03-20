@@ -23,10 +23,12 @@ class Transfer(Resource):
         id [string, default None]: unique id returned when Transfer is created. ex: "5656565656565656"
         fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)
         status [string, default None]: current boleto status. ex: "registered" or "paid"
-        created [datetime.datetime, default None]: creation datetime for the boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        transaction_ids [list of strings, default None]: ledger transaction ids linked to this transfer (if there are two, second is the chargeback). ex: ["19827356981273"]
+        created [datetime.datetime, default None]: creation datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        updated [datetime.datetime, default None]: latest update datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, transaction_ids=None, fee=None, tags=None, status=None, id=None, created=None):
+    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, transaction_ids=None, fee=None, tags=None, status=None, id=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.tax_id = tax_id
@@ -39,6 +41,7 @@ class Transfer(Resource):
         self.tags = tags
         self.status = status
         self.created = check_datetime(created)
+        self.updated = check_datetime(updated)
         self.transaction_ids = transaction_ids
 
 
