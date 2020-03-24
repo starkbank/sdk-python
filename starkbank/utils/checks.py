@@ -8,12 +8,6 @@ def check_environment(environment):
     return environment
 
 
-def check_user_kind(kind):
-    kinds = ["project", "session", "member"]
-    assert kind in kinds, "Select a valid user kind: {}".format(", ".join(kinds))
-    return kind
-
-
 def check_private_key(pem):
     from ellipticcurve.privateKey import PrivateKey
     try:

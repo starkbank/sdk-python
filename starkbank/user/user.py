@@ -1,5 +1,5 @@
 from ellipticcurve.privateKey import PrivateKey
-from ..utils.checks import check_private_key, check_user_kind, check_environment
+from ..utils.checks import check_private_key, check_environment
 from ..utils.resource import Resource
 
 
