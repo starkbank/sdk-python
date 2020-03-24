@@ -1,3 +1,4 @@
+# coding: utf-8
 from copy import deepcopy
 from random import randint
 from starkbank import Boleto

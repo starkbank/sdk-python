@@ -1,5 +1,5 @@
 from copy import deepcopy
-from datetime import date
+from datetime import date, timedelta
 from hashlib import sha256
 import starkbank
 from starkbank import BoletoPayment
@@ -14,7 +14,7 @@ example_payment = BoletoPayment(
 )
 
 
-def generateExampleBoletoPaymentsJson(n=1):
+def generateExampleBoletoPaymentsJson(n=1, next_day=False):
     boletos = generateExampleBoletosJson(n=n)
 
     boletos = starkbank.boleto.create(boletos)
@@ -26,7 +26,7 @@ def generateExampleBoletoPaymentsJson(n=1):
     for id, line in zip(ids, lines):
         payment = deepcopy(example_payment)
         payment.line = line
-        payment.scheduled = str(date.today())
+        payment.scheduled = str(date.today() + timedelta(days=1) if next_day else date.today())
         payment.description = sha256(str(id).encode('utf-8')).hexdigest()
         payments.append(payment)
     return payments
