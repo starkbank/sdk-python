@@ -3,7 +3,7 @@ from unittest import TestCase, main
 
 import starkbank
 from starkbank.exception import InputErrors
-from tests.utils.dateGenerator import randomPastDate
+from tests.utils.date import randomPastDate
 from tests.utils.transaction import generateExampleTransactions
 from tests.utils.user import exampleProject
 
