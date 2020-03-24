@@ -3,7 +3,6 @@
         {
             "amount": 50,
             "receiverId": "12345",
-            "senderId": "12345",
             "externalId": "abcdefghijk",
             "description": "Transferencia para Workspace aleatorio"
         }

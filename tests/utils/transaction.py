@@ -13,8 +13,7 @@ def generateExampleTransactions(n=1):
     transactions = []
     for _ in range(n):
         amount = randint(1, 10)
-        transaction.receiver_id = "5168326472892416"
-        transaction.sender_id = "5647143184367616"
+        transaction.receiver_id = "5768064935133184"
         transaction.amount = amount
         transaction.external_id = str(uuid4())
         transactions.append(deepcopy(transaction))
