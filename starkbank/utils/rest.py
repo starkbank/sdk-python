@@ -7,7 +7,7 @@ def get_list(resource, cursor=None, limit=100, user=None, **kwargs):
     query.update(kwargs)
 
     while True:
-        json = fetch(path="/{endpoint}".format(endpoint=endpoint(resource)), method=GET, query=query, user=user).json()
+        json = fetch(method=GET, path=endpoint(resource), query=query, user=user).json()
         entities = json[last_name_plural(resource)]
 
         for entity in entities:
@@ -22,17 +22,17 @@ def get_list(resource, cursor=None, limit=100, user=None, **kwargs):
 
 
 def get_id(resource, id, user=None):
-    json = fetch(path="/{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), method=GET, user=user).json()
+    json = fetch(method=GET, path="{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), user=user).json()
     entity = json[last_name(resource)]
     return from_api_json(resource, entity)
 
 
 def get_pdf(resource, id, user=None):
-    return fetch(path="/{endpoint}/{id}/pdf".format(endpoint=endpoint(resource), id=id), method=GET, user=user).content
+    return fetch(method=GET, path="{endpoint}/{id}/pdf".format(endpoint=endpoint(resource), id=id), user=user).content
 
 
 def post(resource, entities, user=None):
-    json = fetch(path="/{endpoint}".format(endpoint=endpoint(resource)), method=POST, user=user, payload={
+    json = fetch(method=POST, path=endpoint(resource), user=user, payload={
         last_name_plural(resource): [api_json(entity) for entity in entities]
     }).json()
     entities = json[last_name_plural(resource)]
@@ -41,13 +41,13 @@ def post(resource, entities, user=None):
 
 def post_single(resource, entity, user=None):
     payload = api_json(entity)
-    json = fetch(path="/{endpoint}".format(endpoint=endpoint(resource)), method=POST, user=user, payload=payload).json()
+    json = fetch(method=POST, path=endpoint(resource), user=user, payload=payload).json()
     entity_json = json[last_name(resource)]
     return from_api_json(resource, entity_json)
 
 
 def delete_id(resource, id, user=None):
-    json = fetch(path="/{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), method=DELETE, user=user).json()
+    json = fetch(method=DELETE, path="{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), user=user).json()
     entity = json[last_name(resource)]
     return from_api_json(resource, entity)
 
@@ -64,6 +64,6 @@ def patch_list(resource, ids, user=None):
 
 
 def patch_id(resource, id, user=None):
-    json = fetch(path="/{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), method=PATCH, user=user).json()
+    json = fetch(method=PATCH, path="{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), user=user).json()
     entity = json[last_name(resource)]
     return from_api_json(resource, entity)

@@ -4,7 +4,7 @@ from ellipticcurve.signature import Signature
 from ellipticcurve.publicKey import PublicKey
 from ...utils import rest
 from ...utils.api import from_api_json
-from ...utils.request import fetch
+from ...utils.request import fetch, GET
 from ...utils.resource import Resource
 from ...utils.checks import check_datetime, check_date
 from ...boleto.log import BoletoLog
@@ -141,4 +141,4 @@ def _verify_signature(content, signature, user=None, refresh=False):
 
 
 def _get_public_key_pem(user):
-    return fetch(path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]
+    return fetch(method=GET, path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]

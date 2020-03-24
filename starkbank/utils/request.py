@@ -1,12 +1,12 @@
+from requests import get as GET, post as POST, delete as DELETE, patch as PATCH
+from sys import version_info as python_version
+from ellipticcurve.ecdsa import Ecdsa
 from json import dumps, loads
 from time import time
-from ellipticcurve.ecdsa import Ecdsa
-from sys import version_info as python_version
-from requests import get as GET, post as POST, delete as DELETE, patch as PATCH
-from .checks import check_user
-from .url import urlencode
 from ..exception import InternalServerError, InputErrors, UnknownException
 from ..utils.environment import Environment
+from .checks import check_user
+from .url import urlencode
 import starkbank
 
 
@@ -20,15 +20,15 @@ class Response:
         return loads(self.content)
 
 
-def fetch(path="/", payload=None, method=GET, query=None, user=None, version="v2"):
+def fetch(method, path, payload=None, query=None, user=None, version="v2"):
     user = check_user(user or starkbank.user)
     url = {
-        Environment.production:  "https://api.starkbank.com/" + version,
-        Environment.sandbox:     "https://sandbox.api.starkbank.com/" + version,
-    }[user.environment]
+        Environment.production:  "https://api.starkbank.com/",
+        Environment.sandbox:     "https://sandbox.api.starkbank.com/",
+    }[user.environment] + version
 
     query_string = "?" + urlencode(query) if query else ""
-    url = "{baseUrl}{path}{query}".format(baseUrl=url, path=path, query=query_string)
+    url = "{baseUrl}/{path}{query}".format(baseUrl=url, path=path, query=query_string)
 
     agent = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
         major=python_version.major,
