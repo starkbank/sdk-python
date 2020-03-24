@@ -25,7 +25,6 @@ def fetch(path="/", payload=None, method=GET, query=None, user=None, version="v2
     url = {
         Environment.production:  "https://api.starkbank.com/" + version,
         Environment.sandbox:     "https://sandbox.api.starkbank.com/" + version,
-        Environment.development: "https://development.api.starkbank.com/" + version,
     }[user.environment]
 
     query_string = "?" + urlencode(query) if query else ""
