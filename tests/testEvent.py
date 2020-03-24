@@ -50,8 +50,8 @@ class TestEventSetDelivered(TestCase):
 
     def test_success(self):
         event = next(starkbank.webhook.event.query(limit=1))
-        event = starkbank.webhook.event.set_delivered([event.id])
-        print(event[0])
+        event = starkbank.webhook.event.set_delivered(event.id)
+        print(event)
 
 
 if __name__ == '__main__':

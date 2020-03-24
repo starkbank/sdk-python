@@ -91,18 +91,18 @@ def delete(id, user=None):
     return rest.delete_id(resource=Event, id=id, user=user)
 
 
-def set_delivered(ids, user=None):
-    """Set notification Event entities as delivered
+def set_delivered(id, user=None):
+    """Set notification Event entity as delivered
 
-    Set list of notification Event entities as delivered at the current timestamp, if it was not yet delivered, by passing id.
-    After this is set, these events will no longer be returned on queries with is_delivered=False.
+    Set notification Event as delivered at the current timestamp (if it was not yet delivered) by passing id.
+    After this is set, the event will no longer be returned on queries with is_delivered=False.
 
     Parameters (required):
-        ids [list of strings]: list of Event unique ids. ex: ["5656565656565656", "4545454545454545"]
+        id [list of strings]: Event unique ids. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     """
-    return rest.patch_list(resource=Event, ids=ids, user=user)
+    return rest.patch_id(resource=Event, id=id, user=user)
 
 
 def parse(content, signature, user=None):

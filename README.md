@@ -719,7 +719,7 @@ To search for webhooks events, run:
 ```python
 import starkbank
 
-events = starkbank.webhook.event.query(after="2020-03-20")
+events = starkbank.webhook.event.query(after="2020-03-20", is_delivered=False)
 
 for event in events:
     print(events)
@@ -753,14 +753,12 @@ print(event)
 
 This can be used in case you've lost events.
 With this function, you can manually set events retrieved from the API as
-"delivered" to help future queries.
+"delivered" to help future event queries with `is_delivered=False`.
 
 ```python
 import starkbank
 
-events = starkbank.webhook.event.set_delivered(
-    ids=["129837198237192", "928371982730922"]
-)
+events = starkbank.webhook.event.set_delivered(id="129837198237192")
 
 for event in events:
     print(event)

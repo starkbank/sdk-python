@@ -2,8 +2,8 @@ from ..utils.api import endpoint, last_name, last_name_plural, api_json, from_ap
 from ..utils.request import fetch, GET, POST, DELETE, PATCH
 
 
-def get_list(resource, cursor=None, limit=100, user=None, **kwargs):
-    query = {"limit": limit, "cursor": cursor}
+def get_list(resource, limit=100, user=None, **kwargs):
+    query = {"limit": limit}
     query.update(kwargs)
 
     while True:
@@ -50,17 +50,6 @@ def delete_id(resource, id, user=None):
     json = fetch(method=DELETE, path="{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), user=user).json()
     entity = json[last_name(resource)]
     return from_api_json(resource, entity)
-
-
-def patch_list(resource, ids, user=None):
-    assert isinstance(ids, (list, tuple, set)), "ids must be a list"
-    if len(ids) > 100:
-        raise ValueError("ids cannot have more than 100 elements")
-    entities = []
-    for id in ids:
-        entity = patch_id(resource, id, user)
-        entities.append(entity)
-    return entities
 
 
 def patch_id(resource, id, user=None):
