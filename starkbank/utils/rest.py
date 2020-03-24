@@ -3,10 +3,10 @@ from ..utils.request import fetch, GET, POST, DELETE, PATCH
 
 
 def get_list(resource, cursor=None, limit=100, user=None, **kwargs):
-    while True:
-        query = {"limit": limit, "cursor": cursor}
-        query.update(kwargs)
+    query = {"limit": limit, "cursor": cursor}
+    query.update(kwargs)
 
+    while True:
         json = fetch(path="/{endpoint}".format(endpoint=endpoint(resource)), method=GET, query=query, user=user).json()
         entities = json[last_name_plural(resource)]
 
