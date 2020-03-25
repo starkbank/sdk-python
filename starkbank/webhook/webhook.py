@@ -78,6 +78,6 @@ def delete(id, user=None):
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     Return:
-        list of deleted Webhooks with updated attributes
+        deleted Webhook with updated attributes
     """
     return rest.delete_id(resource=Webhook, id=id, user=user)

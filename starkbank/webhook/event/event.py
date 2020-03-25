@@ -86,7 +86,7 @@ def delete(id, user=None):
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     Return:
-        list of deleted Events with updated attributes
+        deleted Event with updated attributes
     """
     return rest.delete_id(resource=Event, id=id, user=user)
 
@@ -101,6 +101,8 @@ def set_delivered(id, user=None):
         id [list of strings]: Event unique ids. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    Return:
+        target Event with updated attributes
     """
     return rest.patch_id(resource=Event, id=id, user=user)
 
