@@ -14,11 +14,11 @@ class BoletoPaymentLog(Resource):
     on the BoletoPayment.
 
     Attributes:
-        id [string, default None]: unique id returned when the log is created. ex: "5656565656565656"
+        id [string]: unique id returned when the log is created. ex: "5656565656565656"
         payment [BoletoPayment]: BoletoPayment entity to which the log refers to.
         errors [list of strings]: list of errors linked to this BoletoPayment event.
-        type [string, default None]: type of the BoletoPayment event which triggered the log creation. ex: "registered" or "paid"
-        created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        type [string]: type of the BoletoPayment event which triggered the log creation. ex: "registered" or "paid"
+        created [datetime.datetime]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, id, created, type, errors, payment):
