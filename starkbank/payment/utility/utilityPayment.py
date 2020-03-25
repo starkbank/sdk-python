@@ -100,9 +100,9 @@ def query(limit=None, status=None, after=None, before=None, tags=None, ids=None,
 
 
 def delete(id, user=None):
-    """Delete list of UtilityPayment entities
+    """Delete a UtilityPayment entity
 
-    Delete list of UtilityPayment entities previously created in the Stark Bank API
+    Delete a UtilityPayment entity previously created in the Stark Bank API
 
     Parameters (required):
         id [string]: UtilityPayment unique id. ex: "5656565656565656"

@@ -111,18 +111,3 @@ def query(limit=None, transaction_ids=None, tags=None, after=None, before=None, 
         generator of Transfer objects with updated attributes
     """
     return rest.get_list(resource=Transfer, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), transaction_ids=transaction_ids, sort=sort)
-
-
-def delete(id, user=None):
-    """Delete list of Transfer entities
-
-    Delete list of Transfer entities previously created in the Stark Bank API
-
-    Parameters (required):
-        id [string]: Transfer unique id. ex: "5656565656565656"
-    Parameters (optional):
-        user [Project object]: Project object. Not necessary if starkbank.user was set before function call
-    Return:
-        list of deleted Transfers with updated attributes
-    """
-    return rest.delete_id(resource=Transfer, id=id, user=user)

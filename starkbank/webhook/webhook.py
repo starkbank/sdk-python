@@ -69,9 +69,9 @@ def query(limit=None, user=None):
 
 
 def delete(id, user=None):
-    """Delete list of Webhook subscription entities
+    """Delete a Webhook subscription entity
 
-    Delete list of Webhook subscription entities previously created in the Stark Bank API
+    Delete a Webhook subscription entity previously created in the Stark Bank API
 
     Parameters (required):
         id [string]: Webhook unique id. ex: "5656565656565656"

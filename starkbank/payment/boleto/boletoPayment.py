@@ -104,9 +104,9 @@ def query(limit=None, ids=None, status=None, tags=None, user=None):
 
 
 def delete(id, user=None):
-    """Delete list of BoletoPayment entities
+    """Delete a BoletoPayment entity
 
-    Delete list of BoletoPayment entities previously created in the Stark Bank API
+    Delete a BoletoPayment entity previously created in the Stark Bank API
 
     Parameters (required):
         id [string]: BoletoPayment unique id. ex: "5656565656565656"

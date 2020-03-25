@@ -317,19 +317,6 @@ Be careful not to accidentally enforce any encoding on the raw pdf content,
 as it may yield abnormal results in the final file, such as missing images
 and strange characters.
 
-### Delete transfer
-
-You can also cancel a transfer by its id.
-Note that this is not possible if it has been processed already.
-
-```python
-import starkbank
-
-transfer = starkbank.transfer.delete("5155165527080960")
-
-print(transfer)
-```
-
 ### Query transfer logs
 
 You can query transfer logs to better understand transfer life cycles.
