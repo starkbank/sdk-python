@@ -23,10 +23,10 @@ class Event(Resource):
     list all generated updates on entities.
 
     Attributes:
-        id [string, default None]: unique id returned when the log is created. ex: "5656565656565656"
+        id [string]: unique id returned when the log is created. ex: "5656565656565656"
         log [Log]: a Log object from one the subscription services (TransferLog, BoletoLog, BoletoPaymentlog or UtilityPaymentLog)
-        created [datetime.datetime, default None]: creation datetime for the notification event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-        delivered [datetime.datetime, default None]: delivery datetime when the notification was delivered to the user url. Will be None if no successful attempts to deliver the event occurred. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        created [datetime.datetime]: creation datetime for the notification event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        delivered [datetime.datetime]: delivery datetime when the notification was delivered to the user url. Will be None if no successful attempts to deliver the event occurred. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
         subscription [string]: service that triggered this event. ex: "transfer", "utility-payment"
     """
 
