@@ -234,9 +234,9 @@ You can get a single log by its id.
 ```python
 import starkbank
 
-boleto = starkbank.boleto.log.get("5155165527080960")
+log = starkbank.boleto.log.get("5155165527080960")
 
-print(boleto)
+print(log)
 ```
 
 ### Create transfers
@@ -337,9 +337,9 @@ You can also get a specific log by its id.
 ```python
 import starkbank
 
-transfer = starkbank.transfer.log.get("5155165527080960")
+log = starkbank.transfer.log.get("5155165527080960")
 
-print(transfer)
+print(log)
 ```
 
 ### Pay a boleto
