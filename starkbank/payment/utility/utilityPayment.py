@@ -71,8 +71,6 @@ def pdf(id, user=None):
 
     Receive a single UtilityPayment pdf file generated in the Stark Bank API by passing its id
 
-    Send a list of UtilityPayment objects for creation in the Stark Bank API
-
     Parameters (required):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
