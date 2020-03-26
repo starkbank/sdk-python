@@ -73,9 +73,8 @@ def get(id, user=None):
 def pdf(id, user=None):
     """Retrieve a specific BoletoPayment pdf file
 
-    Receive a single BoletoPayment pdf file generated in the Stark Bank API by passing its id
-
-    Send a list of BoletoPayment objects for creation in the Stark Bank API
+    Receive a single BoletoPayment pdf file generated in the Stark Bank API by passing its id.
+    Only valid for boleto payments with "success" status.
 
     Parameters (required):
         id [string]: object unique id. ex: "5656565656565656"
