@@ -633,7 +633,7 @@ import starkbank
 
 webhook = starkbank.webhook.create(
     url="https://webhook.site/dd784f26-1d6a-4ca6-81cb-fda0267761ec",
-    subscriptions=["transfer", "charge"],
+    subscriptions=["transfer", "boleto", "boleto-payment", "utility-payment"],
 )
 
 print(webhook)
@@ -753,7 +753,7 @@ for event in events:
 
 ## Handling errors
 
-The SDK may raise one of three types of errors: __InputErrors__, __InternalServerError__, __UnknownException__
+The SDK may raise one of four types of errors: __InputErrors__, __InternalServerError__, __UnknownException__, __InvalidSignatureException__
 
 __InputErrors__ will be raised whenever the API detects an error in your request (status code 400).
 If you catch such an error, you can get its elements to verify each of the
@@ -786,6 +786,9 @@ is already rushing in to fix the mistake and get you back up to speed.
 __UnknownException__ will be raised if a request encounters an error that is
 neither __InputErrors__ nor an __InternalServerError__, such as connectivity problems.
 
+__InvalidSignatureException__ will be raised specifically by starkbank.webhook.event.parse()
+when the provided content and signature do not check out with the Stark Bank public
+key.
 
 ## Key pair generation
 
@@ -796,14 +799,15 @@ within our API. If you ever need a new pair of keys, just run:
 import starkbank
 
 private_key, public_key = starkbank.key.create()
-# or 
-private_key, public_key = starkbank.key.create("file/keys/")  # also saves .pem files in file/keys
+
+# or, to also save .pem files in a specific path
+private_key, public_key = starkbank.key.create("file/keys/")
 ```
 
 NOTE: When you are creating a new Project, it is recommended that you create the
 keys inside the infrastructure that will use it, in order to avoid risky internet
-transmissions of your private key. Then you can export the public key alone to the
+transmissions of your **private-key**. Then you can export the **public-key** alone to the
 computer where it will be used in the new Project creation.
 
 
-[API docs]: (https://docs.api.starkbank.com/?version=latest)
+[API docs]: (https://docs.api.StarkBank.com/?version=v2)
