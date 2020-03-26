@@ -21,6 +21,7 @@ class UtilityPayment(Resource):
     Attributes (return-only):
         id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
         status [string, default None]: current payment status. ex: "registered" or "paid"
+        amount [int, default None]: amount automatically calculated from line or bar_code. ex: 23456 (= R$ 234.56)
         created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
