@@ -3,7 +3,7 @@ from ..utils.request import fetch, GET, POST, DELETE, PATCH
 
 
 def get_list(resource, limit=100, user=None, **kwargs):
-    query = {"limit": limit}
+    query = {"limit": min(limit, 100) if limit else limit}
     query.update(kwargs)
 
     while True:
@@ -15,8 +15,10 @@ def get_list(resource, limit=100, user=None, **kwargs):
 
         if limit:
             limit -= 100
+            query["limit"] = min(limit, 100)
 
         cursor = json["cursor"]
+        query["cursor"] = cursor
         if cursor is None or (limit is not None and limit <= 0):
             break
 
