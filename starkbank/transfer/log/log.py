@@ -1,7 +1,7 @@
 from ..transfer import Transfer
 from ...utils import rest
 from ...utils.api import from_api_json
-from ...utils.checks import check_datetime
+from ...utils.checks import check_datetime, check_date
 from ...utils.resource import Resource
 
 
@@ -44,7 +44,7 @@ def get(id, user=None):
     return rest.get_id(resource=TransferLog, id=id, user=user)
 
 
-def query(limit=None, transfer_ids=None, types=None, user=None):
+def query(limit=None, transfer_ids=None, types=None, after=None, before=None, user=None):
     """Retrieve TransferLogs
 
     Receive a generator of TransferLog objects previously created in the Stark Bank API
@@ -53,8 +53,10 @@ def query(limit=None, transfer_ids=None, types=None, user=None):
         limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
         transfer_ids [list of strings, default None]: list of Transfer ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         types [list of strings, default None]: filter retrieved objects by types. ex: "success" or "failed"
+        after [datetime.date, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+        before [datetime.date, default None] date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
         user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         list of TransferLog objects with updated attributes
     """
-    return rest.get_list(resource=TransferLog, limit=limit, user=user, types=types, transfer_ids=transfer_ids)
+    return rest.get_list(resource=TransferLog, limit=limit, user=user, types=types, transfer_ids=transfer_ids, after=check_date(after), before=check_date(before))
