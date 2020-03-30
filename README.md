@@ -302,7 +302,8 @@ print(transfer)
 
 ### Get transfer PDF
 
-After its creation, a transfer PDF may also be retrieved by passing its id. 
+A transfer PDF may also be retrieved by passing its id.
+This operation is only valid if the transfer status is "processing" or "success". 
 
 ```python
 import starkbank

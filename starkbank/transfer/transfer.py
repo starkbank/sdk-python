@@ -79,7 +79,7 @@ def pdf(id, user=None):
     """Retrieve a specific Transfer pdf file
 
     Receive a single Transfer pdf receipt file generated in the Stark Bank API by passing its id.
-    Only valid for transfers with "success" status.
+    Only valid for transfers with "processing" and "success" status.
 
     Parameters (required):
         id [string]: object unique id. ex: "5656565656565656"
