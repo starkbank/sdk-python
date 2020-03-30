@@ -42,7 +42,7 @@ def generateExampleBoletosJson(n=1, amount=None):
     boletos = []
     for _ in range(n):
         if amount is None:
-            boletoAmount = randint(5, 100)
+            boletoAmount = randint(205, 300)
         else:
             boletoAmount = int(amount)
         example_boleto.name = get_full_name()
