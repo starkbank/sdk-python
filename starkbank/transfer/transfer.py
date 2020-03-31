@@ -33,12 +33,12 @@ class Transfer(Resource):
 
         self.tax_id = tax_id
         self.amount = amount
-        self.fee = fee
         self.name = name
         self.bank_code = bank_code
         self.branch_code = branch_code
         self.account_number = account_number
         self.tags = tags
+        self.fee = fee
         self.status = status
         self.created = check_datetime(created)
         self.updated = check_datetime(updated)
