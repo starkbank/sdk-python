@@ -11,15 +11,15 @@ def check_environment(environment):
 def check_private_key(pem):
     from ellipticcurve.privateKey import PrivateKey
     try:
-        PrivateKey.fromPem(pem)
+        assert PrivateKey.fromPem(pem).curve.name == "secp256k1"
     except:
-        raise Exception("This private key is invalid. Try another one")
+        raise Exception("Private-key must be valid secp256k1 ECDSA string in pem format")
     return pem
 
 
 def check_user(user):
     from ..user.user import User
-    assert isinstance(user, User), "A user is required to access our API. Check our docs: https://github.com/starkbank/sdk-python/"
+    assert isinstance(user, User), "A user is required to access our API. Check our README: https://github.com/starkbank/sdk-python/"
     return user
 
 
