@@ -1,4 +1,3 @@
-from .api import api_json
 
 
 class Resource:
@@ -25,6 +24,3 @@ class Resource:
             fields=fields
         )
         return string
-
-    def json(self):
-        return api_json(self)
