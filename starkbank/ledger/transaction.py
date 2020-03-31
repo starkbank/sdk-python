@@ -22,7 +22,7 @@ class Transaction(Resource):
     Parameters (optional):
         tags [list of strings]: list of strings for reference when searching transactions (may be empty). ex: ["abc", "test"]
     Attributes (return-only):
-        source [string, default None]: unique locator of the related entity in the API reference
+        source [string, default None]: locator of the entity that generated the transaction. ex: "charge/1827351876292", "transfer/92873912873/chargeback"
         id [string, default None]: unique id returned when Transaction is created. ex: "7656565656565656"
         fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)
         created [datetime.datetime, default None]: creation datetime for the boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
