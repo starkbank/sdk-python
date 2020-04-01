@@ -51,7 +51,7 @@ class TestEventSetDelivered(TestCase):
     def test_success(self):
         event = next(starkbank.webhook.event.query(limit=1, is_delivered=False))
         assert event.delivered is None
-        event = starkbank.webhook.event.set_delivered(event.id)
+        event = starkbank.webhook.event.update(event.id)
         event = starkbank.webhook.event.get(event.id)
         assert event.delivered is not None
         print(event)

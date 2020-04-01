@@ -746,7 +746,7 @@ With this function, you can manually set events retrieved from the API as
 ```python
 import starkbank
 
-event = starkbank.webhook.event.set_delivered(id="129837198237192")
+event = starkbank.webhook.event.update(id="129837198237192")
 
 print(event)
 ```

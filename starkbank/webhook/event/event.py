@@ -91,7 +91,7 @@ def delete(id, user=None):
     return rest.delete_id(resource=Event, id=id, user=user)
 
 
-def set_delivered(id, user=None):
+def update(id, user=None):
     """Set notification Event entity as delivered
 
     Set notification Event as delivered at the current timestamp (if it was not yet delivered) by passing id.
