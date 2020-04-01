@@ -124,8 +124,7 @@ def query(limit=None, status=None, tags=None, ids=None, after=None, before=None,
     Return:
         generator of Boleto objects with updated attributes
     """
-    return rest.get_list(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids,
-                         after=check_date(after), before=check_date(before))
+    return rest.get_list(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids, after=check_date(after), before=check_date(before))
 
 
 def delete(id, user=None):

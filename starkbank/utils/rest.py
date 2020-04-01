@@ -54,7 +54,7 @@ def delete_id(resource, id, user=None):
     return from_api_json(resource, entity)
 
 
-def patch_id(resource, id, user=None):
-    json = fetch(method=PATCH, path="{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), user=user).json()
+def patch_id(resource, id, user=None, **payload):
+    json = fetch(method=PATCH, path="{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), payload=payload, user=user).json()
     entity = json[last_name(resource)]
     return from_api_json(resource, entity)
