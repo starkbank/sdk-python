@@ -9,7 +9,7 @@ from ...utils.resource import Resource
 from ...utils.checks import check_datetime, check_date
 from ...boleto.log import BoletoLog
 from ...transfer.log import TransferLog
-from ...exception import InvalidSignatureException
+from ...error import InvalidSignatureError
 from ...payment.boleto.log import BoletoPaymentLog
 from ...payment.utility.log import UtilityPaymentLog
 from ...utils import cache
@@ -129,7 +129,7 @@ def parse(content, signature, user=None):
     if _verify_signature(content=content, signature=signature, user=user, refresh=True):
         return event
 
-    raise InvalidSignatureException("The provided signature and content do not match the Stark Bank public key")
+    raise InvalidSignatureError("The provided signature and content do not match the Stark Bank public key")
 
 
 def _verify_signature(content, signature, user=None, refresh=False):

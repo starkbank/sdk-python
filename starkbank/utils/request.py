@@ -3,7 +3,7 @@ from sys import version_info as python_version
 from ellipticcurve.ecdsa import Ecdsa
 from json import dumps, loads
 from time import time
-from ..exception import InternalServerError, InputErrors, UnknownException
+from ..error import InternalServerError, InputErrors, UnknownError
 from ..utils.environment import Environment
 from .checks import check_user
 from .url import urlencode
@@ -55,7 +55,7 @@ def fetch(method, path, payload=None, query=None, user=None, version="v2"):
             }
         )
     except Exception as exception:
-        raise UnknownException("{}: {}".format(exception.__class__.__name__, str(exception)))
+        raise UnknownError("{}: {}".format(exception.__class__.__name__, str(exception)))
 
     response = Response(status=request.status_code, content=request.content)
 
@@ -64,6 +64,6 @@ def fetch(method, path, payload=None, query=None, user=None, version="v2"):
     if response.status == 400:
         raise InputErrors(response.json()["errors"])
     if response.status != 200:
-        raise UnknownException(response.content)
+        raise UnknownError(response.content)
 
     return response

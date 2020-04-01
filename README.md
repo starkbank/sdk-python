@@ -753,7 +753,7 @@ print(event)
 
 ## Handling errors
 
-The SDK may raise one of four types of errors: __InputErrors__, __InternalServerError__, __UnknownException__, __InvalidSignatureException__
+The SDK may raise one of four types of errors: __InputErrors__, __InternalServerError__, __UnknownError__, __InvalidSignatureError__
 
 __InputErrors__ will be raised whenever the API detects an error in your request (status code 400).
 If you catch such an error, you can get its elements to verify each of the
@@ -773,7 +773,7 @@ try:
             tags=["provider"]
         ),
     ])
-except starkbank.exception.InputErrors as exception:
+except starkbank.error.InputErrors as exception:
     for error in exception.errors:
         print(error.code)
         print(error.message)
@@ -783,10 +783,10 @@ __InternalServerError__ will be raised if the API runs into an internal error.
 If you ever stumble upon this one, rest assured that the development team
 is already rushing in to fix the mistake and get you back up to speed.
 
-__UnknownException__ will be raised if a request encounters an error that is
+__UnknownError__ will be raised if a request encounters an error that is
 neither __InputErrors__ nor an __InternalServerError__, such as connectivity problems.
 
-__InvalidSignatureException__ will be raised specifically by starkbank.webhook.event.parse()
+__InvalidSignatureError__ will be raised specifically by starkbank.webhook.event.parse()
 when the provided content and signature do not check out with the Stark Bank public
 key.
 

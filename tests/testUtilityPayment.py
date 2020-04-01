@@ -1,7 +1,7 @@
 from unittest import TestCase, main
 
 import starkbank
-from starkbank.exception import InputErrors
+from starkbank.error import InputErrors
 from tests.utils.user import exampleProject
 from tests.utils.utilityPayment import generateExampleUtilityPaymentsJson
 

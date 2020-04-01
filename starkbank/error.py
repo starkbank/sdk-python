@@ -21,11 +21,11 @@ class InternalServerError(Exception):
         super(Exception, self).__init__(message)
 
 
-class UnknownException(Exception):
+class UnknownError(Exception):
 
     def __init__(self, message):
         super(Exception, self).__init__("Unknown exception encountered: {}".format(message))
 
 
-class InvalidSignatureException(Exception):
+class InvalidSignatureError(Exception):
     pass

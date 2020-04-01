@@ -2,7 +2,7 @@ from time import sleep
 from unittest import TestCase, main
 
 import starkbank
-from starkbank.exception import InputErrors
+from starkbank.error import InputErrors
 from tests.utils.boleto import generateExampleBoletosJson
 from tests.utils.user import exampleProject
 
