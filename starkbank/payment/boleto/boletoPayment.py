@@ -1,5 +1,5 @@
 from ...utils import rest
-from ...utils.checks import check_datetime
+from ...utils.checks import check_datetime, check_date
 from ...utils.resource import Resource
 
 
