@@ -3,10 +3,15 @@ from os import path as os_path
 
 
 def create(path=None):
-    """Generates a secp256k1 ECDSA private/public key pair to be used in the API authentications
+    """Generate a new key pair
+
+    Generates a secp256k1 ECDSA private/public key pair to be used in the API authentications
 
     Parameters (optional):
         path [string]: path to save the keys .pem files. No files will be saved if this parameter isn't provided
+
+    Return:
+        private and public key pems
     """
 
     private = PrivateKey()
