@@ -8,6 +8,10 @@ def api_json(entity):
         for attribute in dir(entity)
         if not attribute.startswith('_') and not callable(getattr(entity, attribute))
     }
+    return cast_json_to_api_format(json)
+
+
+def cast_json_to_api_format(json):
     return {snake_to_camel(k): _date_to_string(v) for k, v in json.items() if v is not None}
 
 

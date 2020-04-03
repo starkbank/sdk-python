@@ -26,15 +26,15 @@ class Event(Resource):
         id [string]: unique id returned when the log is created. ex: "5656565656565656"
         log [Log]: a Log object from one the subscription services (TransferLog, BoletoLog, BoletoPaymentlog or UtilityPaymentLog)
         created [datetime.datetime]: creation datetime for the notification event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-        delivered [datetime.datetime]: delivery datetime when the notification was delivered to the user url. Will be None if no successful attempts to deliver the event occurred. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        is_delivered [bool]: true if the event has been successfully delivered to the user url. ex: False
         subscription [string]: service that triggered this event. ex: "transfer", "utility-payment"
     """
 
-    def __init__(self, log, created, delivered, subscription, id):
+    def __init__(self, log, created, is_delivered, subscription, id):
         Resource.__init__(self, id=id)
 
         self.created = check_datetime(created)
-        self.delivered = check_datetime(delivered)
+        self.is_delivered = is_delivered
         self.subscription = subscription
         self.log = from_api_json(*{
             "transfer": (TransferLog, log),
@@ -91,21 +91,21 @@ def delete(id, user=None):
     return rest.delete_id(resource=Event, id=id, user=user)
 
 
-def update(id, delivered, user=None):
+def update(id, is_delivered, user=None):
     """Update notification Event entity
 
     Update notification Event by passing id.
-    If delivered is True, the event will no longer be returned on queries with is_delivered=False.
+    If is_delivered is True, the event will no longer be returned on queries with is_delivered=False.
 
     Parameters (required):
         id [list of strings]: Event unique ids. ex: "5656565656565656"
-        delivered [bool]: If True, event will be set as delivered at current timestamp, if it hasn't been delivered already. ex: True
+        is_delivered [bool]: If True and event hasn't been delivered already, event will be set as delivered. ex: True
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         target Event with updated attributes
     """
-    return rest.patch_id(resource=Event, id=id, user=user, delivered=delivered)
+    return rest.patch_id(resource=Event, id=id, user=user, is_delivered=is_delivered)
 
 
 def parse(content, signature, user=None):

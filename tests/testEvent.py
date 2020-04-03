@@ -22,19 +22,23 @@ class TestEventInfoGet(TestCase):
 
 
 class TesteEventProcess(TestCase):
+    content = '{"event": {"log": {"transfer": {"status": "processing", "updated": "2020-04-03T13:20:33.485644+00:00", "fee": 160, "name": "Lawrence James", "accountNumber": "10000-0", "id": "5107489032896512", "tags": [], "taxId": "91.642.017/0001-06", "created": "2020-04-03T13:20:32.530367+00:00", "amount": 2, "transactionIds": ["6547649079541760"], "bankCode": "01", "branchCode": "0001"}, "errors": [], "type": "sending", "id": "5648419829841920", "created": "2020-04-03T13:20:33.164373+00:00"}, "subscription": "transfer", "id": "6234355449987072", "created": "2020-04-03T13:20:40.784479+00:00"}}'
+    valid_signature = "MEYCIQCmFCAn2Z+6qEHmf8paI08Ee5ZJ9+KvLWSS3ddp8+RF3AIhALlK7ltfRvMCXhjS7cy8SPlcSlpQtjBxmhN6ClFC0Tv6"
+    invalid_signature = "MEUCIQDOpo1j+V40DNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk="
+
     def test_success(self):
         event = starkbank.webhook.event.parse(
-            content='{"event": {"log": {"transfer": {"status": "failed", "updated": "2020-03-13T14:49:10.189611+00:00", "fee": 200, "name": "Richard Jenkins", "accountNumber": "10000-0", "id": "5599003076984832", "tags": ["19581e27de7ced00ff1ce50b2047e7a567c76b1cbaebabe5ef03f7c3017bb5b7"], "taxId": "81.680.513/0001-92", "created": "2020-03-13T14:49:09.943811+00:00", "amount": 295136516, "transactionIds": ["invalidBalance"], "bankCode": "01", "branchCode": "0001"}, "errors": ["invalidbalance"], "type": "failed", "id": "6046244933730304", "created": "2020-03-13T14:49:10.189586+00:00"}, "delivered": null, "subscription": "transfer", "id": "6270003208781824", "created": "2020-03-13T14:49:11.236120+00:00"}}',
-            signature="MEQCIGVKEnnhLFHjxKM+nDggweTsFEQOIsmnZkep2Ni5o8FeAiAVm//jnu3vmh9lxq1HRQcRW7SsMlqSGNERaa1CvnVnNA=="
+            content=self.content,
+            signature=self.valid_signature
         )
 
         print(event)
 
     def test_fail(self):
-        with self.assertRaises(InvalidSignatureError) as context:
-            event = starkbank.webhook.event.parse(
-                content='{"event": {"log": {"transfer": {"status": "failed", "updated": "2020-03-13T14:49:10.189611+00:00", "fee": 200, "name": "Richard Jenkins", "accountNumber": "10000-0", "id": "5599003076984832", "tags": ["19581e27de7ced00ff1ce50b2047e7a567c76b1cbaebabe5ef03f7c3017bb5b7"], "taxId": "81.680.513/0001-92", "created": "2020-03-13T14:49:09.943811+00:00", "amount": 295136516, "transactionIds": ["invalidBalance"], "bankCode": "01", "branchCode": "0001"}, "errors": ["invalidbalance"], "type": "failed", "id": "6046244933730304", "created": "2020-03-13T14:49:10.189586+00:00"}, "delivered": null, "subscription": "transfer", "id": "6270003208781824", "created": "2020-03-13T14:49:11.236120+00:00"}}',
-                signature="MEYCIQC+0fzgh+WX6Af0hm9FsnWmsRaeQbTHI9vITB0d+lg9QwIhAMpz2xBRLm8dO+E4NQZXVxtxLJylkS1rqdlB06PQGIub"
+        with self.assertRaises(InvalidSignatureError):
+            starkbank.webhook.event.parse(
+                content=self.content,
+                signature=self.invalid_signature,
             )
 
 
@@ -50,10 +54,10 @@ class TestEventSetDelivered(TestCase):
 
     def test_success(self):
         event = next(starkbank.webhook.event.query(limit=1, is_delivered=False))
-        assert event.delivered is None
-        event = starkbank.webhook.event.update(id=event.id, delivered=True)
+        assert event.is_delivered is False
+        event = starkbank.webhook.event.update(id=event.id, is_delivered=True)
         event = starkbank.webhook.event.get(event.id)
-        assert event.delivered is not None
+        assert event.is_delivered is True
         print(event)
 
 

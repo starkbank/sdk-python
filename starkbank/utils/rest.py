@@ -1,4 +1,4 @@
-from ..utils.api import endpoint, last_name, last_name_plural, api_json, from_api_json
+from ..utils.api import endpoint, last_name, last_name_plural, api_json, from_api_json, cast_json_to_api_format
 from ..utils.request import fetch, GET, POST, DELETE, PATCH
 
 
@@ -55,6 +55,7 @@ def delete_id(resource, id, user=None):
 
 
 def patch_id(resource, id, user=None, **payload):
+    payload = cast_json_to_api_format(payload)
     json = fetch(method=PATCH, path="{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), payload=payload, user=user).json()
     entity = json[last_name(resource)]
     return from_api_json(resource, entity)
