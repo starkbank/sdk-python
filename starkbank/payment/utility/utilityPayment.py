@@ -84,7 +84,7 @@ def pdf(id, user=None):
     return rest.get_pdf(resource=UtilityPayment, id=id, user=user)
 
 
-def query(limit=None, status=None, after=None, before=None, tags=None, ids=None, user=None):
+def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):
     """Retrieve UtilityPayments
 
     Receive a generator of UtilityPayment objects previously created in the Stark Bank API
@@ -94,6 +94,8 @@ def query(limit=None, status=None, after=None, before=None, tags=None, ids=None,
         status [string, default None]: filter for status of retrieved objects. ex: "paid"
         tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
         ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        after [datetime.date, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+        before [datetime.date, default None] date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
         user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     Return:
         generator of UtilityPayment objects with updated attributes
