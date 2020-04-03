@@ -35,7 +35,7 @@ class BoletoPayment(Resource):
         self.bar_code = bar_code
         self.description = description
         self.tags = tags
-        self.scheduled = scheduled
+        self.scheduled = check_datetime(scheduled)
         self.status = status
         self.amount = amount
         self.fee = fee
