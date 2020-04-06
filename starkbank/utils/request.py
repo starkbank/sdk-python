@@ -27,8 +27,7 @@ def fetch(method, path, payload=None, query=None, user=None, version="v2"):
         Environment.sandbox:     "https://sandbox.api.starkbank.com/",
     }[user.environment] + version
 
-    query_string = "?" + urlencode(query) if query else ""
-    url = "{baseUrl}/{path}{query}".format(baseUrl=url, path=path, query=query_string)
+    url = "{base_url}/{path}{query}".format(base_url=url, path=path, query=urlencode(query))
 
     agent = "Python-{major}.{minor}.{micro}-SDK-{sdk_version}".format(
         major=python_version.major,
