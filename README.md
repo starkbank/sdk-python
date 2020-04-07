@@ -710,7 +710,7 @@ import starkbank
 events = starkbank.webhook.event.query(after="2020-03-20", is_delivered=False)
 
 for event in events:
-    print(events)
+    print(event)
 ```
 
 ### Get webhook event
@@ -766,7 +766,7 @@ import starkbank
 try:
     transactions = starkbank.transaction.create([
         starkbank.Transaction(
-            amount=99999999999999,  # (R$ 1.00)
+            amount=99999999999999,  # (R$ 999,999,999,999.99)
             receiver_id="1029378109327810",
             description=".",
             external_id="12345",  # so we can block anything you send twice by mistake
