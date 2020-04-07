@@ -121,7 +121,7 @@ def parse(content, signature, user=None):
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     Return:
-        Event object with updated attributes
+        Parsed Event object
     """
     event = from_api_json(Event, loads(content)["event"])
 
