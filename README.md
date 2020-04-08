@@ -458,7 +458,7 @@ print(log)
 
 ### Create utility payment
 
-Its also simple to pay utility bills (such electricity and water bills) in the SDK.
+Its also simple to pay utility bills (such as electricity and water bills) in the SDK.
 
 ```python
 import starkbank
