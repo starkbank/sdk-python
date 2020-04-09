@@ -40,11 +40,11 @@ def check_date(data):
     if data is None:
         return None
 
-    if isinstance(data, date):
-        return data
-
     if isinstance(data, datetime):
         return data.date()
+
+    if isinstance(data, date):
+        return data
 
     data = check_datetime_string(data)
 
