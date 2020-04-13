@@ -22,21 +22,21 @@ def _date_to_string(data):
 def from_api_json(resource, json):
     snakes = {camel_to_snake(k): v for k, v in json.items()}
 
-    params = set(resource.__init__.__code__.co_varnames) - {"self"}
+    params = set(resource["class"].__init__.__code__.co_varnames) - {"self"}
 
     snakes = {k: v for k, v in snakes.items() if k in params}
     for param in params - set(snakes):
         snakes[param] = None
 
-    return resource(**snakes)
+    return resource["class"](**snakes)
 
 
 def endpoint(resource):
-    return camel_to_kebab(resource.__name__).replace("-log", "/log")
+    return camel_to_kebab(resource["name"]).replace("-log", "/log")
 
 
 def last_name(resource):
-    return camel_to_kebab(resource.__name__).split("-")[-1]
+    return camel_to_kebab(resource["name"]).split("-")[-1]
 
 
 def last_name_plural(resource):

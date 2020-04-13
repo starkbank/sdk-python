@@ -63,6 +63,9 @@ class Boleto(Resource):
         self.created = check_datetime(created)
 
 
+_resource = {"class": Boleto, "name": "Boleto"}
+
+
 def create(boletos, user=None):
     """Create Boletos
 
@@ -75,7 +78,7 @@ def create(boletos, user=None):
     Return:
         list of Boleto objects with updated attributes
     """
-    return rest.post(resource=Boleto, entities=boletos, user=user)
+    return rest.post(resource=_resource, entities=boletos, user=user)
 
 
 def get(id, user=None):
@@ -90,7 +93,7 @@ def get(id, user=None):
     Return:
         Boleto object with updated attributes
     """
-    return rest.get_id(resource=Boleto, id=id, user=user)
+    return rest.get_id(resource=_resource, id=id, user=user)
 
 
 def pdf(id, user=None):
@@ -105,7 +108,7 @@ def pdf(id, user=None):
     Return:
         Boleto pdf file
     """
-    return rest.get_pdf(resource=Boleto, id=id, user=user)
+    return rest.get_pdf(resource=_resource, id=id, user=user)
 
 
 def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):
@@ -124,7 +127,7 @@ def query(limit=None, status=None, tags=None, ids=None, after=None, before=None,
     Return:
         generator of Boleto objects with updated attributes
     """
-    return rest.get_list(resource=Boleto, limit=limit, user=user, status=status, tags=tags, ids=ids, after=check_date(after), before=check_date(before))
+    return rest.get_list(resource=_resource, limit=limit, user=user, status=status, tags=tags, ids=ids, after=check_date(after), before=check_date(before))
 
 
 def delete(id, user=None):
@@ -139,4 +142,4 @@ def delete(id, user=None):
     Return:
         deleted Boleto with updated attributes
     """
-    return rest.delete_id(resource=Boleto, id=id, user=user)
+    return rest.delete_id(resource=_resource, id=id, user=user)

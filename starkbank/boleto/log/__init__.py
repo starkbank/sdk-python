@@ -1,1 +1,1 @@
-from .log import BoletoLog, query, get
+from .log import query, get

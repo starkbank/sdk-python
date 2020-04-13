@@ -1,2 +1,3 @@
-from .transfer import Transfer, create, get, pdf, query
+from .transfer import create, get, pdf, query
+from .log.log import Log
 from . import log

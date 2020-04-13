@@ -1,2 +1,3 @@
-from .boleto import Boleto, create, get, pdf, delete, query
-from . import log
+from .boleto import create, get, pdf, delete, query
+from .log.log import Log
+from .log import log

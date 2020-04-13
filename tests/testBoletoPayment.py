@@ -13,7 +13,7 @@ class TestBoletoPaymentPost(TestCase):
     def test_success(self):
         payments = generateExampleBoletoPaymentsJson(n=5)
         try:
-            payments = starkbank.payment.boleto.create(payments)
+            payments = starkbank.boletopayment.create(payments)
         except InputErrors as e:
             for error in e.errors:
                 print(error)
@@ -24,7 +24,7 @@ class TestBoletoPaymentPost(TestCase):
         payments2 = generateExampleBoletoPaymentsJson(n=55)
         payments = payments + payments2
         with self.assertRaises(InputErrors) as context:
-            payments = starkbank.payment.boleto.create(payments)
+            payments = starkbank.boletopayment.create(payments)
         errors = context.exception.errors
         for error in errors:
             print(error)
@@ -34,7 +34,7 @@ class TestBoletoPaymentPost(TestCase):
     def test_fail_invalid_json(self):
         payments = {}
         with self.assertRaises(InputErrors) as context:
-            payments = starkbank.payment.boleto.create(payments)
+            payments = starkbank.boletopayment.create(payments)
         errors = context.exception.errors
         for error in errors:
             print(error)
@@ -48,7 +48,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[2].description = None
         payments[3].tax_id = None
         with self.assertRaises(InputErrors) as context:
-            payments = starkbank.payment.boleto.create(payments)
+            payments = starkbank.boletopayment.create(payments)
         errors = context.exception.errors
         for error in errors:
             print(error)
@@ -63,7 +63,7 @@ class TestBoletoPaymentPost(TestCase):
         payments[3].tax_id = 123
         payments[4].tax_id = {}
         with self.assertRaises(InputErrors) as context:
-            payments = starkbank.payment.boleto.create(payments)
+            payments = starkbank.boletopayment.create(payments)
         errors = context.exception.errors
         for error in errors:
             print(error)
@@ -74,21 +74,21 @@ class TestBoletoPaymentPost(TestCase):
 class TestBoletoPaymentGet(TestCase):
 
     def test_success(self):
-        payments = list(starkbank.payment.boleto.query(limit=10))
+        payments = list(starkbank.boletopayment.query(limit=10))
         print("Number of payments:", len(payments))
 
 
 class TestBoletoPaymentInfoGet(TestCase):
 
     def test_success(self):
-        payments = starkbank.payment.boleto.query()
+        payments = starkbank.boletopayment.query()
         payment_id = next(payments).id
-        payment = starkbank.payment.boleto.get(id=payment_id)
+        payment = starkbank.boletopayment.get(id=payment_id)
 
     def test_fail_invalid_payment(self):
         payment_id = "0"
         with self.assertRaises(InputErrors) as context:
-            payment = starkbank.payment.boleto.get(payment_id)
+            payment = starkbank.boletopayment.get(payment_id)
         errors = context.exception.errors
         for error in errors:
             print(error)
@@ -99,9 +99,9 @@ class TestBoletoPaymentInfoGet(TestCase):
 class TestBoletoPaymentPdfGet(TestCase):
 
     def test_success(self):
-        payments = starkbank.payment.boleto.query(status="processing")
+        payments = starkbank.boletopayment.query(status="processing")
         payment_id = next(payments).id
-        payments = starkbank.payment.boleto.pdf(id=payment_id)
+        payments = starkbank.boletopayment.pdf(id=payment_id)
 
 
 class TestBoletoPaymentDelete(TestCase):
@@ -109,14 +109,14 @@ class TestBoletoPaymentDelete(TestCase):
     def test_success(self):
         payments = generateExampleBoletoPaymentsJson(n=1)
         try:
-            payments = starkbank.payment.boleto.create(payments)
+            payments = starkbank.boletopayment.create(payments)
         except InputErrors as e:
             for error in e.errors:
                 print(error)
                 self.assertEqual('immediatePaymentOutOfTime', error.code)
         else:
             try:
-                starkbank.payment.boleto.delete(payments[0].id)
+                starkbank.boletopayment.delete(payments[0].id)
             except InputErrors as e:
                 for error in e.errors:
                     print(error)

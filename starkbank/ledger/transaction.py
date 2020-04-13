@@ -41,6 +41,9 @@ class Transaction(Resource):
         self.source = source
 
 
+_resource = {"class": Transaction, "name": "Transaction"}
+
+
 def create(transactions, user=None):
     """Create Transactions
 
@@ -53,7 +56,7 @@ def create(transactions, user=None):
     Return:
         list of Transaction objects with updated attributes
     """
-    return rest.post(resource=Transaction, entities=transactions, user=user)
+    return rest.post(resource=_resource, entities=transactions, user=user)
 
 
 def get(id, user=None):
@@ -68,7 +71,7 @@ def get(id, user=None):
     Return:
         Transaction object with updated attributes
     """
-    return rest.get_id(resource=Transaction, id=id, user=user)
+    return rest.get_id(resource=_resource, id=id, user=user)
 
 
 def query(limit=None, external_ids=None, after=None, before=None, user=None):
@@ -85,4 +88,4 @@ def query(limit=None, external_ids=None, after=None, before=None, user=None):
     Return:
         generator of Transaction objects with updated attributes
     """
-    return rest.get_list(resource=Transaction, limit=limit, user=user, external_ids=external_ids, after=check_date(after), before=check_date(before))
+    return rest.get_list(resource=_resource, limit=limit, user=user, external_ids=external_ids, after=check_date(after), before=check_date(before))

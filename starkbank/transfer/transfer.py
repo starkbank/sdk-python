@@ -45,6 +45,9 @@ class Transfer(Resource):
         self.transaction_ids = transaction_ids
 
 
+_resource = {"class": Transfer, "name": "Transfer"}
+
+
 def create(transfers, user=None):
     """Create Transfers
 
@@ -57,7 +60,7 @@ def create(transfers, user=None):
     Return:
         list of Transfer objects with updated attributes
     """
-    return rest.post(resource=Transfer, entities=transfers, user=user)
+    return rest.post(resource=_resource, entities=transfers, user=user)
 
 
 def get(id, user=None):
@@ -72,7 +75,7 @@ def get(id, user=None):
     Return:
         Transfer object with updated attributes
     """
-    return rest.get_id(resource=Transfer, id=id, user=user)
+    return rest.get_id(resource=_resource, id=id, user=user)
 
 
 def pdf(id, user=None):
@@ -88,7 +91,7 @@ def pdf(id, user=None):
     Return:
         Transfer pdf file
     """
-    return rest.get_pdf(resource=Transfer, id=id, user=user)
+    return rest.get_pdf(resource=_resource, id=id, user=user)
 
 
 def query(limit=None, transaction_ids=None, tags=None, after=None, before=None, status=None, sort=None, user=None):
@@ -108,4 +111,4 @@ def query(limit=None, transaction_ids=None, tags=None, after=None, before=None, 
     Return:
         generator of Transfer objects with updated attributes
     """
-    return rest.get_list(resource=Transfer, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), transaction_ids=transaction_ids, sort=sort)
+    return rest.get_list(resource=_resource, limit=limit, user=user, status=status, tags=tags, after=check_date(after), before=check_date(before), transaction_ids=transaction_ids, sort=sort)

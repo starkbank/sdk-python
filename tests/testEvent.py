@@ -10,15 +10,15 @@ starkbank.user = exampleProject
 class TestEventGet(TestCase):
 
     def test_success(self):
-        events = list(starkbank.webhook.event.query(user=exampleProject, limit=10))
+        events = list(starkbank.event.query(user=exampleProject, limit=10))
         print("Number of events:", len(events))
 
 
 class TestEventInfoGet(TestCase):
     def test_success(self):
-        events = starkbank.webhook.event.query(user=exampleProject)
+        events = starkbank.event.query(user=exampleProject)
         event_id = next(events).id
-        event = starkbank.webhook.event.get(user=exampleProject, id=event_id)
+        event = starkbank.event.get(user=exampleProject, id=event_id)
 
 
 class TesteEventProcess(TestCase):
@@ -27,7 +27,7 @@ class TesteEventProcess(TestCase):
     invalid_signature = "MEUCIQDOpo1j+V40DNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk="
 
     def test_success(self):
-        event = starkbank.webhook.event.parse(
+        event = starkbank.event.parse(
             content=self.content,
             signature=self.valid_signature
         )
@@ -36,7 +36,7 @@ class TesteEventProcess(TestCase):
 
     def test_fail(self):
         with self.assertRaises(InvalidSignatureError):
-            starkbank.webhook.event.parse(
+            starkbank.event.parse(
                 content=self.content,
                 signature=self.invalid_signature,
             )
@@ -45,18 +45,18 @@ class TesteEventProcess(TestCase):
 class TestEventDelete(TestCase):
 
     def test_success(self):
-        event = next(starkbank.webhook.event.query(limit=1))
-        event = starkbank.webhook.event.delete(event.id)
+        event = next(starkbank.event.query(limit=1))
+        event = starkbank.event.delete(event.id)
         print(event)
 
 
 class TestEventSetDelivered(TestCase):
 
     def test_success(self):
-        event = next(starkbank.webhook.event.query(limit=1, is_delivered=False))
+        event = next(starkbank.event.query(limit=1, is_delivered=False))
         assert event.is_delivered is False
-        event = starkbank.webhook.event.update(id=event.id, is_delivered=True)
-        event = starkbank.webhook.event.get(event.id)
+        event = starkbank.event.update(id=event.id, is_delivered=True)
+        event = starkbank.event.get(event.id)
         assert event.is_delivered is True
         print(event)
 

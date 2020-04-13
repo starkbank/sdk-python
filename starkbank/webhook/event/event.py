@@ -7,11 +7,11 @@ from ...utils.api import from_api_json
 from ...utils.request import fetch, GET
 from ...utils.resource import Resource
 from ...utils.checks import check_datetime, check_date
-from ...boleto.log import BoletoLog
-from ...transfer.log import TransferLog
+from ...boleto.log.log import _resource as _boleto_log_resource
+from ...transfer.log.log import _resource as _transfer_log_resource
+from ...payment.boleto.log.log import _resource as _boleto_payment_log_resource
+from ...payment.utility.log.log import _resource as _utility_payment_log_resource
 from ...error import InvalidSignatureError
-from ...payment.boleto.log import BoletoPaymentLog
-from ...payment.utility.log import UtilityPaymentLog
 from ...utils import cache
 
 
@@ -37,11 +37,14 @@ class Event(Resource):
         self.is_delivered = is_delivered
         self.subscription = subscription
         self.log = from_api_json(*{
-            "transfer": (TransferLog, log),
-            "boleto": (BoletoLog, log),
-            "boleto-payment": (BoletoPaymentLog, log),
-            "utility-payment": (UtilityPaymentLog, log),
+            "transfer": (_transfer_log_resource, log),
+            "boleto": (_boleto_log_resource, log),
+            "boleto-payment": (_boleto_payment_log_resource, log),
+            "utility-payment": (_utility_payment_log_resource, log),
         }[subscription])
+
+
+_resource = {"class": Event, "name": "Event"}
 
 
 def get(id, user=None):
@@ -56,7 +59,7 @@ def get(id, user=None):
     Return:
         Event object with updated attributes
     """
-    return rest.get_id(resource=Event, id=id, user=user)
+    return rest.get_id(resource=_resource, id=id, user=user)
 
 
 def query(limit=None, after=None, before=None, is_delivered=None, user=None):
@@ -73,7 +76,7 @@ def query(limit=None, after=None, before=None, is_delivered=None, user=None):
     Return:
         generator of Event objects with updated attributes
     """
-    return rest.get_list(resource=Event, limit=limit, user=user, is_delivered=is_delivered, after=check_date(after), before=check_date(before))
+    return rest.get_list(resource=_resource, limit=limit, user=user, is_delivered=is_delivered, after=check_date(after), before=check_date(before))
 
 
 def delete(id, user=None):
@@ -88,7 +91,7 @@ def delete(id, user=None):
     Return:
         deleted Event with updated attributes
     """
-    return rest.delete_id(resource=Event, id=id, user=user)
+    return rest.delete_id(resource=_resource, id=id, user=user)
 
 
 def update(id, is_delivered, user=None):
@@ -105,7 +108,7 @@ def update(id, is_delivered, user=None):
     Return:
         target Event with updated attributes
     """
-    return rest.patch_id(resource=Event, id=id, user=user, is_delivered=is_delivered)
+    return rest.patch_id(resource=_resource, id=id, user=user, is_delivered=is_delivered)
 
 
 def parse(content, signature, user=None):
@@ -123,7 +126,7 @@ def parse(content, signature, user=None):
     Return:
         Parsed Event object
     """
-    event = from_api_json(Event, loads(content)["event"])
+    event = from_api_json(_resource, loads(content)["event"])
 
     if _verify_signature(content=content, signature=signature, user=user):
         return event

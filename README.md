@@ -350,7 +350,7 @@ Paying a boleto is also simple.
 ```python
 import starkbank
 
-payments = starkbank.payment.boleto.create([
+payments = starkbank.boletopayment.create([
     starkbank.BoletoPayment(
         line="34191.09008 61207.727308 71444.640008 5 81310001234321",
         tax_id="012.345.678-90",
@@ -378,7 +378,7 @@ To get a single boleto payment by its id, run:
 ```python
 import starkbank
 
-payment = starkbank.payment.boleto.get("19278361897236187236")
+payment = starkbank.boletopayment.get("19278361897236187236")
 
 print(payment)
 ```
@@ -390,7 +390,7 @@ After its creation, a boleto payment PDF may be retrieved by passing its id.
 ```python
 import starkbank
 
-pdf = starkbank.payment.boleto.pdf("5155165527080960")
+pdf = starkbank.boletopayment.pdf("5155165527080960")
 
 with open("boleto_payment.pdf", "wb") as file:
     file.write(pdf)
@@ -408,7 +408,7 @@ Note that this is not possible if it has been processed already.
 ```python
 import starkbank
 
-payment = starkbank.payment.boleto.delete("5155165527080960")
+payment = starkbank.boletopayment.delete("5155165527080960")
 
 print(payment)
 ```
@@ -420,7 +420,7 @@ You can search for boleto payments using filters.
 ```python
 import starkbank
 
-payments = starkbank.payment.boleto.query(
+payments = starkbank.boletopayment.query(
     tags=["company_1", "company_2"]
 )
 
@@ -435,7 +435,7 @@ Searches are also possible with boleto payment logs:
 ```python
 import starkbank
 
-logs = starkbank.payment.boleto.log.query(
+logs = starkbank.boletopayment.log.query(
     payment_ids=["5155165527080960", "76551659167801921"],
 )
 
@@ -451,7 +451,7 @@ You can also get a boleto payment log by specifying its id.
 ```python
 import starkbank
 
-log = starkbank.payment.boleto.log.get("5155165527080960")
+log = starkbank.boletopayment.log.get("5155165527080960")
 
 print(log)
 ```
@@ -463,7 +463,7 @@ Its also simple to pay utility bills (such as electricity and water bills) in th
 ```python
 import starkbank
 
-payments = starkbank.payment.utility.create([
+payments = starkbank.utilitypayment.create([
     starkbank.UtilityPayment(
         line="34197819200000000011090063609567307144464000",
         scheduled="2020-03-13",
@@ -489,7 +489,7 @@ To search for utility payments using filters, run:
 ```python
 import starkbank
 
-payments = starkbank.payment.utility.query(
+payments = starkbank.utilitypayment.query(
     tags=["electricity", "gas"]
 )
 
@@ -504,7 +504,7 @@ You can get a specific bill by its id:
 ```python
 import starkbank
 
-payment = starkbank.payment.utility.get("5155165527080960")
+payment = starkbank.utilitypayment.get("5155165527080960")
 
 print(payment)
 ```
@@ -516,7 +516,7 @@ After its creation, a utility payment PDF may also be retrieved by passing its i
 ```python
 import starkbank
 
-pdf = starkbank.payment.utility.pdf("5155165527080960")
+pdf = starkbank.utilitypayment.pdf("5155165527080960")
 
 with open("electricity_payment.pdf", "wb") as file:
     file.write(pdf)
@@ -534,7 +534,7 @@ Note that this is not possible if it has been processed already.
 ```python
 import starkbank
 
-payment = starkbank.payment.utility.delete("5155165527080960")
+payment = starkbank.utilitypayment.delete("5155165527080960")
 
 print(payment)
 ```
@@ -547,7 +547,7 @@ bills life cycles.
 ```python
 import starkbank
 
-logs = starkbank.payment.utility.log.query(
+logs = starkbank.utilitypayment.log.query(
     payment_ids=["102893710982379182", "92837912873981273"],
 )
 
@@ -562,7 +562,7 @@ If you want to get a specific payment log by its id, just run:
 ```python
 import starkbank
 
-log = starkbank.payment.utility.log.get("1902837198237992")
+log = starkbank.utilitypayment.log.get("1902837198237992")
 
 print(log)
 ```
@@ -688,7 +688,7 @@ import starkbank
 
 response = listen()  # this is the method you made to get the events posted to your webhook
 
-event = starkbank.webhook.event.parse(content=response.content, signature=response.headers["Digital-Signature"])
+event = starkbank.event.parse(content=response.content, signature=response.headers["Digital-Signature"])
 
 if event.subscription == "transfer":
     print(event.log.transfer)
@@ -707,7 +707,7 @@ To search for webhooks events, run:
 ```python
 import starkbank
 
-events = starkbank.webhook.event.query(after="2020-03-20", is_delivered=False)
+events = starkbank.event.query(after="2020-03-20", is_delivered=False)
 
 for event in events:
     print(event)
@@ -720,7 +720,7 @@ You can get a specific webhook event by its id.
 ```python
 import starkbank
 
-event = starkbank.webhook.event.get("10827361982368179")
+event = starkbank.event.get("10827361982368179")
 
 print(event)
 ```
@@ -732,7 +732,7 @@ You can also delete a specific webhook event by its id.
 ```python
 import starkbank
 
-event = starkbank.webhook.event.delete("10827361982368179")
+event = starkbank.event.delete("10827361982368179")
 
 print(event)
 ```
@@ -746,7 +746,7 @@ With this function, you can manually set events retrieved from the API as
 ```python
 import starkbank
 
-event = starkbank.webhook.event.update(id="129837198237192", is_delivered=True)
+event = starkbank.event.update(id="129837198237192", is_delivered=True)
 
 print(event)
 ```
@@ -786,7 +786,7 @@ is already rushing in to fix the mistake and get you back up to speed.
 __UnknownError__ will be raised if a request encounters an error that is
 neither __InputErrors__ nor an __InternalServerError__, such as connectivity problems.
 
-__InvalidSignatureError__ will be raised specifically by starkbank.webhook.event.parse()
+__InvalidSignatureError__ will be raised specifically by starkbank.event.parse()
 when the provided content and signature do not check out with the Stark Bank public
 key.
 

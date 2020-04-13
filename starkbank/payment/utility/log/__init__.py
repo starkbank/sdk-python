@@ -1,1 +1,1 @@
-from .log import UtilityPaymentLog, get, query
+from .log import get, query

@@ -26,6 +26,9 @@ class Balance(Resource):
         self.updated = check_datetime(updated)
 
 
+_resource = {"class": Balance, "name": "Balance"}
+
+
 def get(user=None):
     """Retrieve the Balance object
 
@@ -36,4 +39,4 @@ def get(user=None):
     Return:
         Balance object with updated attributes
     """
-    return next(rest.get_list(resource=Balance, user=user))
+    return next(rest.get_list(resource=_resource, user=user))

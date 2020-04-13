@@ -23,6 +23,9 @@ class Webhook(Resource):
         self.subscriptions = subscriptions
 
 
+_resource = {"class": Webhook, "name": "Webhook"}
+
+
 def create(url, subscriptions, user=None):
     """Create Webhook subscription
 
@@ -36,7 +39,7 @@ def create(url, subscriptions, user=None):
     Return:
         Webhook object with updated attributes
     """
-    return rest.post_single(resource=Webhook, entity=Webhook(url=url, subscriptions=subscriptions), user=user)
+    return rest.post_single(resource=_resource, entity=Webhook(url=url, subscriptions=subscriptions), user=user)
 
 
 def get(id, user=None):
@@ -51,7 +54,7 @@ def get(id, user=None):
     Return:
         Webhook object with updated attributes
     """
-    return rest.get_id(resource=Webhook, id=id, user=user)
+    return rest.get_id(resource=_resource, id=id, user=user)
 
 
 def query(limit=None, user=None):
@@ -65,7 +68,7 @@ def query(limit=None, user=None):
     Return:
         generator of Webhook objects with updated attributes
     """
-    return rest.get_list(resource=Webhook, limit=limit, user=user)
+    return rest.get_list(resource=_resource, limit=limit, user=user)
 
 
 def delete(id, user=None):
@@ -80,4 +83,4 @@ def delete(id, user=None):
     Return:
         deleted Webhook with updated attributes
     """
-    return rest.delete_id(resource=Webhook, id=id, user=user)
+    return rest.delete_id(resource=_resource, id=id, user=user)

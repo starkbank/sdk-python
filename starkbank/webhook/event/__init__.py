@@ -1,1 +1,1 @@
-from .event import Event, query, get, parse, delete, update
+from .event import query, get, parse, delete, update
