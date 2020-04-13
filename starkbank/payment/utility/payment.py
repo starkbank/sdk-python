@@ -67,6 +67,8 @@ def get(id, user=None):
         id [string]: object unique id. ex: "5656565656565656"
     Parameters (optional):
         user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    Return:
+        UtilityPayment object with updated attributes
     """
     return rest.get_id(resource=_resource, id=id, user=user)
 
