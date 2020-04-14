@@ -15,7 +15,7 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     license="MIT License",
-    url="https://github.com/starkbank/sdk-python.git",
+    url="https://github.com/starkbank/sdk-python",
     author="Stark Bank",
     author_email="developers@starkbank.com",
     keywords=["stark bank", "starkbank", "sdk", "open banking", "openbanking", "banking", "open", "stark"],
