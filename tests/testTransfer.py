@@ -1,11 +1,11 @@
 import time
+import starkbank
 from datetime import timedelta, date
 from unittest import TestCase, main
-
-import starkbank
 from starkbank.error import InputErrors
 from tests.utils.transfer import generateExampleTransfersJson
 from tests.utils.user import exampleProject
+
 
 starkbank.user = exampleProject
 

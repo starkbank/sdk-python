@@ -2,7 +2,7 @@ from ...utils import rest
 from ...utils.checks import check_datetime, check_date
 from ...utils.api import from_api_json
 from ...utils.resource import Resource
-from ..boleto import _resource as _boleto_resource
+from ..__boleto import _resource as _boleto_resource
 
 
 class Log(Resource):

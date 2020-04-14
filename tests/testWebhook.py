@@ -1,8 +1,8 @@
-from unittest import TestCase, main
-
 import starkbank
+from unittest import TestCase, main
 from tests.utils.user import exampleProject
 from tests.utils.webhook import generateExampleWebhook
+
 
 starkbank.user = exampleProject
 

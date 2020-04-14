@@ -1,4 +1,4 @@
-from . import api, resource, case, checks, enum, environment, request, rest
+from . import api, resource, case, checks, enum, request, rest
 from .cache import cache
 
 import sys

@@ -1,28 +1,33 @@
 __version__ = "2.0.0"
 
-from .user.project import Project
+from .user.__project import Project
 
 from . import error
 from . import key
 
-from .ledger import balance, transaction
-from .ledger.balance import Balance
-from .ledger.transaction import Transaction
+from . import transaction
+from .transaction.__transaction import Transaction
+
+from . import balance
+from .balance.__balance import Balance
 
 from . import boleto
-from .boleto.boleto import Boleto
+from .boleto.__boleto import Boleto
 
 from . import transfer
-from .transfer.transfer import Transfer
+from .transfer.__transfer import Transfer
 
-from .payment import boleto as boletopayment, utility as utilitypayment
-from .payment.boleto.payment import BoletoPayment
-from .payment.utility.payment import UtilityPayment
+from . import boletopayment
+from .boletopayment.__boletopayment import BoletoPayment
+
+from . import utilitypayment
+from .utilitypayment.__utilitypayment import UtilityPayment
 
 from . import webhook
-from .webhook.webhook import Webhook
+from .webhook.__webhook import Webhook
 
-from .webhook.event import event
-from .webhook.event.event import Event
+from . import event
+from .event.__event import Event
+
 
 user = None

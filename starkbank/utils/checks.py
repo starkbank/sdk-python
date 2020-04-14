@@ -2,7 +2,7 @@ from datetime import datetime, date
 
 
 def check_environment(environment):
-    from .environment import Environment
+    from ..environment import Environment
     environments = Environment.values()
     assert environment in environments, "Select a valid environment: {}".format(", ".join(environments))
     return environment
@@ -18,7 +18,7 @@ def check_private_key(pem):
 
 
 def check_user(user):
-    from ..user.user import User
+    from ..user.__user import User
     assert isinstance(user, User), "A user is required to access our API. Check our README: https://github.com/starkbank/sdk-python/"
     return user
 

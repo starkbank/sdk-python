@@ -1,6 +1,6 @@
-from ...utils import rest
-from ...utils.checks import check_datetime, check_date
-from ...utils.resource import Resource
+from ..utils import rest
+from ..utils.checks import check_datetime, check_date
+from ..utils.resource import Resource
 
 
 class BoletoPayment(Resource):
@@ -57,7 +57,7 @@ def create(payments, user=None):
     Return:
         list of BoletoPayment objects with updated attributes
     """
-    return rest.post(resource=_resource, entities=payments, user=user)
+    return rest.post_multi(resource=_resource, entities=payments, user=user)
 
 
 def get(id, user=None):

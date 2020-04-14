@@ -1,11 +1,11 @@
+import starkbank
 from datetime import datetime, timedelta
 from unittest import TestCase, main
-
-import starkbank
 from starkbank.error import InputErrors
 from tests.utils.boleto import generateExampleBoletosJson
 from tests.utils.date import randomPastDate
 from tests.utils.user import exampleProject
+
 
 starkbank.user = exampleProject
 

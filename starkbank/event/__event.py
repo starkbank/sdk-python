@@ -2,17 +2,18 @@ from json import loads
 from ellipticcurve.ecdsa import Ecdsa
 from ellipticcurve.signature import Signature
 from ellipticcurve.publicKey import PublicKey
-from ...utils import rest
-from ...utils.api import from_api_json
-from ...utils.request import fetch, GET
-from ...utils.resource import Resource
-from ...utils.checks import check_datetime, check_date
-from ...boleto.log.log import _resource as _boleto_log_resource
-from ...transfer.log.log import _resource as _transfer_log_resource
-from ...payment.boleto.log.log import _resource as _boleto_payment_log_resource
-from ...payment.utility.log.log import _resource as _utility_payment_log_resource
-from ...error import InvalidSignatureError
-from ...utils import cache
+from requests import get
+from ..utils import rest
+from ..utils.api import from_api_json
+from ..utils.request import fetch
+from ..utils.resource import Resource
+from ..utils.checks import check_datetime, check_date
+from ..boleto.log.__log import _resource as _boleto_log_resource
+from ..transfer.log.__log import _resource as _transfer_log_resource
+from ..boletopayment.log.__log import _resource as _boleto_payment_log_resource
+from ..utilitypayment.log.__log import _resource as _utility_payment_log_resource
+from ..error import InvalidSignatureError
+from ..utils import cache
 
 
 class Event(Resource):
@@ -147,4 +148,4 @@ def _verify_signature(content, signature, user=None, refresh=False):
 
 
 def _get_public_key_pem(user):
-    return fetch(method=GET, path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]
+    return fetch(method=get, path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]

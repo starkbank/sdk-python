@@ -1,9 +1,9 @@
-from unittest import TestCase, main
-
 import starkbank
+from unittest import TestCase, main
 from starkbank.error import InputErrors
 from tests.utils.user import exampleProject
 from tests.utils.utilityPayment import generateExampleUtilityPaymentsJson
+
 
 starkbank.user = exampleProject
 

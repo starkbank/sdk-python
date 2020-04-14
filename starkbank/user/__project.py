@@ -1,4 +1,4 @@
-from .user import User
+from .__user import User
 
 
 class Project(User):

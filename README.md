@@ -402,7 +402,7 @@ import starkbank
 
 pdf = starkbank.boletopayment.pdf("5155165527080960")
 
-with open("boleto_payment.pdf", "wb") as file:
+with open("boleto-payment.pdf", "wb") as file:
     file.write(pdf)
 ```
 
@@ -528,7 +528,7 @@ import starkbank
 
 pdf = starkbank.utilitypayment.pdf("5155165527080960")
 
-with open("electricity_payment.pdf", "wb") as file:
+with open("electricity-payment.pdf", "wb") as file:
     file.write(pdf)
 ```
 

@@ -60,7 +60,7 @@ def create(transfers, user=None):
     Return:
         list of Transfer objects with updated attributes
     """
-    return rest.post(resource=_resource, entities=transfers, user=user)
+    return rest.post_multi(resource=_resource, entities=transfers, user=user)
 
 
 def get(id, user=None):

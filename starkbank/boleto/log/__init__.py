@@ -1,1 +1,1 @@
-from .log import query, get
+from .__log import query, get

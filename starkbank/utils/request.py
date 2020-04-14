@@ -1,10 +1,9 @@
-from requests import get as GET, post as POST, delete as DELETE, patch as PATCH
 from sys import version_info as python_version
 from ellipticcurve.ecdsa import Ecdsa
 from json import dumps, loads
 from time import time
 from ..error import InternalServerError, InputErrors, UnknownError
-from ..utils.environment import Environment
+from ..environment import Environment
 from .checks import check_user
 from .url import urlencode
 import starkbank

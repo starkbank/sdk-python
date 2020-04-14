@@ -1,6 +1,6 @@
-from starkbank.utils import rest
-from starkbank.utils.checks import check_datetime, check_date
-from starkbank.utils.resource import Resource
+from ..utils import rest
+from ..utils.checks import check_datetime, check_date
+from ..utils.resource import Resource
 
 
 class Transaction(Resource):
@@ -56,7 +56,7 @@ def create(transactions, user=None):
     Return:
         list of Transaction objects with updated attributes
     """
-    return rest.post(resource=_resource, entities=transactions, user=user)
+    return rest.post_multi(resource=_resource, entities=transactions, user=user)
 
 
 def get(id, user=None):

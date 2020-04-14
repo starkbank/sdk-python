@@ -1,4 +1,4 @@
-from .enum import Enum
+from .utils.enum import Enum
 
 
 class Environment(Enum):

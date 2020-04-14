@@ -78,7 +78,7 @@ def create(boletos, user=None):
     Return:
         list of Boleto objects with updated attributes
     """
-    return rest.post(resource=_resource, entities=boletos, user=user)
+    return rest.post_multi(resource=_resource, entities=boletos, user=user)
 
 
 def get(id, user=None):

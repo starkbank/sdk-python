@@ -1,8 +1,8 @@
-from ....utils import rest
-from ....utils.api import from_api_json
-from ....utils.checks import check_datetime
-from ....utils.resource import Resource
-from ..payment import _resource as _payment_resource
+from ...utils import rest
+from ...utils.api import from_api_json
+from ...utils.checks import check_datetime
+from ...utils.resource import Resource
+from ..__boletopayment import _resource as _payment_resource
 
 
 class Log(Resource):
