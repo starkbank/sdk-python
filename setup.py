@@ -22,7 +22,7 @@ setup(
     version=__version__,
     install_requires=[
         "requests==2.22.0",
-        "starkbank-ecdsa==0.1.9",
+        "starkbank-ecdsa==1.0.0",
     ],
 )
 
