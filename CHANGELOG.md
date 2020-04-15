@@ -17,4 +17,3 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 - Full Stark Bank API v2 compatibility
 
-## [2.0.0] - 2020-04-03
