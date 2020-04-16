@@ -19,20 +19,6 @@ This library supports the following Python versions:
 
 If you want to take a look at our API, follow [this link](https://docs.api.starkbank.com/?version=latest).
 
-## Installation
-
-To install the package with pip, run:
-
-```sh
-pip install starkbank
-```
-
-To install from source, clone the repo and run:
-
-```sh
-python setup.py install
-```
-
 ## Versioning
 
 This project adheres to the following versioning pattern:
@@ -43,44 +29,97 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - MINOR version when **breaking changes** are introduced OR **new functionalities** are added in a backwards compatible manner;
 - PATCH version when backwards compatible bug **fixes** are implemented.
 
-## Creating a Project
+## Setup
 
-To connect to the Stark Bank API, you need user credentials. We currently have 2
-kinds of users: Members and Projects. Given the purpose of this SDK, it only
-supports Projects, which is a type of user made specially for direct API
-integrations. To start using the SDK, create your first Sandbox Project in our 
-[website](https://sandbox.web.starkbank.com) in the Project session.
+### 1. Install our SDK
 
-Once you've created your project, load it in the SDK:
+1.1 To install the package with pip, run:
+
+```sh
+pip install starkbank
+```
+
+1.2 To install from source, clone the repo and run:
+
+```sh
+python setup.py install
+```
+
+### 2. Create your Private and Public Keys
+
+We use ECDSA. That means you need to generate a secp256k1 private
+key to sign your requests to our API, and register your public key
+with us so we can validate those requests.
+
+You can use one of following methods:
+
+2.1. Check out the options in our [tutorial](https://starkbank.com/faq/how-to-create-ecdsa-keys).
+
+2.2. Use our SDK:
 
 ```python
 import starkbank
 
+privateKey, publicKey = starkbank.key.create()
+
+# or, to also save .pem files in a specific path
+privateKey, publicKey = starkbank.key.create("file/keys/")
+```
+
+### 3. Create a Project
+
+You need a project for direct API integrations. To create one in Sandbox:
+
+3.1. Log into [Starkbank Sandbox](https://sandbox.web.starkbank.com)
+
+3.2. Go to Menu > Usuários (Users) > Projetos (Projects)
+
+3.3. Create a Project: Give it a name and upload the public key you created in section 2.
+
+3.4. After creating the Project, get its Project ID
+
+3.5. Use the Project ID and private key to create the object below:
+
+```python
+import starkbank
+
+# Get your private key from an environment variable or an encrypted database.
+# This is only an example of a private key content. You should use your own key.
+private_key_content = """
+-----BEGIN EC PARAMETERS-----
+BgUrgQQACg==
+-----END EC PARAMETERS-----
+-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEIMCwW74H6egQkTiz87WDvLNm7fK/cA+ctA2vg/bbHx3woAcGBSuBBAAK
+oUQDQgAE0iaeEHEgr3oTbCfh8U2L+r7zoaeOX964xaAnND5jATGpD/tHec6Oe9U1
+IF16ZoTVt1FzZ8WkYQ3XomRD4HS13A==
+-----END EC PRIVATE KEY-----
+"""
+
 project = starkbank.Project(
-    id=129817512982,
-    private_key="""
-        -----BEGIN EC PRIVATE KEY-----
-        MHQCAQEEIOJ3xkQ9NRdMPLLSrX3OlaoexG8JZgQyTMdX1eISCXaCoBcGBSuBBAAK
-        oUQDQgAEUneBQJsBhZl8/nPQd4YUe/UqEAtyJRH01YyWrg+nsNcSRlc1GzC3DB+X
-        CPZXBUbsMQAbLoWXIN1pqIX2b/NE9Q==
-        -----END EC PRIVATE KEY-----
-    """,
     environment="sandbox",
+    id="5656565656565656",
+    private_key=private_key_content
 )
 ```
 
-Once you are done testing and want to move to Production, create a new Project
-in your Production account ([click here](https://web.starkbank.com)). Also,
-when you are loading your Project, change the environment from `"sandbox"` to
-`"production"` in the constructor shown above. 
+NOTE 1: Never hard-code your private key. Get it from an environment variable or an encrypted database.
 
-NOTE: Never hard-code your private key. Get it from an environment variable, for example. 
+NOTE 2: We support `"sandbox"` and `"production"` as environments.
 
-## Setting up the user
+NOTE 3: The project you created in `sandbox` does not exist in `production` and vice versa.
 
-You can inform the project to the SDK in two different ways.
 
-The first way is passing the user argument in all methods, such as:
+### 4. Setting up the user
+
+There are two kinds of users that can access our API: **Project** and **Member**.
+
+- `Member` is the one you use when you log into our webpage with your e-mail.
+- `Project` is designed for integrations and is the one meant for our SDK.
+
+There are two ways to inform the user to the SDK:
+ 
+4.1 Passing the user as argument in all functions:
 
 ```python
 import starkbank
@@ -88,8 +127,7 @@ import starkbank
 balance = starkbank.balance.get(user=project)
 ```
 
-Or, alternatively, if you want to use the same project on all requests,
-we recommend you set it as the default user by doing:
+4.2 Set it as a default user in the SDK:
 
 ```python
 import starkbank
@@ -259,7 +297,7 @@ import starkbank
 transfers = starkbank.transfer.create([
     starkbank.Transfer(
         amount=100,
-        bank_code="200",
+        bank_code="033",
         branch_code="0001",
         account_number="10000-0",
         tax_id="012.345.678-90",
