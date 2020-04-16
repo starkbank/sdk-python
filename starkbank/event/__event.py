@@ -2,7 +2,7 @@ from json import loads
 from ellipticcurve.ecdsa import Ecdsa
 from ellipticcurve.signature import Signature
 from ellipticcurve.publicKey import PublicKey
-from requests import get
+from requests import get as get_request
 from ..utils import rest
 from ..utils.api import from_api_json
 from ..utils.request import fetch
@@ -136,4 +136,4 @@ def _verify_signature(content, signature, user=None, refresh=False):
 
 
 def _get_public_key_pem(user):
-    return fetch(method=get, path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]
+    return fetch(method=get_request, path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]
