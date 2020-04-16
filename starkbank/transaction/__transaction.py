@@ -20,13 +20,14 @@ class Transaction(Resource):
     ## Parameters (optional):
         tags [list of strings]: list of strings for reference when searching transactions (may be empty). ex: ["abc", "test"]
     ## Attributes (return-only):
+        sender_id [string]: unique id of the sending workspace. ex: "5656565656565656"
         source [string, default None]: locator of the entity that generated the transaction. ex: "charge/1827351876292", "transfer/92873912873/chargeback"
         id [string, default None]: unique id returned when Transaction is created. ex: "7656565656565656"
         fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)
         created [datetime.datetime, default None]: creation datetime for the boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, description, external_id, receiver_id, tags=None, id=None, fee=None, created=None, source=None):
+    def __init__(self, amount, description, external_id, receiver_id, sender_id=None, tags=None, id=None, fee=None, created=None, source=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -34,6 +35,7 @@ class Transaction(Resource):
         self.tags = tags
         self.external_id = external_id
         self.receiver_id = receiver_id
+        self.sender_id = sender_id
         self.fee = fee
         self.created = check_datetime(created)
         self.source = source
