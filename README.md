@@ -17,7 +17,7 @@ This library supports the following Python versions:
 
 ## Stark Bank API documentation
 
-If you want to take a look at our API, follow [this link](https://docs.api.starkbank.com/?version=latest).
+Feel free to take a look at our [API docs](https://www.starkbank.com/docs/api).
 
 ## Versioning
 
@@ -842,5 +842,3 @@ neither __InputErrors__ nor an __InternalServerError__, such as connectivity pro
 __InvalidSignatureError__ will be raised specifically by starkbank.event.parse()
 when the provided content and signature do not check out with the Stark Bank public
 key.
-
-[API docs]: (https://starkbank.com/docs/api)
