@@ -12,11 +12,23 @@ def api_json(entity):
 
 
 def cast_json_to_api_format(json):
-    return {snake_to_camel(k): _date_to_string(v) for k, v in json.items() if v is not None}
+    return {snake_to_camel(k): cast_values(v) for k, v in json.items() if v is not None}
 
 
-def _date_to_string(data):
-    return data.strftime("%Y-%m-%d") if isinstance(data, (date, datetime)) else data
+def cast_values(value):
+    if isinstance(value, (datetime, date)):
+        return value.strftime("%Y-%m-%d")
+
+    if not isinstance(value, list):
+        return value
+
+    casted_values = []
+    for v in value:
+        if isinstance(v, dict):
+            casted_values.append(cast_json_to_api_format(v))
+            continue
+        casted_values.append(v)
+    return casted_values
 
 
 def from_api_json(resource, json):
