@@ -48,8 +48,8 @@ def query(limit=None, after=None, before=None, types=None, payment_ids=None, use
     Receive a generator of utilitypayment.Log objects previously created in the Stark Bank API
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - after [datetime.date, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date, default None] date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - types [list of strings, default None]: filter retrieved objects by event types. ex: "paid" or "registered"
     - payment_ids [list of strings, default None]: list of UtilityPayment ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
