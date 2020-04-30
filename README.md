@@ -208,6 +208,8 @@ for boleto in boletos:
     print(boleto)
 ```
 
+**Note**: Instead of using Boleto objects, you can also pass each boleto element in dictionary format
+
 ### Get boleto
 
 After its creation, information on a boleto may be retrieved by passing its id. 
@@ -325,6 +327,8 @@ for transfer in transfers:
     print(transfer)
 ```
 
+**Note**: Instead of using Transfer objects, you can also pass each transfer element in dictionary format
+
 ### Query transfers
 
 You can query multiple transfers according to filters.
@@ -424,6 +428,8 @@ payments = starkbank.boletopayment.create([
 for payment in payments:
     print(payment)
 ```
+
+**Note**: Instead of using BoletoPayment objects, you can also pass each payment element in dictionary format
 
 ### Get boleto payment
 
@@ -535,6 +541,8 @@ payments = starkbank.utilitypayment.create([
 for payment in payments:
     print(payment)
 ```
+
+**Note**: Instead of using UtilityPayment objects, you can also pass each payment element in dictionary format
 
 ### Query utility payments
 
@@ -648,6 +656,8 @@ transactions = starkbank.transaction.create([
 for transaction in transactions:
     print(transaction)
 ```
+
+**Note**: Instead of using Transaction objects, you can also pass each transaction element in dictionary format
 
 ### Query transactions
 

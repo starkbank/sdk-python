@@ -3,6 +3,8 @@ from .case import camel_to_kebab, snake_to_camel, camel_to_snake
 
 
 def api_json(entity):
+    if isinstance(entity, dict):
+        return cast_json_to_api_format(entity)
     json = {
         attribute: getattr(entity, attribute)
         for attribute in dir(entity)
