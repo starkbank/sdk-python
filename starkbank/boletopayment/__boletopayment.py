@@ -15,7 +15,7 @@ class BoletoPayment(Resource):
     - tax_id [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     - description [string]: Text to be displayed in your statement (min. 10 characters). ex: "payment ABC"
     ## Parameters (optional):
-    - scheduled [datetime.date, default today]: payment scheduled date. ex: datetime.date(2020, 3, 10)
+    - scheduled [datetime.date or string, default today]: payment scheduled date. ex: datetime.date(2020, 3, 10)
     - tags [list of strings]: list of strings for tagging
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
@@ -88,8 +88,8 @@ def query(limit=None, after=None, before=None, tags=None, ids=None, status=None,
     Receive a generator of BoletoPayment objects previously created in the Stark Bank API
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - after [datetime.date, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date, default None] date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - status [string, default None]: filter for status of retrieved objects. ex: "paid"

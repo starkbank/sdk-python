@@ -23,11 +23,12 @@ class Transaction(Resource):
         sender_id [string]: unique id of the sending workspace. ex: "5656565656565656"
         source [string, default None]: locator of the entity that generated the transaction. ex: "charge/1827351876292", "transfer/92873912873/chargeback"
         id [string, default None]: unique id returned when Transaction is created. ex: "7656565656565656"
-        fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)
+        fee [integer, default None]: fee charged when transaction is created. ex: 200 (= R$ 2.00)
+        balance [integer, default None]: account balance after transaction was processed. ex: 100000000 (= R$ 1,000,000.00)
         created [datetime.datetime, default None]: creation datetime for the boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, description, external_id, receiver_id, sender_id=None, tags=None, id=None, fee=None, created=None, source=None):
+    def __init__(self, amount, description, external_id, receiver_id, sender_id=None, tags=None, id=None, fee=None, created=None, source=None, balance=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -39,6 +40,7 @@ class Transaction(Resource):
         self.fee = fee
         self.created = check_datetime(created)
         self.source = source
+        self.balance = balance
 
 
 _resource = {"class": Transaction, "name": "Transaction"}
@@ -75,8 +77,8 @@ def query(limit=None, after=None, before=None, external_ids=None, user=None):
     Receive a generator of Transaction objects previously created in the Stark Bank API
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - after [datetime.date, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - external_ids [list of strings, default None]: list of external ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:

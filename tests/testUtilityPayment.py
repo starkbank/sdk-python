@@ -82,7 +82,7 @@ class TestUtilityPaymentInfoGet(TestCase):
 class TestUtilityPaymentPdfGet(TestCase):
 
     def test_success(self):
-        payments = starkbank.utilitypayment.query()
+        payments = starkbank.utilitypayment.query(status="success")
         payment_id = next(payments).id
         payments = starkbank.utilitypayment.pdf(id=payment_id)
 

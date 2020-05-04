@@ -1,5 +1,5 @@
 import starkbank
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 from unittest import TestCase, main
 from starkbank.error import InputErrors
 from tests.utils.boleto import generateExampleBoletosJson
@@ -39,7 +39,7 @@ class TestBoletoPost(TestCase):
         self.assertEqual(1, len(errors))
 
     def test_fail_invalid_json_boleto(self):
-        boletos = generateExampleBoletosJson(n=16)
+        boletos = generateExampleBoletosJson(n=17)
         boletos[0].amount = None  # Required
         boletos[1].name = None  # Required
         boletos[2].tax_id = None  # Required
@@ -56,8 +56,9 @@ class TestBoletoPost(TestCase):
         boletos[12].overdue_limit = None  # Optional
         boletos[13].tags = None  # Optional
         boletos[14].descriptions = None  # Optional
+        boletos[15].discounts = None  # Optional
 
-        boletos[15].invalid_parameter = "invalidValue"
+        boletos[16].invalid_parameter = "invalidValue"
 
         with self.assertRaises(InputErrors) as context:
             boletos = starkbank.boleto.create(boletos)
@@ -65,7 +66,7 @@ class TestBoletoPost(TestCase):
         for error in errors:
             print(error)
             self.assertEqual("invalidJson", error.code)
-        self.assertEqual(9, len(errors))
+        self.assertEqual(10, len(errors))
 
     def test_fail_invalid_description(self):
         boletos = generateExampleBoletosJson(n=18)
@@ -94,6 +95,48 @@ class TestBoletoPost(TestCase):
             print(error)
             self.assertEqual('invalidDescription', error.code)
         self.assertEqual(12, len(errors))
+
+    def test_fail_invalid_discounts(self):
+        boletos = generateExampleBoletosJson(n=19, useRandomFutureDueDate=False)
+        boletos[0].discounts = None  # Valid (correct)
+        boletos[1].discounts = []  # Valid (correct)
+        boletos[2].discounts = [{"percentage": 3, "date": date.today() + timedelta(days=1)},
+                                {"percentage": 5, "date": date.today()},
+                                {"percentage": 2.5, "date": date.today() + timedelta(days=2)}]  # Valid (correct)
+        boletos[3].discounts = [{"percentage": 5, "date": date.today()},
+                                {"percentage": 3, "date": date.today() + timedelta(days=1)},
+                                {"percentage": 2.5, "date": date.today() + timedelta(days=2)}]  # Valid (correct)
+        boletos[4].discounts = [{"percentage": 5, "date": date.today()},
+                                {"percentage": 4, "date": date.today() + timedelta(days=1)},
+                                {"percentage": 3, "date": date.today() + timedelta(days=2)},
+                                {"percentage": 2, "date": date.today() + timedelta(days=3)},
+                                {"percentage": 1, "date": date.today() + timedelta(days=4)},
+                                {"percentage": 0.5, "date": date.today() + timedelta(days=5)}]  # too many discounts
+        boletos[5].discounts = [{"percentage": 1, "date": date.today()},
+                                {"percentage": 3, "date": date.today() + timedelta(days=1)}]  # ascending discount
+        boletos[6].discounts = [{"percentage": 3, "date": date.today()},
+                                {"percentage": 3, "date": date.today() + timedelta(days=1)}]  # repeated percentage
+        boletos[7].discounts = [{"percentage": -1, "date": date.today()}]  # invalid percentage
+        boletos[8].discounts = [{"percentage": 0, "date": date.today()}]  # invalid percentage
+        boletos[9].discounts = [{"percentage": 110, "date": date.today()}]  # invalid percentage
+        boletos[10].discounts = [{"percentage": "wrong", "date": date.today()}]  # invalid percentage
+        boletos[11].discounts = [{"percentages": 5, "date": date.today()}]  # invalid argument
+        boletos[12].discounts = [{"percentage": 5, "date": date.today(), "wrong": 0}]  # invalid argument
+        boletos[13].discounts = [{"date": date.today()}]  # missing percentage
+        boletos[14].discounts = [{}]  # missing percentage and date
+        boletos[14].discounts = [{"wrong": "wrong"}]  # missing percentage and date
+        boletos[15].discounts = [{"percentages": 5}]  # missing date
+        boletos[16].discounts = [{"percentage": 5, "date": date.today() - timedelta(days=1)}]  # invalid date
+        boletos[17].discounts = [{"percentage": 5, "date": boletos[17].due + timedelta(days=1)}]  # invalid date
+        boletos[18].discounts = [{"percentage": 5, "date": "wrong"}]  # invalid date
+
+        with self.assertRaises(InputErrors) as context:
+            starkbank.boleto.create(boletos)
+        errors = context.exception.errors
+        for error in errors:
+            print(error)
+            self.assertTrue(error.code in ['invalidBoleto', 'invalidDiscount', 'invalidDiscountDate'])
+        self.assertEqual(20, len(errors))
 
     def test_fail_invalid_tax_id(self):
         boletos = generateExampleBoletosJson(n=5)

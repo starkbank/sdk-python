@@ -18,12 +18,13 @@ class Boleto(Resource):
     - city [string]: payer address city. ex: Rio de Janeiro
     - state_code [string]: payer address state. ex: GO
     - zip_code [string]: payer address zip code. ex: 01311-200
-    - due [datetime.date, default today + 2 days]: Boleto due date in ISO format. ex: 2020-04-30
     ## Parameters (optional):
+    - due [datetime.date or string or string, default today + 2 days]: Boleto due date in ISO format. ex: 2020-04-30
     - fine [float, default 0.0]: Boleto fine for overdue payment in %. ex: 2.5
     - interest [float, default 0.0]: Boleto monthly interest for overdue payment in %. ex: 5.2
     - overdue_limit [integer, default 59]: limit in days for automatic Boleto cancellation after due date. ex: 7 (max: 59)
     - descriptions [list of dictionaries, default None]: list of dictionaries with "text":string and (optional) "amount":int pairs
+    - discounts [list of dictionaries, default None]: list of dictionaries with "percentage":float and "date":datetime.datetime or string pairs
     - tags [list of strings]: list of strings for tagging
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when Boleto is created. ex: "5656565656565656"
@@ -35,7 +36,7 @@ class Boleto(Resource):
     """
 
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code,
-                 due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, id=None,
+                 due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, discounts=None, id=None,
                  fee=None, line=None, bar_code=None, status=None, created=None):
         Resource.__init__(self, id=id)
 
@@ -55,6 +56,7 @@ class Boleto(Resource):
         self.overdue_limit = overdue_limit
         self.tags = tags
         self.descriptions = descriptions
+        self.discounts = discounts
         self.line = line
         self.bar_code = bar_code
         self.status = status
@@ -108,8 +110,8 @@ def query(limit=None, status=None, tags=None, ids=None, after=None, before=None,
     Receive a generator of Boleto objects previously created in the Stark Bank API
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - after [datetime.date, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date, default None] date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - status [string, default None]: filter for status of retrieved objects. ex: "paid" or "registered"
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]

@@ -64,8 +64,8 @@ def query(limit=None, after=None, before=None, is_delivered=None, user=None):
     Receive a generator of notification Event objects previously created in the Stark Bank API
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - after [datetime.date, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date, default None]: date filter for objects only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - is_delivered [bool, default None]: bool to filter successfully delivered events. ex: True or False
     - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
