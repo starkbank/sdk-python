@@ -13,8 +13,19 @@ starkbank.user = exampleProject
 class TestTransactionPost(TestCase):
 
     def test_success(self):
-        transactions = generateExampleTransactions(n=5)
-        transactions = starkbank.transaction.create(transactions)
+        old_balance = starkbank.balance.get().amount
+        print("old balance: {}".format(old_balance))
+        transactions = starkbank.transaction.create(generateExampleTransactions(n=5))
+        for transaction in transactions:
+            print(transaction)
+        new_balance = starkbank.balance.get().amount
+        print("new balance: {}".format(new_balance))
+
+        balance = old_balance
+        for transaction in transactions:
+            balance += transaction.amount - transaction.fee
+            assert balance == transaction.balance
+        assert balance == new_balance
 
     def test_fail_invalid_array_size(self):
         transactions = generateExampleTransactions(n=105)
