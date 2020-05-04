@@ -20,3 +20,4 @@ sandbox.json
 *.dist-info
 *.egg-info
 venv/*
+dist
