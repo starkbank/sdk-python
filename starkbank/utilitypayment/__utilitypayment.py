@@ -18,7 +18,7 @@ class UtilityPayment(Resource):
     - tags [list of strings]: list of strings for tagging
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
-    - status [string, default None]: current payment status. ex: "registered" or "paid"
+    - status [string, default None]: current payment status. ex: "success" or "failed"
     - amount [int, default None]: amount automatically calculated from line or bar_code. ex: 23456 (= R$ 234.56)
     - fee [integer, default None]: fee charged when utility payment is created. ex: 200 (= R$ 2.00)
     - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
@@ -90,7 +90,7 @@ def query(limit=None, after=None, before=None, tags=None, ids=None, status=None,
     - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-    - status [string, default None]: filter for status of retrieved objects. ex: "paid"
+    - status [string, default None]: filter for status of retrieved objects. ex: "success"
     - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of UtilityPayment objects with updated attributes

@@ -25,7 +25,7 @@ class Transaction(Resource):
         id [string, default None]: unique id returned when Transaction is created. ex: "7656565656565656"
         fee [integer, default None]: fee charged when transaction is created. ex: 200 (= R$ 2.00)
         balance [integer, default None]: account balance after transaction was processed. ex: 100000000 (= R$ 1,000,000.00)
-        created [datetime.datetime, default None]: creation datetime for the boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+        created [datetime.datetime, default None]: creation datetime for the transaction. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, amount, description, external_id, receiver_id, sender_id=None, tags=None, id=None, fee=None, created=None, source=None, balance=None):

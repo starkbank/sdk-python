@@ -22,7 +22,7 @@ class Event(Resource):
     Events cannot be created, but may be retrieved from the Stark Bank API to
     list all generated updates on entities.
     ## Attributes:
-    - id [string]: unique id returned when the log is created. ex: "5656565656565656"
+    - id [string]: unique id returned when the event is created. ex: "5656565656565656"
     - log [Log]: a Log object from one the subscription services (TransferLog, BoletoLog, BoletoPaymentlog or UtilityPaymentLog)
     - created [datetime.datetime]: creation datetime for the notification event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - is_delivered [bool]: true if the event has been successfully delivered to the user url. ex: False

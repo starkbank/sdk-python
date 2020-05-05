@@ -11,7 +11,7 @@ class Webhook(Resource):
     - url [string]: Url that will be notified when an event occurs.
     - subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "boleto-payment"]
     ## Attributes:
-    - id [string, default None]: unique id returned when the log is created. ex: "5656565656565656"
+    - id [string, default None]: unique id returned when the webhook is created. ex: "5656565656565656"
     """
 
     def __init__(self, url, subscriptions, id=None):

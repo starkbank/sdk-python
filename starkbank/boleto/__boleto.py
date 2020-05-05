@@ -22,7 +22,7 @@ class Boleto(Resource):
     - due [datetime.date or string or string, default today + 2 days]: Boleto due date in ISO format. ex: 2020-04-30
     - fine [float, default 0.0]: Boleto fine for overdue payment in %. ex: 2.5
     - interest [float, default 0.0]: Boleto monthly interest for overdue payment in %. ex: 5.2
-    - overdue_limit [integer, default 59]: limit in days for automatic Boleto cancellation after due date. ex: 7 (max: 59)
+    - overdue_limit [integer, default 59]: limit in days for payment after due date. ex: 7 (max: 59)
     - descriptions [list of dictionaries, default None]: list of dictionaries with "text":string and (optional) "amount":int pairs
     - discounts [list of dictionaries, default None]: list of dictionaries with "percentage":float and "date":datetime.datetime or string pairs
     - tags [list of strings]: list of strings for tagging
