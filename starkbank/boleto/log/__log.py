@@ -16,7 +16,7 @@ class Log(Resource):
     - boleto [Boleto]: Boleto entity to which the log refers to.
     - errors [list of strings]: list of errors linked to this Boleto event
     - type [string]: type of the Boleto event which triggered the log creation. ex: "registered" or "paid"
-    - created [datetime.datetime]: creation datetime for the boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - created [datetime.datetime]: creation datetime for the log. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, id, created, type, errors, boleto):
