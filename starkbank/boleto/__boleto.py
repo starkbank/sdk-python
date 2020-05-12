@@ -26,6 +26,8 @@ class Boleto(Resource):
     - descriptions [list of dictionaries, default None]: list of dictionaries with "text":string and (optional) "amount":int pairs
     - discounts [list of dictionaries, default None]: list of dictionaries with "percentage":float and "date":datetime.datetime or string pairs
     - tags [list of strings]: list of strings for tagging
+    - receiver_name [string]: receiver (Sacador Avalista) full name. ex: "Anthony Edward Stark"
+    - receiver_tax_id [string]: receiver (Sacador Avalista) tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when Boleto is created. ex: "5656565656565656"
     - fee [integer, default None]: fee charged when Boleto is paid. ex: 200 (= R$ 2.00)
@@ -36,8 +38,9 @@ class Boleto(Resource):
     """
 
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code,
-                 due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, discounts=None, id=None,
-                 fee=None, line=None, bar_code=None, status=None, created=None):
+                 due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, discounts=None,
+                 receiver_name=None, receiver_tax_id=None, id=None, fee=None, line=None, bar_code=None, status=None,
+                 created=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -50,6 +53,8 @@ class Boleto(Resource):
         self.city = city
         self.state_code = state_code
         self.zip_code = zip_code
+        self.receiver_name = receiver_name
+        self.receiver_tax_id = receiver_tax_id
         self.due = check_date(due)
         self.fine = fine
         self.interest = interest
