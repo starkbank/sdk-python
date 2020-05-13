@@ -19,7 +19,7 @@ class Boleto(Resource):
     - state_code [string]: payer address state. ex: GO
     - zip_code [string]: payer address zip code. ex: 01311-200
     ## Parameters (optional):
-    - due [datetime.date or string or string, default today + 2 days]: Boleto due date in ISO format. ex: 2020-04-30
+    - due [datetime.date or string, default today + 2 days]: Boleto due date in ISO format. ex: 2020-04-30
     - fine [float, default 0.0]: Boleto fine for overdue payment in %. ex: 2.5
     - interest [float, default 0.0]: Boleto monthly interest for overdue payment in %. ex: 5.2
     - overdue_limit [integer, default 59]: limit in days for payment after due date. ex: 7 (max: 59)
@@ -115,8 +115,8 @@ def query(limit=None, status=None, tags=None, ids=None, after=None, before=None,
     Receive a generator of Boleto objects previously created in the Stark Bank API
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - after [datetime.date or string or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date or string or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - status [string, default None]: filter for status of retrieved objects. ex: "paid" or "registered"
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
