@@ -56,6 +56,9 @@ def generateExampleBoletosJson(n=1, amount=None, useRandomFutureDueDate=True):
             boletoAmount = randint(205, 300)
         else:
             boletoAmount = int(amount)
+        if randint(0, 1):
+            example_boleto.receiver_name = get_full_name()
+            example_boleto.receiver_tax_id = generateCpf() if randint(0, 1) else generateCnpj()
         example_boleto.name = get_full_name()
         example_boleto.amount = boletoAmount
         if useRandomFutureDueDate:
