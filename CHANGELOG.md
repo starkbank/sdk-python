@@ -13,7 +13,24 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
-### Added
 
+## [0.3.0] - 2020-05-12
+### Added
+- "receiver_name" & "receiver_tax_id" property to Boleto entities
+
+## [0.2.1] - 2020-05-05
+### Fixed
+- Docstrings
+
+## [0.2.0] - 2020-05-04
+### Added
+- "balance" property to Transaction entities
+- Support for dictionaries in create methods
+- "discounts" property to Boleto entities
+### Fixed
+- Docstrings
+
+## [0.1.0] - 2020-04-18
+### Added
 - Full Stark Bank API v2 compatibility
 
