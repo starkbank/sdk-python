@@ -1,4 +1,4 @@
-version = "0.2.1"
+version = "0.3.0"
 user = None
 
 from .user.__project import Project
