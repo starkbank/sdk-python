@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- Docstrings
 
 ## [0.3.0] - 2020-05-12
 ### Added
