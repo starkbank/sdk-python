@@ -234,7 +234,7 @@ class TestBoletoPdfGet(TestCase):
         boletos = starkbank.boleto.query()
         boleto_id = next(boletos).id
         pdf = starkbank.boleto.pdf(boleto_id)
-        print(pdf)
+        self.assertGreater(len(pdf), 1000)
 
     def test_fail_invalid_boleto(self):
         with self.assertRaises(InputErrors) as context:

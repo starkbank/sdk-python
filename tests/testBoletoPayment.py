@@ -101,7 +101,8 @@ class TestBoletoPaymentPdfGet(TestCase):
     def test_success(self):
         payments = starkbank.boletopayment.query(status="success")
         payment_id = next(payments).id
-        payments = starkbank.boletopayment.pdf(id=payment_id)
+        pdf = starkbank.boletopayment.pdf(id=payment_id)
+        self.assertGreater(len(pdf), 1000)
 
 
 class TestBoletoPaymentDelete(TestCase):

@@ -24,8 +24,8 @@ class TestTransactionPost(TestCase):
         balance = old_balance
         for transaction in transactions:
             balance += transaction.amount - transaction.fee
-            assert balance == transaction.balance
-        assert balance == new_balance
+            self.assertEqual(balance, transaction.balance)
+        self.assertEqual(balance, new_balance)
 
     def test_fail_invalid_array_size(self):
         transactions = generateExampleTransactions(n=105)

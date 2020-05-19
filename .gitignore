@@ -7,7 +7,7 @@ env
 .env
 
 # specific folders
-v1
+temp
 
 # specific files
 development.json

@@ -89,8 +89,12 @@ class TestTransferPost(TestCase):
         transfer = generateExampleTransfersJson(n=1)[0]
         transfer.amount = 2 * balance.amount
         transfers = starkbank.transfer.create([transfer])
-        time.sleep(3)
-        transfer = starkbank.transfer.get(id=transfers[0].id)
+        status = "created"
+        tries = 3
+        while status == "created" and tries > 0:
+            tries -= 1
+            transfer = starkbank.transfer.get(id=transfers[0].id)
+            status = transfer.status
         self.assertEqual("failed", transfer.status)
 
     def test_fail_invalid_balance_with_fee(self):
@@ -98,8 +102,12 @@ class TestTransferPost(TestCase):
         transfer = generateExampleTransfersJson(n=1)[0]
         transfer.amount = balance.amount
         transfers = starkbank.transfer.create([transfer])
-        time.sleep(3)
-        transfer = starkbank.transfer.get(id=transfers[0].id)
+        status = "created"
+        tries = 3
+        while status == "created" and tries > 0:
+            tries -= 1
+            transfer = starkbank.transfer.get(id=transfers[0].id)
+            status = transfer.status
         self.assertEqual("failed", transfer.status)
 
 
@@ -146,7 +154,7 @@ class TestTransferPdfGet(TestCase):
         transfer_id = next(transfers).id
         try:
             pdf = starkbank.transfer.pdf(id=transfer_id)
-            print(str(pdf))
+            self.assertGreater(len(pdf), 1000)
         except InputErrors as e:
             errors = e.errors
             for error in errors:
