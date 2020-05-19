@@ -13,7 +13,7 @@ is as easy as sending a text message to your client!
 This library supports the following Python versions:
 
 * Python 2.7
-* Python 3.5+
+* Python 3.4+
 
 ## Stark Bank API documentation
 
