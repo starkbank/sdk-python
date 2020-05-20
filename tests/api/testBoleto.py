@@ -13,7 +13,7 @@ starkbank.user = exampleProject
 class TestBoletoPost(TestCase):
 
     def test_success(self):
-        boletos = generateExampleBoletosJson(n=5)
+        boletos = generateExampleBoletosJson(n=100)
         boletos = starkbank.boleto.create(boletos)
         for boleto in boletos:
             print(boleto)

@@ -18,19 +18,19 @@ function wait_and_get_exit_codes() {
 DIRN=$(dirname "$0");
 
 commands=(
-    "{ python -m unittest tests.testKey; }"
-    "{ python -m unittest tests.testBalance; }"
-    "{ python -m unittest tests.testBoleto; }"
-    "{ python -m unittest tests.testBoletoLog; }"
-    "{ python -m unittest tests.testBoletoPayment; }"
-    "{ python -m unittest tests.testBoletoPaymentLog; }"
-    "{ python -m unittest tests.testEvent; }"
-    "{ python -m unittest tests.testTransaction; }"
-    "{ python -m unittest tests.testTransfer; }"
-    "{ python -m unittest tests.testTransferLog; }"
-    "{ python -m unittest tests.testUtilityPaymentLog; }"
-    "{ python -m unittest tests.testUtilityPayment; }"
-    "{ python -m unittest tests.testWebhook; }"
+    "{ python -m unittest tests.sdk.testKey; }"
+    "{ python -m unittest tests.sdk.testBalance; }"
+    "{ python -m unittest tests.sdk.testBoleto; }"
+    "{ python -m unittest tests.sdk.testBoletoLog; }"
+    "{ python -m unittest tests.sdk.testBoletoPayment; }"
+    "{ python -m unittest tests.sdk.testBoletoPaymentLog; }"
+    "{ python -m unittest tests.sdk.testEvent; }"
+    "{ python -m unittest tests.sdk.testTransaction; }"
+    "{ python -m unittest tests.sdk.testTransfer; }"
+    "{ python -m unittest tests.sdk.testTransferLog; }"
+    "{ python -m unittest tests.sdk.testUtilityPaymentLog; }"
+    "{ python -m unittest tests.sdk.testUtilityPayment; }"
+    "{ python -m unittest tests.sdk.testWebhook; }"
     )
 
 clen=`expr "${#commands[@]}" - 1` # get length of commands - 1
