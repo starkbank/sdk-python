@@ -23,6 +23,12 @@ def check_user(user):
     return user
 
 
+def check_language(language):
+    accepted_languages = ["en-US", "pt-BR"]
+    assert language in accepted_languages, "Language must be one from {}".format(accepted_languages)
+    return language
+
+
 def check_datetime(data):
     if data is None:
         return None
