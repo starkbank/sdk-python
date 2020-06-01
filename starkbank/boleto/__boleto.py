@@ -97,17 +97,18 @@ def get(id, user=None):
     return rest.get_id(resource=_resource, id=id, user=user)
 
 
-def pdf(id, user=None):
+def pdf(id, layout=None, user=None):
     """# Retrieve a specific Boleto pdf file
     Receive a single Boleto pdf file generated in the Stark Bank API by passing its id.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
+    - layout [string]: Layout specification. Available options are "default" and "booklet"
     - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Boleto pdf file
     """
-    return rest.get_pdf(resource=_resource, id=id, user=user)
+    return rest.get_pdf(resource=_resource, id=id, layout=layout, user=user)
 
 
 def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):

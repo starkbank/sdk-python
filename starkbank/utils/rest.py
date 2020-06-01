@@ -30,8 +30,8 @@ def get_id(resource, id, user=None):
     return from_api_json(resource, entity)
 
 
-def get_pdf(resource, id, user=None):
-    return fetch(method=get, path="{endpoint}/{id}/pdf".format(endpoint=endpoint(resource), id=id), user=user).content
+def get_pdf(resource, id, user=None, **kwargs):
+    return fetch(method=get, path="{endpoint}/{id}/pdf".format(endpoint=endpoint(resource), id=id), query=kwargs, user=user).content
 
 
 def post_multi(resource, entities, user=None):
