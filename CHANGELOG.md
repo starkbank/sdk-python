@@ -16,6 +16,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Add
 - Travis CI setup
 - Boleto PDF layout options
+- Transfer query tax_id filter
 ### Change
 - Test-user credentials to environment variable instead of hard-code
 ### Fixed

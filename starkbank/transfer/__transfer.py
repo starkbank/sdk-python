@@ -86,7 +86,7 @@ def pdf(id, user=None):
     return rest.get_pdf(resource=_resource, id=id, user=user)
 
 
-def query(limit=None, after=None, before=None, transaction_ids=None, status=None, sort=None, tags=None, user=None):
+def query(limit=None, after=None, before=None, transaction_ids=None, status=None, tax_id=None, sort=None, tags=None, user=None):
     """# Retrieve Transfers
     Receive a generator of Transfer objects previously created in the Stark Bank API
     ## Parameters (optional):
@@ -95,6 +95,7 @@ def query(limit=None, after=None, before=None, transaction_ids=None, status=None
     - before [datetime.date or string, default None]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
     - transaction_ids [list of strings, default None]: list of transaction IDs linked to the desired transfers. ex: ["5656565656565656", "4545454545454545"]
     - status [string, default None]: filter for status of retrieved objects. ex: "success" or "failed"
+    - tax_id [string, default None]: filter for transfers sent to the specified tax ID. ex: "012.345.678-90"
     - sort [string, default "-created"]: sort order considered in response. Valid options are 'created', '-created', 'updated' or '-updated'.
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
@@ -108,6 +109,7 @@ def query(limit=None, after=None, before=None, transaction_ids=None, status=None
         before=check_date(before),
         transaction_ids=transaction_ids,
         status=status,
+        tax_id=tax_id,
         sort=sort,
         tags=tags,
         user=user,
