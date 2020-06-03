@@ -1,4 +1,3 @@
-import time
 import starkbank
 from datetime import timedelta, date
 from unittest import TestCase, main
@@ -124,6 +123,7 @@ class TestTransferGet(TestCase):
             before=date.today(),
             status="failed",
             tags=["iron", "bank"],
+            tax_id="012.345.678-90",
             transaction_ids=["1", "2", "3"],
         )
         for transfer in transfers:
