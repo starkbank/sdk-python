@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.4.0] - 2020-06-03
 ### Add
 - Travis CI setup
 - Boleto PDF layout options
@@ -22,8 +24,6 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - Test-user credentials to environment variable instead of hard-code
 ### Fixed
 - Python 3.4 bugs
-
-### Fixed
 - Docstrings
 
 ## [0.3.0] - 2020-05-12
