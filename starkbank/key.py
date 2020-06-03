@@ -1,5 +1,5 @@
 from ellipticcurve.privateKey import PrivateKey
-from os import path as os_path
+from os import makedirs, path as os_path
 
 
 def create(path=None):
@@ -18,6 +18,8 @@ def create(path=None):
     public_pem = public.toPem()
 
     if path is not None:
+        if not os_path.exists(path):
+            makedirs(path)
         with open(os_path.join(path, "private-key.pem"), "w") as file:
             file.write(private_pem)
         with open(os_path.join(path, "public-key.pem"), "w") as file:

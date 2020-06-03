@@ -16,7 +16,7 @@ class Response:
         self.content = content
 
     def json(self):
-        return loads(self.content)
+        return loads(self.content.decode("utf-8"))
 
 
 def fetch(method, path, payload=None, query=None, user=None, version="v2"):

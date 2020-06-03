@@ -61,7 +61,7 @@ def query(limit=None, after=None, before=None, types=None, transfer_ids=None, us
         limit=limit,
         after=check_date(after),
         before=check_date(before),
-        transfer_ids=transfer_ids,
         types=types,
+        transfer_ids=transfer_ids,
         user=user,
     )
