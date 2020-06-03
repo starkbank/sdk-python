@@ -4,7 +4,7 @@ from json import dumps, loads
 from time import time
 from ..error import InternalServerError, InputErrors, UnknownError
 from ..environment import Environment
-from .checks import check_user
+from .checks import check_user, check_language
 from .url import urlencode
 import starkbank
 
@@ -21,6 +21,8 @@ class Response:
 
 def fetch(method, path, payload=None, query=None, user=None, version="v2"):
     user = check_user(user or starkbank.user)
+    language = check_language(starkbank.language)
+
     url = {
         Environment.production:  "https://api.starkbank.com/",
         Environment.sandbox:     "https://sandbox.api.starkbank.com/",
@@ -50,6 +52,7 @@ def fetch(method, path, payload=None, query=None, user=None, version="v2"):
                 "Access-Signature": signature,
                 "Content-Type": "application/json",
                 "User-Agent": agent,
+                "Accept-Language": language,
             }
         )
     except Exception as exception:

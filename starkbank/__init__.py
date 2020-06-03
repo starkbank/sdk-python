@@ -1,5 +1,7 @@
 version = "0.3.0"
+
 user = None
+language = "en-US"
 
 from .user.__project import Project
 
