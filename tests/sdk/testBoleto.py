@@ -57,6 +57,10 @@ class TestBoletoPdfGet(TestCase):
         boleto_id = next(boletos).id
         pdf = starkbank.boleto.pdf(boleto_id)
         self.assertGreater(len(pdf), 1000)
+        default_pdf = starkbank.boleto.pdf(boleto_id, layout="default")
+        self.assertGreater(len(default_pdf), 1000)
+        booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet")
+        self.assertGreater(len(booklet_pdf), 1000)
 
 
 if __name__ == '__main__':

@@ -15,6 +15,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Add
 - Travis CI setup
+- Boleto PDF layout options
 ### Change
 - Test-user credentials to environment variable instead of hard-code
 ### Fixed

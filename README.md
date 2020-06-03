@@ -230,7 +230,7 @@ After its creation, a boleto PDF may be retrieved by passing its id.
 ```python
 import starkbank
 
-pdf = starkbank.boleto.pdf("5155165527080960")
+pdf = starkbank.boleto.pdf("5155165527080960", layout="default")
 
 with open("boleto.pdf", "wb") as file:
     file.write(pdf)
