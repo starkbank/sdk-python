@@ -15,3 +15,11 @@ class User(Resource):
 
     def private_key(self):
         return PrivateKey.fromPem(self.pem)
+
+    @classmethod
+    def null(cls, environment):
+        return User(
+            id="",
+            private_key=PrivateKey(secret=1).toPem(),
+            environment=environment
+        )
