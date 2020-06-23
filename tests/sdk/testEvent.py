@@ -33,7 +33,8 @@ class TesteEventProcess(TestCase):
     def test_success(self):
         event = starkbank.event.parse(
             content=self.content,
-            signature=self.valid_signature
+            signature=self.valid_signature,
+            environment=exampleProject.environment,
         )
         print(event)
 
@@ -42,6 +43,7 @@ class TesteEventProcess(TestCase):
             starkbank.event.parse(
                 content=self.content,
                 signature=self.invalid_signature,
+                environment=exampleProject.environment,
             )
 
     def test_malformed_signature(self):
@@ -49,6 +51,7 @@ class TesteEventProcess(TestCase):
             starkbank.event.parse(
                 content=self.content,
                 signature=self.malformed_signature,
+                environment=exampleProject.environment,
             )
 
 

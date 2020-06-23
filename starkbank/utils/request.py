@@ -4,7 +4,7 @@ from json import dumps, loads
 from time import time
 from ..error import InternalServerError, InputErrors, UnknownError
 from ..environment import Environment
-from .checks import check_user, check_language
+from .checks import check_user, check_language, check_environment
 from .url import urlencode
 import starkbank
 
@@ -19,14 +19,17 @@ class Response:
         return loads(self.content.decode("utf-8"))
 
 
-def fetch(method, path, payload=None, query=None, user=None, version="v2"):
-    user = check_user(user or starkbank.user)
+def fetch(method, path, payload=None, query=None, user=None, environment=None, version="v2"):
     language = check_language(starkbank.language)
+
+    if not environment:
+        user = check_user(user or starkbank.user)
+        environment = user.environment
 
     url = {
         Environment.production:  "https://api.starkbank.com/",
         Environment.sandbox:     "https://sandbox.api.starkbank.com/",
-    }[user.environment] + version
+    }[check_environment(environment)] + version
 
     url = "{base_url}/{path}{query}".format(base_url=url, path=path, query=urlencode(query))
 
@@ -37,23 +40,29 @@ def fetch(method, path, payload=None, query=None, user=None, version="v2"):
         sdk_version=starkbank.version,
     )
 
-    access_time = str(time())
+    headers = {
+        "Content-Type": "application/json",
+        "Accept-Language": language,
+        "User-Agent": agent,
+    }
+
     body = dumps(payload) if payload else ""
-    message = "{access_id}:{access_time}:{body}".format(access_id=user.access_id(), access_time=access_time, body=body)
-    signature = Ecdsa.sign(message=message, privateKey=user.private_key()).toBase64()
+
+    if user:
+        access_time = str(time())
+        message = "{access_id}:{access_time}:{body}".format(access_id=user.access_id(), access_time=access_time, body=body)
+        signature = Ecdsa.sign(message=message, privateKey=user.private_key()).toBase64()
+        headers.update({
+            "Access-Id": user.access_id(),
+            "Access-Time": access_time,
+            "Access-Signature": signature,
+        })
 
     try:
         request = method(
             url=url,
             data=body,
-            headers={
-                "Access-Id": user.access_id(),
-                "Access-Time": access_time,
-                "Access-Signature": signature,
-                "Content-Type": "application/json",
-                "User-Agent": agent,
-                "Accept-Language": language,
-            }
+            headers=headers,
         )
     except Exception as exception:
         raise UnknownError("{}: {}".format(exception.__class__.__name__, str(exception)))

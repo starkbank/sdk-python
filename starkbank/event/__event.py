@@ -109,7 +109,7 @@ def update(id, is_delivered, user=None):
     return rest.patch_id(resource=_resource, id=id, user=user, is_delivered=is_delivered)
 
 
-def parse(content, signature, user=None):
+def parse(content, signature, environment):
     """# Create single notification Event from a content string
     Create a single Event object received from event listening at subscribed user endpoint.
     If the provided digital signature does not check out with the StarkBank public key, a
@@ -118,7 +118,7 @@ def parse(content, signature, user=None):
     - content [string]: response content from request received at user endpoint (not parsed)
     - signature [string]: base-64 digital signature received at response header "Digital-Signature"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - environment [string]: environment from where the event has been sent. ex: "sandbox" or "production"
     ## Return:
     - Parsed Event object
     """
@@ -129,22 +129,22 @@ def parse(content, signature, user=None):
     except:
         raise InvalidSignatureError("The provided signature is not valid")
 
-    if _verify_signature(content=content, signature=signature, user=user):
+    if _verify_signature(content=content, signature=signature, environment=environment):
         return event
-    if _verify_signature(content=content, signature=signature, user=user, refresh=True):
+    if _verify_signature(content=content, signature=signature, environment=environment, refresh=True):
         return event
 
     raise InvalidSignatureError("The provided signature and content do not match the Stark Bank public key")
 
 
-def _verify_signature(content, signature, user=None, refresh=False):
+def _verify_signature(content, signature, environment, refresh=False):
     public_key = cache.get("starkbank-public-key")
     if public_key is None or refresh:
-        pem = _get_public_key_pem(user)
+        pem = _get_public_key_pem(environment)
         public_key = PublicKey.fromPem(pem)
         cache["starkbank-public-key"] = public_key
     return Ecdsa.verify(message=content, signature=signature, publicKey=public_key)
 
 
-def _get_public_key_pem(user):
-    return fetch(method=get_request, path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]
+def _get_public_key_pem(environment):
+    return fetch(method=get_request, path="/public-key", query={"limit": 1}, environment=environment).json()["publicKeys"][0]["content"]

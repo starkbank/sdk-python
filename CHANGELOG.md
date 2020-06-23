@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Change
+- starkbank.event.parse to receive mandatory parameter "environment", sparing need to inform user on public route
 
 ## [0.4.0] - 2020-06-03
 ### Add
