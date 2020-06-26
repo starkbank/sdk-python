@@ -54,7 +54,7 @@ def create(transfers, user=None):
     ## Parameters (required):
     - transfers [list of Transfer objects]: list of Transfer objects to be created in the API
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - list of Transfer objects with updated attributes
     """
@@ -67,7 +67,7 @@ def get(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Transfer object with updated attributes
     """
@@ -94,7 +94,7 @@ def pdf(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Transfer pdf file
     """

@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- Organization user
 
 ## [2.2.2] - 2020-11-24
 ### Added

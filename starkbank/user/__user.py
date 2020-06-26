@@ -10,8 +10,5 @@ class User(Resource):
         self.pem = check_private_key(private_key)
         self.environment = check_environment(environment)
 
-    def access_id(self):
-        return "{kind}/{id}".format(kind=self.__class__.__name__.lower(), id=self.id)
-
     def private_key(self):
         return PrivateKey.fromPem(self.pem)

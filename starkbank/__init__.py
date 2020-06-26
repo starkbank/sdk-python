@@ -4,6 +4,7 @@ user = None
 language = "en-US"
 timeout = 15
 
+from .user.__organization import Organization
 from .user.__project import Project
 
 from . import transaction
@@ -35,6 +36,9 @@ from .utilitypayment.__utilitypayment import UtilityPayment
 
 from . import webhook
 from .webhook.__webhook import Webhook
+
+from . import workspace
+from .workspace.__workspace import Workspace
 
 from . import event
 from .event.__event import Event

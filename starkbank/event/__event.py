@@ -65,7 +65,7 @@ def get(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Event object with updated attributes
     """
@@ -100,7 +100,7 @@ def delete(id, user=None):
     ## Parameters (required):
     - id [string]: Event unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - deleted Event object
     """
@@ -115,7 +115,7 @@ def update(id, is_delivered, user=None):
     - id [list of strings]: Event unique ids. ex: "5656565656565656"
     - is_delivered [bool]: If True and event hasn't been delivered already, event will be set as delivered. ex: True
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - target Event with updated attributes
     """
@@ -131,7 +131,7 @@ def parse(content, signature, user=None):
     - content [string]: response content from request received at user endpoint (not parsed)
     - signature [string]: base-64 digital signature received at response header "Digital-Signature"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Parsed Event object
     """

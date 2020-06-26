@@ -31,7 +31,7 @@ def get(user=None):
     """# Retrieve the Balance object
     Receive the Balance object linked to your workspace in the Stark Bank API
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Balance object with updated attributes
     """
