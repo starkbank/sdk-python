@@ -74,6 +74,19 @@ def get(id, user=None):
     return rest.get_id(resource=_resource, id=id, user=user)
 
 
+def delete(id, user=None):
+    """# Delete a Transfer entity
+    Delete a Transfer entity previously created in the Stark Bank API
+    ## Parameters (required):
+    - id [string]: object unique id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - Transfer object with updated attributes
+    """
+    return rest.delete_id(resource=_resource, id=id, user=user)
+
+
 def pdf(id, user=None):
     """# Retrieve a specific Transfer pdf file
     Receive a single Transfer pdf receipt file generated in the Stark Bank API by passing its id.

@@ -82,7 +82,7 @@ def query(limit=None, after=None, before=None, is_delivered=None, user=None):
 
 
 def delete(id, user=None):
-    """# Delete a notification Event
+    """# Delete a webhook Event entity
     Delete a of notification Event entity previously created in the Stark Bank API by its ID
     ## Parameters (required):
     - id [string]: Event unique id. ex: "5656565656565656"

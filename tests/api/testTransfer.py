@@ -137,6 +137,17 @@ class TestTransferInfoGet(TestCase):
         self.assertEqual(1, len(errors))
 
 
+class TestTransferInfoDelete(TestCase):
+
+    def test_success(self):
+        transfers = generateExampleTransfersJson(n=1)
+        transfers[0].scheduled = date.today() + timedelta(days=1)
+        transfers = starkbank.transfer.create(transfers)
+        transfer = starkbank.transfer.delete(transfers[0].id)
+        self.assertIsNotNone(transfer.id)
+        self.assertEqual(transfer.id, transfers[0].id)
+
+
 class TestTransferPdfGet(TestCase):
 
     def test_success(self):
