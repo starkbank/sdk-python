@@ -16,6 +16,14 @@ from ..error import InvalidSignatureError
 from ..utils import cache
 
 
+_resource_by_subscription = {
+    "transfer": _transfer_log_resource,
+    "boleto": _boleto_log_resource,
+    "boleto-payment": _boleto_payment_log_resource,
+    "utility-payment": _utility_payment_log_resource,
+}
+
+
 class Event(Resource):
     """# Webhook Event object
     An Event is the notification received from the subscription to the Webhook.
@@ -35,12 +43,9 @@ class Event(Resource):
         self.created = check_datetime(created)
         self.is_delivered = is_delivered
         self.subscription = subscription
-        self.log = from_api_json(*{
-            "transfer": (_transfer_log_resource, log),
-            "boleto": (_boleto_log_resource, log),
-            "boleto-payment": (_boleto_payment_log_resource, log),
-            "utility-payment": (_utility_payment_log_resource, log),
-        }[subscription])
+        self.log = log
+        if subscription in _resource_by_subscription:
+            self.log = from_api_json(resource=_resource_by_subscription[subscription], json=log)
 
 
 _resource = {"class": Event, "name": "Event"}

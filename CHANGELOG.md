@@ -13,18 +13,20 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
-### Add
+### Added
 - transfer.scheduled parameter to allow Transfer scheduling
 - starkbank.transfer.delete to cancel scheduled Transfers
 - Transaction query by tags
+### Fixed
+- Event errors on unknown subscriptions
 
 ## [0.4.0] - 2020-06-03
-### Add
+### Added
 - Travis CI setup
 - Boleto PDF layout options
 - Transfer query tax_id filter
 - Global error language option
-### Change
+### Changed
 - Test-user credentials to environment variable instead of hard-code
 ### Fixed
 - Python 3.4 bugs
