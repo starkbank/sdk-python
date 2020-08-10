@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Add
+- transfer.scheduled parameter to allow Transfer scheduling
 
 ## [0.4.0] - 2020-06-03
 ### Add

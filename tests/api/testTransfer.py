@@ -1,5 +1,5 @@
 import starkbank
-from datetime import timedelta, date
+from datetime import timedelta, date, datetime
 from unittest import TestCase, main
 from starkbank.error import InputErrors
 from tests.utils.transfer import generateExampleTransfersJson
@@ -12,10 +12,15 @@ starkbank.user = exampleProject
 class TestTransferPost(TestCase):
 
     def test_success(self):
-        transfers = generateExampleTransfersJson(n=5)
+        transfers = generateExampleTransfersJson(n=5, randomSchedule=True)
+        transfers[0].scheduled = None
         transfers = starkbank.transfer.create(transfers)
         for transfer in transfers:
-            print(transfer.id)
+            print(transfer)
+        if (datetime.utcnow().hour - 3) % 24 > 19:
+            scheduled = (datetime.fromisoformat(transfers[0].scheduled) - timedelta(hours=3)).date()
+            min_expected = (datetime.utcnow() - timedelta(hours=3)).date() + timedelta(days=1)
+            assert scheduled > min_expected
 
     def test_fail_invalid_array_size(self):
         transfers = generateExampleTransfersJson(n=105)
@@ -83,31 +88,16 @@ class TestTransferPost(TestCase):
             self.assertEqual('invalidAmount', error.code)
         self.assertEqual(5, len(errors))
 
-    def test_fail_invalid_balance(self):
-        balance = starkbank.balance.get()
-        transfer = generateExampleTransfersJson(n=1)[0]
-        transfer.amount = 2 * balance.amount
-        transfers = starkbank.transfer.create([transfer])
-        status = "created"
-        tries = 3
-        while status == "created" and tries > 0:
-            tries -= 1
-            transfer = starkbank.transfer.get(id=transfers[0].id)
-            status = transfer.status
-        self.assertEqual("failed", transfer.status)
-
-    def test_fail_invalid_balance_with_fee(self):
-        balance = starkbank.balance.get()
-        transfer = generateExampleTransfersJson(n=1)[0]
-        transfer.amount = balance.amount
-        transfers = starkbank.transfer.create([transfer])
-        status = "created"
-        tries = 3
-        while status == "created" and tries > 0:
-            tries -= 1
-            transfer = starkbank.transfer.get(id=transfers[0].id)
-            status = transfer.status
-        self.assertEqual("failed", transfer.status)
+    def test_fail_invalid_scheduled(self):
+        transfers = generateExampleTransfersJson(n=1)
+        transfers[0].scheduled = datetime.now() - timedelta(days=1)
+        with self.assertRaises(InputErrors) as context:
+            transfers = starkbank.transfer.create(transfers)
+        errors = context.exception.errors
+        for error in errors:
+            print(error)
+            self.assertEqual('invalidDate', error.code)
+        self.assertEqual(1, len(errors))
 
 
 class TestTransferGet(TestCase):

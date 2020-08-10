@@ -11,7 +11,7 @@ starkbank.user = exampleProject
 class TestTransferPost(TestCase):
 
     def test_success(self):
-        transfers = generateExampleTransfersJson(n=5)
+        transfers = generateExampleTransfersJson(n=5, randomSchedule=True)
         transfers = starkbank.transfer.create(transfers)
         for transfer in transfers:
             print(transfer.id)
