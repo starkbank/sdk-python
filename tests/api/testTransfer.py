@@ -17,10 +17,10 @@ class TestTransferPost(TestCase):
         transfers = starkbank.transfer.create(transfers)
         for transfer in transfers:
             print(transfer)
-        if (datetime.utcnow().hour - 3) % 24 > 19:
+        if (datetime.utcnow() - timedelta(hours=3)).hour > 19:
             scheduled = (datetime.fromisoformat(transfers[0].scheduled) - timedelta(hours=3)).date()
-            min_expected = (datetime.utcnow() - timedelta(hours=3)).date() + timedelta(days=1)
-            assert scheduled > min_expected
+            today = (datetime.utcnow() - timedelta(hours=3)).date()
+            self.assertGreater(scheduled, today)
 
     def test_fail_invalid_array_size(self):
         transfers = generateExampleTransfersJson(n=105)
