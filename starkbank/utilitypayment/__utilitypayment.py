@@ -115,6 +115,6 @@ def delete(id, user=None):
     ## Parameters (optional):
     - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
-    - deleted UtilityPayment with updated attributes
+    - deleted UtilityPayment object
     """
     return rest.delete_id(resource=_resource, id=id, user=user)

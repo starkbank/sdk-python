@@ -94,7 +94,7 @@ def delete(id, user=None):
     ## Parameters (optional):
     - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
-    - deleted Event with updated attributes
+    - deleted Event object
     """
     return rest.delete_id(resource=_resource, id=id, user=user)
 
