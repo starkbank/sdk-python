@@ -224,7 +224,7 @@ for boleto in boletos:
 
 ### Get boleto
 
-After its creation, information on a boleto may be retrieved by passing its id. 
+After its creation, information on a boleto may be retrieved by its id. 
 Its status indicates whether it's been paid.
 
 ```python
@@ -237,7 +237,7 @@ print(boleto)
 
 ### Get boleto PDF
 
-After its creation, a boleto PDF may be retrieved by passing its id. 
+After its creation, a boleto PDF may be retrieved by its id. 
 
 ```python
 import starkbank
@@ -313,6 +313,7 @@ You can also create transfers in the SDK (TED/DOC).
 
 ```python
 import starkbank
+from datetime import datetime, timedelta
 
 transfers = starkbank.transfer.create([
     starkbank.Transfer(
@@ -331,7 +332,7 @@ transfers = starkbank.transfer.create([
         account_number="123456-7",
         tax_id="012.345.678-90",
         name="Jon Snow",
-        tags=[]
+        scheduled=datetime.today() + timedelta(days=3)
     )
 ])
 
@@ -358,6 +359,18 @@ for transfer in transfers:
     print(transfer.name)
 ```
 
+### Cancel a scheduled transfer
+
+To cancel a single scheduled transfer by its id, run:
+
+```python
+import starkbank
+
+transfer = starkbank.transfer.delete("5155165527080960")
+
+print(transfer)
+```
+
 ### Get transfer
 
 To get a single transfer by its id, run:
@@ -372,7 +385,7 @@ print(transfer)
 
 ### Get transfer PDF
 
-A transfer PDF may also be retrieved by passing its id.
+A transfer PDF may also be retrieved by its id.
 This operation is only valid if the transfer status is "processing" or "success". 
 
 ```python
@@ -457,7 +470,7 @@ print(payment)
 
 ### Get boleto payment PDF
 
-After its creation, a boleto payment PDF may be retrieved by passing its id. 
+After its creation, a boleto payment PDF may be retrieved by its id. 
 
 ```python
 import starkbank
@@ -585,7 +598,7 @@ print(payment)
 
 ### Get utility payment PDF
 
-After its creation, a utility payment PDF may also be retrieved by passing its id. 
+After its creation, a utility payment PDF may also be retrieved by its id. 
 
 ```python
 import starkbank
