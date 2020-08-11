@@ -55,6 +55,7 @@ class TestTransferInfoDelete(TestCase):
         transfer = starkbank.transfer.delete(transfers[0].id)
         self.assertIsNotNone(transfer.id)
         self.assertEqual(transfer.id, transfers[0].id)
+        self.assertEqual(transfer.status, "canceled")
 
 
 class TestTransferPdfGet(TestCase):
