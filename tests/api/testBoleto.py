@@ -136,7 +136,7 @@ class TestBoletoPost(TestCase):
         for error in errors:
             print(error)
             self.assertTrue(error.code in ['invalidBoleto', 'invalidDiscount', 'invalidDiscountDate'])
-        self.assertEqual(20, len(errors))
+        self.assertEqual(22, len(errors))
 
     def test_fail_invalid_tax_id(self):
         boletos = generateExampleBoletosJson(n=5)

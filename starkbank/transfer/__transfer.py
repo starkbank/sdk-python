@@ -21,12 +21,13 @@ class Transfer(Resource):
     - id [string, default None]: unique id returned when the transfer is created. ex: "5656565656565656"
     - fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)
     - status [string, default None]: current transfer status. ex: "success" or "failed"
+    - scheduled [datetime.datetime, default now]: datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - transaction_ids [list of strings, default None]: ledger transaction ids linked to this transfer (if there are two, second is the chargeback). ex: ["19827356981273"]
     - created [datetime.datetime, default None]: creation datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - updated [datetime.datetime, default None]: latest update datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, transaction_ids=None, fee=None, tags=None, status=None, id=None, created=None, updated=None):
+    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, scheduled=None, transaction_ids=None, fee=None, tags=None, status=None, id=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.tax_id = tax_id
@@ -35,6 +36,7 @@ class Transfer(Resource):
         self.bank_code = bank_code
         self.branch_code = branch_code
         self.account_number = account_number
+        self.scheduled = scheduled
         self.tags = tags
         self.fee = fee
         self.status = status
@@ -70,6 +72,19 @@ def get(id, user=None):
     - Transfer object with updated attributes
     """
     return rest.get_id(resource=_resource, id=id, user=user)
+
+
+def delete(id, user=None):
+    """# Delete a Transfer entity
+    Delete a Transfer entity previously created in the Stark Bank API
+    ## Parameters (required):
+    - id [string]: object unique id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - deleted Transfer object
+    """
+    return rest.delete_id(resource=_resource, id=id, user=user)
 
 
 def pdf(id, user=None):

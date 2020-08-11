@@ -33,7 +33,7 @@ class TestBoletoLogGet(TestCase):
             "created": set(),
             "registered": set(),
         }
-        sleep(5)
+        sleep(10)
         for log in logs:
             log_result[log.type].add(log.boleto.id)
         print(log_result)
