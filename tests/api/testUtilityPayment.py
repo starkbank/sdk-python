@@ -91,7 +91,7 @@ class TestUtilityPaymentPdfGet(TestCase):
 class TestUtilityPaymentDelete(TestCase):
 
     def test_success(self):
-        payments = generateExampleUtilityPaymentsJson(n=1)
+        payments = generateExampleUtilityPaymentsJson(n=1, next_day=True)
         try:
             payments = starkbank.utilitypayment.create(payments)
         except InputErrors as e:

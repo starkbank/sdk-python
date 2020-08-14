@@ -92,7 +92,7 @@ class TestTaxPaymentPdfGet(TestCase):
 class TestTaxPaymentDelete(TestCase):
 
     def test_success(self):
-        payments = generateExampleTaxPaymentsJson(n=1)
+        payments = generateExampleTaxPaymentsJson(n=1, next_day=True)
         try:
             payments = starkbank.taxpayment.create(payments)
         except InputErrors as e:
