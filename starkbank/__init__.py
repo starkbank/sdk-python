@@ -23,6 +23,9 @@ from .boletopayment.__boletopayment import BoletoPayment
 from . import utilitypayment
 from .utilitypayment.__utilitypayment import UtilityPayment
 
+from . import taxpayment
+from .taxpayment.__taxpayment import TaxPayment
+
 from . import webhook
 from .webhook.__webhook import Webhook
 
