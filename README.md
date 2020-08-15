@@ -654,6 +654,117 @@ log = starkbank.utilitypayment.log.get("1902837198237992")
 print(log)
 ```
 
+### Create tax payment
+
+Its also simple to pay taxes (such as ISS and DAS) in the SDK.
+
+```python
+import starkbank
+
+payments = starkbank.taxpayment.create([
+    starkbank.TaxPayment(
+        line="83660000001084301380074119002551100010601813",
+        scheduled="2020-08-13",
+        description="fix the road",
+        tags=["take", "my", "money"],
+    ),
+    starkbank.TaxPayment(
+        bar_code="85800000003 0 28960328203 1 56072020190 5 22109674804 0",
+        scheduled="2020-08-14",
+        description="build the hospital, hopefully",
+        tags=["expensive"],
+    ),
+])
+
+for payment in payments:
+    print(payment)
+```
+
+**Note**: Instead of using TaxPayment objects, you can also pass each payment element in dictionary format
+
+### Query tax payments
+
+To search for tax payments using filters, run:
+
+```python
+import starkbank
+
+payments = starkbank.taxpayment.query(
+    tags=["das", "july"]
+)
+
+for payment in payments:
+    print(payment)
+```
+
+### Get tax payment
+
+You can get a specific bill by its id:
+
+```python
+import starkbank
+
+payment = starkbank.taxpayment.get("5155165527080960")
+
+print(payment)
+```
+
+### Get tax payment PDF
+
+After its creation, a tax payment PDF may also be retrieved by its id. 
+
+```python
+import starkbank
+
+pdf = starkbank.taxpayment.pdf("5155165527080960")
+
+with open("iss-payment.pdf", "wb") as file:
+    file.write(pdf)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+### Delete tax payment
+
+You can also cancel a tax payment by its id.
+Note that this is not possible if it has been processed already.
+
+```python
+import starkbank
+
+payment = starkbank.taxpayment.delete("5155165527080960")
+
+print(payment)
+```
+
+### Query tax payment logs
+
+You can search for payments by specifying filters. Use this to understand the
+bills life cycles.
+
+```python
+import starkbank
+
+logs = starkbank.taxpayment.log.query(limit=10)
+
+for log in logs:
+    print(log)
+```
+
+### Get tax payment log
+
+If you want to get a specific payment log by its id, just run:
+
+```python
+import starkbank
+
+log = starkbank.taxpayment.log.get("1902837198237992")
+
+print(log)
+```
+
 ### Create transactions
 
 To send money between Stark Bank accounts, you can create transactions:
