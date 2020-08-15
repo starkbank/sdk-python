@@ -3,10 +3,16 @@ from datetime import date, timedelta
 from hashlib import sha256
 from random import choice, randint, randrange
 
-from starkbank import TaxPayment
+from starkbank import TaxPayment, UtilityPayment
 from tests.utils.businesses.businessInfo import utilitySegments, taxSegments, segmentMap, businessMap
 
-example_payment = TaxPayment(
+example_utility_payment = UtilityPayment(
+    bar_code="83660000001084301380074119002551100010601813",
+    scheduled="2020-02-29",
+    description="loading a random account",
+    tags=["test1", "test2", "test3"]
+)
+example_tax_payment = TaxPayment(
     bar_code="83660000001084301380074119002551100010601813",
     scheduled="2020-02-29",
     description="loading a random account",
@@ -20,6 +26,7 @@ def replaceBarcode(barcode, replacement, position):
 
 
 def generateExampleNonBoletoPaymentsJson(n=1, amount=None, next_day=False, is_tax=None):
+    example_payment = example_tax_payment if is_tax else example_utility_payment
     allowedSegments = utilitySegments | taxSegments
     if is_tax is False:
         allowedSegments = utilitySegments
