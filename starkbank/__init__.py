@@ -29,5 +29,8 @@ from .webhook.__webhook import Webhook
 from . import event
 from .event.__event import Event
 
+from . import paymentrequest
+from .paymentrequest.__paymentrequest import PaymentRequest
+
 from . import error
 from . import key

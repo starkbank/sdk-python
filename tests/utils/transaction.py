@@ -12,7 +12,7 @@ example_transaction = Transaction(
 )
 
 
-def generateExampleTransactions(n=1):
+def generateExampleTransactionsJson(n=1):
     transactions = []
     for _ in range(n):
         amount = randint(1, 10)

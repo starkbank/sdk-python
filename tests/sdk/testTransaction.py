@@ -2,7 +2,7 @@ import starkbank
 from datetime import datetime
 from unittest import TestCase, main
 from tests.utils.date import randomPastDate
-from tests.utils.transaction import generateExampleTransactions
+from tests.utils.transaction import generateExampleTransactionsJson
 from tests.utils.user import exampleProject
 
 
@@ -12,7 +12,7 @@ starkbank.user = exampleProject
 class TestTransactionPost(TestCase):
 
     def test_success(self):
-        transactions = starkbank.transaction.create(generateExampleTransactions(n=5))
+        transactions = starkbank.transaction.create(generateExampleTransactionsJson(n=5))
         self.assertEqual(len(transactions), 5)
         for transaction in transactions:
             print(transaction)
