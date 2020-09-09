@@ -13,6 +13,7 @@ class TestTransferPost(TestCase):
     def test_success(self):
         transfers = generateExampleTransfersJson(n=5, randomSchedule=True)
         transfers = starkbank.transfer.create(transfers)
+        self.assertEqual(len(transfers), 5)
         for transfer in transfers:
             print(transfer.id)
 
@@ -44,6 +45,15 @@ class TestTransferInfoGet(TestCase):
         transfer = starkbank.transfer.get(id=transfer_id)
         self.assertIsNotNone(transfer.id)
         self.assertEqual(transfer.id, transfer_id)
+    
+    def test_success_ids(self):
+        transfers = starkbank.transfer.query(limit=5)
+        transfers_ids_expected = [t.id for t in transfers]
+        transfers_ids_result = [t.id for t in starkbank.transfer.query(ids=transfers_ids_expected)]
+        transfers_ids_expected.sort()
+        transfers_ids_result.sort()
+        self.assertTrue(transfers_ids_result)
+        self.assertEqual(transfers_ids_expected, transfers_ids_result)
 
 
 class TestTransferInfoDelete(TestCase):

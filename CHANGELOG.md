@@ -15,6 +15,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Added
 - ids parameter to transaction.query 
+- ids parameter to transfer.query
 
 ## [0.5.0] - 2020-08-11
 ### Added
