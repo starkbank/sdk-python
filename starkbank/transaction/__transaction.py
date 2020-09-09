@@ -72,7 +72,7 @@ def get(id, user=None):
     return rest.get_id(resource=_resource, id=id, user=user)
 
 
-def query(limit=None, after=None, before=None, tags=None, external_ids=None, user=None):
+def query(limit=None, after=None, before=None, tags=None, external_ids=None, ids=None, user=None):
     """# Retrieve Transactions
     Receive a generator of Transaction objects previously created in the Stark Bank API
     ## Parameters (optional):
@@ -81,6 +81,7 @@ def query(limit=None, after=None, before=None, tags=None, external_ids=None, use
     - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - external_ids [list of strings, default None]: list of external ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of Transaction objects with updated attributes
@@ -92,5 +93,6 @@ def query(limit=None, after=None, before=None, tags=None, external_ids=None, use
         before=check_date(before),
         tags=tags,
         external_ids=external_ids,
+        ids=ids,
         user=user,
     )
