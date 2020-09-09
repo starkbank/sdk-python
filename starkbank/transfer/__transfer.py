@@ -101,7 +101,7 @@ def pdf(id, user=None):
     return rest.get_pdf(resource=_resource, id=id, user=user)
 
 
-def query(limit=None, after=None, before=None, transaction_ids=None, status=None, tax_id=None, sort=None, tags=None, user=None):
+def query(limit=None, after=None, before=None, transaction_ids=None, status=None, tax_id=None, sort=None, tags=None, ids=None, user=None):
     """# Retrieve Transfers
     Receive a generator of Transfer objects previously created in the Stark Bank API
     ## Parameters (optional):
@@ -113,6 +113,7 @@ def query(limit=None, after=None, before=None, transaction_ids=None, status=None
     - tax_id [string, default None]: filter for transfers sent to the specified tax ID. ex: "012.345.678-90"
     - sort [string, default "-created"]: sort order considered in response. Valid options are 'created', '-created', 'updated' or '-updated'.
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of Transfer objects with updated attributes
@@ -127,5 +128,6 @@ def query(limit=None, after=None, before=None, transaction_ids=None, status=None
         tax_id=tax_id,
         sort=sort,
         tags=tags,
+        ids=ids,
         user=user,
     )
