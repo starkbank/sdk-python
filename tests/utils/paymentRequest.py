@@ -34,7 +34,6 @@ def generateExamplePaymentRequestsJson(n=1):
         }[type](n=types.count(type)))
 
     for payment in payments:
-        payment.scheduled = None
         attachments = []
         if random() < 0.1:
             attachments.append(
@@ -43,8 +42,9 @@ def generateExamplePaymentRequestsJson(n=1):
         requests.append(PaymentRequest(
             center_id=center_id,
             payment=payment,
-            due=None if isinstance(payment, Transaction) else randomFutureDate(days=7).date(),
+            due=None if isinstance(payment, Transaction) else payment.scheduled,
             attachments=attachments,
         ))
+        payment.scheduled = None
 
     return requests

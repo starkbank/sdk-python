@@ -19,14 +19,11 @@ def generateExampleBoletoPaymentsJson(n=1, next_day=False):
 
     boletos = starkbank.boleto.create(boletos)
 
-    lines = [boleto.line for boleto in boletos]
-    ids = [boleto.id for boleto in boletos]
-
     payments = []
-    for id, line in zip(ids, lines):
+    for boleto in boletos:
         payment = deepcopy(example_payment)
-        payment.line = line
-        payment.scheduled = str(date.today() + timedelta(days=1) if next_day else date.today())
-        payment.description = sha256(str(id).encode('utf-8')).hexdigest()
+        payment.line = boleto.line
+        payment.scheduled = min((date.today() + timedelta(days=1)) if next_day else date.today(), boleto.due)
+        payment.description = sha256(str(boleto.id).encode('utf-8')).hexdigest()
         payments.append(payment)
     return payments
