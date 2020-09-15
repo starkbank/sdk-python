@@ -2,6 +2,7 @@ version = "0.5.0"
 
 user = None
 language = "en-US"
+timeout = 15
 
 from .user.__project import Project
 
