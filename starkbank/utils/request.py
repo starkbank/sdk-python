@@ -53,7 +53,8 @@ def fetch(method, path, payload=None, query=None, user=None, version="v2"):
                 "Content-Type": "application/json",
                 "User-Agent": agent,
                 "Accept-Language": language,
-            }
+            },
+            timeout=starkbank.timeout
         )
     except Exception as exception:
         raise UnknownError("{}: {}".format(exception.__class__.__name__, str(exception)))
