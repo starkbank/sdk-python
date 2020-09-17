@@ -40,7 +40,7 @@ class Boleto(Resource):
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code,
                  due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, discounts=None,
                  receiver_name=None, receiver_tax_id=None, id=None, fee=None, line=None, bar_code=None, status=None,
-                 created=None):
+                 created=None, our_number=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -66,6 +66,7 @@ class Boleto(Resource):
         self.bar_code = bar_code
         self.status = status
         self.created = check_datetime(created)
+        self.our_number = our_number
 
 
 _resource = {"class": Boleto, "name": "Boleto"}
@@ -103,7 +104,7 @@ def pdf(id, layout=None, hiddenFields=None, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - layout [string]: Layout specification. Available options are "default" and "booklet"
+    - layout [string, default None]: Layout specification. Available options are "default" and "booklet"
     - hiddenFields [list of strings, default None]: List of string fields to be hidden in Boleto pdf. ex: ["customerAddress"]
     - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
