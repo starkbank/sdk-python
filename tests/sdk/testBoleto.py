@@ -57,9 +57,9 @@ class TestBoletoPdfGet(TestCase):
         boleto_id = next(boletos).id
         pdf = starkbank.boleto.pdf(boleto_id)
         self.assertGreater(len(pdf), 1000)
-        default_pdf = starkbank.boleto.pdf(boleto_id, layout="default")
+        default_pdf = starkbank.boleto.pdf(boleto_id, layout="default", hidden_fields=["customerAddress"])
         self.assertGreater(len(default_pdf), 1000)
-        booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet")
+        booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet", hidden_fields=["customerAddress"])
         self.assertGreater(len(booklet_pdf), 1000)
 
 
