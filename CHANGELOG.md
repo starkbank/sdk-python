@@ -17,6 +17,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - ids parameter to transaction.query 
 - ids parameter to transfer.query
 
+### Fixed
+- hidden_fields parameter case type
+
 ## [0.5.0] - 2020-08-11
 ### Added
 - transfer.scheduled parameter to allow Transfer scheduling

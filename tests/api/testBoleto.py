@@ -239,10 +239,34 @@ class TestBoletoPdfGet(TestCase):
         self.assertGreater(len(force_default_pdf), 1000)
         booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet")
         self.assertGreater(len(booklet_pdf), 1000)
+        default_pdf = starkbank.boleto.pdf(boleto_id, layout="default", hidden_fields=["customerAddress"])
+        self.assertGreater(len(default_pdf), 1000)
+        booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet", hidden_fields=["customerAddress"])
+        self.assertGreater(len(booklet_pdf), 1000)
 
     def test_fail_invalid_boleto(self):
         with self.assertRaises(InputErrors) as context:
             pdf = starkbank.boleto.pdf("123")
+    
+    def test_fail_invalid_hidden_fields(self):
+        boletos = starkbank.boleto.query()
+        boleto_id = next(boletos).id
+
+        with self.assertRaises(InputErrors) as context:
+            default_pdf = starkbank.boleto.pdf(boleto_id, layout="default", hidden_fields=["unknown"])
+        errors = context.exception.errors
+        for error in errors:
+            print(error)
+            self.assertEqual("invalidFields", error.code)
+        self.assertEqual(1, len(errors))
+
+        with self.assertRaises(InputErrors) as context:
+            booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet", hidden_fields=["unknown"])
+        errors = context.exception.errors
+        for error in errors:
+            print(error)
+            self.assertEqual("invalidFields", error.code)
+        self.assertEqual(1, len(errors))
 
 
 if __name__ == '__main__':
