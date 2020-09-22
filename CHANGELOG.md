@@ -16,6 +16,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Added
 - ids parameter to transaction.query 
 - ids parameter to transfer.query
+- our_number attribute to Boleto
 
 ### Fixed
 - hidden_fields parameter case type
