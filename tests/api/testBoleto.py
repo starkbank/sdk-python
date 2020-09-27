@@ -239,9 +239,9 @@ class TestBoletoPdfGet(TestCase):
         self.assertGreater(len(force_default_pdf), 1000)
         booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet")
         self.assertGreater(len(booklet_pdf), 1000)
-        default_pdf = starkbank.boleto.pdf(boleto_id, layout="default", hiddenFields=["customerAddress"])
+        default_pdf = starkbank.boleto.pdf(boleto_id, layout="default", hidden_fields=["customerAddress"])
         self.assertGreater(len(default_pdf), 1000)
-        booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet", hiddenFields=["customerAddress"])
+        booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet", hidden_fields=["customerAddress"])
         self.assertGreater(len(booklet_pdf), 1000)
 
     def test_fail_invalid_boleto(self):
@@ -253,7 +253,7 @@ class TestBoletoPdfGet(TestCase):
         boleto_id = next(boletos).id
 
         with self.assertRaises(InputErrors) as context:
-            default_pdf = starkbank.boleto.pdf(boleto_id, layout="default", hiddenFields=["unknown"])
+            default_pdf = starkbank.boleto.pdf(boleto_id, layout="default", hidden_fields=["unknown"])
         errors = context.exception.errors
         for error in errors:
             print(error)
@@ -261,7 +261,7 @@ class TestBoletoPdfGet(TestCase):
         self.assertEqual(1, len(errors))
 
         with self.assertRaises(InputErrors) as context:
-            booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet", hiddenFields=["unknown"])
+            booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet", hidden_fields=["unknown"])
         errors = context.exception.errors
         for error in errors:
             print(error)

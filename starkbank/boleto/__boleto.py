@@ -35,12 +35,13 @@ class Boleto(Resource):
     - bar_code [string, default None]: generated Boleto bar-code for payment. ex: "34195819600000000621090063571277307144464000"
     - status [string, default None]: current Boleto status. ex: "registered" or "paid"
     - created [datetime.datetime, default None]: creation datetime for the Boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - our_number [string, default None]: Reference number registered at the settlement bank. ex:"10131474"
     """
 
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code,
                  due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, discounts=None,
                  receiver_name=None, receiver_tax_id=None, id=None, fee=None, line=None, bar_code=None, status=None,
-                 created=None):
+                 created=None, our_number=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -66,6 +67,7 @@ class Boleto(Resource):
         self.bar_code = bar_code
         self.status = status
         self.created = check_datetime(created)
+        self.our_number = our_number
 
 
 _resource = {"class": Boleto, "name": "Boleto"}
@@ -97,19 +99,19 @@ def get(id, user=None):
     return rest.get_id(resource=_resource, id=id, user=user)
 
 
-def pdf(id, layout=None, hiddenFields=None, user=None):
+def pdf(id, layout=None, hidden_fields=None, user=None):
     """# Retrieve a specific Boleto pdf file
     Receive a single Boleto pdf file generated in the Stark Bank API by passing its id.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
     - layout [string]: Layout specification. Available options are "default" and "booklet"
-    - hiddenFields [list of strings, default None]: List of string fields to be hidden in Boleto pdf. ex: ["customerAddress"]
+    - hidden_fields [list of strings, default None]: List of string fields to be hidden in Boleto pdf. ex: ["customerAddress"]
     - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Boleto pdf file
     """
-    return rest.get_pdf(resource=_resource, id=id, layout=layout, hiddenFields=hiddenFields, user=user)
+    return rest.get_pdf(resource=_resource, id=id, layout=layout, hidden_fields=hidden_fields, user=user)
 
 
 def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):
