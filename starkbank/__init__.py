@@ -18,6 +18,9 @@ from .boleto.__boleto import Boleto
 from . import transfer
 from .transfer.__transfer import Transfer
 
+from . import boletoholmes
+from .boletoholmes.__boletoholmes import BoletoHolmes
+
 from . import boletopayment
 from .boletopayment.__boletopayment import BoletoPayment
 

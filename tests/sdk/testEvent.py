@@ -12,6 +12,8 @@ class TestEventGet(TestCase):
 
     def test_success(self):
         events = list(starkbank.event.query(limit=10))
+        for event in events:
+            print(event)
         self.assertEqual(len(events), 10)
 
 
