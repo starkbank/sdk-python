@@ -777,7 +777,10 @@ import starkbank
 
 response = listen()  # this is the method you made to get the events posted to your webhook
 
-event = starkbank.event.parse(content=response.content, signature=response.headers["Digital-Signature"])
+event = starkbank.event.parse(
+    content=response.data.decode("utf-8"),
+    signature=response.headers["Digital-Signature"],
+)
 
 if event.subscription == "transfer":
     print(event.log.transfer)

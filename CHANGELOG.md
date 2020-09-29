@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.6.0] - 2020-09-29
 ### Added
 - ids parameter to transaction.query 
 - ids parameter to transfer.query
