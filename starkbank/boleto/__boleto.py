@@ -56,7 +56,7 @@ class Boleto(Resource):
         self.zip_code = zip_code
         self.receiver_name = receiver_name
         self.receiver_tax_id = receiver_tax_id
-        self.due = check_date(due)
+        self.due = check_datetime(due)
         self.fine = fine
         self.interest = interest
         self.overdue_limit = overdue_limit
