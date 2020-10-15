@@ -33,7 +33,7 @@ _resource = {"class": Log, "name": "BoletoPaymentLog"}
 
 def get(id, user=None):
     """# Retrieve a specific boletopayment.Log
-    Receive a single boletopayment.Log object previously created by the Stark Bank API by passing its id
+    Receive a single boletopayment.Log object previously created by the Stark Bank API by its id
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):

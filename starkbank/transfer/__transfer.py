@@ -17,11 +17,11 @@ class Transfer(Resource):
     - account_number [string]: Receiver Bank Account number. Use '-' before the verifier digit. ex: "876543-2"
     ## Parameters (optional):
     - tags [list of strings]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
+    - scheduled [datetime.datetime, default now]: datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when the transfer is created. ex: "5656565656565656"
     - fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)
     - status [string, default None]: current transfer status. ex: "success" or "failed"
-    - scheduled [datetime.datetime, default now]: datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - transaction_ids [list of strings, default None]: ledger transaction ids linked to this transfer (if there are two, second is the chargeback). ex: ["19827356981273"]
     - created [datetime.datetime, default None]: creation datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - updated [datetime.datetime, default None]: latest update datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
@@ -63,7 +63,7 @@ def create(transfers, user=None):
 
 def get(id, user=None):
     """# Retrieve a specific Transfer
-    Receive a single Transfer object previously created in the Stark Bank API by passing its id
+    Receive a single Transfer object previously created in the Stark Bank API by its id
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
@@ -89,7 +89,7 @@ def delete(id, user=None):
 
 def pdf(id, user=None):
     """# Retrieve a specific Transfer pdf file
-    Receive a single Transfer pdf receipt file generated in the Stark Bank API by passing its id.
+    Receive a single Transfer pdf receipt file generated in the Stark Bank API by its id.
     Only valid for transfers with "processing" and "success" status.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"

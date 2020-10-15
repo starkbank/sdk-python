@@ -40,7 +40,7 @@ def create(url, subscriptions, user=None):
 
 def get(id, user=None):
     """# Retrieve a specific Webhook subscription
-    Receive a single Webhook subscription object previously created in the Stark Bank API by passing its id
+    Receive a single Webhook subscription object previously created in the Stark Bank API by its id
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
