@@ -714,6 +714,59 @@ transaction = starkbank.transaction.get("5155165527080960")
 print(transaction)
 ```
 
+### Create payment requests to be approved by authorized people in a cost center 
+
+You can also request payments that must pass through a specific cost center approval flow to be executed.
+In certain structures, this allows double checks for cash-outs and also gives time to load your account
+with the required amount before the payments take place.
+The approvals can be granted at our website and must be performed according to the rules
+specified in the cost center.
+
+**Note**: The value of the center\_id parameter can be consulted by logging into our website and going
+to the desired cost center page.
+
+```python
+# coding: utf-8
+import starkbank
+from datetime import date, timedelta
+
+
+requests = starkbank.paymentrequest.create([
+    starkbank.PaymentRequest(
+        center_id="5967314465849344",
+        payment=starkbank.Transfer(
+            amount=200,
+            bank_code="341",
+            branch_code="1234",
+            account_number="123456-7",
+            tax_id="012.345.678-90",
+            name="Bucket Head",
+            tags=[]
+        ),
+        due=date.today() + timedelta(days=1)
+    ),
+])
+
+for request in requests:
+    print(request)
+```
+
+**Note**: Instead of using PaymentRequest objects, you can also pass each request element in dictionary format
+
+
+### Query payment requests
+
+To search for payment requests, run:
+
+```python
+import starkbank
+
+requests = starkbank.paymentrequest.query(center_id=center_id, limit=10)
+
+for request in requests:
+    print(request)
+```
+
 ### Create webhook subscription
 
 To create a webhook subscription and be notified whenever an event occurs, run:
