@@ -25,15 +25,3 @@ setup(
         "starkbank-ecdsa~=1.0.0",
     ],
 )
-
-### Create a source distribution:
-
-#Run ```python setup.py sdist``` inside the project directory.
-
-### Install twine:
-
-#```pip install twine```
-
-### Upload package to pypi:
-
-#```twine upload dist/*```

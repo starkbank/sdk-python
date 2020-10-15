@@ -1,4 +1,4 @@
-# Stark Bank Python SDK Beta
+# Stark Bank Python SDK
 
 Welcome to the Stark Bank Python SDK! This tool is made for Python 
 developers who want to easily integrate with our API.
