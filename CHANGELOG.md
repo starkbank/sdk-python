@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- PaymentRequest resource to pass payments through manual approval flow
 
 ## [0.6.0] - 2020-09-29
 ### Added

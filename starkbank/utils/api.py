@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from .resource import Resource
 from .case import camel_to_kebab, snake_to_camel, camel_to_snake
 
 
@@ -20,6 +21,9 @@ def cast_json_to_api_format(json):
 def cast_values(value):
     if isinstance(value, (datetime, date)):
         return value.strftime("%Y-%m-%d")
+
+    if isinstance(value, Resource):
+        return api_json(value)
 
     if not isinstance(value, list):
         return value

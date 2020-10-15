@@ -3,7 +3,7 @@ from datetime import datetime
 from unittest import TestCase, main
 from starkbank.error import InputErrors
 from tests.utils.date import randomPastDate
-from tests.utils.transaction import generateExampleTransactions
+from tests.utils.transaction import generateExampleTransactionsJson
 from tests.utils.user import exampleProject
 
 
@@ -15,7 +15,7 @@ class TestTransactionPost(TestCase):
     def test_success(self):
         old_balance = starkbank.balance.get().amount
         print("old balance: {}".format(old_balance))
-        transactions = starkbank.transaction.create(generateExampleTransactions(n=5))
+        transactions = starkbank.transaction.create(generateExampleTransactionsJson(n=5))
         for transaction in transactions:
             print(transaction)
         new_balance = starkbank.balance.get().amount
@@ -28,7 +28,7 @@ class TestTransactionPost(TestCase):
         self.assertEqual(balance, new_balance)
 
     def test_fail_invalid_array_size(self):
-        transactions = generateExampleTransactions(n=105)
+        transactions = generateExampleTransactionsJson(n=105)
         with self.assertRaises(InputErrors) as context:
             transactions = starkbank.transaction.create(transactions)
         errors = context.exception.errors
@@ -46,7 +46,7 @@ class TestTransactionPost(TestCase):
         self.assertEqual(1, len(errors))
 
     def test_fail_invalid_json_transaction(self):
-        transactions = generateExampleTransactions(n=6)
+        transactions = generateExampleTransactionsJson(n=6)
         transactions[0].amount = None  # Required
         transactions[1].receiver_id = None  # Required
         transactions[2].external_id = None  # Required

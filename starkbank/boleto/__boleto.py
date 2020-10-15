@@ -88,7 +88,7 @@ def create(boletos, user=None):
 
 def get(id, user=None):
     """# Retrieve a specific Boleto
-    Receive a single Boleto object previously created in the Stark Bank API by passing its id
+    Receive a single Boleto object previously created in the Stark Bank API by its id
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
@@ -101,7 +101,7 @@ def get(id, user=None):
 
 def pdf(id, layout=None, hidden_fields=None, user=None):
     """# Retrieve a specific Boleto pdf file
-    Receive a single Boleto pdf file generated in the Stark Bank API by passing its id.
+    Receive a single Boleto pdf file generated in the Stark Bank API by its id.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
