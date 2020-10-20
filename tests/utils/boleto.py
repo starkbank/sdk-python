@@ -5,7 +5,7 @@ from random import randint
 from starkbank import Boleto
 from .names.names import get_full_name
 from .date import randomFutureDate
-from .taxIdGenerator import generateCpf, generateCnpj
+from .taxIdGenerator import TaxIdGenerator
 
 
 example_boleto = Boleto(
@@ -58,11 +58,11 @@ def generateExampleBoletosJson(n=1, amount=None, useRandomFutureDueDate=True):
             boletoAmount = int(amount)
         if randint(0, 1):
             example_boleto.receiver_name = get_full_name()
-            example_boleto.receiver_tax_id = generateCpf() if randint(0, 1) else generateCnpj()
+            example_boleto.receiver_tax_id = TaxIdGenerator.taxId()
         example_boleto.name = get_full_name()
         example_boleto.amount = boletoAmount
         if useRandomFutureDueDate:
             example_boleto.due = randomFutureDate(days=7).date()
-        example_boleto.tax_id = generateCpf() if randint(0, 1) else generateCnpj()
+        example_boleto.tax_id = TaxIdGenerator.taxId()
         boletos.append(deepcopy(example_boleto))
     return boletos
