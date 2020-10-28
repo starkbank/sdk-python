@@ -24,6 +24,8 @@ commands=(
     "{ python -m unittest tests.sdk.testBoletoLog; }"
     "{ python -m unittest tests.sdk.testBoletoPayment; }"
     "{ python -m unittest tests.sdk.testBoletoPaymentLog; }"
+    "{ python -m unittest tests.sdk.testBoletoHolmes; }"
+    "{ python -m unittest tests.sdk.testBoletoHolmesLog; }"
     "{ python -m unittest tests.sdk.testEvent; }"
     "{ python -m unittest tests.sdk.testPaymentRequest; }"
     "{ python -m unittest tests.sdk.testTransaction; }"

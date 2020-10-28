@@ -541,6 +541,87 @@ log = starkbank.boletopayment.log.get("5155165527080960")
 print(log)
 ```
 
+### Investigate a boleto
+
+You can discover if a StarkBank boleto has been recently paid before we receive the response on the next day.
+This can be done by creating a BoletoHolmes object, which fetches the updated status of the corresponding
+Boleto object according to CIP to check, for example, whether it is still payable or not. The investigation
+happens asynchronously and the most common way to retrieve the results is to register a "boleto-holmes" webhook
+subscription, although polling is also possible. 
+
+```python
+import starkbank
+
+holmes = starkbank.boletoholmes.create([
+    starkbank.BoletoHolmes(
+        boleto_id="5656565656565656",
+    ),
+    starkbank.BoletoHolmes(
+        boleto_id="4848484848484848",
+    ),
+])
+
+for sherlock in holmes:
+    print(sherlock)
+```
+
+**Note**: Instead of using BoletoHolmes objects, you can also pass each payment element in dictionary format
+
+### Get boleto holmes
+
+To get a single Holmes by its id, run:
+
+```python
+import starkbank
+
+sherlock = starkbank.boletoholmes.get("19278361897236187236")
+
+print(sherlock)
+```
+
+### Query boleto holmes
+
+You can search for boleto Holmes using filters. 
+
+```python
+import starkbank
+
+holmes = starkbank.boletoholmes.query(
+    tags=["customer_1", "customer_2"]
+)
+
+for sherlock in holmes:
+    print(sherlock)
+```
+
+### Query boleto holmes logs
+
+Searches are also possible with boleto holmes logs:
+
+```python
+import starkbank
+
+logs = starkbank.boletoholmes.log.query(
+    holmes_ids=["5155165527080960", "76551659167801921"],
+)
+
+for log in logs:
+    print(log)
+```
+
+
+### Get boleto holmes log
+
+You can also get a boleto holmes log by specifying its id.
+
+```python
+import starkbank
+
+log = starkbank.boletoholmes.log.get("5155165527080960")
+
+print(log)
+```
+
 ### Create utility payment
 
 Its also simple to pay utility bills (such as electricity and water bills) in the SDK.

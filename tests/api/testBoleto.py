@@ -101,10 +101,8 @@ class TestBoletoPost(TestCase):
         boletos[0].discounts = None  # Valid (correct)
         boletos[1].discounts = []  # Valid (correct)
         boletos[2].discounts = [{"percentage": 3, "date": date.today() + timedelta(days=1)},
-                                {"percentage": 5, "date": date.today()},
-                                {"percentage": 2.5, "date": date.today() + timedelta(days=2)}]  # Valid (correct)
+                                {"percentage": 5, "date": date.today()}]  # Valid (correct)
         boletos[3].discounts = [{"percentage": 5, "date": date.today()},
-                                {"percentage": 3, "date": date.today() + timedelta(days=1)},
                                 {"percentage": 2.5, "date": date.today() + timedelta(days=2)}]  # Valid (correct)
         boletos[4].discounts = [{"percentage": 5, "date": date.today()},
                                 {"percentage": 4, "date": date.today() + timedelta(days=1)},

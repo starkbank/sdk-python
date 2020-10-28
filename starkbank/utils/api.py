@@ -58,4 +58,9 @@ def last_name(resource):
 
 
 def last_name_plural(resource):
-    return "{name}s".format(name=last_name(resource))
+    base = last_name(resource)
+    if base.endswith("s"):
+        return base
+    if base.endswith("y"):
+        return "{name}ies".format(name=base[:-1])
+    return "{name}s".format(name=base)
