@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from .resource import Resource
 from .case import camel_to_kebab, snake_to_camel, camel_to_snake
 
@@ -19,8 +19,14 @@ def cast_json_to_api_format(json):
 
 
 def cast_values(value):
-    if isinstance(value, (datetime, date)):
+    if type(value) == datetime:
+        return value.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+
+    if isinstance(value, date):
         return value.strftime("%Y-%m-%d")
+
+    if isinstance(value, timedelta):
+        return int(value.total_seconds())
 
     if isinstance(value, Resource):
         return api_json(value)

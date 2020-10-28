@@ -36,5 +36,8 @@ from .event.__event import Event
 from . import paymentrequest
 from .paymentrequest.__paymentrequest import PaymentRequest
 
+from . import invoice
+from .invoice.__invoice import Invoice
+
 from . import error
 from . import key

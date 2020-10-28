@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 
 def check_environment(environment):
@@ -33,13 +33,13 @@ def check_datetime(data):
     if data is None:
         return None
 
-    if isinstance(data, datetime):
+    if type(data) == datetime:
         return data
 
     if isinstance(data, date):
         return datetime(data.year, data.month, data.day)
 
-    return check_datetime_string(data)
+    return check_datetime_string(data)[0]
 
 
 def check_date(data):
@@ -52,26 +52,41 @@ def check_date(data):
     if isinstance(data, date):
         return data
 
-    data = check_datetime_string(data)
+    data, type = check_datetime_string(data)
 
-    return data.date()
+    return data.date() if type == date else data
+
+
+def check_timedelta(data):
+    if data is None:
+        return None
+
+    if isinstance(data, timedelta):
+        return data
+
+    try:
+        return timedelta(seconds=data)
+    except:
+        raise TypeError(
+            "invalid timedelta {data}, please use an integer in seconds or a datetime.timedelta object".format(data=data)
+        )
 
 
 def check_datetime_string(data):
     data = str(data)
 
     try:
-        return datetime.strptime(data, "%Y-%m-%d")
+        return datetime.strptime(data, "%Y-%m-%d"), date
     except:
         pass
 
     try:
-        return datetime.strptime(data, "%Y-%m-%dT%H:%M:%S.%f+00:00")
+        return datetime.strptime(data, "%Y-%m-%dT%H:%M:%S.%f+00:00"), datetime
     except:
         pass
 
     try:
-        return datetime.strptime(data, "%Y-%m-%dT%H:%M:%S+00:00")
+        return datetime.strptime(data, "%Y-%m-%dT%H:%M:%S+00:00"), datetime
     except:
         pass
 
