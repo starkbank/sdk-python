@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from random import randint
 from starkbank import Transfer
 from .names.names import get_full_name
-from .taxIdGenerator import generateCpf, generateCnpj
+from .taxIdGenerator import TaxIdGenerator
 
 
 example_transfer = Transfer(
@@ -24,7 +24,7 @@ def generateExampleTransfersJson(n=1, randomSchedule=False):
         transfer = deepcopy(example_transfer)
         transfer.name = get_full_name()
         transfer.amount = amount
-        transfer.tax_id = generateCpf() if randint(0, 1) else generateCnpj()
+        transfer.tax_id = TaxIdGenerator.taxId()
         if randomSchedule:
             transfer.scheduled = date.today() + timedelta(days=randint(0, 10))
         transfers.append(transfer)

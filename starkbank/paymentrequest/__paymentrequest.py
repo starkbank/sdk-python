@@ -62,13 +62,7 @@ def _parse_payment(payment, type):
                 "utility-payment": _utility_payment_resource,
             }[type], payment)), type
         except KeyError:
-            raise Exception(
-                "if payment is a dictionary, type must be"
-                " transfer"
-                ", transaction"
-                ", boleto-payment"
-                "or utility-payment"
-            )
+            return payment, type
 
     if type:
         return payment, type
