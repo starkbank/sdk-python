@@ -65,7 +65,7 @@ class TestEventDelete(TestCase):
 class TestEventSetDelivered(TestCase):
 
     def test_success(self):
-        event = next(starkbank.event.query(limit=1, is_delivered=False))
+        event = choice(list(starkbank.event.query(limit=100, is_delivered=False)))
         assert event.is_delivered is False
         event = starkbank.event.update(id=event.id, is_delivered=True)
         event = starkbank.event.get(event.id)
