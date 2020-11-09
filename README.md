@@ -188,6 +188,18 @@ balance = starkbank.balance.get()
 print(balance)
 ```
 
+### Get dict key
+
+You can get the PIX key's parameters by its id.
+
+```python
+import starkbank
+
+dict_key = starkbank.dictkey.get("tony@starkbank.com")
+
+print(dict_key)
+```
+
 ### Create invoices
 
 You can create dynamic QR Code invoices to charge customers or to receive money from accounts

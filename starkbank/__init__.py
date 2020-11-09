@@ -39,5 +39,8 @@ from .paymentrequest.__paymentrequest import PaymentRequest
 from . import invoice
 from .invoice.__invoice import Invoice
 
+from . import dictkey
+from .dictkey.__dictkey import DictKey
+
 from . import error
 from . import key
