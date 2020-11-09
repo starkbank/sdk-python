@@ -21,6 +21,9 @@ from .transfer.__transfer import Transfer
 from . import boletoholmes
 from .boletoholmes.__boletoholmes import BoletoHolmes
 
+from . import brcodepayment
+from .brcodepayment.__brcodepayment import BrcodePayment
+
 from . import boletopayment
 from .boletopayment.__boletopayment import BoletoPayment
 

@@ -642,6 +642,101 @@ log = starkbank.transfer.log.get("5155165527080960")
 print(log)
 ```
 
+### Pay a BR Code
+
+Paying a BR Code is also simple.
+
+```python
+import starkbank
+
+payments = starkbank.brcodepayment.create([
+    starkbank.BrcodePayment(
+        brcode="00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A",
+        tax_id="012.345.678-90",
+        scheduled="2020-03-13",
+        description="take my money",
+        tags=["take", "my", "money"],
+    )
+])
+
+for payment in payments:
+    print(payment)
+```
+
+**Note**: Instead of using BrcodePayment objects, you can also pass each payment element in dictionary format
+
+### Get brcode payment
+
+To get a single BR Code payment by its id, run:
+
+```python
+import starkbank
+
+payment = starkbank.brcodepayment.get("19278361897236187236")
+
+print(payment)
+```
+
+### Get brcode payment PDF (COMMING SOON)
+
+After its creation, a boleto payment PDF may be retrieved by its id. 
+
+```python
+import starkbank
+
+pdf = starkbank.brcodepayment.pdf("5155165527080960")
+
+with open("brcode-payment.pdf", "wb") as file:
+    file.write(pdf)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+### Query brcode payments
+
+You can search for brcode payments using filters. 
+
+```python
+import starkbank
+
+payments = starkbank.brcodepayment.query(
+    tags=["company_1", "company_2"]
+)
+
+for payment in payments:
+    print(payment)
+```
+
+### Query BR Code payment logs
+
+Searches are also possible with BR Code payment logs:
+
+```python
+import starkbank
+
+logs = starkbank.brcodepayment.log.query(
+    payment_ids=["5155165527080960", "76551659167801921"],
+)
+
+for log in logs:
+    print(log)
+```
+
+
+### Get BR Code payment log
+
+You can also get a BR Code payment log by specifying its id.
+
+```python
+import starkbank
+
+log = starkbank.brcodepayment.log.get("5155165527080960")
+
+print(log)
+```
+
 ### Pay a boleto
 
 Paying a boleto is also simple.

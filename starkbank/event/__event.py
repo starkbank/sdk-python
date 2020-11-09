@@ -12,6 +12,7 @@ from ..boleto.log.__log import _resource as _boleto_log_resource
 from ..invoice.log.__log import _resource as _invoice_log_resource
 from ..deposit.log.__log import _resource as _deposit_log_resource
 from ..transfer.log.__log import _resource as _transfer_log_resource
+from ..brcodepayment.log.__log import _resource as _brcodepayment_payment_log_resource
 from ..boletopayment.log.__log import _resource as _boleto_payment_log_resource
 from ..utilitypayment.log.__log import _resource as _utility_payment_log_resource
 from ..boletoholmes.log.__log import _resource as _boleto_holmes_log_resource
@@ -24,6 +25,7 @@ _resource_by_subscription = {
     "invoice": _invoice_log_resource,
     "deposit": _deposit_log_resource,
     "boleto": _boleto_log_resource,
+    "brcode-payment": _brcodepayment_payment_log_resource,
     "boleto-payment": _boleto_payment_log_resource,
     "utility-payment": _utility_payment_log_resource,
     "holmes": _boleto_holmes_log_resource,

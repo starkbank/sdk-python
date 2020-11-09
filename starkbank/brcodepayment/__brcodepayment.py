@@ -1,0 +1,98 @@
+from ..utils import rest
+from ..utils.checks import check_datetime, check_date
+from ..utils.resource import Resource
+
+
+class BrcodePayment(Resource):
+
+    """# BrcodePayment object
+    When you initialize a BrcodePayment, the entity will not be automatically
+    created in the Stark Bank API. The 'create' function sends the objects
+    to the Stark Bank API and returns the list of created objects.
+    ## Parameters (required):
+    - brcode [string]: String loaded directly from the QRCode or copied from the invoice. ex: "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"
+    - tax_id [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+    - description [string]: Text to be displayed in your statement (min. 10 characters). ex: "payment ABC"
+    ## Parameters (optional):
+    - amount [int, default None]: amount automatically calculated from line or bar_code. ex: 23456 (= R$ 234.56)
+    - scheduled [datetime.date, datetime.datetime or string, default now]: payment scheduled date or datetime. ex: datetime.datetime(2020, 3, 10, 15, 17, 3)
+    - tags [list of strings, default None]: list of strings for tagging
+    ## Attributes (return-only):
+    - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
+    - status [string, default None]: current payment status. ex: "success" or "failed"
+    - type [string, default None]: brcode type. ex: "static" or "dynamic"
+    - fee [integer, default None]: fee charged when the brcode payment is created. ex: 200 (= R$ 2.00)
+    - updated [datetime.datetime, default None]: latest update datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    """
+
+    def __init__(self, brcode, tax_id, description, amount=None, scheduled=None, tags=None, id=None, status=None,
+                 type=None, fee=None, updated=None, created=None):
+        Resource.__init__(self, id=id)
+
+        self.brcode = brcode
+        self.tax_id = tax_id
+        self.description = description
+        self.tags = tags
+        self.scheduled = check_date(scheduled)
+        self.status = status
+        self.type = type
+        self.amount = amount
+        self.fee = fee
+        self.updated = check_datetime(updated)
+        self.created = check_datetime(created)
+
+
+_resource = {"class": BrcodePayment, "name": "BrcodePayment"}
+
+
+def create(payments, user=None):
+    """# Create BrcodePayments
+    Send a list of BrcodePayment objects for creation in the Stark Bank API
+    ## Parameters (required):
+    - payments [list of BrcodePayment objects]: list of BrcodePayment objects to be created in the API
+    ## Parameters (optional):
+    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - list of BrcodePayment objects with updated attributes
+    """
+    return rest.post_multi(resource=_resource, entities=payments, user=user)
+
+
+def get(id, user=None):
+    """# Retrieve a specific BrcodePayment
+    Receive a single BrcodePayment object previously created by the Stark Bank API by its id
+    ## Parameters (required):
+    - id [string]: object unique id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - BrcodePayment object with updated attributes
+    """
+    return rest.get_id(resource=_resource, id=id, user=user)
+
+
+def query(limit=None, after=None, before=None, tags=None, ids=None, status=None, user=None):
+    """# Retrieve BrcodePayments
+    Receive a generator of BrcodePayment objects previously created in the Stark Bank API
+    ## Parameters (optional):
+    - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - status [string, default None]: filter for status of retrieved objects. ex: "success"
+    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - generator of BrcodePayment objects with updated attributes
+    """
+    return rest.get_list(
+        resource=_resource,
+        limit=limit,
+        after=check_date(after),
+        before=check_date(before),
+        tags=tags,
+        ids=ids,
+        status=status,
+        user=user,
+    )
