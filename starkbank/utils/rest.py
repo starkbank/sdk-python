@@ -34,6 +34,10 @@ def get_pdf(resource, id, user=None, **kwargs):
     return fetch(method=get, path="{endpoint}/{id}/pdf".format(endpoint=endpoint(resource), id=id), query=kwargs, user=user).content
 
 
+def get_qrcode(resource, id, user=None, **kwargs):
+    return fetch(method=get, path="{endpoint}/{id}/qrcode".format(endpoint=endpoint(resource), id=id), query=kwargs, user=user).content
+
+
 def post_multi(resource, entities, user=None):
     json = fetch(method=post, path=endpoint(resource), user=user, payload={
         last_name_plural(resource): [api_json(entity) for entity in entities]

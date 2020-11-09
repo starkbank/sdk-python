@@ -188,6 +188,156 @@ balance = starkbank.balance.get()
 print(balance)
 ```
 
+### Create invoices
+
+You can create dynamic QR Code invoices to charge customers or to receive money from accounts
+you have in other banks.
+
+```python
+# coding: utf-8
+import starkbank
+from datetime import datetime, timedelta
+
+
+invoices = starkbank.invoice.create([
+    starkbank.Invoice(
+        amount=23571,  # R$ 235,71 
+        name="Buzz Aldrin",
+        tax_id="012.345.678-90", 
+        due=datetime(2020, 3, 20),
+        expiration=timedelta(hours=3).total_seconds(),
+        fine=5,  # 5%
+        interest=2.5,  # 2.5% per month
+    )
+])
+
+for invoice in invoices:
+    print(invoice)
+```
+
+**Note**: Instead of using Invoice objects, you can also pass each invoice element in dictionary format
+
+### Get an invoice
+
+After its creation, information on an invoice may be retrieved by its id. 
+Its status indicates whether it's been paid.
+
+```python
+import starkbank
+
+invoice = starkbank.invoice.get("5155165527080960")
+
+print(invoice)
+```
+
+### Get an invoice PDF (COMING SOON)
+
+After its creation, an invoice PDF may be retrieved by its id. 
+
+```python
+import starkbank
+
+pdf = starkbank.invoice.pdf("5155165527080960", layout="default")
+
+with open("invoice.pdf", "wb") as file:
+    file.write(pdf)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+### Get an invoice Qrcode 
+
+After its creation, an invoice qrcode may be retrieved by its id. 
+
+```python
+import starkbank
+
+qrcode = starkbank.invoice.qrcode("5881614903017472", size= 15)
+
+with open("qrcode.png", "wb") as file:
+    file.write(qrcode)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+### Cancel an invoice
+
+You can also cancel an invoice by its id.
+Note that this is not possible if it has been paid already.
+
+```python
+import starkbank
+
+invoice = starkbank.invoice.update("5155165527080960", status="canceled")
+
+print(invoice)
+```
+
+### Update an invoice
+
+You can update an invoice's amount, due date and expiration by its id.
+Note that this is not possible if it has been paid already.
+
+```python
+import starkbank
+from datetime import datetime, timedelta
+
+invoice = starkbank.invoice.update(
+    "5155165527080960",
+    amount=100,
+    expiration=0,
+    due=datetime.utcnow() + timedelta(hours=1),
+)
+
+print(invoice)
+```
+
+### Query invoices
+
+You can get a list of created invoices given some filters.
+
+```python
+import starkbank
+from datetime import datetime
+
+invoices = starkbank.invoice.query(
+    after=datetime(2020, 1, 1),
+    before=datetime(2020, 3, 1)
+)
+
+for invoice in invoices:
+    print(invoice)
+```
+
+### Query invoice logs
+
+Logs are pretty important to understand the life cycle of an invoice.
+
+```python
+import starkbank
+
+logs = starkbank.invoice.log.query(limit=150)
+
+for log in logs:
+    print(log)
+```
+
+### Get an invoice log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
+log = starkbank.invoice.log.get("5155165527080960")
+
+print(log)
+```
+
 ### Create boletos
 
 You can create boletos to charge customers or to receive money from accounts

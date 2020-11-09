@@ -2,7 +2,6 @@
 from random import choice, random
 from starkbank import PaymentRequest, Transaction
 from .boletoPayment import generateExampleBoletoPaymentsJson
-from .date import randomFutureDate
 from .transaction import generateExampleTransactionsJson
 from .transfer import generateExampleTransfersJson
 from .utilityPayment import generateExampleUtilityPaymentsJson
