@@ -1,7 +1,7 @@
 #coding: utf-8
 from copy import deepcopy
-from datetime import date, timedelta
-from random import randint
+from datetime import date, timedelta, datetime
+from random import randint, choice
 from starkbank import Transfer
 from .names.names import get_full_name
 from .taxIdGenerator import TaxIdGenerator
@@ -26,6 +26,6 @@ def generateExampleTransfersJson(n=1, randomSchedule=False):
         transfer.amount = amount
         transfer.tax_id = TaxIdGenerator.taxId()
         if randomSchedule:
-            transfer.scheduled = date.today() + timedelta(days=randint(0, 10))
+            transfer.scheduled = choice([date.today(), datetime.utcnow()]) + timedelta(days=randint(0, 10))
         transfers.append(transfer)
     return transfers

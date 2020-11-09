@@ -29,6 +29,21 @@ def check_language(language):
     return language
 
 
+def check_datetime_or_date(data):
+    if data is None:
+        return None
+
+    if type(data) == datetime:
+        return data
+
+    if isinstance(data, date):
+        return data
+
+    data, dt_type = check_datetime_string(data)
+
+    return data.date() if dt_type == date else data
+
+
 def check_datetime(data):
     if data is None:
         return None
