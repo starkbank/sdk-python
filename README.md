@@ -350,6 +350,60 @@ log = starkbank.invoice.log.get("5155165527080960")
 print(log)
 ```
 
+### Query deposits
+
+You can get a list of created deposits given some filters.
+
+```python
+import starkbank
+from datetime import datetime
+
+deposits = starkbank.deposit.query(
+    after=datetime(2020, 1, 1),
+    before=datetime(2020, 3, 1)
+)
+
+for deposit in deposits:
+    print(deposit)
+```
+
+### Get a deposit
+
+After its creation, information on a deposit may be retrieved by its id. 
+
+```python
+import starkbank
+
+deposit = starkbank.deposit.get("5155165527080960")
+
+print(deposit)
+```
+
+### Query deposit logs
+
+Logs are pretty important to understand the life cycle of a deposit.
+
+```python
+import starkbank
+
+logs = starkbank.deposit.log.query(limit=150)
+
+for log in logs:
+    print(log)
+```
+
+### Get a deposit log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
+log = starkbank.deposit.log.get("5155165527080960")
+
+print(log)
+```
+
 ### Create boletos
 
 You can create boletos to charge customers or to receive money from accounts

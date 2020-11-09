@@ -42,5 +42,8 @@ from .invoice.__invoice import Invoice
 from . import dictkey
 from .dictkey.__dictkey import DictKey
 
+from . import deposit
+from .deposit.__deposit import Deposit
+
 from . import error
 from . import key

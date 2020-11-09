@@ -1,0 +1,87 @@
+from ..utils import rest
+from ..utils.checks import check_date, check_datetime
+from ..utils.resource import Resource
+
+
+class Deposit(Resource):
+
+    """# Deposit object
+    Deposits represent passive cash-in received by your account from external transfers
+    ## Attributes (return-only):
+    - id [string]: unique id associated with a Deposit when it is created. ex: "5656565656565656"
+    - name [string]: payer name. ex: "Iron Bank S.A."
+    - tax_id [string]: payer tax ID (CPF or CNPJ). ex: "012.345.678-90" or "20.018.183/0001-80"
+    - bank_code [string]: code of the receiver bank institution in Brazil. ex: "20018183" or "341"
+    - branch_code [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
+    - account_number [string]: Receiver Bank Account number. Use '-' before the verifier digit. ex: "876543-2"
+    - amount [integer]: Deposit value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
+    - type [string]: Type of settlement that originated the deposit. ex: "pix" or "ted"
+    - status [string]: current Deposit status. ex: "created"
+    - tags [list of strings]: list of strings that are tagging the deposit. ex: ["reconciliationId", "txId"]
+    - fee [integer]: fee charged when a deposit is created. ex: 50 (= R$ 0.50)
+    - transaction_ids [list of strings]: ledger transaction ids linked to this deposit (if there are more than one, all but first are reversals). ex: ["19827356981273"]
+    - created [datetime.datetime]: creation datetime for the Deposit. ex: datetime.datetime(2020, 12, 10, 10, 30, 0, 0)
+    - updated [datetime.datetime]: latest update datetime for the Deposit. ex: datetime.datetime(2020, 12, 10, 10, 30, 0, 0)
+    """
+
+    def __init__(self, id, name, tax_id, bank_code, branch_code, account_number, amount, type, status, tags, fee,
+                 transaction_ids, created, updated):
+        Resource.__init__(self, id=id)
+
+        self.name = name
+        self.tax_id = tax_id
+        self.bank_code = bank_code
+        self.branch_code = branch_code
+        self.account_number = account_number
+        self.amount = amount
+        self.type = type
+        self.status = status
+        self.tags = tags
+        self.fee = fee
+        self.transaction_ids = transaction_ids
+        self.created = check_datetime(created)
+        self.updated = check_datetime(updated)
+
+
+_resource = {"class": Deposit, "name": "Deposit"}
+
+
+def get(id, user=None):
+    """# Retrieve a specific Deposit
+    Receive a single Deposit object from the Stark Bank API by its id
+    ## Parameters (required):
+    - id [string]: object unique id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - Deposit object with updated attributes
+    """
+    return rest.get_id(resource=_resource, id=id, user=user)
+
+
+def query(limit=None, after=None, before=None, status=None, sort=None, tags=None, ids=None, user=None):
+    """# Retrieve Deposits
+    Receive a generator of Deposit objects from the Stark Bank API
+    ## Parameters (optional):
+    - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - status [string, default None]: filter for status of retrieved objects. ex: "paid" or "registered"
+    - sort [string, default "-created"]: sort order considered in response. Valid options are "created" or "-created".
+    - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - generator of Deposit objects with updated attributes
+    """
+    return rest.get_list(
+        resource=_resource,
+        limit=limit,
+        after=check_date(after),
+        before=check_date(before),
+        sort=sort,
+        status=status,
+        tags=tags,
+        ids=ids,
+        user=user,
+    )
