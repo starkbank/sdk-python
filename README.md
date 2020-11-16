@@ -200,7 +200,7 @@ dict_key = starkbank.dictkey.get("tony@starkbank.com")
 print(dict_key)
 ```
 
-### Query your dict keys
+### Query your DICT keys
 
 To take a look at the PIX keys linked to your workspace, just run the following:
 
@@ -748,6 +748,19 @@ import starkbank
 log = starkbank.brcodepayment.log.get("5155165527080960")
 
 print(log)
+```
+
+### Preview a BR Code payment
+
+You can confirm the information on the BR Code payment before creating it with this preview method:
+
+```python
+import starkbank
+
+previews = starkbank.brcodepreview.query(brcodes=["00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"])
+
+for preview in previews:
+    print(preview)
 ```
 
 ### Pay a boleto

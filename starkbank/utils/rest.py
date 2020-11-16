@@ -3,7 +3,7 @@ from ..utils.api import endpoint, last_name, last_name_plural, api_json, from_ap
 from ..utils.request import fetch
 
 
-def get_list(resource, limit=100, user=None, **kwargs):
+def get_list(resource, limit, user=None, **kwargs):
     query = {"limit": min(limit, 100) if limit else limit}
     query.update(kwargs)
 
@@ -18,7 +18,7 @@ def get_list(resource, limit=100, user=None, **kwargs):
             limit -= 100
             query["limit"] = min(limit, 100)
 
-        cursor = json["cursor"]
+        cursor = json.get("cursor")
         query["cursor"] = cursor
         if cursor is None or (limit is not None and limit <= 0):
             break

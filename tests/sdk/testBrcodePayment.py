@@ -11,7 +11,7 @@ class TestBoletoPaymentPost(TestCase):
 
     def test_success(self):
         payments = generateExampleBrcodePaymentsJson(n=5, next_day=True)
-        payments = starkbank.boletopayment.create(payments)
+        payments = starkbank.brcodepayment.create(payments)
         for payment in payments:
             print(payment)
 
@@ -19,7 +19,7 @@ class TestBoletoPaymentPost(TestCase):
 class TestBoletoPaymentGet(TestCase):
 
     def test_success(self):
-        payments = list(starkbank.boletopayment.query(limit=10))
+        payments = list(starkbank.brcodepayment.query(limit=10))
         print(payments)
         self.assertEqual(10, len(payments))
 
@@ -27,9 +27,9 @@ class TestBoletoPaymentGet(TestCase):
 class TestBoletoPaymentInfoGet(TestCase):
 
     def test_success(self):
-        payments = starkbank.boletopayment.query()
+        payments = starkbank.brcodepayment.query()
         payment_id = next(payments).id
-        payment = starkbank.boletopayment.get(id=payment_id)
+        payment = starkbank.brcodepayment.get(id=payment_id)
 
 
 if __name__ == '__main__':
