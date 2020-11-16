@@ -30,13 +30,14 @@ class Invoice(Resource):
     - id [string, default None]: unique id returned when Invoice is created. ex: "5656565656565656"
     - brcode [string, default None]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
     - status [string, default None]: current Invoice status. ex: "registered" or "paid"
+    - fee [integer, default None]: fee charged by this Invoice. ex: 200 (= R$ 2.00)
     - created [datetime.datetime, default None]: creation datetime for the Invoice. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - updated [datetime.datetime, default None]: latest update datetime for the Invoice. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, amount, tax_id, name, due=None, expiration=None, fine=None, interest=None, discounts=None,
                  tags=None, descriptions=None, nominal_amount=None, fine_amount=None, interest_amount=None,
-                 discount_amount=None, id=None, brcode=None, status=None, created=None, updated=None):
+                 discount_amount=None, id=None, brcode=None, status=None, fee=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -55,6 +56,7 @@ class Invoice(Resource):
         self.descriptions = descriptions
         self.brcode = brcode
         self.status = status
+        self.fee = fee
         self.created = check_datetime(created)
         self.updated = check_datetime(updated)
 

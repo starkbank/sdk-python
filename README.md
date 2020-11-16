@@ -525,7 +525,7 @@ print(log)
 
 ### Create transfers
 
-You can also create transfers in the SDK (TED/DOC).
+You can also create transfers in the SDK (TED/PIX).
 
 ```python
 import starkbank
@@ -534,7 +534,7 @@ from datetime import datetime, timedelta
 transfers = starkbank.transfer.create([
     starkbank.Transfer(
         amount=100,
-        bank_code="033",
+        bank_code="033",  # TED
         branch_code="0001",
         account_number="10000-0",
         tax_id="012.345.678-90",
@@ -543,12 +543,12 @@ transfers = starkbank.transfer.create([
     ),
     starkbank.Transfer(
         amount=200,
-        bank_code="341",
+        bank_code="20018183",  # PIX
         branch_code="1234",
         account_number="123456-7",
         tax_id="012.345.678-90",
         name="Jon Snow",
-        scheduled=datetime.today() + timedelta(days=3)
+        scheduled=datetime.utcnow() + timedelta(days=3)
     )
 ])
 
@@ -644,7 +644,7 @@ print(log)
 
 ### Pay a BR Code
 
-Paying a BR Code is also simple.
+Paying a BRCode is also simple. After extracting the BRCode encoded in the PIX QRCode, you can do the following:
 
 ```python
 import starkbank
@@ -654,8 +654,8 @@ payments = starkbank.brcodepayment.create([
         brcode="00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A",
         tax_id="012.345.678-90",
         scheduled="2020-03-13",
-        description="take my money",
-        tags=["take", "my", "money"],
+        description="this will be fast",
+        tags=["pix", "qrcode"],
     )
 ])
 
@@ -679,7 +679,7 @@ print(payment)
 
 ### Get brcode payment PDF (COMMING SOON)
 
-After its creation, a boleto payment PDF may be retrieved by its id. 
+After its creation, a BR Code payment PDF may be retrieved by its id. 
 
 ```python
 import starkbank
@@ -694,7 +694,7 @@ Be careful not to accidentally enforce any encoding on the raw pdf content,
 as it may yield abnormal results in the final file, such as missing images
 and strange characters.
 
-### Query brcode payments
+### Query BR Code payments
 
 You can search for brcode payments using filters. 
 
@@ -725,7 +725,7 @@ for log in logs:
 ```
 
 
-### Get BR Code payment log
+### Get a BR Code payment log
 
 You can also get a BR Code payment log by specifying its id.
 

@@ -13,15 +13,16 @@ class BrcodePayment(Resource):
     - brcode [string]: String loaded directly from the QRCode or copied from the invoice. ex: "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"
     - tax_id [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     - description [string]: Text to be displayed in your statement (min. 10 characters). ex: "payment ABC"
+    ## Parameters (conditionally required):
+    - amount [int, default None]: If the BRCode does not provide an amount, this parameter is mandatory, else it is optional. ex: 23456 (= R$ 234.56)
     ## Parameters (optional):
-    - amount [int, default None]: amount automatically calculated from line or bar_code. ex: 23456 (= R$ 234.56)
     - scheduled [datetime.date, datetime.datetime or string, default now]: payment scheduled date or datetime. ex: datetime.datetime(2020, 3, 10, 15, 17, 3)
     - tags [list of strings, default None]: list of strings for tagging
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
     - status [string, default None]: current payment status. ex: "success" or "failed"
     - type [string, default None]: brcode type. ex: "static" or "dynamic"
-    - fee [integer, default None]: fee charged when the brcode payment is created. ex: 200 (= R$ 2.00)
+    - fee [integer, default None]: fee charged by this brcode payment. ex: 50 (= R$ 0.50)
     - updated [datetime.datetime, default None]: latest update datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """

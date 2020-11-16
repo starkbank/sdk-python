@@ -11,14 +11,14 @@ class Deposit(Resource):
     - id [string]: unique id associated with a Deposit when it is created. ex: "5656565656565656"
     - name [string]: payer name. ex: "Iron Bank S.A."
     - tax_id [string]: payer tax ID (CPF or CNPJ). ex: "012.345.678-90" or "20.018.183/0001-80"
-    - bank_code [string]: code of the receiver bank institution in Brazil. ex: "20018183" or "341"
-    - branch_code [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
-    - account_number [string]: Receiver Bank Account number. Use '-' before the verifier digit. ex: "876543-2"
-    - amount [integer]: Deposit value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
+    - bank_code [string]: payer bank code in Brazil. ex: "20018183" or "341"
+    - branch_code [string]: payer bank account branch. ex: "1357-9"
+    - account_number [string]: payer bank account number. ex: "876543-2"
+    - amount [integer]: Deposit value in cents. ex: 1234 (= R$ 12.34)
     - type [string]: Type of settlement that originated the deposit. ex: "pix" or "ted"
     - status [string]: current Deposit status. ex: "created"
     - tags [list of strings]: list of strings that are tagging the deposit. ex: ["reconciliationId", "txId"]
-    - fee [integer]: fee charged when a deposit is created. ex: 50 (= R$ 0.50)
+    - fee [integer]: fee charged by this deposit. ex: 50 (= R$ 0.50)
     - transaction_ids [list of strings]: ledger transaction ids linked to this deposit (if there are more than one, all but first are reversals). ex: ["19827356981273"]
     - created [datetime.datetime]: creation datetime for the Deposit. ex: datetime.datetime(2020, 12, 10, 10, 30, 0, 0)
     - updated [datetime.datetime]: latest update datetime for the Deposit. ex: datetime.datetime(2020, 12, 10, 10, 30, 0, 0)
