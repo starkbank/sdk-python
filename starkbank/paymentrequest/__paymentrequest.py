@@ -102,7 +102,7 @@ def create(requests, user=None):
     ## Parameters (required):
     - requests [list of PaymentRequest objects]: list of PaymentRequest objects to be created in the API
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - list of PaymentRequest objects with updated attributes
     """
@@ -123,7 +123,7 @@ def query(center_id, limit=None, after=None, before=None, sort=None, status=None
     - type [string, default None]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer", "boleto-payment"
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of PaymentRequest objects with updated attributes
     """

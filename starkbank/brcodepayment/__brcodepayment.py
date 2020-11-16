@@ -55,7 +55,7 @@ def create(payments, user=None):
     ## Parameters (required):
     - payments [list of BrcodePayment objects]: list of BrcodePayment objects to be created in the API
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - list of BrcodePayment objects with updated attributes
     """
@@ -68,7 +68,7 @@ def get(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - BrcodePayment object with updated attributes
     """
@@ -81,7 +81,7 @@ def pdf(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - BrcodePayment pdf file
     """
@@ -122,7 +122,7 @@ def update(id, status=None, user=None):
     ## Parameters (required):
     - status [string]: You may cancel the payment by passing 'canceled' in the status
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - target BrcodePayment with updated attributes
     """
