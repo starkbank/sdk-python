@@ -200,6 +200,19 @@ dict_key = starkbank.dictkey.get("tony@starkbank.com")
 print(dict_key)
 ```
 
+### Query your dict keys
+
+To take a look at the PIX keys linked to your workspace, just run the following:
+
+```python
+import starkbank
+
+dict_keys = starkbank.dictkey.query(status="registered")
+
+for dict_key in dict_keys:
+    print(dict_key)
+```
+
 ### Create invoices
 
 You can create dynamic QR Code invoices to charge customers or to receive money from accounts

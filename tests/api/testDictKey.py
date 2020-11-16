@@ -25,5 +25,17 @@ class TestDictKeyInfoGet(TestCase):
         self.assertEqual(1, len(errors))
 
 
+class TestDictKeyGet(TestCase):
+
+    def test_success_after_before(self):
+        keys = starkbank.dictkey.query(type="evp", status="registered")
+        i = 0
+        for i, key in enumerate(keys):
+            self.assertIsNotNone(key.id)
+            if i >= 200:
+                break
+        print("Number of deposits:", i)
+
+
 if __name__ == '__main__':
     main()

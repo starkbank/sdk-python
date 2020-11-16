@@ -1,3 +1,4 @@
+from starkbank.utils.checks import check_date
 from ..utils import rest
 from ..utils.checks import check_datetime
 from ..utils.resource import Resource
@@ -59,3 +60,29 @@ def get(id, user=None):
     - DictKey object with updated attributes
     """
     return rest.get_id(resource=_resource, id=id, user=user)
+
+
+def query(limit=None, type=None, after=None, before=None, ids=None, status=None, user=None):
+    """# Retrieve DictKeys
+    Receive a generator of DictKey objects associated with your Stark Bank Workspace
+    ## Parameters (optional):
+    - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
+    - type [string, default None]: DictKey type. ex: "cpf", "cnpj", "phone", "email" or "evp"
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - status [string, default None]: filter for status of retrieved objects. ex: "success"
+    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - generator of DictKey objects with updated attributes
+    """
+    return rest.get_list(
+        resource=_resource,
+        limit=limit,
+        type=type,
+        after=check_date(after),
+        before=check_date(before),
+        ids=ids,
+        status=status,
+        user=user,
+    )
