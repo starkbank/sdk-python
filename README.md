@@ -255,7 +255,7 @@ invoice = starkbank.invoice.get("5155165527080960")
 print(invoice)
 ```
 
-### Get an invoice PDF (COMING SOON)
+### Get an invoice PDF
 
 After its creation, an invoice PDF may be retrieved by its id. 
 
@@ -690,7 +690,7 @@ payment = starkbank.brcodepayment.get("19278361897236187236")
 print(payment)
 ```
 
-### Get brcode payment PDF (COMMING SOON)
+### Get BR Code payment PDF
 
 After its creation, a BR Code payment PDF may be retrieved by its id. 
 
@@ -706,6 +706,23 @@ with open("brcode-payment.pdf", "wb") as file:
 Be careful not to accidentally enforce any encoding on the raw pdf content,
 as it may yield abnormal results in the final file, such as missing images
 and strange characters.
+
+### Cancel a BR Code payment
+
+You can cancel a BR Code payment by changing its status to "canceled".
+Note that this is not possible if it has been processed already.
+
+```python
+import starkbank
+from datetime import datetime, timedelta
+
+payment = starkbank.brcodepayment.update(
+    "5155165527080960",
+    status="canceled"
+)
+
+print(payment)
+```
 
 ### Query BR Code payments
 

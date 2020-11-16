@@ -5,7 +5,7 @@ from ..utils.resource import Resource
 class BrcodePreview(Resource):
 
     """# BrcodePreview object
-    A BrcodePreview is used to get information from a BRCode you received to check the informations before paying it.
+    A BrcodePreview is used to get information from a BR Code you received to check the informations before paying it.
     ## Attributes (return-only):
     - status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
     - name [string]: Payment receiver name. ex: "Tony Stark"

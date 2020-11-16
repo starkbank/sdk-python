@@ -7,7 +7,7 @@ from tests.utils.user import exampleProject
 starkbank.user = exampleProject
 
 
-class TestBoletoPaymentPost(TestCase):
+class TestBrcodePaymentPost(TestCase):
 
     def test_success(self):
         payments = generateExampleBrcodePaymentsJson(n=5, next_day=True)
@@ -16,7 +16,7 @@ class TestBoletoPaymentPost(TestCase):
             print(payment)
 
 
-class TestBoletoPaymentGet(TestCase):
+class TestBrcodePaymentGet(TestCase):
 
     def test_success(self):
         payments = list(starkbank.brcodepayment.query(limit=10))
@@ -24,12 +24,23 @@ class TestBoletoPaymentGet(TestCase):
         self.assertEqual(10, len(payments))
 
 
-class TestBoletoPaymentInfoGet(TestCase):
+class TestBrcodePaymentInfoGet(TestCase):
 
     def test_success(self):
         payments = starkbank.brcodepayment.query()
         payment_id = next(payments).id
         payment = starkbank.brcodepayment.get(id=payment_id)
+
+
+class TestBrcodePaymentInfoPatch(TestCase):
+
+    def test_success_cancel(self):
+        payments = starkbank.brcodepayment.query(status="created", limit=1)
+        for payment in payments:
+            self.assertIsNotNone(payment.id)
+            self.assertEqual(payment.status, "created")
+            updated_payment = starkbank.brcodepayment.update(payment.id, status="canceled")
+            self.assertEqual(updated_payment.status, "canceled")
 
 
 if __name__ == '__main__':

@@ -73,6 +73,19 @@ def get(id, user=None):
     return rest.get_id(resource=_resource, id=id, user=user)
 
 
+def pdf(id, user=None):
+    """# Retrieve a specific BrcodePayment pdf file
+    Receive a single BrcodePayment pdf receipt file generated in the Stark Bank API by its id.
+    ## Parameters (required):
+    - id [string]: object unique id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - BrcodePayment pdf file
+    """
+    return rest.get_pdf(resource=_resource, id=id, user=user)
+
+
 def query(limit=None, after=None, before=None, tags=None, ids=None, status=None, user=None):
     """# Retrieve BrcodePayments
     Receive a generator of BrcodePayment objects previously created in the Stark Bank API
@@ -97,3 +110,18 @@ def query(limit=None, after=None, before=None, tags=None, ids=None, status=None,
         status=status,
         user=user,
     )
+
+
+def update(id, status=None, user=None):
+    """# Update BrcodePayment entity
+    Update an BrcodePayment by passing id, if it hasn't been paid yet.
+    ## Parameters (required):
+    - id [string]: BrcodePayment id. ex: '5656565656565656'
+    ## Parameters (required):
+    - status [string]: You may cancel the payment by passing 'canceled' in the status
+    ## Parameters (optional):
+    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - target BrcodePayment with updated attributes
+    """
+    return rest.patch_id(resource=_resource, id=id, user=user, status=status)

@@ -123,7 +123,7 @@ def update(id, status=None, amount=None, due=None, expiration=None, user=None):
     - id [string]: Invoice id. ex: '5656565656565656'
     ## Parameters (optional):
     - status [string]: You may cancel the invoice by passing 'canceled' in the status
-    - amount [string]: Nominal amount charge by the invoice. ex: 100 (R$1.00)
+    - amount [string]: Nominal amount charged by the invoice. ex: 100 (R$1.00)
     - due [datetime.date or string, default today + 2 days]: Invoice due date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00"
     - expiration [integer or datetime.timedelta, default None]: time interval in seconds between the due date and the expiration date. ex 123456789
     - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
@@ -151,3 +151,16 @@ def qrcode(id, size=7, user=None):
     - Invoice png in blob
     """
     return rest.get_qrcode(resource=_resource, id=id, size=size, user=user)
+
+
+def pdf(id, user=None):
+    """# Retrieve a specific Invoice pdf file
+    Receive a single Invoice pdf receipt file generated in the Stark Bank API by its id.
+    ## Parameters (required):
+    - id [string]: object unique id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - Invoice pdf file
+    """
+    return rest.get_pdf(resource=_resource, id=id, user=user)

@@ -52,7 +52,7 @@ class TestBrcodePaymentPost(TestCase):
         errors = context.exception.errors
         for error in errors:
             print(error)
-            self.assertTrue(error.code in ["invalidJson", "invalidPayment", "immediatePaymentOutOfTime"])
+            self.assertTrue(error.code in ["invalidJson", "invalidPayment"])
         self.assertTrue(len(errors) == 3 or len(errors) == 6)
 
     def test_fail_invalid_tax_id(self):
@@ -94,6 +94,26 @@ class TestBrcodePaymentInfoGet(TestCase):
             print(error)
             self.assertEqual('invalidPayment', error.code)
         self.assertEqual(1, len(errors))
+
+
+class TestBrcodePaymentInfoPatch(TestCase):
+
+    def test_success_cancel(self):
+        payments = starkbank.brcodepayment.query(status="created", limit=1)
+        for payment in payments:
+            self.assertIsNotNone(payment.id)
+            self.assertEqual(payment.status, "created")
+            updated_payment = starkbank.brcodepayment.update(payment.id, status="canceled")
+            self.assertEqual(updated_payment.status, "canceled")
+
+
+class TestBrcodePaymentPdfGet(TestCase):
+
+    def test_success(self):
+        payments = starkbank.brcodepayment.query()
+        payment_id = next(payments).id
+        pdf = starkbank.brcodepayment.pdf(payment_id)
+        self.assertGreater(len(pdf), 1000)
 
 
 if __name__ == '__main__':

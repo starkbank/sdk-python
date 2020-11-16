@@ -96,7 +96,7 @@ class TestTransferPost(TestCase):
         errors = context.exception.errors
         for error in errors:
             print(error)
-            self.assertEqual('invalidDate', error.code)
+            self.assertTrue(error.code in ["invalidDate", "invalidDateTime"])
         self.assertEqual(1, len(errors))
 
 

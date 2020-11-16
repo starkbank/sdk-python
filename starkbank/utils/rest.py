@@ -3,7 +3,7 @@ from ..utils.api import endpoint, last_name, last_name_plural, api_json, from_ap
 from ..utils.request import fetch
 
 
-def get_list(resource, limit, user=None, **kwargs):
+def get_list(resource, limit=None, user=None, **kwargs):
     query = {"limit": min(limit, 100) if limit else limit}
     query.update(kwargs)
 
