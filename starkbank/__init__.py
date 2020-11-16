@@ -21,6 +21,12 @@ from .transfer.__transfer import Transfer
 from . import boletoholmes
 from .boletoholmes.__boletoholmes import BoletoHolmes
 
+from . import brcodepayment
+from .brcodepayment.__brcodepayment import BrcodePayment
+
+from . import brcodepreview
+from .brcodepreview.__brcodepreview import BrcodePreview
+
 from . import boletopayment
 from .boletopayment.__boletopayment import BoletoPayment
 
@@ -35,6 +41,15 @@ from .event.__event import Event
 
 from . import paymentrequest
 from .paymentrequest.__paymentrequest import PaymentRequest
+
+from . import invoice
+from .invoice.__invoice import Invoice
+
+from . import dictkey
+from .dictkey.__dictkey import DictKey
+
+from . import deposit
+from .deposit.__deposit import Deposit
 
 from . import error
 from . import key

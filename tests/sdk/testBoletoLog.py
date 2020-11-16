@@ -1,5 +1,4 @@
 import starkbank
-from time import sleep
 from unittest import TestCase, main
 from starkbank.error import InputErrors
 from tests.utils.boleto import generateExampleBoletosJson

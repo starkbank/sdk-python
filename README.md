@@ -188,6 +188,235 @@ balance = starkbank.balance.get()
 print(balance)
 ```
 
+### Get dict key
+
+You can get the PIX key's parameters by its id.
+
+```python
+import starkbank
+
+dict_key = starkbank.dictkey.get("tony@starkbank.com")
+
+print(dict_key)
+```
+
+### Query your DICT keys
+
+To take a look at the PIX keys linked to your workspace, just run the following:
+
+```python
+import starkbank
+
+dict_keys = starkbank.dictkey.query(status="registered")
+
+for dict_key in dict_keys:
+    print(dict_key)
+```
+
+### Create invoices
+
+You can create dynamic QR Code invoices to charge customers or to receive money from accounts
+you have in other banks.
+
+```python
+# coding: utf-8
+import starkbank
+from datetime import datetime, timedelta
+
+
+invoices = starkbank.invoice.create([
+    starkbank.Invoice(
+        amount=23571,  # R$ 235,71 
+        name="Buzz Aldrin",
+        tax_id="012.345.678-90", 
+        due=datetime(2020, 3, 20),
+        expiration=timedelta(hours=3).total_seconds(),
+        fine=5,  # 5%
+        interest=2.5,  # 2.5% per month
+    )
+])
+
+for invoice in invoices:
+    print(invoice)
+```
+
+**Note**: Instead of using Invoice objects, you can also pass each invoice element in dictionary format
+
+### Get an invoice
+
+After its creation, information on an invoice may be retrieved by its id. 
+Its status indicates whether it's been paid.
+
+```python
+import starkbank
+
+invoice = starkbank.invoice.get("5155165527080960")
+
+print(invoice)
+```
+
+### Get an invoice PDF
+
+After its creation, an invoice PDF may be retrieved by its id. 
+
+```python
+import starkbank
+
+pdf = starkbank.invoice.pdf("5155165527080960", layout="default")
+
+with open("invoice.pdf", "wb") as file:
+    file.write(pdf)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+### Get an invoice Qrcode 
+
+After its creation, an invoice qrcode may be retrieved by its id. 
+
+```python
+import starkbank
+
+qrcode = starkbank.invoice.qrcode("5881614903017472", size= 15)
+
+with open("qrcode.png", "wb") as file:
+    file.write(qrcode)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+### Cancel an invoice
+
+You can also cancel an invoice by its id.
+Note that this is not possible if it has been paid already.
+
+```python
+import starkbank
+
+invoice = starkbank.invoice.update("5155165527080960", status="canceled")
+
+print(invoice)
+```
+
+### Update an invoice
+
+You can update an invoice's amount, due date and expiration by its id.
+Note that this is not possible if it has been paid already.
+
+```python
+import starkbank
+from datetime import datetime, timedelta
+
+invoice = starkbank.invoice.update(
+    "5155165527080960",
+    amount=100,
+    expiration=0,
+    due=datetime.utcnow() + timedelta(hours=1),
+)
+
+print(invoice)
+```
+
+### Query invoices
+
+You can get a list of created invoices given some filters.
+
+```python
+import starkbank
+from datetime import datetime
+
+invoices = starkbank.invoice.query(
+    after=datetime(2020, 1, 1),
+    before=datetime(2020, 3, 1)
+)
+
+for invoice in invoices:
+    print(invoice)
+```
+
+### Query invoice logs
+
+Logs are pretty important to understand the life cycle of an invoice.
+
+```python
+import starkbank
+
+logs = starkbank.invoice.log.query(limit=150)
+
+for log in logs:
+    print(log)
+```
+
+### Get an invoice log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
+log = starkbank.invoice.log.get("5155165527080960")
+
+print(log)
+```
+
+### Query deposits
+
+You can get a list of created deposits given some filters.
+
+```python
+import starkbank
+from datetime import datetime
+
+deposits = starkbank.deposit.query(
+    after=datetime(2020, 1, 1),
+    before=datetime(2020, 3, 1)
+)
+
+for deposit in deposits:
+    print(deposit)
+```
+
+### Get a deposit
+
+After its creation, information on a deposit may be retrieved by its id. 
+
+```python
+import starkbank
+
+deposit = starkbank.deposit.get("5155165527080960")
+
+print(deposit)
+```
+
+### Query deposit logs
+
+Logs are pretty important to understand the life cycle of a deposit.
+
+```python
+import starkbank
+
+logs = starkbank.deposit.log.query(limit=150)
+
+for log in logs:
+    print(log)
+```
+
+### Get a deposit log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
+log = starkbank.deposit.log.get("5155165527080960")
+
+print(log)
+```
+
 ### Create boletos
 
 You can create boletos to charge customers or to receive money from accounts
@@ -309,7 +538,7 @@ print(log)
 
 ### Create transfers
 
-You can also create transfers in the SDK (TED/DOC).
+You can also create transfers in the SDK (TED/PIX).
 
 ```python
 import starkbank
@@ -318,7 +547,7 @@ from datetime import datetime, timedelta
 transfers = starkbank.transfer.create([
     starkbank.Transfer(
         amount=100,
-        bank_code="033",
+        bank_code="033",  # TED
         branch_code="0001",
         account_number="10000-0",
         tax_id="012.345.678-90",
@@ -327,12 +556,12 @@ transfers = starkbank.transfer.create([
     ),
     starkbank.Transfer(
         amount=200,
-        bank_code="341",
+        bank_code="20018183",  # PIX
         branch_code="1234",
         account_number="123456-7",
         tax_id="012.345.678-90",
         name="Jon Snow",
-        scheduled=datetime.today() + timedelta(days=3)
+        scheduled=datetime.utcnow() + timedelta(days=3)
     )
 ])
 
@@ -424,6 +653,131 @@ import starkbank
 log = starkbank.transfer.log.get("5155165527080960")
 
 print(log)
+```
+
+### Pay a BR Code
+
+Paying a BRCode is also simple. After extracting the BRCode encoded in the PIX QRCode, you can do the following:
+
+```python
+import starkbank
+
+payments = starkbank.brcodepayment.create([
+    starkbank.BrcodePayment(
+        brcode="00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A",
+        tax_id="012.345.678-90",
+        scheduled="2020-03-13",
+        description="this will be fast",
+        tags=["pix", "qrcode"],
+    )
+])
+
+for payment in payments:
+    print(payment)
+```
+
+**Note**: Instead of using BrcodePayment objects, you can also pass each payment element in dictionary format
+
+### Get brcode payment
+
+To get a single BR Code payment by its id, run:
+
+```python
+import starkbank
+
+payment = starkbank.brcodepayment.get("19278361897236187236")
+
+print(payment)
+```
+
+### Get BR Code payment PDF
+
+After its creation, a BR Code payment PDF may be retrieved by its id. 
+
+```python
+import starkbank
+
+pdf = starkbank.brcodepayment.pdf("5155165527080960")
+
+with open("brcode-payment.pdf", "wb") as file:
+    file.write(pdf)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+### Cancel a BR Code payment
+
+You can cancel a BR Code payment by changing its status to "canceled".
+Note that this is not possible if it has been processed already.
+
+```python
+import starkbank
+from datetime import datetime, timedelta
+
+payment = starkbank.brcodepayment.update(
+    "5155165527080960",
+    status="canceled"
+)
+
+print(payment)
+```
+
+### Query BR Code payments
+
+You can search for brcode payments using filters. 
+
+```python
+import starkbank
+
+payments = starkbank.brcodepayment.query(
+    tags=["company_1", "company_2"]
+)
+
+for payment in payments:
+    print(payment)
+```
+
+### Query BR Code payment logs
+
+Searches are also possible with BR Code payment logs:
+
+```python
+import starkbank
+
+logs = starkbank.brcodepayment.log.query(
+    payment_ids=["5155165527080960", "76551659167801921"],
+)
+
+for log in logs:
+    print(log)
+```
+
+
+### Get a BR Code payment log
+
+You can also get a BR Code payment log by specifying its id.
+
+```python
+import starkbank
+
+log = starkbank.brcodepayment.log.get("5155165527080960")
+
+print(log)
+```
+
+### Preview a BR Code payment
+
+You can confirm the information on the BR Code payment before creating it with this preview method:
+
+```python
+import starkbank
+
+previews = starkbank.brcodepreview.query(brcodes=["00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"])
+
+for preview in previews:
+    print(preview)
 ```
 
 ### Pay a boleto

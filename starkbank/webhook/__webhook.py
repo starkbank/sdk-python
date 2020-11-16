@@ -9,7 +9,7 @@ class Webhook(Resource):
     and utility-payment
     ## Parameters (required):
     - url [string]: Url that will be notified when an event occurs.
-    - subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "boleto-payment"]
+    - subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "invoice", "deposit"]
     ## Attributes:
     - id [string, default None]: unique id returned when the webhook is created. ex: "5656565656565656"
     """

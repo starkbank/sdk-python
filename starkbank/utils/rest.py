@@ -3,7 +3,7 @@ from ..utils.api import endpoint, last_name, last_name_plural, api_json, from_ap
 from ..utils.request import fetch
 
 
-def get_list(resource, limit=100, user=None, **kwargs):
+def get_list(resource, limit=None, user=None, **kwargs):
     query = {"limit": min(limit, 100) if limit else limit}
     query.update(kwargs)
 
@@ -18,7 +18,7 @@ def get_list(resource, limit=100, user=None, **kwargs):
             limit -= 100
             query["limit"] = min(limit, 100)
 
-        cursor = json["cursor"]
+        cursor = json.get("cursor")
         query["cursor"] = cursor
         if cursor is None or (limit is not None and limit <= 0):
             break
@@ -32,6 +32,10 @@ def get_id(resource, id, user=None):
 
 def get_pdf(resource, id, user=None, **kwargs):
     return fetch(method=get, path="{endpoint}/{id}/pdf".format(endpoint=endpoint(resource), id=id), query=kwargs, user=user).content
+
+
+def get_qrcode(resource, id, user=None, **kwargs):
+    return fetch(method=get, path="{endpoint}/{id}/qrcode".format(endpoint=endpoint(resource), id=id), query=kwargs, user=user).content
 
 
 def post_multi(resource, entities, user=None):

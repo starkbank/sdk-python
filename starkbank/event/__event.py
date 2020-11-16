@@ -9,7 +9,10 @@ from ..utils.request import fetch
 from ..utils.resource import Resource
 from ..utils.checks import check_datetime, check_date
 from ..boleto.log.__log import _resource as _boleto_log_resource
+from ..invoice.log.__log import _resource as _invoice_log_resource
+from ..deposit.log.__log import _resource as _deposit_log_resource
 from ..transfer.log.__log import _resource as _transfer_log_resource
+from ..brcodepayment.log.__log import _resource as _brcodepayment_payment_log_resource
 from ..boletopayment.log.__log import _resource as _boleto_payment_log_resource
 from ..utilitypayment.log.__log import _resource as _utility_payment_log_resource
 from ..boletoholmes.log.__log import _resource as _boleto_holmes_log_resource
@@ -19,7 +22,10 @@ from ..utils import cache
 
 _resource_by_subscription = {
     "transfer": _transfer_log_resource,
+    "invoice": _invoice_log_resource,
+    "deposit": _deposit_log_resource,
     "boleto": _boleto_log_resource,
+    "brcode-payment": _brcodepayment_payment_log_resource,
     "boleto-payment": _boleto_payment_log_resource,
     "utility-payment": _utility_payment_log_resource,
     "holmes": _boleto_holmes_log_resource,
@@ -33,7 +39,7 @@ class Event(Resource):
     list all generated updates on entities.
     ## Attributes:
     - id [string]: unique id returned when the event is created. ex: "5656565656565656"
-    - log [Log]: a Log object from one the subscription services (TransferLog, BoletoLog, BoletoPaymentlog or UtilityPaymentLog)
+    - log [Log]: a Log object from one the subscription services (TransferLog, InvoiceLog, BoletoLog, BoletoPaymentlog or UtilityPaymentLog)
     - created [datetime.datetime]: creation datetime for the notification event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - is_delivered [bool]: true if the event has been successfully delivered to the user url. ex: False
     - subscription [string]: service that triggered this event. ex: "transfer", "utility-payment"
