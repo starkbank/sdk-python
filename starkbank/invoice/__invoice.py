@@ -23,6 +23,7 @@ class Invoice(Resource):
     - descriptions [list of dictionaries, default None]: list of dictionaries with "key":string and (optional) "value":string pairs
 
     ## Attributes (return-only):
+    - pdf [string, default None]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
     - nominal_amount [integer, default None]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
     - fine_amount [integer, default None]: Invoice fine value calculated over nominal_amount. ex: 20000
     - interest_amount [integer, default None]: Invoice interest value calculated over nominal_amount. ex: 10000
@@ -36,7 +37,7 @@ class Invoice(Resource):
     """
 
     def __init__(self, amount, tax_id, name, due=None, expiration=None, fine=None, interest=None, discounts=None,
-                 tags=None, descriptions=None, nominal_amount=None, fine_amount=None, interest_amount=None,
+                 tags=None, descriptions=None, pdf=None, nominal_amount=None, fine_amount=None, interest_amount=None,
                  discount_amount=None, id=None, brcode=None, status=None, fee=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
@@ -53,6 +54,7 @@ class Invoice(Resource):
         self.interest = interest
         self.discounts = discounts
         self.tags = tags
+        self.pdf = pdf
         self.descriptions = descriptions
         self.brcode = brcode
         self.status = status
@@ -124,7 +126,7 @@ def update(id, status=None, amount=None, due=None, expiration=None, user=None):
     ## Parameters (optional):
     - status [string]: You may cancel the invoice by passing 'canceled' in the status
     - amount [string]: Nominal amount charged by the invoice. ex: 100 (R$1.00)
-    - due [datetime.date or string, default today + 2 days]: Invoice due date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00"
+    - due [datetime.datetime or string, default now + 2 days]: Invoice due date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00"
     - expiration [integer or datetime.timedelta, default None]: time interval in seconds between the due date and the expiration date. ex 123456789
     - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
@@ -140,15 +142,15 @@ def update(id, status=None, amount=None, due=None, expiration=None, user=None):
 
 
 def qrcode(id, size=7, user=None):
-    """# Retrieve a specific Invoice QRCode png
-    Receive a single Invoice QRCode in png format generated in the Stark Bank API by the invoice ID.
+    """# Retrieve a specific Invoice QR Code png
+    Receive a single Invoice QR Code in png format generated in the Stark Bank API by the invoice ID.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - size [integer, default 7.0]: number of pixels in each "box" of the QR code. Minimum = 1, maximum = 50. ex: 12
+    - size [integer, default 7]: number of pixels in each "box" of the QR code. Minimum = 1, maximum = 50. ex: 12
     - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
     ## Return:
-    - Invoice png in blob
+    - Invoice png blob
     """
     return rest.get_qrcode(resource=_resource, id=id, size=size, user=user)
 

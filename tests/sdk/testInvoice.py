@@ -74,8 +74,6 @@ class TestInvoiceQrcodeGet(TestCase):
         invoice_id = next(invoices).id
         qrcode = starkbank.invoice.qrcode(invoice_id)
         self.assertGreater(len(qrcode), 1000)
-        default_qrcode = starkbank.invoice.qrcode(invoice_id)
-        self.assertGreater(len(default_qrcode), 1000)
         big_qrcode = starkbank.invoice.qrcode(invoice_id, size=25)
         self.assertGreater(len(big_qrcode), 1000)
 
