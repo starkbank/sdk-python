@@ -14,7 +14,7 @@ class BrcodePreview(Resource):
     - branch_code [string]: Payment receiver branch code. ex: "0001"
     - account_number [string]: Payment receiver account number. ex: "1234567"
     - account_type [string]: Payment receiver account type. ex: "checking"
-    - allow_change [bool]: If True, the payment is able to receive amounts that are diferent from the nominal one. ex: True or False
+    - allow_change [bool]: If True, the payment is able to receive amounts that are different from the nominal one. ex: True or False
     - amount [integer]: Value in cents that this payment is expecting to receive. If 0, any value is accepted. ex: 123 (= R$1,23)
     - reconciliation_id [string]: Reconciliation ID linked to this payment. ex: "txId", "payment-123"
     """

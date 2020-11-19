@@ -20,7 +20,7 @@ def get_list(resource, limit=None, user=None, **kwargs):
 
         cursor = json.get("cursor")
         query["cursor"] = cursor
-        if cursor is None or (limit is not None and limit <= 0):
+        if not cursor or (limit is not None and limit <= 0):
             break
 
 

@@ -254,6 +254,19 @@ class TestInvoicePdfGet(TestCase):
         pdf = starkbank.invoice.pdf(invoice_id)
         self.assertGreater(len(pdf), 1000)
 
+class TestInvoiceQrcodeGet(TestCase):
+
+    def test_success(self):
+        invoices = starkbank.invoice.query()
+        invoice_id = next(invoices).id
+        qrcode = starkbank.invoice.qrcode(invoice_id)
+        self.assertGreater(len(qrcode), 1000)
+        big_qrcode = starkbank.invoice.qrcode(invoice_id, size=25)
+        self.assertGreater(len(big_qrcode), 1000)
+
+    def test_fail_invalid_invoice(self):
+        with self.assertRaises(InputErrors) as context:
+            pdf = starkbank.invoice.pdf("123")
 
 if __name__ == '__main__':
     main()

@@ -10,7 +10,7 @@ class BrcodePayment(Resource):
     created in the Stark Bank API. The 'create' function sends the objects
     to the Stark Bank API and returns the list of created objects.
     ## Parameters (required):
-    - brcode [string]: String loaded directly from the QRCode or copied from the invoice. ex: "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"
+    - brcode [string]: String loaded directly from the QR Code or copied from the invoice. ex: "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"
     - tax_id [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     - description [string]: Text to be displayed in your statement (min. 10 characters). ex: "payment ABC"
     ## Parameters (conditionally required):

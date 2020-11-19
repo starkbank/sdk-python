@@ -188,7 +188,7 @@ balance = starkbank.balance.get()
 print(balance)
 ```
 
-### Get dict key
+### Get DICT key
 
 You can get the PIX key's parameters by its id.
 
@@ -272,9 +272,9 @@ Be careful not to accidentally enforce any encoding on the raw pdf content,
 as it may yield abnormal results in the final file, such as missing images
 and strange characters.
 
-### Get an invoice Qrcode 
+### Get an invoice QR Code 
 
-After its creation, an invoice qrcode may be retrieved by its id. 
+After its creation, an Invoice QR Code may be retrieved by its id. 
 
 ```python
 import starkbank
@@ -285,9 +285,8 @@ with open("qrcode.png", "wb") as file:
     file.write(qrcode)
 ```
 
-Be careful not to accidentally enforce any encoding on the raw pdf content,
-as it may yield abnormal results in the final file, such as missing images
-and strange characters.
+Be careful not to accidentally enforce any encoding on the raw png content,
+as it may corrupt the file.
 
 ### Cancel an invoice
 
@@ -657,7 +656,7 @@ print(log)
 
 ### Pay a BR Code
 
-Paying a BRCode is also simple. After extracting the BRCode encoded in the PIX QRCode, you can do the following:
+Paying a BR Code is also simple. After extracting the BRCode encoded in the PIX QR Code, you can do the following:
 
 ```python
 import starkbank
@@ -678,7 +677,7 @@ for payment in payments:
 
 **Note**: Instead of using BrcodePayment objects, you can also pass each payment element in dictionary format
 
-### Get brcode payment
+### Get BR Code payment
 
 To get a single BR Code payment by its id, run:
 
@@ -690,7 +689,7 @@ payment = starkbank.brcodepayment.get("19278361897236187236")
 print(payment)
 ```
 
-### Get BR Code payment PDF
+### Get a BR Code payment PDF
 
 After its creation, a BR Code payment PDF may be retrieved by its id. 
 
