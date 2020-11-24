@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.2.2] - 2020-11-24
 ### Added
 - Deposit.account_type parameter
 - BrcodePayment.name parameter
