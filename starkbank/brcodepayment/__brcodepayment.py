@@ -20,6 +20,7 @@ class BrcodePayment(Resource):
     - tags [list of strings, default None]: list of strings for tagging
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
+    - name [string]: receiver name. ex: "Jon Snow"
     - status [string, default None]: current payment status. ex: "success" or "failed"
     - type [string, default None]: brcode type. ex: "static" or "dynamic"
     - fee [integer, default None]: fee charged by this brcode payment. ex: 50 (= R$ 0.50)
@@ -27,8 +28,8 @@ class BrcodePayment(Resource):
     - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, brcode, tax_id, description, amount=None, scheduled=None, tags=None, id=None, status=None,
-                 type=None, fee=None, updated=None, created=None):
+    def __init__(self, brcode, tax_id, description, amount=None, scheduled=None, tags=None, id=None, name=None,
+                 status=None, type=None, fee=None, updated=None, created=None):
         Resource.__init__(self, id=id)
 
         self.brcode = brcode
@@ -36,6 +37,7 @@ class BrcodePayment(Resource):
         self.description = description
         self.tags = tags
         self.scheduled = check_date(scheduled)
+        self.name = name
         self.status = status
         self.type = type
         self.amount = amount
