@@ -14,6 +14,7 @@ class Deposit(Resource):
     - bank_code [string]: payer bank code in Brazil. ex: "20018183" or "341"
     - branch_code [string]: payer bank account branch. ex: "1357-9"
     - account_number [string]: payer bank account number. ex: "876543-2"
+    - account_type [string]: payer bank account type. ex: "checking"
     - amount [integer]: Deposit value in cents. ex: 1234 (= R$ 12.34)
     - type [string]: Type of settlement that originated the deposit. ex: "pix" or "ted"
     - status [string]: current Deposit status. ex: "created"
@@ -24,8 +25,8 @@ class Deposit(Resource):
     - updated [datetime.datetime]: latest update datetime for the Deposit. ex: datetime.datetime(2020, 12, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, id, name, tax_id, bank_code, branch_code, account_number, amount, type, status, tags, fee,
-                 transaction_ids, created, updated):
+    def __init__(self, id, name, tax_id, bank_code, branch_code, account_number, account_type, amount, type, status,
+                 tags, fee, transaction_ids, created, updated):
         Resource.__init__(self, id=id)
 
         self.name = name
@@ -33,6 +34,7 @@ class Deposit(Resource):
         self.bank_code = bank_code
         self.branch_code = branch_code
         self.account_number = account_number
+        self.account_type = account_type
         self.amount = amount
         self.type = type
         self.status = status

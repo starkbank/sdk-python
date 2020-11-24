@@ -13,6 +13,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- Deposit.account_type parameter
+### Fixed
+- Restrictive requests lib requirements
 
 ## [2.2.1] - 2020-11-23
 ### Fixed
