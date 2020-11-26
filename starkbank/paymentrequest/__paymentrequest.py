@@ -3,11 +3,13 @@ from ..utils.api import from_api_json
 from ..utils.resource import Resource
 from ..utils.checks import check_datetime, check_date
 from ..transfer.__transfer import Transfer
+from ..brcodepayment.__brcodepayment import BrcodePayment
 from ..boletopayment.__boletopayment import BoletoPayment
 from ..utilitypayment.__utilitypayment import UtilityPayment
 from ..brcodepayment.__brcodepayment import BrcodePayment
 from ..transaction.__transaction import Transaction
 from ..transfer.__transfer import _resource as _transfer_resource
+from ..brcodepayment.__brcodepayment import _resource as _brcode_payment_resource
 from ..boletopayment.__boletopayment import _resource as _boleto_payment_resource
 from ..utilitypayment.__utilitypayment import _resource as _utility_payment_resource
 from ..brcodepayment.__brcodepayment import _resource as _brcode_payment_resource
@@ -61,6 +63,7 @@ def _parse_payment(payment, type):
                 "transfer": _transfer_resource,
                 "transaction": _transaction_resource,
                 "boleto-payment": _boleto_payment_resource,
+                "brcode-payment": _brcode_payment_resource,
                 "utility-payment": _utility_payment_resource,
                 "brcode-payment": _brcode_payment_resource,
             }[type], payment)), type
@@ -74,6 +77,8 @@ def _parse_payment(payment, type):
         return payment, "transfer"
     if isinstance(payment, Transaction):
         return payment, "transaction"
+    if isinstance(payment, BrcodePayment):
+        return payment, "brcode-payment"
     if isinstance(payment, BoletoPayment):
         return payment, "boleto-payment"
     if isinstance(payment, UtilityPayment):
@@ -86,6 +91,7 @@ def _parse_payment(payment, type):
         "a dictionary"
         ", a starkbank.Transfer"
         ", a starkbank.Transaction"
+        ", a starkbank.BrcodePayment"
         ", a starkbank.BoletoPayment"
         ", a starkbank.UtilityPayment"
         " or a starkbank.BrcodePayment"

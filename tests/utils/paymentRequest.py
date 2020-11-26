@@ -2,6 +2,7 @@
 from random import choice, random
 from starkbank import PaymentRequest, Transaction
 from .boletoPayment import generateExampleBoletoPaymentsJson
+from .brcodePayment import generateExampleBrcodePaymentsJson
 from .transaction import generateExampleTransactionsJson
 from .transfer import generateExampleTransfersJson
 from .utilityPayment import generateExampleUtilityPaymentsJson
@@ -21,6 +22,7 @@ def generateExamplePaymentRequestsJson(n=1):
             "utility-payment",
             "brcode-payment",
             "transaction",
+            "brcode-payment",
         ])
         for _ in range(n)
     ]
@@ -33,6 +35,7 @@ def generateExamplePaymentRequestsJson(n=1):
             "utility-payment": generateExampleUtilityPaymentsJson,
             "brcode-payment": generateExampleBrcodePaymentsJson,
             "transaction": generateExampleTransactionsJson,
+            "brcode-payment": generateExampleBrcodePaymentsJson,
         }[type](n=types.count(type)))
 
     for payment in payments:

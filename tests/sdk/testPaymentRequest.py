@@ -18,6 +18,7 @@ class TestPaymentRequestPost(TestCase):
         for request in requests:
             print(request)
 
+
 class TestPaymentRequestGet(TestCase):
     
     def test_success_after_before(self):
