@@ -5,6 +5,7 @@ from .boletoPayment import generateExampleBoletoPaymentsJson
 from .transaction import generateExampleTransactionsJson
 from .transfer import generateExampleTransfersJson
 from .utilityPayment import generateExampleUtilityPaymentsJson
+from .brcodePayment import generateExampleBrcodePaymentsJson
 import os
 
 center_id = os.environ["SANDBOX_CENTER_ID"]
@@ -18,6 +19,7 @@ def generateExamplePaymentRequestsJson(n=1):
             "transfer",
             "boleto-payment",
             "utility-payment",
+            "brcode-payment",
             "transaction",
         ])
         for _ in range(n)
@@ -29,6 +31,7 @@ def generateExamplePaymentRequestsJson(n=1):
             "transfer": generateExampleTransfersJson,
             "boleto-payment": generateExampleBoletoPaymentsJson,
             "utility-payment": generateExampleUtilityPaymentsJson,
+            "brcode-payment": generateExampleBrcodePaymentsJson,
             "transaction": generateExampleTransactionsJson,
         }[type](n=types.count(type)))
 

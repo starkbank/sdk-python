@@ -1185,7 +1185,7 @@ import starkbank
 
 webhook = starkbank.webhook.create(
     url="https://webhook.site/dd784f26-1d6a-4ca6-81cb-fda0267761ec",
-    subscriptions=["transfer", "boleto", "boleto-payment", "utility-payment"],
+    subscriptions=["transfer", "boleto", "boleto-payment", "boleto-holmes", "brcode-payment", "utility-payment", "deposit", "invoice"],
 )
 
 print(webhook)
@@ -1230,14 +1230,14 @@ print(webhook)
 
 ### Process webhook events
 
-Its easy to process events that arrived in your webhook. Remember to pass the
-signature header so the SDK can make sure its really StarkBank that sent you
+It's easy to process events that arrived in your webhook. Remember to pass the
+signature header so the SDK can make sure it's really StarkBank that sent you
 the event.
 
 ```python
 import starkbank
 
-response = listen()  # this is the method you made to get the events posted to your webhook
+response = listen()  # this is the method you made to get the posted events to your webhook
 
 event = starkbank.event.parse(
     content=response.data.decode("utf-8"),
@@ -1251,6 +1251,21 @@ elif event.subscription == "boleto":
     print(event.log.boleto)
     
 elif event.subscription == "boleto-payment":
+    print(event.log.payment)
+
+elif event.subscription == "boleto-holmes":
+    print(event.log.payment)
+
+elif event.subscription == "brcode-payment":
+    print(event.log.payment)
+
+elif event.subscription == "utility-payment":
+    print(event.log.payment)
+
+elif event.subscription == "deposit":
+    print(event.log.payment)
+
+elif event.subscription == "invoice":
     print(event.log.payment)
 ```
 
