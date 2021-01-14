@@ -14,7 +14,7 @@ class Organization(User):
     each request or may be defined as the default user at the start (See README).
     If you are accessing a specific Workspace using Organization credentials, you should
     specify the workspace ID when building the Organization object or by request, using
-    the organization.with_workspace(workspace_id) method, which creates a copy of the organization
+    the Organization.replace(organization, workspace_id) function, which creates a copy of the organization
     object with the altered workspace ID. If you are listing or creating new Workspaces, the
     workspace_id should be None.
     ## Parameters (required):
@@ -41,10 +41,10 @@ class Organization(User):
             return "organization/{id}/workspace/{workspace}".format(id=self.id, workspace=self.workspace_id)
         return "organization/{id}".format(id=self.id)
 
-    def with_workspace(self, workspace_id):
+    def replace(organization, workspace_id):
         return Organization(
-            id=self.id,
-            environment=self.environment,
-            private_key=self.pem,
+            id=organization.id,
+            environment=organization.environment,
+            private_key=organization.pem,
             workspace_id=workspace_id,
         )

@@ -1,15 +1,25 @@
 import starkbank
 from unittest import TestCase, main
-from tests.utils.user import exampleProject
+from tests.utils.user import exampleOrganization
+from tests.utils.workspace import generateExampleWorkspace
 
 
-starkbank.user = exampleProject
-
-
-class TestWorkspace(TestCase):
+class TestWorkspaceCreate(TestCase):
 
     def test_success(self):
-        workspaces = starkbank.workspace.query(limit=1)
+        workspace = generateExampleWorkspace()
+        workspace = starkbank.workspace.create(
+            username=workspace.username,
+            name=workspace.name,
+            user=exampleOrganization,
+        )
+        print(workspace)
+
+
+class TestWorkspaceQuery(TestCase):
+
+    def test_success(self):
+        workspaces = starkbank.workspace.query(limit=1, user=exampleOrganization)
         for workspace in workspaces:
             print(workspace)
 
@@ -17,8 +27,9 @@ class TestWorkspace(TestCase):
 class TestWebhookInfoGet(TestCase):
 
     def test_success(self):
-        workspaces = starkbank.workspace.query(limit=1)
-        workspace = starkbank.workspace.get(id=next(workspaces).id)
+        workspaces = starkbank.workspace.query(limit=1, user=exampleOrganization)
+        workspace_id = next(workspaces).id
+        workspace = starkbank.workspace.get(id=workspace_id, user=exampleOrganization.replace(workspace_id))
         print(workspace)
 
 
