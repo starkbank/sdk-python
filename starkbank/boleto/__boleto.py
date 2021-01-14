@@ -79,7 +79,7 @@ def create(boletos, user=None):
     ## Parameters (required):
     - boletos [list of Boleto objects]: list of Boleto objects to be created in the API
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - list of Boleto objects with updated attributes
     """
@@ -92,7 +92,7 @@ def get(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Boleto object with updated attributes
     """
@@ -107,7 +107,7 @@ def pdf(id, layout=None, hidden_fields=None, user=None):
     ## Parameters (optional):
     - layout [string]: Layout specification. Available options are "default" and "booklet"
     - hidden_fields [list of strings, default None]: List of string fields to be hidden in Boleto pdf. ex: ["customerAddress"]
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Boleto pdf file
     """
@@ -146,7 +146,7 @@ def delete(id, user=None):
     ## Parameters (required):
     - id [string]: Boleto unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - deleted Boleto object
     """

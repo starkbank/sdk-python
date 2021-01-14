@@ -17,8 +17,8 @@ class TestWebhookGet(TestCase):
 class TestWebhookInfoGet(TestCase):
 
     def test_success(self):
-        webhooks = starkbank.webhook.query()
-        webhook = starkbank.webhook.get(id=next(webhooks).id)
+        webhooks = starkbank.webhook.query(user=exampleProject)
+        webhook = starkbank.webhook.get(user=exampleProject, id=next(webhooks).id)
 
 
 class TestWebhookPostAndDelete(TestCase):

@@ -54,7 +54,7 @@ def get(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Deposit object with updated attributes
     """

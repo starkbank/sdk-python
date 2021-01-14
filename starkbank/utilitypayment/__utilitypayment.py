@@ -47,7 +47,7 @@ def create(payments, user=None):
     ## Parameters (required):
     - payments [list of UtilityPayment objects]: list of UtilityPayment objects to be created in the API
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - list of UtilityPayment objects with updated attributes
     """
@@ -60,7 +60,7 @@ def get(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - UtilityPayment object with updated attributes
     """
@@ -74,7 +74,7 @@ def pdf(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - UtilityPayment pdf file
     """
@@ -113,7 +113,7 @@ def delete(id, user=None):
     ## Parameters (required):
     - id [string]: UtilityPayment unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Project object]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - deleted UtilityPayment object
     """
