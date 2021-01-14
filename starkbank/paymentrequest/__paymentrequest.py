@@ -5,10 +5,12 @@ from ..utils.checks import check_datetime, check_date
 from ..transfer.__transfer import Transfer
 from ..boletopayment.__boletopayment import BoletoPayment
 from ..utilitypayment.__utilitypayment import UtilityPayment
+from ..brcodepayment.__brcodepayment import BrcodePayment
 from ..transaction.__transaction import Transaction
 from ..transfer.__transfer import _resource as _transfer_resource
 from ..boletopayment.__boletopayment import _resource as _boleto_payment_resource
 from ..utilitypayment.__utilitypayment import _resource as _utility_payment_resource
+from ..brcodepayment.__brcodepayment import _resource as _brcode_payment_resource
 from ..transaction.__transaction import _resource as _transaction_resource
 
 
@@ -21,7 +23,7 @@ class PaymentRequest(Resource):
     cost center page.
     ## Parameters (required):
     - center_id [string]: target cost center ID. ex: "5656565656565656"
-    - payment [Transfer, BoletoPayment, UtilityPayment, Transaction or dictionary]: payment entity that should be approved and executed.
+    - payment [Transfer, BoletoPayment, UtilityPayment, BrcodePayment, Transaction or dictionary]: payment entity that should be approved and executed.
     ## Parameters (conditionally required):
     - type [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer", "boleto-payment"
     ## Parameters (optional):
@@ -60,6 +62,7 @@ def _parse_payment(payment, type):
                 "transaction": _transaction_resource,
                 "boleto-payment": _boleto_payment_resource,
                 "utility-payment": _utility_payment_resource,
+                "brcode-payment": _brcode_payment_resource,
             }[type], payment)), type
         except KeyError:
             return payment, type
@@ -75,6 +78,8 @@ def _parse_payment(payment, type):
         return payment, "boleto-payment"
     if isinstance(payment, UtilityPayment):
         return payment, "utility-payment"
+    if isinstance(payment, BrcodePayment):
+        return payment, "brcode-payment"
 
     raise Exception(
         "payment must be either "
@@ -82,7 +87,8 @@ def _parse_payment(payment, type):
         ", a starkbank.Transfer"
         ", a starkbank.Transaction"
         ", a starkbank.BoletoPayment"
-        " or a starkbank.UtilityPayment"
+        ", a starkbank.UtilityPayment"
+        " or a starkbank.BrcodePayment"
         ", but not a {}".format(type(payment))
     )
 

@@ -5,8 +5,8 @@ from ..utils.resource import Resource
 class Webhook(Resource):
     """# Webhook subscription object
     A Webhook is used to subscribe to notification events on a user-selected endpoint.
-    Currently available services for subscription are transfer, boleto, boleto-payment,
-    and utility-payment
+    Currently available services for subscription are transfer, boleto, boleto-holmes,
+    boleto-payment, brcode-payment, utility-payment, deposit and invoice.
     ## Parameters (required):
     - url [string]: Url that will be notified when an event occurs.
     - subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "invoice", "deposit"]
