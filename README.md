@@ -176,6 +176,66 @@ Here are a few examples on how to use the SDK. If you have any doubts, use the b
 `help()` function to get more info on the desired functionality
 (for example: `help(starkbank.boleto.create)`)
 
+### Create transactions
+
+To send money between Stark Bank accounts, you can create transactions:
+
+```python
+import starkbank
+
+transactions = starkbank.transaction.create([
+    starkbank.Transaction(
+        amount=100,  # (R$ 1.00)
+        receiver_id="1029378109327810",
+        description="Transaction to dear provider",
+        external_id="12345",  # so we can block anything you send twice by mistake
+        tags=["provider"]
+    ),
+    starkbank.Transaction(
+        amount=234,  # (R$ 2.34)
+        receiver_id="2093029347820947",
+        description="Transaction to the other provider",
+        external_id="12346",  # so we can block anything you send twice by mistake
+        tags=["provider"]
+    ),
+])
+
+for transaction in transactions:
+    print(transaction)
+```
+
+**Note**: Instead of using Transaction objects, you can also pass each transaction element in dictionary format
+
+### Query transactions
+
+To understand your balance changes (bank statement), you can query
+transactions. Note that our system creates transactions for you when
+you receive boleto payments, pay a bill or make transfers, for example.
+
+```python
+import starkbank
+
+transactions = starkbank.transaction.query(
+    after="2020-01-01",
+    before="2020-03-01"
+)
+
+for transaction in transactions:
+    print(transaction)
+```
+
+### Get transaction
+
+You can get a specific transaction by its id:
+
+```python
+import starkbank
+
+transaction = starkbank.transaction.get("5155165527080960")
+
+print(transaction)
+```
+
 ### Get balance
 
 To know how much money you have in your workspace, run:
@@ -188,29 +248,123 @@ balance = starkbank.balance.get()
 print(balance)
 ```
 
-### Get DICT key
+### Create transfers
 
-You can get the PIX key's parameters by its id.
+You can also create transfers in the SDK (TED/PIX).
 
 ```python
 import starkbank
+from datetime import datetime, timedelta
 
-dict_key = starkbank.dictkey.get("tony@starkbank.com")
+transfers = starkbank.transfer.create([
+    starkbank.Transfer(
+        amount=100,
+        bank_code="033",  # TED
+        branch_code="0001",
+        account_number="10000-0",
+        tax_id="012.345.678-90",
+        name="Tony Stark",
+        tags=["iron", "suit"]
+    ),
+    starkbank.Transfer(
+        amount=200,
+        bank_code="20018183",  # PIX
+        branch_code="1234",
+        account_number="123456-7",
+        tax_id="012.345.678-90",
+        name="Jon Snow",
+        scheduled=datetime.utcnow() + timedelta(days=3)
+    )
+])
 
-print(dict_key)
+for transfer in transfers:
+    print(transfer)
 ```
 
-### Query your DICT keys
+**Note**: Instead of using Transfer objects, you can also pass each transfer element in dictionary format
 
-To take a look at the PIX keys linked to your workspace, just run the following:
+### Query transfers
+
+You can query multiple transfers according to filters.
+
+```python
+import starkbank
+from datetime import datetime
+
+transfers = starkbank.transfer.query(
+    after=datetime(2020, 1, 1),
+    before=datetime(2020, 4, 1)
+)
+
+for transfer in transfers:
+    print(transfer.name)
+```
+
+### Cancel a scheduled transfer
+
+To cancel a single scheduled transfer by its id, run:
 
 ```python
 import starkbank
 
-dict_keys = starkbank.dictkey.query(status="registered")
+transfer = starkbank.transfer.delete("5155165527080960")
 
-for dict_key in dict_keys:
-    print(dict_key)
+print(transfer)
+```
+
+### Get transfer
+
+To get a single transfer by its id, run:
+
+```python
+import starkbank
+
+transfer = starkbank.transfer.get("5155165527080960")
+
+print(transfer)
+```
+
+### Get transfer PDF
+
+A transfer PDF may also be retrieved by its id.
+This operation is only valid if the transfer status is "processing" or "success". 
+
+```python
+import starkbank
+
+pdf = starkbank.transfer.pdf("5155165527080960")
+
+with open("transfer.pdf", "wb") as file:
+    file.write(pdf)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+### Query transfer logs
+
+You can query transfer logs to better understand transfer life cycles.
+
+```python
+import starkbank
+
+logs = starkbank.transfer.log.query(limit=50)
+
+for log in logs:
+    print(log.id)
+```
+
+### Get a transfer log
+
+You can also get a specific log by its id.
+
+```python
+import starkbank
+
+log = starkbank.transfer.log.get("5155165527080960")
+
+print(log)
 ```
 
 ### Create invoices
@@ -535,123 +689,98 @@ log = starkbank.boleto.log.get("5155165527080960")
 print(log)
 ```
 
-### Create transfers
+### Investigate a boleto
 
-You can also create transfers in the SDK (TED/PIX).
+You can discover if a StarkBank boleto has been recently paid before we receive the response on the next day.
+This can be done by creating a BoletoHolmes object, which fetches the updated status of the corresponding
+Boleto object according to CIP to check, for example, whether it is still payable or not. The investigation
+happens asynchronously and the most common way to retrieve the results is to register a "boleto-holmes" webhook
+subscription, although polling is also possible. 
 
 ```python
 import starkbank
-from datetime import datetime, timedelta
 
-transfers = starkbank.transfer.create([
-    starkbank.Transfer(
-        amount=100,
-        bank_code="033",  # TED
-        branch_code="0001",
-        account_number="10000-0",
-        tax_id="012.345.678-90",
-        name="Tony Stark",
-        tags=["iron", "suit"]
+holmes = starkbank.boletoholmes.create([
+    starkbank.BoletoHolmes(
+        boleto_id="5656565656565656",
     ),
-    starkbank.Transfer(
-        amount=200,
-        bank_code="20018183",  # PIX
-        branch_code="1234",
-        account_number="123456-7",
-        tax_id="012.345.678-90",
-        name="Jon Snow",
-        scheduled=datetime.utcnow() + timedelta(days=3)
-    )
+    starkbank.BoletoHolmes(
+        boleto_id="4848484848484848",
+    ),
 ])
 
-for transfer in transfers:
-    print(transfer)
+for sherlock in holmes:
+    print(sherlock)
 ```
 
-**Note**: Instead of using Transfer objects, you can also pass each transfer element in dictionary format
+**Note**: Instead of using BoletoHolmes objects, you can also pass each payment element in dictionary format
 
-### Query transfers
+### Get boleto holmes
 
-You can query multiple transfers according to filters.
+To get a single Holmes by its id, run:
 
 ```python
 import starkbank
-from datetime import datetime
 
-transfers = starkbank.transfer.query(
-    after=datetime(2020, 1, 1),
-    before=datetime(2020, 4, 1)
+sherlock = starkbank.boletoholmes.get("19278361897236187236")
+
+print(sherlock)
+```
+
+### Query boleto holmes
+
+You can search for boleto Holmes using filters. 
+
+```python
+import starkbank
+
+holmes = starkbank.boletoholmes.query(
+    tags=["customer_1", "customer_2"]
 )
 
-for transfer in transfers:
-    print(transfer.name)
+for sherlock in holmes:
+    print(sherlock)
 ```
 
-### Cancel a scheduled transfer
+### Query boleto holmes logs
 
-To cancel a single scheduled transfer by its id, run:
+Searches are also possible with boleto holmes logs:
 
 ```python
 import starkbank
 
-transfer = starkbank.transfer.delete("5155165527080960")
-
-print(transfer)
-```
-
-### Get transfer
-
-To get a single transfer by its id, run:
-
-```python
-import starkbank
-
-transfer = starkbank.transfer.get("5155165527080960")
-
-print(transfer)
-```
-
-### Get transfer PDF
-
-A transfer PDF may also be retrieved by its id.
-This operation is only valid if the transfer status is "processing" or "success". 
-
-```python
-import starkbank
-
-pdf = starkbank.transfer.pdf("5155165527080960")
-
-with open("transfer.pdf", "wb") as file:
-    file.write(pdf)
-```
-
-Be careful not to accidentally enforce any encoding on the raw pdf content,
-as it may yield abnormal results in the final file, such as missing images
-and strange characters.
-
-### Query transfer logs
-
-You can query transfer logs to better understand transfer life cycles.
-
-```python
-import starkbank
-
-logs = starkbank.transfer.log.query(limit=50)
+logs = starkbank.boletoholmes.log.query(
+    holmes_ids=["5155165527080960", "76551659167801921"],
+)
 
 for log in logs:
-    print(log.id)
+    print(log)
 ```
 
-### Get a transfer log
 
-You can also get a specific log by its id.
+### Get boleto holmes log
+
+You can also get a boleto holmes log by specifying its id.
 
 ```python
 import starkbank
 
-log = starkbank.transfer.log.get("5155165527080960")
+log = starkbank.boletoholmes.log.get("5155165527080960")
 
 print(log)
+```
+
+### Preview a BR Code payment
+
+You can confirm the information on the BR Code payment before creating it with this preview method:
+
+```python
+import starkbank
+
+previews = starkbank.brcodepreview.query(brcodes=["00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"])
+
+for preview in previews:
+    print(preview)
 ```
 
 ### Pay a BR Code
@@ -766,18 +895,6 @@ log = starkbank.brcodepayment.log.get("5155165527080960")
 print(log)
 ```
 
-### Preview a BR Code payment
-
-You can confirm the information on the BR Code payment before creating it with this preview method:
-
-```python
-import starkbank
-
-previews = starkbank.brcodepreview.query(brcodes=["00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"])
-
-for preview in previews:
-    print(preview)
-```
 
 ### Pay a boleto
 
@@ -881,7 +998,6 @@ for log in logs:
     print(log)
 ```
 
-
 ### Get boleto payment log
 
 You can also get a boleto payment log by specifying its id.
@@ -890,87 +1006,6 @@ You can also get a boleto payment log by specifying its id.
 import starkbank
 
 log = starkbank.boletopayment.log.get("5155165527080960")
-
-print(log)
-```
-
-### Investigate a boleto
-
-You can discover if a StarkBank boleto has been recently paid before we receive the response on the next day.
-This can be done by creating a BoletoHolmes object, which fetches the updated status of the corresponding
-Boleto object according to CIP to check, for example, whether it is still payable or not. The investigation
-happens asynchronously and the most common way to retrieve the results is to register a "boleto-holmes" webhook
-subscription, although polling is also possible. 
-
-```python
-import starkbank
-
-holmes = starkbank.boletoholmes.create([
-    starkbank.BoletoHolmes(
-        boleto_id="5656565656565656",
-    ),
-    starkbank.BoletoHolmes(
-        boleto_id="4848484848484848",
-    ),
-])
-
-for sherlock in holmes:
-    print(sherlock)
-```
-
-**Note**: Instead of using BoletoHolmes objects, you can also pass each payment element in dictionary format
-
-### Get boleto holmes
-
-To get a single Holmes by its id, run:
-
-```python
-import starkbank
-
-sherlock = starkbank.boletoholmes.get("19278361897236187236")
-
-print(sherlock)
-```
-
-### Query boleto holmes
-
-You can search for boleto Holmes using filters. 
-
-```python
-import starkbank
-
-holmes = starkbank.boletoholmes.query(
-    tags=["customer_1", "customer_2"]
-)
-
-for sherlock in holmes:
-    print(sherlock)
-```
-
-### Query boleto holmes logs
-
-Searches are also possible with boleto holmes logs:
-
-```python
-import starkbank
-
-logs = starkbank.boletoholmes.log.query(
-    holmes_ids=["5155165527080960", "76551659167801921"],
-)
-
-for log in logs:
-    print(log)
-```
-
-
-### Get boleto holmes log
-
-You can also get a boleto holmes log by specifying its id.
-
-```python
-import starkbank
-
-log = starkbank.boletoholmes.log.get("5155165527080960")
 
 print(log)
 ```
@@ -1060,7 +1095,7 @@ payment = starkbank.utilitypayment.delete("5155165527080960")
 print(payment)
 ```
 
-### Query utility bill payment logs
+### Query utility payment logs
 
 You can search for payments by specifying filters. Use this to understand the
 bills life cycles.
@@ -1076,7 +1111,7 @@ for log in logs:
     print(log)
 ```
 
-### Get utility bill payment log
+### Get utility payment log
 
 If you want to get a specific payment log by its id, just run:
 
@@ -1086,66 +1121,6 @@ import starkbank
 log = starkbank.utilitypayment.log.get("1902837198237992")
 
 print(log)
-```
-
-### Create transactions
-
-To send money between Stark Bank accounts, you can create transactions:
-
-```python
-import starkbank
-
-transactions = starkbank.transaction.create([
-    starkbank.Transaction(
-        amount=100,  # (R$ 1.00)
-        receiver_id="1029378109327810",
-        description="Transaction to dear provider",
-        external_id="12345",  # so we can block anything you send twice by mistake
-        tags=["provider"]
-    ),
-    starkbank.Transaction(
-        amount=234,  # (R$ 2.34)
-        receiver_id="2093029347820947",
-        description="Transaction to the other provider",
-        external_id="12346",  # so we can block anything you send twice by mistake
-        tags=["provider"]
-    ),
-])
-
-for transaction in transactions:
-    print(transaction)
-```
-
-**Note**: Instead of using Transaction objects, you can also pass each transaction element in dictionary format
-
-### Query transactions
-
-To understand your balance changes (bank statement), you can query
-transactions. Note that our system creates transactions for you when
-you receive boleto payments, pay a bill or make transfers, for example.
-
-```python
-import starkbank
-
-transactions = starkbank.transaction.query(
-    after="2020-01-01",
-    before="2020-03-01"
-)
-
-for transaction in transactions:
-    print(transaction)
-```
-
-### Get transaction
-
-You can get a specific transaction by its id:
-
-```python
-import starkbank
-
-transaction = starkbank.transaction.get("5155165527080960")
-
-print(transaction)
 ```
 
 ### Create payment requests to be approved by authorized people in a cost center 
@@ -1177,7 +1152,7 @@ requests = starkbank.paymentrequest.create([
             name="Bucket Head",
             tags=[]
         ),
-        due=date.today() + timedelta(days=1)
+        due="2020-11-01"
     ),
 ])
 
@@ -1329,6 +1304,32 @@ event = starkbank.event.update(id="129837198237192", is_delivered=True)
 
 print(event)
 ```
+
+### Get DICT key
+
+You can get the PIX key's parameters by its id.
+
+```python
+import starkbank
+
+dict_key = starkbank.dictkey.get("tony@starkbank.com")
+
+print(dict_key)
+```
+
+### Query your DICT keys
+
+To take a look at the PIX keys linked to your workspace, just run the following:
+
+```python
+import starkbank
+
+dict_keys = starkbank.dictkey.query(status="registered")
+
+for dict_key in dict_keys:
+    print(dict_key)
+```
+
 
 ## Handling errors
 
