@@ -1237,7 +1237,7 @@ the event.
 ```python
 import starkbank
 
-response = listen()  # this is the method you made to get the posted events to your webhook
+response = listen()  # this is the method you made to get the events posted to your webhook endpoint
 
 event = starkbank.event.parse(
     content=response.data.decode("utf-8"),
@@ -1254,7 +1254,7 @@ elif event.subscription == "boleto-payment":
     print(event.log.payment)
 
 elif event.subscription == "boleto-holmes":
-    print(event.log.payment)
+    print(event.log.holmes)
 
 elif event.subscription == "brcode-payment":
     print(event.log.payment)
@@ -1263,10 +1263,10 @@ elif event.subscription == "utility-payment":
     print(event.log.payment)
 
 elif event.subscription == "deposit":
-    print(event.log.payment)
+    print(event.log.deposit)
 
 elif event.subscription == "invoice":
-    print(event.log.payment)
+    print(event.log.invoice)
 ```
 
 ### Query webhook events
