@@ -72,7 +72,7 @@ def create(invoices, user=None):
     ## Parameters (required):
     - invoices [list of Invoice objects]: list of Invoice objects to be created in the API
     ## Parameters (optional):
-    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - list of Invoice objects with updated attributes
     """
@@ -85,7 +85,7 @@ def get(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Invoice object with updated attributes
     """
@@ -128,7 +128,7 @@ def update(id, status=None, amount=None, due=None, expiration=None, user=None):
     - amount [string]: Nominal amount charged by the invoice. ex: 100 (R$1.00)
     - due [datetime.datetime or string, default now + 2 days]: Invoice due date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00"
     - expiration [integer or datetime.timedelta, default None]: time interval in seconds between the due date and the expiration date. ex 123456789
-    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - target Invoice with updated attributes
     """
@@ -148,7 +148,7 @@ def qrcode(id, size=7, user=None):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
     - size [integer, default 7]: number of pixels in each "box" of the QR code. Minimum = 1, maximum = 50. ex: 12
-    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Invoice png blob
     """
@@ -161,7 +161,7 @@ def pdf(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Invoice pdf file
     """
