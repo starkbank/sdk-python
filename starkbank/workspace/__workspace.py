@@ -31,7 +31,7 @@ def create(username, name, user=None):
     - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
     - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. Ex: "Stark Bank Workspace"
     ## Parameters (optional):
-    - user [Organization object]: Organization object. Not necessary if starkbank.user was set before function call
+    - user [Organization object, default None]: Organization object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Workspace object with updated attributes
     """
@@ -39,12 +39,12 @@ def create(username, name, user=None):
 
 
 def get(id, user=None):
-    """# Retrieve a specific Workspace subscription
-    Receive a single Workspace subscription object previously created in the Stark Bank API by passing its id
+    """# Retrieve a specific Workspace
+    Receive a single Workspace object previously created in the Stark Bank API by passing its id
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Workspace object with updated attributes
     """
@@ -60,7 +60,7 @@ def query(limit=None, username=None, ids=None, user=None):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
     - username [string]: query by the simplified name that defines the workspace URL. This name is always unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of Workspace objects with updated attributes
     """

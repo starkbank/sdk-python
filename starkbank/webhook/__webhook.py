@@ -31,7 +31,7 @@ def create(url, subscriptions, user=None):
     - url [string]: url to which notification events will be sent to. ex: "https://webhook.site/60e9c18e-4b5c-4369-bda1-ab5fcd8e1b29"
     - subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "boleto-payment"]
     ## Parameters (optional):
-    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Webhook object with updated attributes
     """
@@ -44,7 +44,7 @@ def get(id, user=None):
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Webhook object with updated attributes
     """
@@ -69,7 +69,7 @@ def delete(id, user=None):
     ## Parameters (required):
     - id [string]: Webhook unique id. ex: "5656565656565656"
     ## Parameters (optional):
-    - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - deleted Webhook object
     """
