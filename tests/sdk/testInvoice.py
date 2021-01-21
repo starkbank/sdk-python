@@ -42,6 +42,7 @@ class TestInvoiceInfoGet(TestCase):
             invoice = starkbank.invoice.get(invoice_id)
             self.assertEqual(invoice.id, invoice_id)
 
+
 class TestInvoiceInfoPatch(TestCase):
     
     def test_success_cancel(self):
