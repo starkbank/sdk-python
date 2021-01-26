@@ -152,7 +152,7 @@ def qrcode(id, size=7, user=None):
     ## Return:
     - Invoice png blob
     """
-    return rest.get_qrcode(resource=_resource, id=id, size=size, user=user)
+    return rest.get_content(resource=_resource, id=id, size=size, user=user, subresource="qrcode")
 
 
 def pdf(id, user=None):
@@ -165,4 +165,4 @@ def pdf(id, user=None):
     ## Return:
     - Invoice pdf file
     """
-    return rest.get_pdf(resource=_resource, id=id, user=user)
+    return rest.get_content(resource=_resource, id=id, user=user, subresource="pdf")

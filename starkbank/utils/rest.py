@@ -30,12 +30,15 @@ def get_id(resource, id, user=None):
     return from_api_json(resource, entity)
 
 
-def get_pdf(resource, id, user=None, **kwargs):
-    return fetch(method=get, path="{endpoint}/{id}/pdf".format(endpoint=endpoint(resource), id=id), query=kwargs, user=user).content
+def get_content(resource, id, subresource, user=None, **kwargs):
+    path = "{endpoint}/{id}/{subresource}".format(endpoint=endpoint(resource), id=id, subresource=subresource)
+    return fetch(method=get, path=path, query=kwargs, user=user).content
 
 
-def get_qrcode(resource, id, user=None, **kwargs):
-    return fetch(method=get, path="{endpoint}/{id}/qrcode".format(endpoint=endpoint(resource), id=id), query=kwargs, user=user).content
+def get_subresource(resource, id, subresource, user=None, **kwargs):
+    path = "{endpoint}/{id}/{subresource}".format(endpoint=endpoint(resource), id=id, subresource=endpoint(subresource))
+    entity = fetch(method=get, path=path, query=kwargs, user=user).json()[last_name(subresource)]
+    return from_api_json(subresource, entity)
 
 
 def post_multi(resource, entities, user=None):

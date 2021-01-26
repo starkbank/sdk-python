@@ -111,7 +111,7 @@ def pdf(id, layout=None, hidden_fields=None, user=None):
     ## Return:
     - Boleto pdf file
     """
-    return rest.get_pdf(resource=_resource, id=id, layout=layout, hidden_fields=hidden_fields, user=user)
+    return rest.get_content(resource=_resource, id=id, layout=layout, hidden_fields=hidden_fields, user=user, subresource="pdf")
 
 
 def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):

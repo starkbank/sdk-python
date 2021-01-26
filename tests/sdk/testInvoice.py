@@ -68,6 +68,15 @@ class TestInvoiceInfoPatch(TestCase):
             self.assertEqual(updated_invoice.amount, invoice_amount)
 
 
+class TestInvoicePdfGet(TestCase):
+
+    def test_success(self):
+        invoices = starkbank.invoice.query()
+        invoice_id = next(invoices).id
+        pdf = starkbank.invoice.pdf(invoice_id)
+        self.assertGreater(len(pdf), 1000)
+
+
 class TestInvoiceQrcodeGet(TestCase):
 
     def test_success(self):

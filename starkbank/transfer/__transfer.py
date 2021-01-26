@@ -102,7 +102,7 @@ def pdf(id, user=None):
     ## Return:
     - Transfer pdf file
     """
-    return rest.get_pdf(resource=_resource, id=id, user=user)
+    return rest.get_content(resource=_resource, id=id, user=user, subresource="pdf")
 
 
 def query(limit=None, after=None, before=None, transaction_ids=None, status=None, tax_id=None, sort=None, tags=None, ids=None, user=None):

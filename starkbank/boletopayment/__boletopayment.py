@@ -80,7 +80,7 @@ def pdf(id, user=None):
     ## Return:
     - BoletoPayment pdf file
     """
-    return rest.get_pdf(resource=_resource, id=id, user=user)
+    return rest.get_content(resource=_resource, id=id, user=user, subresource="pdf")
 
 
 def query(limit=None, after=None, before=None, tags=None, ids=None, status=None, user=None):
