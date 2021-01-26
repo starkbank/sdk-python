@@ -23,13 +23,14 @@ class BrcodePayment(Resource):
     - name [string]: receiver name. ex: "Jon Snow"
     - status [string, default None]: current payment status. ex: "success" or "failed"
     - type [string, default None]: brcode type. ex: "static" or "dynamic"
+    - transaction_ids [list of strings, default None]: ledger transaction ids linked to this payment. ex: ["19827356981273"]
     - fee [integer, default None]: fee charged by this brcode payment. ex: 50 (= R$ 0.50)
     - updated [datetime.datetime, default None]: latest update datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, brcode, tax_id, description, amount=None, scheduled=None, tags=None, id=None, name=None,
-                 status=None, type=None, fee=None, updated=None, created=None):
+                 status=None, type=None, transaction_ids=None, fee=None, updated=None, created=None):
         Resource.__init__(self, id=id)
 
         self.brcode = brcode
@@ -41,6 +42,7 @@ class BrcodePayment(Resource):
         self.status = status
         self.type = type
         self.amount = amount
+        self.transaction_ids = transaction_ids
         self.fee = fee
         self.updated = check_datetime(updated)
         self.created = check_datetime(created)

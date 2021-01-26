@@ -58,7 +58,7 @@ def query(limit=None, username=None, ids=None, user=None):
     will be retrieved.
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - username [string]: query by the simplified name that defines the workspace URL. This name is always unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
+    - username [string, default None]: query by the simplified name that defines the workspace URL. This name is always unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
