@@ -88,5 +88,14 @@ class TestInvoiceQrcodeGet(TestCase):
         self.assertGreater(len(big_qrcode), 1000)
 
 
+class TestInvoicePaymentGet(TestCase):
+
+    def test_success(self):
+        invoices = starkbank.invoice.query(status="paid")
+        invoice_id = next(invoices).id
+        paymentInfo = starkbank.invoice.payment(invoice_id)
+        print(paymentInfo)
+
+
 if __name__ == '__main__':
     main()
