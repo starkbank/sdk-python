@@ -1,6 +1,7 @@
 from ..utils import rest
 from ..utils.checks import check_date, check_datetime, check_timedelta
 from ..utils.resource import Resource
+from .__payment import _sub_resource as _payment_sub_resource
 
 
 class Invoice(Resource):
@@ -152,7 +153,7 @@ def qrcode(id, size=7, user=None):
     ## Return:
     - Invoice png blob
     """
-    return rest.get_qrcode(resource=_resource, id=id, size=size, user=user)
+    return rest.get_content(resource=_resource, id=id, size=size, user=user, sub_resource_name="qrcode")
 
 
 def pdf(id, user=None):
@@ -165,4 +166,17 @@ def pdf(id, user=None):
     ## Return:
     - Invoice pdf file
     """
-    return rest.get_pdf(resource=_resource, id=id, user=user)
+    return rest.get_content(resource=_resource, id=id, user=user, sub_resource_name="pdf")
+
+
+def payment(id, user=None):
+    """# Retrieve a specific Invoice payment information
+    Receive the Invoice.Payment sub-resource associated with a paid Invoice.
+    ## Parameters (required):
+    - id [string]: object unique id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - Invoice.Payment sub-resource
+    """
+    return rest.get_sub_resource(resource=_resource, id=id, user=user, sub_resource=_payment_sub_resource)

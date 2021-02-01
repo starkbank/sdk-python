@@ -14,7 +14,7 @@ class Transfer(Resource):
     - tax_id [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     - bank_code [string]: code of the receiver bank institution in Brazil. If an ISPB (8 digits) is informed, a PIX transfer will be created, else a TED will be issued. ex: "20018183" or "341"
     - branch_code [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
-    - account_number [string]: Receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
+    - account_number [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
     ## Parameters (optional):
     - account_type [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings" or "salary"
     - external_id [string, default None]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
@@ -102,7 +102,7 @@ def pdf(id, user=None):
     ## Return:
     - Transfer pdf file
     """
-    return rest.get_pdf(resource=_resource, id=id, user=user)
+    return rest.get_content(resource=_resource, id=id, user=user, sub_resource_name="pdf")
 
 
 def query(limit=None, after=None, before=None, transaction_ids=None, status=None, tax_id=None, sort=None, tags=None, ids=None, user=None):

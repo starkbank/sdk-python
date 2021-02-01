@@ -66,7 +66,7 @@ privateKey, publicKey = starkbank.key.create()
 privateKey, publicKey = starkbank.key.create("file/keys/")
 ```
 
-**NOTE**: When you are creating a new Project, it is recommended that you create the
+**NOTE**: When you are creating new credentials, it is recommended that you create the
 keys inside the infrastructure that will use it, in order to avoid risky internet
 transmissions of your **private-key**. Then you can export the **public-key** alone to the
 computer where it will be used in the new Project creation.
@@ -83,7 +83,7 @@ Since this user is unique in your entire organization, only one credential can b
 
 3.1 To create a Project in Sandbox:
 
-3.1.1. Log into [Starkbank Sandbox](https://sandbox.web.starkbank.com)
+3.1.1. Log into [Starkbank Sandbox](https://web.sandbox.starkbank.com)
 
 3.1.2. Go to Menu > Projects
 
@@ -554,6 +554,18 @@ import starkbank
 log = starkbank.invoice.log.get("5155165527080960")
 
 print(log)
+```
+
+### Get an invoice payment information
+
+Once an invoice has been paid, you can get the payment information using the Invoice.Payment sub-resource:
+
+```python
+import starkbank
+
+paymentInformation = starkbank.invoice.payment("5155165527080960")
+
+print(paymentInformation)
 ```
 
 ### Query deposits
@@ -1385,7 +1397,7 @@ for dict_key in dict_keys:
     print(dict_key)
 ```
 
-### Create a Workspace
+### Create a new Workspace
 
 The Organization user allows you to create new Workspaces (bank accounts) under your organization.
 Workspaces have independent balances, statements, operations and users.
