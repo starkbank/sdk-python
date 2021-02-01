@@ -556,6 +556,18 @@ log = starkbank.invoice.log.get("5155165527080960")
 print(log)
 ```
 
+### Get an invoice payment information
+
+Once an invoice has been paid, you can get the payment information using the Invoice.Payment sub-resource:
+
+```python
+import starkbank
+
+paymentInformation = starkbank.invoice.payment("5155165527080960")
+
+print(paymentInformation)
+```
+
 ### Query deposits
 
 You can get a list of created deposits given some filters.

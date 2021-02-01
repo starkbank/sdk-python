@@ -170,8 +170,8 @@ def pdf(id, user=None):
 
 
 def payment(id, user=None):
-    """# Retrieve a specific Invoice pdf file
-    Receive a the Invoice.Payment sub-resource associated with a paid Invoice.
+    """# Retrieve a specific Invoice payment information
+    Receive the Invoice.Payment sub-resource associated with a paid Invoice.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
