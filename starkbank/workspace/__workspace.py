@@ -64,4 +64,4 @@ def query(limit=None, username=None, ids=None, user=None):
     ## Return:
     - generator of Workspace objects with updated attributes
     """
-    return rest.get_list(resource=_resource, limit=limit, username=username, ids=ids, user=user)
+    return rest.get_stream(resource=_resource, limit=limit, username=username, ids=ids, user=user)

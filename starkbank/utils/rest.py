@@ -10,7 +10,7 @@ def get_page(resource, user=None, **kwargs):
     return entities, cursor
 
 
-def get_list(resource, limit=None, user=None, **kwargs):
+def get_stream(resource, limit=None, user=None, **kwargs):
     query = {"limit": min(limit, 100) if limit else limit}
     query.update(kwargs)
 

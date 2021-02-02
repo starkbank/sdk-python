@@ -60,7 +60,7 @@ def query(limit=None, user=None):
     ## Return:
     - generator of Webhook objects with updated attributes
     """
-    return rest.get_list(resource=_resource, limit=limit, user=user)
+    return rest.get_stream(resource=_resource, limit=limit, user=user)
 
 
 def delete(id, user=None):

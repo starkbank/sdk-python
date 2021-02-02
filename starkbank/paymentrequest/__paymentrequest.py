@@ -133,7 +133,7 @@ def query(center_id, limit=None, after=None, before=None, sort=None, status=None
     ## Return:
     - generator of PaymentRequest objects with updated attributes
     """
-    return rest.get_list(
+    return rest.get_stream(
         resource=_resource,
         center_id=center_id,
         limit=limit,

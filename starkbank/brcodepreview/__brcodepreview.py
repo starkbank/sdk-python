@@ -44,7 +44,7 @@ def query(brcodes, user=None):
     ## Return:
     - generator of BrcodePreview objects with updated attributes
     """
-    return rest.get_list(
+    return rest.get_stream(
         resource=_resource,
         brcodes=brcodes,
         limit=None,

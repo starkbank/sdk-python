@@ -76,7 +76,7 @@ def query(limit=None, after=None, before=None, status=None, sort=None, tags=None
     ## Return:
     - generator of Deposit objects with updated attributes
     """
-    return rest.get_list(
+    return rest.get_stream(
         resource=_resource,
         limit=limit,
         after=check_date(after),

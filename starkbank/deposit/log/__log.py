@@ -57,7 +57,7 @@ def query(limit=None, after=None, before=None, types=None, deposit_ids=None, use
     ## Return:
     - list of deposit.Log objects with updated attributes
     """
-    return rest.get_list(
+    return rest.get_stream(
         resource=_resource,
         limit=limit,
         after=check_date(after),

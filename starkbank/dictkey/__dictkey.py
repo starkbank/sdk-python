@@ -76,7 +76,7 @@ def query(limit=None, type=None, after=None, before=None, ids=None, status=None,
     ## Return:
     - generator of DictKey objects with updated attributes
     """
-    return rest.get_list(
+    return rest.get_stream(
         resource=_resource,
         limit=limit,
         type=type,
