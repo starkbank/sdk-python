@@ -3,22 +3,26 @@ from ..utils.api import endpoint, last_name, last_name_plural, api_json, from_ap
 from ..utils.request import fetch
 
 
+def get_page(resource, user=None, **kwargs):
+    json = fetch(method=get, path=endpoint(resource), query=kwargs, user=user).json()
+    entities = [from_api_json(resource, entity) for entity in json[last_name_plural(resource)]]
+    cursor = json.get("cursor")
+    return entities, cursor
+
+
 def get_list(resource, limit=None, user=None, **kwargs):
     query = {"limit": min(limit, 100) if limit else limit}
     query.update(kwargs)
 
     while True:
-        json = fetch(method=get, path=endpoint(resource), query=query, user=user).json()
-        entities = json[last_name_plural(resource)]
-
+        entities, cursor = get_page(resource=resource, user=user, **query)
         for entity in entities:
-            yield from_api_json(resource, entity)
+            yield entity
 
         if limit:
             limit -= 100
             query["limit"] = min(limit, 100)
 
-        cursor = json.get("cursor")
         query["cursor"] = cursor
         if not cursor or (limit is not None and limit <= 0):
             break
