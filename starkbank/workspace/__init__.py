@@ -1,1 +1,1 @@
-from .__workspace import get, query, create
+from .__workspace import get, query, page, create

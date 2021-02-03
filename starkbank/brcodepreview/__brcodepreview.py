@@ -40,11 +40,11 @@ def query(brcodes, user=None):
     Process BR Codes before creating BrcodePayments
     ## Parameters (optional):
     - brcodes [list of strings]: List of brcodes to preview. ex: ["00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"]
-    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of BrcodePreview objects with updated attributes
     """
-    return rest.get_list(
+    return rest.get_stream(
         resource=_resource,
         brcodes=brcodes,
         limit=None,

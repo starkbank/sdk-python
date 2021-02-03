@@ -8,13 +8,29 @@ from random import choice
 starkbank.user = exampleProject
 
 
-class TestEventGet(TestCase):
+class TestEventQuery(TestCase):
 
     def test_success(self):
         events = list(starkbank.event.query(limit=10))
         for event in events:
             print(event)
         self.assertEqual(len(events), 10)
+
+
+class TestEventPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            events, cursor = starkbank.event.page(limit=2, cursor=cursor)
+            for event in events:
+                print(event)
+                self.assertFalse(event.id in ids)
+                ids.append(event.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestEventInfoGet(TestCase):

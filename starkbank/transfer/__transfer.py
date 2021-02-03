@@ -118,12 +118,48 @@ def query(limit=None, after=None, before=None, transaction_ids=None, status=None
     - sort [string, default "-created"]: sort order considered in response. Valid options are "created", "-created", "updated" or "-updated".
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of Transfer objects with updated attributes
     """
-    return rest.get_list(
+    return rest.get_stream(
         resource=_resource,
+        limit=limit,
+        after=check_date(after),
+        before=check_date(before),
+        transaction_ids=transaction_ids,
+        status=status,
+        tax_id=tax_id,
+        sort=sort,
+        tags=tags,
+        ids=ids,
+        user=user,
+    )
+
+
+def page(cursor=None, limit=None, after=None, before=None, transaction_ids=None, status=None, tax_id=None, sort=None, tags=None, ids=None, user=None):
+    """# Retrieve paged Transfers
+    Receive a list of up to 100 Transfer objects previously created in the Stark Bank API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
+    ## Parameters (optional):
+    - cursor [string, default None]: cursor returned on the previous page function call
+    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - after [datetime.date or string, default None]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
+    - transaction_ids [list of strings, default None]: list of transaction IDs linked to the desired transfers. ex: ["5656565656565656", "4545454545454545"]
+    - status [string, default None]: filter for status of retrieved objects. ex: "success" or "failed"
+    - tax_id [string, default None]: filter for transfers sent to the specified tax ID. ex: "012.345.678-90"
+    - sort [string, default "-created"]: sort order considered in response. Valid options are "created", "-created", "updated" or "-updated".
+    - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - list of Transfer objects with updated attributes
+    - cursor to retrieve the next page of Transfer objects
+    """
+    return rest.get_page(
+        resource=_resource,
+        cursor=cursor,
         limit=limit,
         after=check_date(after),
         before=check_date(before),

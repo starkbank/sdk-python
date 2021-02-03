@@ -100,12 +100,42 @@ def query(limit=None, after=None, before=None, tags=None, ids=None, status=None,
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - status [string, default None]: filter for status of retrieved objects. ex: "success"
-    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of BrcodePayment objects with updated attributes
     """
-    return rest.get_list(
+    return rest.get_stream(
         resource=_resource,
+        limit=limit,
+        after=check_date(after),
+        before=check_date(before),
+        tags=tags,
+        ids=ids,
+        status=status,
+        user=user,
+    )
+
+
+def page(cursor=None, after=None, before=None, tags=None, ids=None, status=None, limit=None, user=None):
+    """# Retrieve paged BrcodePayments
+    Receive a list of up to 100 BrcodePayment objects previously created in the Stark Bank API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
+    ## Parameters (optional):
+    - cursor [string, default None]: cursor returned on the previous page function call
+    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - status [string, default None]: filter for status of retrieved objects. ex: "success"
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - list of BrcodePayment objects with updated attributes
+    - cursor to retrieve the next page of BrcodePayment objects
+    """
+    return rest.get_page(
+        resource=_resource,
+        cursor=cursor,
         limit=limit,
         after=check_date(after),
         before=check_date(before),

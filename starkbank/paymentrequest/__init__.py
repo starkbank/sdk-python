@@ -1,1 +1,1 @@
-from .__paymentrequest import create, query
+from .__paymentrequest import create, query, page

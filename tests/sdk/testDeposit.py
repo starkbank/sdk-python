@@ -8,7 +8,7 @@ from tests.utils.user import exampleProject
 starkbank.user = exampleProject
 
 
-class TestDepositGet(TestCase):
+class TestDepositQuery(TestCase):
 
     def test_success_after_before(self):
         after = randomPastDate(days=10)
@@ -20,6 +20,22 @@ class TestDepositGet(TestCase):
             if i >= 200:
                 break
         print("Number of deposits:", i)
+
+
+class TestDepositPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            deposits, cursor = starkbank.deposit.page(limit=2, cursor=cursor)
+            for deposit in deposits:
+                print(deposit)
+                self.assertFalse(deposit.id in ids)
+                ids.append(deposit.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestDepositInfoGet(TestCase):

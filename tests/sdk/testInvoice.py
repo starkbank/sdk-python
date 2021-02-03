@@ -19,7 +19,7 @@ class TestInvoicePost(TestCase):
             print(invoice)
 
 
-class TestInvoiceGet(TestCase):
+class TestInvoiceQuery(TestCase):
 
     def test_success_after_before(self):
         after = randomPastDate(days=10)
@@ -31,6 +31,22 @@ class TestInvoiceGet(TestCase):
             if i >= 200:
                 break
         print("Number of invoices:", i)
+
+
+class TestInvoicePage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            invoices, cursor = starkbank.invoice.page(limit=2, cursor=cursor)
+            for invoice in invoices:
+                print(invoice)
+                self.assertFalse(invoice.id in ids)
+                ids.append(invoice.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestInvoiceInfoGet(TestCase):

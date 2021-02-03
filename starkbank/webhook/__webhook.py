@@ -56,11 +56,31 @@ def query(limit=None, user=None):
     Receive a generator of Webhook subcription objects previously created in the Stark Bank API
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of Webhook objects with updated attributes
     """
-    return rest.get_list(resource=_resource, limit=limit, user=user)
+    return rest.get_stream(resource=_resource, limit=limit, user=user)
+
+
+def page(cursor=None, limit=None, user=None):
+    """# Retrieve paged Webhooks
+    Receive a list of up to 100 Webhook objects previously created in the Stark Bank API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
+    ## Parameters (optional):
+    - cursor [string, default None]: cursor returned on the previous page function call
+    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - list of Webhook objects with updated attributes
+    - cursor to retrieve the next page of Webhook objects
+    """
+    return rest.get_page(
+        resource=_resource,
+        cursor=cursor,
+        limit=limit,
+        user=user,
+    )
 
 
 def delete(id, user=None):

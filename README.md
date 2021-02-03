@@ -195,6 +195,39 @@ starkbank.language = "en-US"
 
 Language options are "en-US" for english and "pt-BR" for brazilian portuguese. English is default.
 
+### 6. Resource listing and manual pagination
+
+Almost all SDK resources provide a `query` and a `page` function.
+
+- The `query` function provides a straight forward way to efficiently iterate through all results that match the filters you inform,
+seamlessly retrieving the next batch of elements from the API only when you reach the end of the current batch.
+If you are not worried about data volume or processing time, this is the way to go.
+
+```python
+import starkbank
+
+for transaction in starkbank.transaction.query(limit=200):
+    print(transaction)
+```
+
+- The `page` function gives you full control over the API pagination. With each function call, you receive up to
+100 results and the cursor to retrieve the next batch of elements. This allows you to stop your queries and
+pick up from where you left off whenever it is convenient. When there are no more elements to be retrieved, the returned cursor will be `None`.
+
+```python
+import starkbank
+
+cursor = None
+while True:
+    transactions, cursor = starkbank.transaction.page(limit=50, cursor=cursor)
+    for transaction in transactions:
+        print(transaction)
+    if cursor is None:
+        break
+```
+
+To simplify the following SDK examples, we will only use the `query` function, but feel free to use `page` instead.
+
 ## Testing in Sandbox
 
 Your initial balance is zero. For many operations in Stark Bank, you'll need funds

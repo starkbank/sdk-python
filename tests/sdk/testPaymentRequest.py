@@ -19,7 +19,7 @@ class TestPaymentRequestPost(TestCase):
             print(request)
 
 
-class TestPaymentRequestGet(TestCase):
+class TestPaymentRequestQuery(TestCase):
     
     def test_success_after_before(self):
         after = randomPastDate(days=10)
@@ -32,6 +32,22 @@ class TestPaymentRequestGet(TestCase):
             if i >= 200:
                 break
         print("Number of payment requests:", i)
+
+
+class TestPaymentRequestPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            requests, cursor = starkbank.paymentrequest.page(center_id=center_id, limit=2, cursor=cursor)
+            for request in requests:
+                print(request)
+                self.assertFalse(request.id in ids)
+                ids.append(request.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 if __name__ == '__main__':

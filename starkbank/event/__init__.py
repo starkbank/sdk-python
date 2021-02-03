@@ -1,1 +1,1 @@
-from .__event import query, get, parse, delete, update
+from .__event import query, page, get, parse, delete, update

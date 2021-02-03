@@ -18,7 +18,7 @@ class TestBoletoPost(TestCase):
             print(boleto)
 
 
-class TestBoletoGet(TestCase):
+class TestBoletoQuery(TestCase):
 
     def test_success_after_before(self):
         after = randomPastDate(days=10)
@@ -30,6 +30,22 @@ class TestBoletoGet(TestCase):
             if i >= 200:
                 break
         print("Number of boletos:", i)
+
+
+class TestBoletoPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            boletos, cursor = starkbank.boleto.page(limit=2, cursor=cursor)
+            for boleto in boletos:
+                print(boleto)
+                self.assertFalse(boleto.id in ids)
+                ids.append(boleto.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestBoletoPostAndDelete(TestCase):

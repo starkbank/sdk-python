@@ -16,12 +16,28 @@ class TestBoletoPaymentPost(TestCase):
             print(payment)
 
 
-class TestBoletoPaymentGet(TestCase):
+class TestBoletoPaymentQuery(TestCase):
 
     def test_success(self):
         payments = list(starkbank.boletopayment.query(limit=10))
         print(payments)
         self.assertEqual(10, len(payments))
+
+
+class TestBoletoPaymentPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            payments, cursor = starkbank.boletopayment.page(limit=2, cursor=cursor)
+            for payment in payments:
+                print(payment)
+                self.assertFalse(payment.id in ids)
+                ids.append(payment.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestBoletoPaymentInfoGet(TestCase):

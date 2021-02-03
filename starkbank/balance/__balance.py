@@ -35,4 +35,4 @@ def get(user=None):
     ## Return:
     - Balance object with updated attributes
     """
-    return next(rest.get_list(resource=_resource, user=user))
+    return next(rest.get_stream(resource=_resource, user=user))

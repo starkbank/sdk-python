@@ -8,7 +8,7 @@ from tests.utils.user import exampleProject
 starkbank.user = exampleProject
 
 
-class TestBoletoLogGet(TestCase):
+class TestBoletoLogQuery(TestCase):
 
     def test_success(self):
         logs = list(starkbank.boleto.log.query(limit=10))
@@ -22,6 +22,22 @@ class TestBoletoLogGet(TestCase):
         logs = starkbank.boleto.log.query(boleto_ids=boleto_ids)
         for log in logs:
             print(log)
+
+
+class TestBoletoLogPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            logs, cursor = starkbank.boleto.log.page(limit=2, cursor=cursor)
+            for log in logs:
+                print(log)
+                self.assertFalse(log.id in ids)
+                ids.append(log.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestBoletoLogInfoGet(TestCase):

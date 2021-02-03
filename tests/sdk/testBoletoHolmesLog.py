@@ -6,7 +6,7 @@ from tests.utils.user import exampleProject
 starkbank.user = exampleProject
 
 
-class TestBoletoHolmesLogGet(TestCase):
+class TestBoletoHolmesLogQuery(TestCase):
 
     def test_success(self):
         logs = list(starkbank.boletoholmes.log.query(limit=10))
@@ -14,6 +14,22 @@ class TestBoletoHolmesLogGet(TestCase):
         self.assertEqual(len(logs), 10)
         for log in logs:
             print(log)
+
+
+class TestBoletoHolmesLogPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            logs, cursor = starkbank.boletoholmes.log.page(limit=2, cursor=cursor)
+            for log in logs:
+                print(log)
+                self.assertFalse(log.id in ids)
+                ids.append(log.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestBoletoHolmesLogInfoGet(TestCase):

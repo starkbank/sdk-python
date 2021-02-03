@@ -1,1 +1,1 @@
-from .__dictkey import get, query
+from .__dictkey import get, query, page

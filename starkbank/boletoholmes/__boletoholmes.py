@@ -71,11 +71,11 @@ def query(limit=None, after=None, before=None, tags=None, ids=None, status=None,
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - status [string, default None]: filter for status of retrieved objects. ex: "solved"
     - boleto_id [string, default None]: filter for holmes that investigate a specific boleto by its ID. ex: "5656565656565656"
-    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of BoletoHolmes objects with updated attributes
     """
-    return rest.get_list(
+    return rest.get_stream(
         resource=_resource,
         limit=limit,
         after=check_date(after),
@@ -84,5 +84,25 @@ def query(limit=None, after=None, before=None, tags=None, ids=None, status=None,
         ids=ids,
         status=status,
         boleto_id=boleto_id,
+        user=user,
+    )
+
+
+def page(cursor=None, limit=None, user=None):
+    """# Retrieve paged BoletoHolmes
+    Receive a list of up to 100 BoletoHolmes objects previously created in the Stark Bank API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
+    ## Parameters (optional):
+    - cursor [string, default None]: cursor returned on the previous page function call
+    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - list of BoletoHolmes objects with updated attributes
+    - cursor to retrieve the next page of BoletoHolmes objects
+    """
+    return rest.get_page(
+        resource=_resource,
+        cursor=cursor,
+        limit=limit,
         user=user,
     )

@@ -6,7 +6,7 @@ from tests.utils.user import exampleProject
 starkbank.user = exampleProject
 
 
-class TestBrcodePaymentLogGet(TestCase):
+class TestBrcodePaymentLogQuery(TestCase):
 
     def test_success(self):
         logs = list(starkbank.brcodepayment.log.query(limit=10))
@@ -14,6 +14,22 @@ class TestBrcodePaymentLogGet(TestCase):
         self.assertEqual(len(logs), 10)
         for log in logs:
             print(log)
+
+
+class TestBrcodePaymentLogPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            logs, cursor = starkbank.brcodepayment.log.page(limit=2, cursor=cursor)
+            for log in logs:
+                print(log)
+                self.assertFalse(log.id in ids)
+                ids.append(log.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestBrcodePaymentLogInfoGet(TestCase):
