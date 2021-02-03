@@ -146,3 +146,40 @@ def query(center_id, limit=None, after=None, before=None, sort=None, status=None
         ids=ids,
         user=user,
     )
+
+
+def page(center_id, cursor=None, limit=None, after=None, before=None, sort=None, status=None, type=None, tags=None, ids=None, user=None):
+    """# Retrieve paged PaymentRequests
+    Receive a list of up to 100 PaymentRequest objects previously created in the Stark Bank API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
+    ## Parameters (required):
+    - center_id [string]: target cost center ID. ex: "5656565656565656"
+    ## Parameters (optional):
+    - cursor [string, default None]: cursor returned on the previous page function call
+    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - after [datetime.date or string, default None]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
+    - sort [string, default "-created"]: sort order considered in response. Valid options are "-created" or "-due".
+    - status [string, default None]: filter for status of retrieved objects. ex: "success" or "failed"
+    - type [string, default None]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer", "boleto-payment"
+    - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - list of PaymentRequest objects with updated attributes
+    - cursor to retrieve the next page of PaymentRequest objects
+    """
+    return rest.get_page(
+        resource=_resource,
+        center_id=center_id,
+        cursor=cursor,
+        limit=limit,
+        after=check_date(after),
+        before=check_date(before),
+        sort=sort,
+        status=status,
+        type=type,
+        tags=tags,
+        ids=ids,
+        user=user,
+    )

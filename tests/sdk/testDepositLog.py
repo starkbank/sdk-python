@@ -6,12 +6,28 @@ from tests.utils.user import exampleProject
 starkbank.user = exampleProject
 
 
-class TestDepositLogGet(TestCase):
+class TestDepositLogQuery(TestCase):
 
     def test_success(self):
         logs = list(starkbank.deposit.log.query(limit=10))
         logs = list(starkbank.deposit.log.query(limit=10, deposit_ids={log.deposit.id for log in logs}, types={log.type for log in logs}))
         print("Number of logs:", len(logs))
+
+
+class TestDepositLogPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            logs, cursor = starkbank.deposit.log.page(limit=2, cursor=cursor)
+            for log in logs:
+                print(log)
+                self.assertFalse(log.id in ids)
+                ids.append(log.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestDepositLogInfoGet(TestCase):

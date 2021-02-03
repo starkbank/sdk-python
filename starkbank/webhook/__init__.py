@@ -1,1 +1,1 @@
-from .__webhook import get, delete, query, create
+from .__webhook import get, delete, query, page, create

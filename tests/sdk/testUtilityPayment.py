@@ -7,11 +7,27 @@ from tests.utils.utilityPayment import generateExampleUtilityPaymentsJson
 starkbank.user = exampleProject
 
 
-class TestUtilityPaymentGet(TestCase):
+class TestUtilityPaymentQuery(TestCase):
 
     def test_success(self):
         payments = list(starkbank.utilitypayment.query(limit=10))
         print("Number of payments:", len(payments))
+
+
+class TestUtilityPaymentPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            payments, cursor = starkbank.utilitypayment.page(limit=2, cursor=cursor)
+            for payment in payments:
+                print(payment)
+                self.assertFalse(payment.id in ids)
+                ids.append(payment.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestUtilityPaymentInfoGet(TestCase):

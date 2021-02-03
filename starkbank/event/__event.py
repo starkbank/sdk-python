@@ -80,12 +80,38 @@ def query(limit=None, after=None, before=None, is_delivered=None, user=None):
     - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
     - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - is_delivered [bool, default None]: bool to filter successfully delivered events. ex: True or False
-    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of Event objects with updated attributes
     """
     return rest.get_stream(
         resource=_resource,
+        limit=limit,
+        after=check_date(after),
+        before=check_date(before),
+        is_delivered=is_delivered,
+        user=user,
+    )
+
+
+def page(cursor=None, limit=None, after=None, before=None, is_delivered=None, user=None):
+    """# Retrieve paged Events
+    Receive a list of up to 100 Event objects previously created in the Stark Bank API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
+    ## Parameters (optional):
+    - cursor [string, default None]: cursor returned on the previous page function call
+    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - is_delivered [bool, default None]: bool to filter successfully delivered events. ex: True or False
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - list of Event objects with updated attributes
+    - cursor to retrieve the next page of Event objects
+    """
+    return rest.get_page(
+        resource=_resource,
+        cursor=cursor,
         limit=limit,
         after=check_date(after),
         before=check_date(before),

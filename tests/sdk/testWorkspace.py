@@ -24,6 +24,22 @@ class TestWorkspaceQuery(TestCase):
             print(workspace)
 
 
+class TestWorkspacePage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            workspaces, cursor = starkbank.workspace.page(limit=2, cursor=cursor, user=exampleOrganization)
+            for workspace in workspaces:
+                print(workspace)
+                self.assertFalse(workspace.id in ids)
+                ids.append(workspace.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
+
+
 class TestWebhookInfoGet(TestCase):
 
     def test_success(self):

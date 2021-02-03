@@ -13,7 +13,7 @@ class TestDictKeyInfoGet(TestCase):
         print(dict_key)
 
 
-class TestDictKeyGet(TestCase):
+class TestDictKeyQuery(TestCase):
 
     def test_success_after_before(self):
         keys = starkbank.dictkey.query(type="evp", status="registered")
@@ -23,6 +23,22 @@ class TestDictKeyGet(TestCase):
             if i >= 200:
                 break
         print("Number of deposits:", i)
+
+
+class TestDictKeyPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            dictKeys, cursor = starkbank.dictkey.page(limit=2, cursor=cursor)
+            for dictKey in dictKeys:
+                print(dictKey)
+                self.assertFalse(dictKey.id in ids)
+                ids.append(dictKey.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) <= 4)
 
 
 if __name__ == '__main__':

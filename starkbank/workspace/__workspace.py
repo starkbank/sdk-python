@@ -65,3 +65,27 @@ def query(limit=None, username=None, ids=None, user=None):
     - generator of Workspace objects with updated attributes
     """
     return rest.get_stream(resource=_resource, limit=limit, username=username, ids=ids, user=user)
+
+
+def page(cursor=None, limit=None, username=None, ids=None, user=None):
+    """# Retrieve paged Workspaces
+    Receive a list of up to 100 Workspace objects previously created in the Stark Bank API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
+    ## Parameters (optional):
+    - cursor [string, default None]: cursor returned on the previous page function call
+    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - username [string, default None]: query by the simplified name that defines the workspace URL. This name is always unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - list of Workspace objects with updated attributes
+    - cursor to retrieve the next page of Workspace objects
+    """
+    return rest.get_page(
+        resource=_resource,
+        cursor=cursor,
+        limit=limit,
+        username=username,
+        ids=ids,
+        user=user,
+    )

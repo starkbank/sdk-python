@@ -18,7 +18,7 @@ class TestTransactionPost(TestCase):
             print(transaction)
 
 
-class TestTransactionGet(TestCase):
+class TestTransactionQuery(TestCase):
 
     def test_success(self):
         transactions = list(starkbank.transaction.query(limit=10))
@@ -32,6 +32,23 @@ class TestTransactionGet(TestCase):
         self.assertLessEqual(len(transactions), 10)
         for transaction in transactions:
             print(transaction)
+
+
+class TestTransactionPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        transactionIds = []
+        for _ in range(2):
+            transactions, cursor = starkbank.transaction.page(limit=2, cursor=cursor)
+            for transaction in transactions:
+                print(transaction)
+                self.assertFalse(transaction.id in transactionIds)
+                transactionIds.append(transaction.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(transactionIds) == 4)
+
 
 
 class TestTransactionInfoGet(TestCase):

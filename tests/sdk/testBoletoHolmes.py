@@ -20,13 +20,29 @@ class TestBoletoHolmesPost(TestCase):
             print(holmes)
 
 
-class TestBoletoHolmesGet(TestCase):
+class TestBoletoHolmesQuery(TestCase):
 
     def test_success(self):
         holmes = list(starkbank.boletoholmes.query(limit=5))
         for sherlock in holmes:
             print(sherlock)
         self.assertEqual(5, len(holmes))
+
+
+class TestBoletoHolmesPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            holmes, cursor = starkbank.boletoholmes.page(limit=2, cursor=cursor)
+            for sherlock in holmes:
+                print(sherlock)
+                self.assertFalse(sherlock.id in ids)
+                ids.append(sherlock.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestBoletoHolmesInfoGet(TestCase):

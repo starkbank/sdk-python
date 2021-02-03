@@ -1,1 +1,1 @@
-from .__log import get, query
+from .__log import get, query, page

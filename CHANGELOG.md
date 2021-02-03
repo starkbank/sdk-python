@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- page functions as a manual-pagination alternative to queries 
 
 ## [2.5.0] - 2021-02-01
 ### Added

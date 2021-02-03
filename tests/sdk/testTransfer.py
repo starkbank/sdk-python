@@ -18,7 +18,7 @@ class TestTransferPost(TestCase):
             print(transfer.id)
 
 
-class TestTransferGet(TestCase):
+class TestTransferQuery(TestCase):
 
     def test_success(self):
         transfers = list(starkbank.transfer.query(limit=10))
@@ -35,6 +35,22 @@ class TestTransferGet(TestCase):
             transaction_ids=["1", "2", "3"],
         )
         self.assertEqual(len(list(transfers)), 0)
+
+
+class TestTransferPage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            transfers, cursor = starkbank.transfer.page(limit=2, cursor=cursor)
+            for transfer in transfers:
+                print(transfer)
+                self.assertFalse(transfer.id in ids)
+                ids.append(transfer.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
 
 
 class TestTransferInfoGet(TestCase):

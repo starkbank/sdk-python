@@ -74,7 +74,8 @@ def get(id, user=None):
 
 def query(limit=None, after=None, before=None, tags=None, external_ids=None, ids=None, user=None):
     """# Retrieve Transactions
-    Receive a generator of Transaction objects previously created in the Stark Bank API
+    Receive a generator of Transaction objects previously created in the Stark Bank API.
+    Use this function instead of page if you want to stream Transactions without worrying about cursors and pagination.
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
     - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
@@ -82,12 +83,42 @@ def query(limit=None, after=None, before=None, tags=None, external_ids=None, ids
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - external_ids [list of strings, default None]: list of external ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-    - user [Project object, default None]: Project object. Not necessary if starkbank.user was set before function call
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - generator of Transaction objects with updated attributes
     """
     return rest.get_stream(
         resource=_resource,
+        limit=limit,
+        after=check_date(after),
+        before=check_date(before),
+        tags=tags,
+        external_ids=external_ids,
+        ids=ids,
+        user=user,
+    )
+
+
+def page(cursor=None, limit=None, after=None, before=None, tags=None, external_ids=None, ids=None, user=None):
+    """# Retrieve paged Transactions
+    Receive a list of up to 100 Transaction objects previously created in the Stark Bank API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
+    ## Parameters (optional):
+    - cursor [string, default None]: cursor returned on the previous page function call
+    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
+    - external_ids [list of strings, default None]: list of external ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - list of Transaction objects with updated attributes
+    - cursor to retrieve the next page of Transaction objects
+    """
+    return rest.get_page(
+        resource=_resource,
+        cursor=cursor,
         limit=limit,
         after=check_date(after),
         before=check_date(before),
