@@ -13,6 +13,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- missing Invoice.transaction_ids property
+
 ## [2.6.0] - 2021-02-03
 ### Added
 - page functions as a manual-pagination alternative to queries 

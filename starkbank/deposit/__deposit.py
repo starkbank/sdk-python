@@ -20,7 +20,7 @@ class Deposit(Resource):
     - status [string]: current Deposit status. ex: "created"
     - tags [list of strings]: list of strings that are tagging the deposit. ex: ["reconciliationId", "txId"]
     - fee [integer]: fee charged by this deposit. ex: 50 (= R$ 0.50)
-    - transaction_ids [list of strings]: ledger transaction ids linked to this deposit (if there are more than one, all but first are reversals). ex: ["19827356981273"]
+    - transaction_ids [list of strings]: ledger transaction ids linked to this deposit (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]
     - created [datetime.datetime]: creation datetime for the Deposit. ex: datetime.datetime(2020, 12, 10, 10, 30, 0, 0)
     - updated [datetime.datetime]: latest update datetime for the Deposit. ex: datetime.datetime(2020, 12, 10, 10, 30, 0, 0)
     """
