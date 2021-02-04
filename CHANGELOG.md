@@ -13,6 +13,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+## [2.6.1] - 2021-02-05
 ### Fixed
 - missing Invoice.transaction_ids property
 
