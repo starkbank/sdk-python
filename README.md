@@ -603,6 +603,24 @@ log = starkbank.invoice.log.get("5155165527080960")
 print(log)
 ```
 
+### Get a reversed invoice log PDF
+
+After its reversal, a reversed invoice log PDF may be retrieved by its id. 
+Only reversed logs may be used with this method
+
+```python
+import starkbank
+
+pdf = starkbank.invoice.log.pdf("5155165527080960")
+
+with open("invoice-reversal.pdf", "wb") as file:
+    file.write(pdf)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
 ### Get an invoice payment information
 
 Once an invoice has been paid, you can get the payment information using the Invoice.Payment sub-resource:
