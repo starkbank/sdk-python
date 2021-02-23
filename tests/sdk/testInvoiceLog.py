@@ -37,5 +37,14 @@ class TestInvoiceLogInfoGet(TestCase):
         logs = starkbank.invoice.log.get(id=log_id)
 
 
+class TestInvoiceLogPdfGet(TestCase):
+
+    def test_success(self):
+        logs = starkbank.invoice.log.query(types="reversed")
+        log_id = next(logs).id
+        pdf = starkbank.invoice.log.pdf(log_id)
+        self.assertGreater(len(pdf), 1000)
+
+
 if __name__ == '__main__':
     main()
