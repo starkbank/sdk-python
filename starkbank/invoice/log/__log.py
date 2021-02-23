@@ -94,3 +94,16 @@ def page(cursor=None, after=None, before=None, types=None, invoice_ids=None, lim
         invoice_ids=invoice_ids,
         user=user,
     )
+
+
+def pdf(id, user=None):
+    """# Retrieve a reversed Invoice.Log pdf file
+    Receive a reversed Invoice.Log pdf receipt file generated in the Stark Bank API by its id.
+    ## Parameters (required):
+    - id [string]: object unique id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - Invoice pdf file
+    """
+    return rest.get_content(resource=_resource, id=id, user=user, sub_resource_name="pdf")
