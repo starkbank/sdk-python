@@ -605,8 +605,8 @@ print(log)
 
 ### Get a reversed invoice log PDF
 
-After its reversal, a reversed invoice log PDF may be retrieved by its id. 
-Only reversed logs may be used with this method
+Whenever an Invoice is successfully reversed, a reversed log will be created. 
+To retrieve a specific reversal receipt, you can request the corresponding log PDF:
 
 ```python
 import starkbank
