@@ -13,7 +13,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
-## [2.7.0] - 2021-02-22
+## [2.7.0] - 2021-02-26
 ### Added
 - pdf function for retrieving PDF receipts from reversed invoice logs 
 
