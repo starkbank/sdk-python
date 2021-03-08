@@ -25,6 +25,7 @@ class Invoice(Resource):
 
     ## Attributes (return-only):
     - pdf [string, default None]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
+    - link [string, default None]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
     - nominal_amount [integer, default None]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
     - fine_amount [integer, default None]: Invoice fine value calculated over nominal_amount. ex: 20000
     - interest_amount [integer, default None]: Invoice interest value calculated over nominal_amount. ex: 10000
@@ -39,9 +40,9 @@ class Invoice(Resource):
     """
 
     def __init__(self, amount, tax_id, name, due=None, expiration=None, fine=None, interest=None, discounts=None,
-                 tags=None, descriptions=None, pdf=None, nominal_amount=None, fine_amount=None, interest_amount=None,
-                 discount_amount=None, id=None, brcode=None, status=None, fee=None, transaction_ids=None, created=None,
-                 updated=None):
+                 tags=None, descriptions=None, pdf=None, link=None, nominal_amount=None, fine_amount=None,
+                 interest_amount=None, discount_amount=None, id=None, brcode=None, status=None, fee=None,
+                 transaction_ids=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -58,6 +59,7 @@ class Invoice(Resource):
         self.discounts = discounts
         self.tags = tags
         self.pdf = pdf
+        self.link = link
         self.descriptions = descriptions
         self.brcode = brcode
         self.status = status
