@@ -43,14 +43,16 @@ class Event(Resource):
     - created [datetime.datetime]: creation datetime for the notification event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - is_delivered [bool]: true if the event has been successfully delivered to the user url. ex: False
     - subscription [string]: service that triggered this event. ex: "transfer", "utility-payment"
+    - workspace_id [string]: ID of the Workspace that generated this event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"
     """
 
-    def __init__(self, log, created, is_delivered, subscription, id):
+    def __init__(self, log, created, is_delivered, subscription, workspace_id, id):
         Resource.__init__(self, id=id)
 
         self.created = check_datetime(created)
         self.is_delivered = is_delivered
         self.subscription = subscription
+        self.workspace_id = workspace_id
         self.log = log
         if subscription in _resource_by_subscription:
             self.log = from_api_json(resource=_resource_by_subscription[subscription], json=log)
