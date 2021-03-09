@@ -13,6 +13,14 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+## [2.8.0] - 2021-03-09
+### Added
+- Invoice.link property to allow easy access to invoice webpage
+- Event.workspace_id property to multiple Workspace Webhook identification
+- StarkBankError as base SDK Exception to facilitate general try-excepts
+### Fixed
+- Bad "+" char URL encoding on BrcodePreview
+
 ## [2.7.0] - 2021-02-26
 ### Added
 - pdf function for retrieving PDF receipts from reversed invoice logs 
