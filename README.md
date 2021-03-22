@@ -1399,7 +1399,7 @@ for event in events:
     print(event)
 ```
 
-### Get webhook event
+### Get a webhook event
 
 You can get a specific webhook event by its id.
 
@@ -1435,6 +1435,32 @@ import starkbank
 event = starkbank.event.update(id="129837198237192", is_delivered=True)
 
 print(event)
+```
+
+### Query failed webhook event delivery attempts information
+
+You can also get information on failed webhook event delivery attempts.
+
+```python
+import starkbank
+
+attempts = starkbank.event.attempt.query(after="2020-03-20")
+
+for attempt in attempts:
+    print(attempt.code)
+    print(attempt.message)
+```
+
+### Get a failed webhook event delivery attempt information
+
+To retrieve information on a single attempt, use the following function:
+
+```python
+import starkbank
+
+attempt = starkbank.event.attempt.get("1616161616161616")
+
+print(attempt)
 ```
 
 ### Get DICT key

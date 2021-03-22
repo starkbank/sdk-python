@@ -10,8 +10,12 @@ starkbank.user = exampleProject
 class TestEventGet(TestCase):
 
     def test_success(self):
-        events = list(starkbank.event.query(user=exampleProject, limit=10))
-        print("Number of events:", len(events))
+        events = list(starkbank.event.query(limit=5))
+        for event in events:
+            print(event)
+            for attempt in starkbank.event.attempt.query(event_ids=event.id, limit=1):
+                print(starkbank.event.attempt.get(attempt.id))
+                break
 
 
 class TestEventInfoGet(TestCase):

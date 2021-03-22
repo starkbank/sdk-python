@@ -45,6 +45,12 @@ def get_sub_resource(resource, id, sub_resource, user=None, **kwargs):
     return from_api_json(sub_resource, entity)
 
 
+def get_sub_resources(resource, id, sub_resource, user=None, **kwargs):
+    path = "{endpoint}/{id}/{sub_resource}".format(endpoint=endpoint(resource), id=id, sub_resource=endpoint(sub_resource))
+    entities = fetch(method=get, path=path, query=kwargs, user=user).json()[last_name_plural(sub_resource)]
+    return [from_api_json(sub_resource, entity) for entity in entities]
+
+
 def post_multi(resource, entities, user=None):
     json = fetch(method=post, path=endpoint(resource), user=user, payload={
         last_name_plural(resource): [api_json(entity) for entity in entities]

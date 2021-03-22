@@ -11,10 +11,12 @@ starkbank.user = exampleProject
 class TestEventQuery(TestCase):
 
     def test_success(self):
-        events = list(starkbank.event.query(limit=10))
+        events = list(starkbank.event.query(limit=5))
         for event in events:
-            print(event)
-        self.assertEqual(len(events), 10)
+            print(event.id)
+            for attempt in starkbank.event.attempt.query(event_ids=event.id, limit=1):
+                print(starkbank.event.attempt.get(attempt.id).id)
+                break
 
 
 class TestEventPage(TestCase):

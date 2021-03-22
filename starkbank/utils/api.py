@@ -56,7 +56,7 @@ def from_api_json(resource, json):
 
 
 def endpoint(resource):
-    return camel_to_kebab(resource["name"]).replace("-log", "/log")
+    return camel_to_kebab(resource["name"]).replace("-log", "/log").replace("-attempt", "/attempt")
 
 
 def last_name(resource):
