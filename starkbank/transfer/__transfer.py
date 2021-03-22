@@ -19,6 +19,7 @@ class Transfer(Resource):
     - account_type [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings" or "salary"
     - external_id [string, default None]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
     - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - description [string, default None]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
     - tags [list of strings]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when the transfer is created. ex: "5656565656565656"
@@ -29,7 +30,9 @@ class Transfer(Resource):
     - updated [datetime.datetime, default None]: latest update datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, account_type=None, external_id=None, scheduled=None, transaction_ids=None, fee=None, tags=None, status=None, id=None, created=None, updated=None):
+    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, account_type=None,
+                 external_id=None, scheduled=None, description=None, transaction_ids=None, fee=None, tags=None,
+                 status=None, id=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.tax_id = tax_id
@@ -41,6 +44,7 @@ class Transfer(Resource):
         self.account_type = account_type
         self.external_id = external_id
         self.scheduled = check_datetime_or_date(scheduled)
+        self.description = description
         self.tags = tags
         self.fee = fee
         self.status = status

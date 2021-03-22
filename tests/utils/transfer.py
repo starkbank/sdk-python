@@ -28,6 +28,7 @@ def generateExampleTransfersJson(n=1, randomSchedule=False):
         transfer.tax_id = TaxIdGenerator.taxId()
         transfer.account_type = choice(["checking", "savings", "salary"])
         transfer.external_id = str(uuid4())
+        transfer.description = choice([None, "Test description"])
         if randomSchedule:
             transfer.scheduled = choice([date.today(), datetime.utcnow()]) + timedelta(days=randint(0, 10))
         transfers.append(transfer)
