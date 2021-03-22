@@ -16,6 +16,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Added
 - Event.Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
 - Boleto.transaction_ids property to allow transaction tracking
+- Transfer.description property to allow control over corresponding Transaction descriptions
 
 ## [2.8.0] - 2021-03-09
 ### Added
