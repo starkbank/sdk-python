@@ -13,6 +13,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- Event.Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
+
 ## [2.8.0] - 2021-03-09
 ### Added
 - Invoice.link property to allow easy access to invoice webpage
