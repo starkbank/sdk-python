@@ -11,6 +11,7 @@ class TestWorkspaceCreate(TestCase):
         workspace = starkbank.workspace.create(
             username=workspace.username,
             name=workspace.name,
+            allowed_tax_ids=workspace.allowed_tax_ids,
             user=exampleOrganization,
         )
         print(workspace)

@@ -16,6 +16,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Added
 - Normalized event signature verification after failed raw content attempt
 - DictKey.bank_name parameter
+- Workspace.allowed_tax_ids to control who can send Deposits to the Workspace
 
 ## [2.9.0] - 2021-03-22
 ### Added
