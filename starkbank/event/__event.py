@@ -1,4 +1,5 @@
-from json import loads
+from logging import warning
+from json import loads, dumps
 from ellipticcurve.ecdsa import Ecdsa
 from ellipticcurve.signature import Signature
 from ellipticcurve.publicKey import PublicKey
@@ -170,22 +171,34 @@ def parse(content, signature, user=None):
     except:
         raise InvalidSignatureError("The provided signature is not valid")
 
-    if _verify_signature(content=content, signature=signature, user=user):
+    public_key = _get_public_key(user=user)
+    if _is_valid(content=content, signature=signature, public_key=public_key):
         return event
-    if _verify_signature(content=content, signature=signature, user=user, refresh=True):
+
+    public_key = _get_public_key(user=user, refresh=True)
+    if _is_valid(content=content, signature=signature, public_key=public_key):
         return event
 
     raise InvalidSignatureError("The provided signature and content do not match the Stark Bank public key")
 
 
-def _verify_signature(content, signature, user=None, refresh=False):
+def _is_valid(content, signature, public_key):
+    if Ecdsa.verify(message=content, signature=signature, publicKey=public_key):
+        return True
+
+    normalized = dumps(loads(content), sort_keys=True)
+    if Ecdsa.verify(message=normalized, signature=signature, publicKey=public_key):
+        return True
+
+    return False
+
+
+def _get_public_key(user, refresh=False):
     public_key = cache.get("starkbank-public-key")
-    if public_key is None or refresh:
-        pem = _get_public_key_pem(user)
-        public_key = PublicKey.fromPem(pem)
-        cache["starkbank-public-key"] = public_key
-    return Ecdsa.verify(message=content, signature=signature, publicKey=public_key)
+    if public_key and not refresh:
+        return public_key
 
-
-def _get_public_key_pem(user):
-    return fetch(method=get_request, path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]
+    pem = fetch(method=get_request, path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]
+    public_key = PublicKey.fromPem(pem)
+    cache["starkbank-public-key"] = public_key
+    return public_key
