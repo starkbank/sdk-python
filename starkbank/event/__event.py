@@ -188,7 +188,6 @@ def _is_valid(content, signature, public_key):
 
     normalized = dumps(loads(content), sort_keys=True)
     if Ecdsa.verify(message=normalized, signature=signature, publicKey=public_key):
-        warning("Event signature was only verified after json normalization. Eliminate all distortions to the raw body sent to the endpoint to avoid issues.")
         return True
 
     return False
