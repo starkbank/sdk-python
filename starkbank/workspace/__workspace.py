@@ -10,32 +10,36 @@ class Workspace(Resource):
     ## Parameters (required):
     - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
     - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. Ex: "Stark Bank Workspace"
+    - allowed_tax_ids [list of strings]: list of tax IDs that will be allowed to send Deposits to this Workspace. ex: ["012.345.678-90", "20.018.183/0001-80"]
     ## Attributes:
     - id [string, default None]: unique id returned when the workspace is created. ex: "5656565656565656"
     """
 
-    def __init__(self, username, name, id=None):
+    def __init__(self, username, name, allowed_tax_ids=None, id=None):
         Resource.__init__(self, id=id)
 
         self.username = username
         self.name = name
+        self.allowed_tax_ids = allowed_tax_ids
 
 
 _resource = {"class": Workspace, "name": "Workspace"}
 
 
-def create(username, name, user=None):
+def create(username, name, allowed_tax_ids=None, user=None):
     """# Create Workspace
     Send a Workspace for creation in the Stark Bank API
     ## Parameters (required):
     - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
     - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. Ex: "Stark Bank Workspace"
     ## Parameters (optional):
+    - allowed_tax_ids [list of strings, default []]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
     - user [Organization object, default None]: Organization object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Workspace object with updated attributes
     """
-    return rest.post_single(resource=_resource, entity=Workspace(username=username, name=name), user=user)
+    workspace = Workspace(username=username, name=name, allowed_tax_ids=allowed_tax_ids)
+    return rest.post_single(resource=_resource, entity=workspace, user=user)
 
 
 def get(id, user=None):
@@ -65,6 +69,22 @@ def query(limit=None, username=None, ids=None, user=None):
     - generator of Workspace objects with updated attributes
     """
     return rest.get_stream(resource=_resource, limit=limit, username=username, ids=ids, user=user)
+
+
+def update(id, username=None, name=None, allowed_tax_ids=None, user=None):
+    """# Update Workspace entity
+    Update a Workspace by passing its ID.
+    ## Parameters (required):
+    - id [string]: Workspace ID. ex: '5656565656565656'
+    ## Parameters (required):
+    - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
+    - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. Ex: "Stark Bank Workspace"
+    - allowed_tax_ids [list of strings, default []]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - target Workspace with updated attributes
+    """
+    return rest.patch_id(resource=_resource, id=id, user=user, username=username, name=name, allowed_tax_ids=allowed_tax_ids)
 
 
 def page(cursor=None, limit=None, username=None, ids=None, user=None):

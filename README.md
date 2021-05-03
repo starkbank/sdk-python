@@ -1534,6 +1534,25 @@ workspace = starkbank.workspace.get("10827361982368179")
 print(workspace)
 ```
 
+### Update a Workspace
+
+You can update a specific Workspace by its id.
+
+```python
+import starkbank
+
+workspace = starkbank.workspace.update(
+    "10827361982368179",
+    username="new-username",
+    name="New Name",
+    allowed_tax_ids=["012.345.678-90"],
+)
+
+print(workspace)
+```
+
+**Note**: the Organization user can only update a workspace with the Workspace ID set.
+
 ## Handling errors
 
 The SDK may raise one of four types of errors: __InputErrors__, __InternalServerError__, __UnknownError__, __InvalidSignatureError__
