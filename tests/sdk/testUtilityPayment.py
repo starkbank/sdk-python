@@ -52,7 +52,7 @@ class TestUtilityPaymentPdfGet(TestCase):
 class TestUtilityPaymentDelete(TestCase):
 
     def test_success(self):
-        payments = generateExampleUtilityPaymentsJson(n=1)
+        payments = generateExampleUtilityPaymentsJson(n=1, next_day=True)
         payments = starkbank.utilitypayment.create(payments)
         starkbank.utilitypayment.delete(payments[0].id)
 
