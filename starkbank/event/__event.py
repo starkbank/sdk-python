@@ -1,4 +1,3 @@
-from logging import warning
 from json import loads, dumps
 from ellipticcurve.ecdsa import Ecdsa
 from ellipticcurve.signature import Signature
