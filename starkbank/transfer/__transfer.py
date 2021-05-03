@@ -23,9 +23,9 @@ class Transfer(Resource):
     - tags [list of strings]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when the transfer is created. ex: "5656565656565656"
-    - fee [integer, default None]: fee charged when transfer is created. ex: 200 (= R$ 2.00)
+    - fee [integer, default None]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
     - status [string, default None]: current transfer status. ex: "success" or "failed"
-    - transaction_ids [list of strings, default None]: ledger transaction ids linked to this transfer (if there are two, second is the chargeback). ex: ["19827356981273"]
+    - transaction_ids [list of strings, default None]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
     - created [datetime.datetime, default None]: creation datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - updated [datetime.datetime, default None]: latest update datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """

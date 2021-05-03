@@ -17,6 +17,7 @@ class DictKey(Resource):
     - name [string, default None]: key owner full name. ex: "Tony Stark"
     - tax_id [string, default None]: key owner tax ID (CNPJ or masked CPF). ex: "***.345.678-**" or "20.018.183/0001-80"
     - owner_type [string, default None]: DICT key owner type. ex "naturalPerson" or "legalPerson"
+    - bank_name [string, default None]: bank name associated with the DICT key. ex: "Stark Bank"
     - ispb [string, default None]: bank ISPB associated with the DICT key. ex: "20018183"
     - branch_code [string, default None]: bank account branch code associated with the DICT key. ex: "9585"
     - account_number [string, default None]: bank account number associated with the DICT key. ex: "9828282578010513"
@@ -27,8 +28,9 @@ class DictKey(Resource):
     - created [datetime.datetime, default None]: creation datetime for the DICT key. ex: datetime.date(2020, 11, 16, 8, 12, 11)
     """
     
-    def __init__(self, id=None, type=None, name=None, tax_id=None, owner_type=None, ispb=None, branch_code=None,
-                 account_number=None, account_type=None, status=None, account_created=None, owned=None, created=None):
+    def __init__(self, id=None, type=None, name=None, tax_id=None, owner_type=None, bank_name=None, ispb=None,
+                 branch_code=None, account_number=None, account_type=None, status=None, account_created=None,
+                 owned=None, created=None):
         Resource.__init__(self, id=id)
 
         self.id = id
@@ -36,6 +38,7 @@ class DictKey(Resource):
         self.name = name
         self.tax_id = tax_id
         self.owner_type = owner_type
+        self.bank_name = bank_name
         self.ispb = ispb
         self.branch_code = branch_code
         self.account_number = account_number
