@@ -18,6 +18,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - DictKey.bank_name parameter
 - Workspace.allowed_tax_ids to control who can send Deposits to the Workspace
 - Workspace.update() to allow parameter updates
+- TaxPayment resource to allow payment of taxes with bar codes
 
 ## [2.9.0] - 2021-03-22
 ### Added
