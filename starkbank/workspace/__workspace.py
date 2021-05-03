@@ -71,6 +71,22 @@ def query(limit=None, username=None, ids=None, user=None):
     return rest.get_stream(resource=_resource, limit=limit, username=username, ids=ids, user=user)
 
 
+def update(id, username=None, name=None, allowed_tax_ids=None, user=None):
+    """# Update Workspace entity
+    Update a Workspace by passing its ID.
+    ## Parameters (required):
+    - id [string]: Workspace ID. ex: '5656565656565656'
+    ## Parameters (required):
+    - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
+    - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. Ex: "Stark Bank Workspace"
+    - allowed_tax_ids [list of strings, default []]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - target Workspace with updated attributes
+    """
+    return rest.patch_id(resource=_resource, id=id, user=user, username=username, name=name, allowed_tax_ids=allowed_tax_ids)
+
+
 def page(cursor=None, limit=None, username=None, ids=None, user=None):
     """# Retrieve paged Workspaces
     Receive a list of up to 100 Workspace objects previously created in the Stark Bank API and the cursor to the next page.

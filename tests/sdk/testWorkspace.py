@@ -1,18 +1,29 @@
 import starkbank
 from unittest import TestCase, main
-from tests.utils.user import exampleOrganization
-from tests.utils.workspace import generateExampleWorkspace
+from ..utils.user import exampleOrganization
+from ..utils.workspace import generateExampleWorkspace
 
 
 class TestWorkspaceCreate(TestCase):
 
-    def test_success(self):
+    def test_create_and_patch(self):
         workspace = generateExampleWorkspace()
+
         workspace = starkbank.workspace.create(
             username=workspace.username,
             name=workspace.name,
             allowed_tax_ids=workspace.allowed_tax_ids,
             user=exampleOrganization,
+        )
+        print(workspace)
+
+        update = generateExampleWorkspace()
+        workspace = starkbank.workspace.update(
+            id=workspace.id,
+            username=update.username,
+            name=update.name,
+            allowed_tax_ids=update.allowed_tax_ids,
+            user=exampleOrganization.replace(workspace.id),
         )
         print(workspace)
 

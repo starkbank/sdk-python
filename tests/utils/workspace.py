@@ -1,6 +1,6 @@
 import starkbank
 from uuid import uuid4
-from tests.utils.taxIdGenerator import TaxIdGenerator
+from .taxIdGenerator import TaxIdGenerator
 
 
 def generateExampleWorkspace():

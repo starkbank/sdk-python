@@ -148,7 +148,7 @@ def page(cursor=None, after=None, before=None, tags=None, ids=None, status=None,
 
 def update(id, status=None, user=None):
     """# Update BrcodePayment entity
-    Update a BrcodePayment by passing id, if it hasn't been paid yet.
+    Update a BrcodePayment by passing its Id, if it hasn't been paid yet.
     ## Parameters (required):
     - id [string]: BrcodePayment id. ex: '5656565656565656'
     ## Parameters (required):
