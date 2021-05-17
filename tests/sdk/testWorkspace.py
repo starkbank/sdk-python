@@ -1,7 +1,7 @@
 import starkbank
 from unittest import TestCase, main
-from ..utils.user import exampleOrganization
-from ..utils.workspace import generateExampleWorkspace
+from tests.utils.user import exampleOrganization
+from tests.utils.workspace import generateExampleWorkspace
 
 
 class TestWorkspaceCreate(TestCase):

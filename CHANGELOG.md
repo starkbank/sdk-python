@@ -19,6 +19,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - Workspace.allowed_tax_ids to control who can send Deposits to the Workspace
 - Workspace.update() to allow parameter updates
 - TaxPayment resource to allow payment of taxes with bar codes
+- DarfPayment resource to allow DARF tax payment without bar code
 
 ## [2.9.0] - 2021-03-22
 ### Added

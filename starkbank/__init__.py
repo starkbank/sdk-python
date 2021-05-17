@@ -37,6 +37,9 @@ from .utilitypayment.__utilitypayment import UtilityPayment
 from . import taxpayment
 from .taxpayment.__taxpayment import TaxPayment
 
+from . import darfpayment
+from .darfpayment.__darfpayment import DarfPayment
+
 from . import webhook
 from .webhook.__webhook import Webhook
 
