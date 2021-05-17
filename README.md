@@ -1350,6 +1350,10 @@ log = starkbank.taxpayment.log.get("1902837198237992")
 print(log)
 ```
 
+**Note**: Some taxes can't be payed with bar codes. Since they have specific parameters, each one of them has its own
+resource and routes, which are all analogous to the TaxPayment resource. The ones we currently support are:
+- DarfPayment, for DARFs
+
 ### Create payment requests to be approved by authorized people in a cost center 
 
 You can also request payments that must pass through a specific cost center approval flow to be executed.

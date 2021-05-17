@@ -44,7 +44,7 @@ class TestTaxPaymentInfoGet(TestCase):
 class TestTaxPaymentPdfGet(TestCase):
 
     def test_success(self):
-        payments = starkbank.taxpayment.query(status="processing")
+        payments = starkbank.taxpayment.query(status="success")
         payment_id = next(payments).id
         pdf = starkbank.taxpayment.pdf(id=payment_id)
         self.assertGreater(len(pdf), 1000)
