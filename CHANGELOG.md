@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.10.0] - 2021-06-01
 ### Added
 - Normalized event signature verification after failed raw content attempt
 - DictKey.bank_name parameter
