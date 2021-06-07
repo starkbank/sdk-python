@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- TaxPayment.scheduled being cast to datetime instead of date
 
 ## [2.10.0] - 2021-06-01
 ### Added
