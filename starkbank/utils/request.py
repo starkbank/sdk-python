@@ -7,6 +7,7 @@ from ..environment import Environment
 from .checks import check_user, check_language
 from .url import urlencode
 import starkbank
+import logging
 
 
 class Response:
@@ -77,7 +78,6 @@ def debug(message):
     if not starkbank.debug_file:
         return
     if not starkbank._debug_configuration:
-        import logging
         logging.basicConfig(
             filename=starkbank.debug_file,
             filemode='a',
