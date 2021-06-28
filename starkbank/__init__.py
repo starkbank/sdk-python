@@ -1,6 +1,8 @@
 version = "2.10.1"
 
 user = None
+debug_file = None
+_debug_configuration = None
 language = "en-US"
 timeout = 15
 

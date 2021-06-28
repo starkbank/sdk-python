@@ -43,23 +43,25 @@ def fetch(method, path, payload=None, query=None, user=None, version="v2"):
     signature = Ecdsa.sign(message=message, privateKey=user.private_key()).toBase64()
 
     try:
-        request = method(
+        headers = {
+            "Access-Id": user.access_id(),
+            "Access-Time": access_time,
+            "Access-Signature": signature,
+            "Content-Type": "application/json",
+            "User-Agent": agent,
+            "Accept-Language": language,
+        }
+        response = method(
             url=url,
             data=body,
-            headers={
-                "Access-Id": user.access_id(),
-                "Access-Time": access_time,
-                "Access-Signature": signature,
-                "Content-Type": "application/json",
-                "User-Agent": agent,
-                "Accept-Language": language,
-            },
+            headers=headers,
             timeout=starkbank.timeout
         )
     except Exception as exception:
         raise UnknownError("{}: {}".format(exception.__class__.__name__, str(exception)))
 
-    response = Response(status=request.status_code, content=request.content)
+    debug(debug_message(method, url, headers, payload, response))
+    response = Response(status=response.status_code, content=response.content)
 
     if response.status == 500:
         raise InternalServerError()
@@ -69,3 +71,36 @@ def fetch(method, path, payload=None, query=None, user=None, version="v2"):
         raise UnknownError(response.content)
 
     return response
+
+
+def debug(message):
+    if not starkbank.debug_file:
+        return
+    if not starkbank._debug_configuration:
+        import logging
+        logging.basicConfig(
+            filename=starkbank.debug_file,
+            filemode='a',
+            format='%(asctime)s %(name)s %(levelname)s %(message)s',
+            level=logging.DEBUG
+        )
+        starkbank._debug_configuration = True
+    logging.debug(message)
+
+
+def debug_message(method, url, headers, payload, response):
+    from json import dumps
+    debugJson = {
+        "request": {
+            "method": method,
+            "url": url,
+            "headers": headers,
+            "payload": payload,
+        },
+        "response": {
+            "status": response.status_code,
+            "payload": response.content,
+            "headers": response.headers,
+        },
+    }
+    return dumps(debugJson, default=str)
