@@ -16,7 +16,7 @@ class Transfer(Resource):
     - branch_code [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
     - account_number [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
     ## Parameters (optional):
-    - account_type [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings" or "salary"
+    - account_type [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
     - external_id [string, default None]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
     - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - description [string, default None]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"

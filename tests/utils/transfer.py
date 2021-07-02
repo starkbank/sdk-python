@@ -26,7 +26,7 @@ def generateExampleTransfersJson(n=1, randomSchedule=False):
         transfer.name = get_full_name()
         transfer.amount = amount
         transfer.tax_id = TaxIdGenerator.taxId()
-        transfer.account_type = choice(["checking", "savings", "salary"])
+        transfer.account_type = choice(["checking", "savings", "salary", "payment"])
         transfer.external_id = str(uuid4())
         transfer.description = choice([None, "Test description"])
         if randomSchedule:
