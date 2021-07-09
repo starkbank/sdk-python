@@ -10,7 +10,7 @@ starkbank.user = exampleProject
 class TestDictKeyInfoGet(TestCase):
     
     def test_success(self):
-        dict_key = starkbank.dictkey.get("tony@starkbank.com")
+        dict_key = starkbank.dictkey.get("valid@sandbox.com")
         self.assertIsNotNone(dict_key.id)
         print(dict_key)
 

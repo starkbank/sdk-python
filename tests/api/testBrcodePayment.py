@@ -52,8 +52,8 @@ class TestBrcodePaymentPost(TestCase):
         errors = context.exception.errors
         for error in errors:
             print(error)
-            self.assertTrue(error.code in ["invalidJson", "invalidPayment"])
-        self.assertTrue(len(errors) == 3 or len(errors) == 6)
+            self.assertTrue(error.code in ["invalidJson", "invalidBrcode", "invalidPayment", "invalidBrcodePayment"])
+        self.assertTrue(len(errors) >= 2)
 
     def test_fail_invalid_tax_id(self):
         payments = generateExampleBrcodePaymentsJson(n=5)
@@ -92,7 +92,7 @@ class TestBrcodePaymentInfoGet(TestCase):
         errors = context.exception.errors
         for error in errors:
             print(error)
-            self.assertEqual('invalidPayment', error.code)
+            self.assertEqual('invalidBrcodePayment', error.code)
         self.assertEqual(1, len(errors))
 
 

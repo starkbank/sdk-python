@@ -21,12 +21,14 @@ example_transfer = Transfer(
 def generateExampleTransfersJson(n=1, randomSchedule=False):
     transfers = []
     for _ in range(n):
-        amount = randint(1, 10)
+        amount = randint(100000, 1000000)
         transfer = deepcopy(example_transfer)
         transfer.name = get_full_name()
         transfer.amount = amount
+        transfer.branch_code = str(randint(1, 999))
         transfer.tax_id = TaxIdGenerator.taxId()
         transfer.account_type = choice(["checking", "savings", "salary", "payment"])
+        transfer.account_number = "{}-{}".format(randint(10000, 100000000), randint(0, 9))
         transfer.external_id = str(uuid4())
         transfer.description = choice([None, "Test description"])
         if randomSchedule:

@@ -130,7 +130,7 @@ class TestInvoicePost(TestCase):
         for error in errors:
             print(error)
             self.assertTrue(error.code in ['invalidInvoice', 'invalidDiscount', 'invalidDiscountDate'])
-        self.assertEqual(23, len(errors))
+        self.assertEqual(17, len(errors))
 
     def test_fail_invalid_tax_id(self):
         invoices = generateExampleInvoicesJson(n=5)
