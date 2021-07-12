@@ -454,6 +454,19 @@ log = starkbank.transfer.log.get("5155165527080960")
 print(log)
 ```
 
+### Query Bacen institutions
+
+You can query institutions registered by the Brazilian Central Bank for Pix and TED transactions.
+
+```python
+import starkbank
+
+institution = starkbank.institution.query(search="stark")
+
+for institution in institutions:
+    print(institution)
+```
+
 ### Create invoices
 
 You can create dynamic QR Code invoices to charge customers or to receive money from accounts

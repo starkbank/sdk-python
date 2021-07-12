@@ -19,6 +19,9 @@ from .boleto.__boleto import Boleto
 from . import transfer
 from .transfer.__transfer import Transfer
 
+from . import institution
+from .institution.__institution import Institution
+
 from . import boletoholmes
 from .boletoholmes.__boletoholmes import BoletoHolmes
 
