@@ -33,7 +33,6 @@ class DictKey(Resource):
                  owned=None, created=None):
         Resource.__init__(self, id=id)
 
-        self.id = id
         self.type = type
         self.name = name
         self.tax_id = tax_id
