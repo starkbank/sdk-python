@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.11.0] - 2021-07-12
 ### Added
 - "payment" account type for Pix related resources
 - Institution resource to allow query of institutions recognized by the Brazilian Central Bank for Pix and TED transactions
