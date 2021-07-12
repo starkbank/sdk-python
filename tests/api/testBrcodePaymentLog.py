@@ -20,7 +20,7 @@ class TestBrcodePaymentLogGet(TestCase):
         errors = context.exception.errors
         for error in errors:
             print(error)
-            self.assertEqual('invalidPaymentLog', error.code)
+            self.assertEqual('invalidBrcodePaymentLog', error.code)
 
 
 class TestBrcodePaymentLogInfoGet(TestCase):
@@ -37,7 +37,7 @@ class TestBrcodePaymentLogInfoGet(TestCase):
         errors = context.exception.errors
         for error in errors:
             print(error)
-            self.assertEqual('invalidPaymentLog', error.code)
+            self.assertEqual('invalidBrcodePaymentLog', error.code)
         self.assertEqual(1, len(errors))
 
 

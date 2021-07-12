@@ -1,10 +1,10 @@
 # coding: utf-8
 from copy import deepcopy
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from random import randint
 from starkbank import Boleto
 from .names.names import get_full_name
-from .date import randomFutureDate
+from .date import randomFutureDate, randomDateBetween
 from .taxIdGenerator import TaxIdGenerator
 
 
@@ -49,7 +49,7 @@ example_boleto = Boleto(
 )
 
 
-def generateExampleBoletosJson(n=1, amount=None, useRandomFutureDueDate=True):
+def generateExampleBoletosJson(n=1, amount=None, useRandomFutureDueDate=True, useRandomDiscount=False):
     boletos = []
     for _ in range(n):
         if amount is None:
@@ -63,6 +63,13 @@ def generateExampleBoletosJson(n=1, amount=None, useRandomFutureDueDate=True):
         example_boleto.amount = boletoAmount
         if useRandomFutureDueDate:
             example_boleto.due = randomFutureDate(days=7).date()
+        if useRandomDiscount:
+            example_boleto.discounts = [
+                {
+                    "percentage": 10 * randint(1, 9),
+                    "date": str(randomDateBetween(datetime.today().date(), example_boleto.due))
+                }
+            ]
         example_boleto.tax_id = TaxIdGenerator.taxId()
         boletos.append(deepcopy(example_boleto))
     return boletos
