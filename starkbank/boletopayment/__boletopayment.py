@@ -15,12 +15,12 @@ class BoletoPayment(Resource):
     - tax_id [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     - description [string]: Text to be displayed in your statement (min. 10 characters). ex: "payment ABC"
     ## Parameters (optional):
+    - amount [int, default None]: amount to be paid. If none is informed, the current boleto value will be used. ex: 23456 (= R$ 234.56)
     - scheduled [datetime.date or string, default today]: payment scheduled date. ex: datetime.date(2020, 3, 10)
     - tags [list of strings]: list of strings for tagging
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
     - status [string, default None]: current payment status. ex: "success" or "failed"
-    - amount [int, default None]: amount automatically calculated from line or bar_code. ex: 23456 (= R$ 234.56)
     - fee [integer, default None]: fee charged when the boleto payment is created. ex: 200 (= R$ 2.00)
     - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
