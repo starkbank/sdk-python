@@ -43,7 +43,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [2.8.0] - 2021-03-09
 ### Added
 - Invoice.link property to allow easy access to invoice webpage
-- Event.workspace_id property to multiple Workspace Webhook identification
+- Event.workspace_id property to allow multiple Workspace Webhook identification
 - StarkBankError as base SDK Exception to facilitate general try-excepts
 ### Fixed
 - Bad "+" char URL encoding on BrcodePreview
