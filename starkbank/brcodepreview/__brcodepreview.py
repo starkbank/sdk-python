@@ -5,6 +5,7 @@ from ..utils.resource import Resource
 class BrcodePreview(Resource):
 
     """# BrcodePreview object
+    DEPRECATED: USE PaymentPreview INSTEAD
     A BrcodePreview is used to get information from a BR Code you received to check the informations before paying it.
     ## Attributes (return-only):
     - status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"

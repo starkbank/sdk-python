@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- PaymentPreview resource to preview multiple types of payments before confirmation: BrcodePreview, BoletoPreview, UtilityPreview and TaxPreview
 
 ## [2.11.0] - 2021-07-12
 ### Added
@@ -41,7 +43,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [2.8.0] - 2021-03-09
 ### Added
 - Invoice.link property to allow easy access to invoice webpage
-- Event.workspace_id property to multiple Workspace Webhook identification
+- Event.workspace_id property to allow multiple Workspace Webhook identification
 - StarkBankError as base SDK Exception to facilitate general try-excepts
 ### Fixed
 - Bad "+" char URL encoding on BrcodePreview

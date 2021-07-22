@@ -15,9 +15,9 @@ from ..transfer.log.__log import _resource as _transfer_log_resource
 from ..taxpayment.log.__log import _resource as _tax_payment_log_resource
 from ..darfpayment.log.__log import _resource as _darf_payment_log_resource
 from ..boletoholmes.log.__log import _resource as _boleto_holmes_log_resource
+from ..brcodepayment.log.__log import _resource as _brcode_payment_log_resource
 from ..boletopayment.log.__log import _resource as _boleto_payment_log_resource
 from ..utilitypayment.log.__log import _resource as _utility_payment_log_resource
-from ..brcodepayment.log.__log import _resource as _brcodepayment_payment_log_resource
 from ..error import InvalidSignatureError
 from ..utils import cache
 
@@ -27,7 +27,7 @@ _resource_by_subscription = {
     "invoice": _invoice_log_resource,
     "deposit": _deposit_log_resource,
     "boleto": _boleto_log_resource,
-    "brcode-payment": _brcodepayment_payment_log_resource,
+    "brcode-payment": _brcode_payment_log_resource,
     "boleto-payment": _boleto_payment_log_resource,
     "utility-payment": _utility_payment_log_resource,
     "darf-payment": _darf_payment_log_resource,

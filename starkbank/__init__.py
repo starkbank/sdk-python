@@ -52,6 +52,9 @@ from .workspace.__workspace import Workspace
 from . import event
 from .event.__event import Event
 
+from . import paymentpreview
+from .paymentpreview.__paymentpreview import PaymentPreview
+
 from . import paymentrequest
 from .paymentrequest.__paymentrequest import PaymentRequest
 
