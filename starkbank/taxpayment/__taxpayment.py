@@ -150,6 +150,6 @@ def delete(id, user=None):
     ## Parameters (optional):
     - user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
-    - deleted TaxPayment with updated attributes
+    - deleted TaxPayment object
     """
     return rest.delete_id(resource=_resource, id=id, user=user)
