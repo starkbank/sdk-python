@@ -4,7 +4,7 @@ from ..utils.resource import SubResource
 
 class Institution(SubResource):
     """# Institution object
-    A Institution is used to get information on the institutions that are recognized by the Brazilian Central Bank.
+    This resource is used to get information on the institutions that are recognized by the Brazilian Central Bank.
     Besides the display name and full name, they also include the STR code (used for TEDs) and the SPI Code
     (used for Pix) for the institutions. Either of these codes may be empty if the institution is not registered on
     that Central Bank service.
