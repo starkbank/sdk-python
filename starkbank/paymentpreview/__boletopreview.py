@@ -7,7 +7,7 @@ class BoletoPreview(SubResource):
     A BoletoPreview is used to get information from a Boleto Payment you received to check the information before the payment.
     ## Attributes (return-only):
     - status [string]: current boleto status. ex: "active", "expired" or "inactive"
-    - amount [int]: amount final to be paid. ex: 23456 (= R$ 234.56)
+    - amount [int]: final amount to be paid. ex: 23456 (= R$ 234.56)
     - discount_amount [int]: discount amount to be paid. ex: 23456 (= R$ 234.56)
     - fine_amount [int]: fine amount to be paid. ex: 23456 (= R$ 234.56)
     - interest_amount [int]: interest amount to be paid. ex: 23456 (= R$ 234.56)
