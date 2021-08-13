@@ -469,13 +469,18 @@ for institution in institutions:
 
 ### Create invoices
 
-You can create dynamic QR Code invoices to charge customers or to receive money from accounts
-you have in other banks.
+You can create dynamic QR Code invoices to charge customers or to receive money from accounts you have in other banks. 
+
+Since the banking system only understands value modifiers (discounts, fines and interest) when dealing with **dates** (instead of **datetimes**), these values will only show up in the end user banking interface if you use **dates** in the "due" and "discounts" fields. 
+
+If you use **datetimes** instead, our system will apply the value modifiers in the same manner, but the end user will only see the final value to be paid on his interface.
+
+Also, other banks will most likely only allow payment scheduling on invoices defined with **dates** instead of **datetimes**.
 
 ```python
 # coding: utf-8
 import starkbank
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 
 invoices = starkbank.invoice.create([
@@ -483,10 +488,21 @@ invoices = starkbank.invoice.create([
         amount=23571,  # R$ 235,71 
         name="Buzz Aldrin",
         tax_id="012.345.678-90", 
-        due=datetime(2020, 3, 20),
+        due=datetime.utcnow() + timedelta(hours=1),
         expiration=timedelta(hours=3).total_seconds(),
         fine=5,  # 5%
         interest=2.5,  # 2.5% per month
+        tags=["immediate"]
+    ),
+    starkbank.Invoice(
+        amount=23571,  # R$ 235,71 
+        name="Buzz Aldrin",
+        tax_id="012.345.678-90", 
+        due=date(2022, 3, 20),
+        expiration=timedelta(hours=3).total_seconds(),
+        fine=5,  # 5%
+        interest=2.5,  # 2.5% per month
+        tags=["scheduled"]
     )
 ])
 
