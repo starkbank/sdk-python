@@ -1,9 +1,11 @@
 from copy import deepcopy
-from datetime import date, timedelta
+from random import choice
 from hashlib import sha256
+from datetime import date, timedelta
 import starkbank
 from starkbank import BrcodePayment
 from .invoice import generateExampleInvoicesJson
+
 
 example_payment = BrcodePayment(
     brcode="00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A",
@@ -14,7 +16,7 @@ example_payment = BrcodePayment(
 
 
 def generateExampleBrcodePaymentsJson(n=1, next_day=False):
-    invoices = generateExampleInvoicesJson(n=n)
+    invoices = generateExampleInvoicesJson(n=n, immediate=choice([True, False]))
 
     invoices = starkbank.invoice.create(invoices)
 

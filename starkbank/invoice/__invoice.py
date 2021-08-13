@@ -1,5 +1,5 @@
 from ..utils import rest
-from ..utils.checks import check_date, check_datetime, check_timedelta
+from ..utils.checks import check_date, check_datetime, check_timedelta, check_datetime_or_date
 from ..utils.resource import Resource
 from .__payment import _sub_resource as _payment_sub_resource
 
@@ -9,20 +9,20 @@ class Invoice(Resource):
     When you initialize an Invoice, the entity will not be automatically
     sent to the Stark Bank API. The 'create' function sends the objects
     to the Stark Bank API and returns the list of created objects.
+    To create scheduled Invoices, which will display the discount, interest, etc. on the final users banking interface,
+    use dates instead of datetimes on the "due" and "discounts" fields.
     ## Parameters (required):
     - amount [integer]: Invoice value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
     - tax_id [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     - name [string]: payer name. ex: "Iron Bank S.A."
-
     ## Parameters (optional):
-    - due [datetime.datetime or string, default today + 2 days]: Invoice due date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00"
+    - due [datetime.datetime or datetime.date or string, default now + 2 days]: Invoice due date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00" for immediate invoices and "2020-10-28" for scheduled invoices
     - expiration [integer or datetime.timedelta, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
     - fine [float, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
     - interest [float, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
     - discounts [list of dictionaries, default None]: list of dictionaries with "percentage":float and "due":datetime.datetime or string pairs
     - tags [list of strings, default None]: list of strings for tagging
     - descriptions [list of dictionaries, default None]: list of dictionaries with "key":string and (optional) "value":string pairs
-
     ## Attributes (return-only):
     - pdf [string, default None]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
     - link [string, default None]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
@@ -50,7 +50,7 @@ class Invoice(Resource):
         self.fine_amount = fine_amount
         self.interest_amount = interest_amount
         self.discount_amount = discount_amount
-        self.due = check_datetime(due)
+        self.due = check_datetime_or_date(due)
         self.tax_id = tax_id
         self.name = name
         self.expiration = check_timedelta(expiration)

@@ -13,7 +13,7 @@ starkbank.user = exampleProject
 class TestInvoicePost(TestCase):
 
     def test_success(self):
-        invoices = generateExampleInvoicesJson(n=10)
+        invoices = generateExampleInvoicesJson(n=2, immediate=True) + generateExampleInvoicesJson(n=2, immediate=False)
         invoices = starkbank.invoice.create(invoices)
         for invoice in invoices:
             print(invoice)
