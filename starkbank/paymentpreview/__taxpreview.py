@@ -4,7 +4,7 @@ from ..utils.subresource import SubResource
 class TaxPreview(SubResource):
 
     """# TaxPreview object
-    A TaxPreview is used to get information from a Tax Payment you received to check the information before the payment.
+    A TaxPreview is used to get information from a Tax Payment you received before confirming the payment.
     ## Attributes (return-only):
     - amount [int]: final amount to be paid. ex: 23456 (= R$ 234.56)
     - name [string]: beneficiary full name. ex: "Iron Throne"

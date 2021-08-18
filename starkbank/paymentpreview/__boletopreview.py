@@ -4,7 +4,7 @@ from ..utils.subresource import SubResource
 class BoletoPreview(SubResource):
 
     """# BoletoPreview object
-    A BoletoPreview is used to get information from a Boleto Payment you received to check the information before the payment.
+    A BoletoPreview is used to get information from a Boleto payment you received before confirming the payment.
     ## Attributes (return-only):
     - status [string]: current boleto status. ex: "active", "expired" or "inactive"
     - amount [int]: final amount to be paid. ex: 23456 (= R$ 234.56)
