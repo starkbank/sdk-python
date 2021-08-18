@@ -1387,11 +1387,11 @@ from datetime import date, timedelta
 
 previews = starkbank.paymentrequest.create([
     starkbank.PaymentPreview(
-        id="00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"
+        id="00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A",
+        scheduled=date.today() + timedelta(days=3)
     ),
     starkbank.PaymentPreview(
-        id="34191.09008 61207.727308 71444.640008 5 81310001234321",
-        scheduled=date.today() + timedelta(days=3)
+        id="34191.09008 61207.727308 71444.640008 5 81310001234321"
     ),
 ])
 

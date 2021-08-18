@@ -4,7 +4,7 @@ from ..utils.subresource import SubResource
 class BrcodePreview(SubResource):
 
     """# BrcodePreview object
-    A BrcodePreview is used to get information from a BR Code you received to check the information before the payment.
+    A BrcodePreview is used to get information from a BR Code you received before confirming the payment.
     ## Attributes (return-only):
     - status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
     - name [string]: Payment receiver name. ex: "Tony Stark"
