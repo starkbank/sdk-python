@@ -27,6 +27,13 @@ taxes = [
         "time": "24H",
         "type": "darf",
     },
+    {
+        "code": "239",
+        "segment": "5",
+        "name": "FUNDO DE GARANTIA DO TEMPO DE SERVICO",
+        "time": "24H",
+        "type": "fgts",
+    },
 ]
 
 utilities = [
