@@ -17,7 +17,7 @@ class TestInstitutionQuery(TestCase):
             self.assertIsInstance(institution.spi_code, str)
             print(institution)
 
-        self.assertEqual(len(starkbank.institution.query(search="stark")), 1)
+        self.assertEqual(len(starkbank.institution.query(search="stark")), 2)
         self.assertEqual(len(starkbank.institution.query(spi_codes="20018183")), 1)
         self.assertEqual(len(starkbank.institution.query(str_codes="341")), 1)
 
