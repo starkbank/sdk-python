@@ -1,3 +1,4 @@
+from ellipticcurve import PrivateKey
 from datetime import datetime, date, timedelta
 
 
@@ -9,7 +10,6 @@ def check_environment(environment):
 
 
 def check_private_key(pem):
-    from ellipticcurve.privateKey import PrivateKey
     try:
         assert PrivateKey.fromPem(pem).curve.name == "secp256k1"
     except:

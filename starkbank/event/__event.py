@@ -1,8 +1,6 @@
 from json import loads, dumps
-from ellipticcurve.ecdsa import Ecdsa
-from ellipticcurve.signature import Signature
-from ellipticcurve.publicKey import PublicKey
 from requests import get as get_request
+from ellipticcurve import Ecdsa, Signature, PublicKey
 from ..utils import rest
 from ..utils.api import from_api_json
 from ..utils.request import fetch
