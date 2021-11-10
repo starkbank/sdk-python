@@ -1,2 +1,2 @@
-starkbank-ecdsa==2.0.1
-requests==2.21.0
+starkbank-ecdsa==2.0.2
+requests==2.23.0

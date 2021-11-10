@@ -1,4 +1,4 @@
-from ellipticcurve.privateKey import PrivateKey
+from ellipticcurve import PrivateKey
 from os import makedirs, path as os_path
 
 
