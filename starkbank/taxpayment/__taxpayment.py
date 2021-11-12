@@ -22,12 +22,13 @@ class TaxPayment(Resource):
     - status [string, default None]: current payment status. ex: "success" or "failed"
     - amount [int, default None]: amount automatically calculated from line or bar_code. ex: 23456 (= R$ 234.56)
     - fee [integer, default None]: fee charged when tax payment is created. ex: 200 (= R$ 2.00)
+    - transaction_ids [list of strings]: ledger transaction ids linked to this TaxPayment. ex: ["19827356981273"]
     - updated [datetime.datetime, default None]: latest update datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, description, line=None, bar_code=None, tags=None, scheduled=None, id=None, type=None, amount=None,
-                 fee=None, status=None, updated=None, created=None):
+                 fee=None, status=None, transaction_ids=None, updated=None, created=None):
         Resource.__init__(self, id=id)
 
         self.line = line
@@ -39,6 +40,7 @@ class TaxPayment(Resource):
         self.amount = amount
         self.fee = fee
         self.type = type
+        self.transaction_ids = transaction_ids
         self.updated = check_datetime(updated)
         self.created = check_datetime(created)
 

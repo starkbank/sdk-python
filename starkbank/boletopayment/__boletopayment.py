@@ -22,10 +22,11 @@ class BoletoPayment(Resource):
     - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
     - status [string, default None]: current payment status. ex: "success" or "failed"
     - fee [integer, default None]: fee charged when the boleto payment is created. ex: 200 (= R$ 2.00)
+    - transaction_ids [list of strings]: ledger transaction ids linked to this BoletoPayment. ex: ["19827356981273"]
     - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, tax_id, description, line=None, bar_code=None, scheduled=None, tags=None, id=None, status=None, amount=None, fee=None, created=None):
+    def __init__(self, tax_id, description, line=None, bar_code=None, scheduled=None, tags=None, id=None, status=None, amount=None, fee=None, transaction_ids=None, created=None):
         Resource.__init__(self, id=id)
 
         self.line = line
@@ -37,6 +38,7 @@ class BoletoPayment(Resource):
         self.status = status
         self.amount = amount
         self.fee = fee
+        self.transaction_ids = transaction_ids
         self.created = check_datetime(created)
 
 
