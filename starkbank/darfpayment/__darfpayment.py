@@ -26,12 +26,13 @@ class DarfPayment(Resource):
     - status [string, default None]: current payment status. ex: "success" or "failed"
     - amount [int, default None]: Total amount due calculated from other amounts. ex: 24146 (= R$ 241.46)
     - fee [integer, default None]: fee charged when the DarfPayment is processed. ex: 0 (= R$ 0.00)
+    - transaction_ids [list of strings]: ledger transaction ids linked to this DarfPayment. ex: ["19827356981273"]
     - updated [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
     def __init__(self, description, revenue_code, tax_id, competence, nominal_amount, fine_amount, interest_amount,
                  due, reference_number=None, scheduled=None, tags=None, id=None, status=None, amount=None, fee=None,
-                 updated=None, created=None):
+                 transaction_ids=None, updated=None, created=None):
         Resource.__init__(self, id=id)
 
         self.revenue_code = revenue_code
@@ -48,6 +49,7 @@ class DarfPayment(Resource):
         self.amount = amount
         self.nominal_amount = nominal_amount
         self.fee = fee
+        self.transaction_ids = transaction_ids
         self.updated = check_datetime(updated)
         self.created = check_datetime(created)
 
