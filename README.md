@@ -45,6 +45,7 @@ is as easy as sending a text message to your client!
     - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
     - [Workspaces](#create-a-new-workspace): Manage your accounts
 - [Handling errors](#handling-errors)
+- [Help and Feedback](#help-and-feedback)
 
 ## Supported Python Versions
 
@@ -1794,3 +1795,11 @@ neither __InputErrors__ nor an __InternalServerError__, such as connectivity pro
 __InvalidSignatureError__ will be raised specifically by starkbank.event.parse()
 when the provided content and signature do not check out with the Stark Bank public
 key.
+
+# Help and Feedback
+
+If you have any questions about our SDK, just send us an email.
+We will respond you quickly, pinky promise. We are here to help you integrate with us ASAP.
+We also love feedback, so don't be shy about sharing your thoughts with us.
+
+Email: developers@starkbank.com
