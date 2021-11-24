@@ -39,10 +39,10 @@ is as easy as sending a text message to your client!
     - [BoletoPayments](#pay-a-boleto): Pay Boletos
     - [UtilityPayments](#create-utility-payments): Pay Utility bills (water, light, etc.)
     - [TaxPayments](#create-tax-payment): Pay taxes
-    - [PaymentPreviews](#preview-payment-information-before-executing): Preview all sorts of payments
+    - [PaymentPreviews](#preview-payment-information-before-executing-the-payment): Preview all sorts of payments
     - [Webhooks](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage webhook events
-    - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts): Query failed webhook event deliveries
+    - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
     - [Workspaces](#create-a-new-workspace): Manage your accounts
 - [Handling errors](#handling-errors)
 
