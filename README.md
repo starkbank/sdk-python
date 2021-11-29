@@ -22,7 +22,7 @@ is as easy as sending a text message to your client!
     - [Register your user credentials](#3-register-your-user-credentials)
     - [Setting up the user](#4-setting-up-the-user)
     - [Setting up the error language](#5-setting-up-the-error-language)
-    - [Resource listing and manual pagination](#6-resource-listing-and-manual-pagination)
+- [Resource listing and manual pagination](#resource-listing-and-manual-pagination)
 - [Testing in Sandbox](#testing-in-sandbox) 
 - [Usage](#usage)
     - [Transactions](#create-transactions): Account statement entries
@@ -247,7 +247,7 @@ starkbank.language = "en-US"
 
 Language options are "en-US" for english and "pt-BR" for brazilian portuguese. English is default.
 
-## 6. Resource listing and manual pagination
+# Resource listing and manual pagination
 
 Almost all SDK resources provide a `query` and a `page` function.
 
