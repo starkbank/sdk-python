@@ -1,6 +1,7 @@
 from requests import get, post, delete, patch
-from ..utils.api import endpoint, last_name, last_name_plural, api_json, from_api_json, cast_json_to_api_format
+from .case import snake_to_camel
 from ..utils.request import fetch
+from ..utils.api import endpoint, last_name, last_name_plural, api_json, from_api_json, cast_json_to_api_format
 
 
 def get_page(resource, user=None, **kwargs):
@@ -28,8 +29,9 @@ def get_stream(resource, limit=None, user=None, **kwargs):
             break
 
 
-def get_id(resource, id, user=None):
-    json = fetch(method=get, path="{endpoint}/{id}".format(endpoint=endpoint(resource), id=id), user=user).json()
+def get_id(resource, id, user=None, **kwargs):
+    path = "{endpoint}/{id}".format(endpoint=endpoint(resource), id=id)
+    json = fetch(method=get, path=path, query=kwargs, user=user).json()
     entity = json[last_name(resource)]
     return from_api_json(resource, entity)
 
@@ -51,9 +53,13 @@ def get_sub_resources(resource, id, sub_resource, user=None, **kwargs):
     return [from_api_json(sub_resource, entity) for entity in entities]
 
 
-def post_multi(resource, entities, user=None):
-    json = fetch(method=post, path=endpoint(resource), user=user, payload={
-        last_name_plural(resource): [api_json(entity) for entity in entities]
+def post_multi(resource, entities, expand=None, user=None):
+    query = {}
+    if expand:
+        query["expand"] = [snake_to_camel(e) for e in expand]
+    json = fetch(
+        method=post, path=endpoint(resource), user=user, query=query,
+        payload={last_name_plural(resource): [api_json(entity) for entity in entities],
     }).json()
     entities = json[last_name_plural(resource)]
     return [from_api_json(resource, entity) for entity in entities]

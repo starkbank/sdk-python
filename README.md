@@ -8,7 +8,6 @@ If you have no idea what Stark Bank is, check out our [website](https://www.star
 and discover a world where receiving or making payments 
 is as easy as sending a text message to your client!
 
-
 # Introduction
 
 ## Index
