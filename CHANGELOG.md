@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.15.0] - 2021-11-29
 ### Added
 - query string parameters to POST methods in rest utils [internal]
 ### Changed
