@@ -22,6 +22,6 @@ setup(
     version=version,
     install_requires=[
         "requests>=2.23.0",
-        "starkbank-ecdsa>=2.0.2",
+        "starkbank-ecdsa>=2.0.3",
     ],
 )
