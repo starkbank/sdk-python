@@ -31,15 +31,15 @@ def cast_values(value):
     if isinstance(value, Resource):
         return api_json(value)
 
+    if isinstance(value, dict):
+        return cast_json_to_api_format(value)
+
     if not isinstance(value, list):
         return value
 
     casted_values = []
     for v in value:
-        if isinstance(v, dict):
-            casted_values.append(cast_json_to_api_format(v))
-            continue
-        casted_values.append(v)
+        casted_values.append(cast_values(v))
     return casted_values
 
 
