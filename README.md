@@ -39,6 +39,7 @@ is as easy as sending a text message to your client!
     - [UtilityPayments](#create-utility-payments): Pay Utility bills (water, light, etc.)
     - [TaxPayments](#create-tax-payment): Pay taxes
     - [PaymentPreviews](#preview-payment-information-before-executing-the-payment): Preview all sorts of payments
+    - [PaymentRequest](#create-payment-requests-to-be-approved-by-authorized-people-in-a-cost-center): Request a payment approval to a cost center
     - [Webhooks](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage webhook events
     - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
@@ -637,7 +638,9 @@ print(invoice)
 ## Update an invoice
 
 You can update an invoice's amount, due date and expiration by its id.
-Note that this is not possible if it has been paid already.
+If the invoice has already been paid, only the amount can be
+decreased, which will result in a payment reversal. To fully reverse 
+the invoice, pass amount = 0.
 
 ```python
 import starkbank
@@ -1448,7 +1451,7 @@ import starkbank
 from datetime import date, timedelta
 
 
-previews = starkbank.paymentrequest.create([
+previews = starkbank.paymentpreview.create([
     starkbank.PaymentPreview(
         id="00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A",
         scheduled=date.today() + timedelta(days=3)
@@ -1476,7 +1479,7 @@ with the required amount before the payments take place.
 The approvals can be granted at our website and must be performed according to the rules
 specified in the cost center.
 
-**Note**: The value of the center\_id parameter can be consulted by logging into our website and going
+**Note**: The value of the center_id parameter can be consulted by logging into our website and going
 to the desired cost center page.
 
 ```python
