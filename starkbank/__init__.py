@@ -4,8 +4,10 @@ user = None
 language = "en-US"
 timeout = 15
 
-from .user.__organization import Organization
-from .user.__project import Project
+from starkcore.user.__organization import Organization
+from starkcore.user.__project import Project
+
+from . import key
 
 from . import transaction
 from .transaction.__transaction import Transaction
@@ -66,6 +68,3 @@ from .dictkey.__dictkey import DictKey
 
 from . import deposit
 from .deposit.__deposit import Deposit
-
-from . import error
-from . import key

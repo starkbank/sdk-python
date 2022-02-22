@@ -15,6 +15,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Fixed
 - nested resource casting
+- Use starkcore as a dependency.
 
 ## [2.15.0] - 2021-11-29
 ### Added

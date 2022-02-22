@@ -1,6 +1,6 @@
-from starkbank.utils import rest
-from starkbank.utils.checks import check_datetime, check_date
-from starkbank.utils.resource import Resource
+from ..utils import rest
+from starkcore.utils.checks import check_datetime, check_date
+from starkcore.utils.resource import Resource
 
 
 class DarfPayment(Resource):

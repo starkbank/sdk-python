@@ -1,6 +1,6 @@
 from ..utils import rest
-from ..utils.resource import Resource
-from ..utils.checks import check_datetime
+from starkcore.utils.resource import Resource
+from starkcore.utils.checks import check_datetime
 
 
 class Balance(Resource):

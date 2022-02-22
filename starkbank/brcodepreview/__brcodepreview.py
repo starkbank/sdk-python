@@ -1,5 +1,5 @@
 from ..utils import rest
-from ..utils.resource import Resource
+from starkcore.utils.resource import Resource
 
 
 class BrcodePreview(Resource):
