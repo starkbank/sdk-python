@@ -2,7 +2,7 @@ import starkbank
 from random import choice
 from json import loads, dumps
 from unittest import TestCase, main
-from starkbank.error import InvalidSignatureError
+from starkcore.error import InvalidSignatureError
 from tests.utils.user import exampleProject
 
 starkbank.user = exampleProject

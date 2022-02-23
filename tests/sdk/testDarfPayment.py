@@ -1,6 +1,6 @@
 import starkbank
 from unittest import TestCase, main
-from starkbank.error import InputErrors
+from starkcore.error import InputErrors
 from tests.utils.user import exampleProject
 from tests.utils.taxPayment import generateExampleDarfPaymentsJson
 
