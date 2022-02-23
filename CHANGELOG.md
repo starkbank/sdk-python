@@ -15,6 +15,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Fixed
 - nested resource casting
+### Changed
 - Use starkcore as a dependency.
 
 ## [2.15.0] - 2021-11-29
@@ -180,4 +181,3 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [0.1.0] - 2020-04-18
 ### Added
 - Full Stark Bank API v2 compatibility
-

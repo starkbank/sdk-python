@@ -1,7 +1,7 @@
 from ...utils import rest
 from starkcore.utils.api import from_api_json
-from starkcore.utils.checks import check_datetime, check_date
 from starkcore.utils.resource import Resource
+from starkcore.utils.checks import check_datetime, check_date
 from ..__taxpayment import _resource as _payment_resource
 
 

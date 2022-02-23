@@ -3,10 +3,10 @@ from starkcore.utils.api import from_api_json
 from starkcore.utils.resource import Resource
 from starkcore.utils.checks import check_datetime, check_date
 from ..transfer.__transfer import Transfer
+from ..transaction.__transaction import Transaction
 from ..brcodepayment.__brcodepayment import BrcodePayment
 from ..boletopayment.__boletopayment import BoletoPayment
 from ..utilitypayment.__utilitypayment import UtilityPayment
-from ..transaction.__transaction import Transaction
 from ..transfer.__transfer import _resource as _transfer_resource
 from ..transaction.__transaction import _resource as _transaction_resource
 from ..boletopayment.__boletopayment import _resource as _boleto_payment_resource

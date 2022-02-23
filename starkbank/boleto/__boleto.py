@@ -1,6 +1,6 @@
 from ..utils import rest
-from starkcore.utils.checks import check_date, check_datetime
 from starkcore.utils.resource import Resource
+from starkcore.utils.checks import check_date, check_datetime
 
 
 class Boleto(Resource):

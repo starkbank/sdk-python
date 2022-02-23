@@ -4,10 +4,7 @@ user = None
 language = "en-US"
 timeout = 15
 
-from starkcore.user.__organization import Organization
-from starkcore.user.__project import Project
-
-from . import key
+from starkcore import Organization, Project, key
 
 from . import transaction
 from .transaction.__transaction import Transaction
