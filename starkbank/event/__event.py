@@ -152,7 +152,7 @@ def parse(content, signature, user=None):
     """# Create single notification Event from a content string
     Create a single Event object received from event listening at subscribed user endpoint.
     If the provided digital signature does not check out with the StarkBank public key, a
-    starkbank.exception.InvalidSignatureException will be raised.
+    starkbank.error.InvalidSignatureError will be raised.
     ## Parameters (required):
     - content [string]: response content from request received at user endpoint (not parsed)
     - signature [string]: base-64 digital signature received at response header "Digital-Signature"
