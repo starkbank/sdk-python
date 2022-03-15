@@ -21,7 +21,6 @@ setup(
     keywords=["stark bank", "starkbank", "sdk", "open banking", "openbanking", "banking", "open", "stark"],
     version=version,
     install_requires=[
-        "requests>=2.23.0",
-        "starkbank-ecdsa>=2.0.3",
+        "starkcore>=0.0.2",
     ],
 )
