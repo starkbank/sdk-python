@@ -1,17 +1,24 @@
 import starkbank
+from datetime import datetime
 from unittest import TestCase, main
-from tests.utils.user import exampleProject
+from tests.utils.core import generateTestConfig, TestCore
 
 
-starkbank.user = exampleProject
+config = generateTestConfig(
+    resource=starkbank.balance,
+    schema={
+        "amount": int,
+        "updated": datetime,
+        "currency": str,
+        "id": str,
+    },
+)
 
 
 class TestBalanceGet(TestCase):
 
-    def test_success(self):
-        balance = starkbank.balance.get(user=exampleProject)
-        print(balance)
-        self.assertIsInstance(balance.amount, int)
+    def test_get(self):
+        TestCore.get(config)
 
 
 if __name__ == '__main__':

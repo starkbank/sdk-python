@@ -2,20 +2,29 @@ import starkbank
 from datetime import datetime, timedelta
 from unittest import TestCase, main
 from tests.utils.boleto import generateExampleBoletosJson
+from tests.utils.core import generateTestConfig, TestCore
 from tests.utils.date import randomPastDate
-from tests.utils.user import exampleProject
 
 
-starkbank.user = exampleProject
+config = generateTestConfig(
+    resource=starkbank.boleto,
+    schema={
+        "amount": int,
+        "updated": datetime,
+        "currency": str,
+        "id": str,
+    },
+    sample_builder=generateExampleBoletosJson,
+)
 
 
-class TestBoletoPost(TestCase):
+class TestBoleto(TestCase):
 
-    def test_success(self):
-        boletos = generateExampleBoletosJson(n=5)
-        boletos = starkbank.boleto.create(boletos)
-        for boleto in boletos:
-            print(boleto)
+    def test_create(self):
+        TestCore.create(config=config, n=5)
+
+    def test_query(self):
+        TestCore.query(config=config, n=5)
 
 
 class TestBoletoQuery(TestCase):
@@ -77,6 +86,7 @@ class TestBoletoPdfGet(TestCase):
         self.assertGreater(len(default_pdf), 1000)
         booklet_pdf = starkbank.boleto.pdf(boleto_id, layout="booklet", hidden_fields=["customerAddress"])
         self.assertGreater(len(booklet_pdf), 1000)
+
 
 if __name__ == '__main__':
     main()
