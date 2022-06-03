@@ -38,6 +38,7 @@ is as easy as sending a text message to your client!
     - [BoletoPayments](#pay-a-boleto): Pay Boletos
     - [UtilityPayments](#create-utility-payments): Pay Utility bills (water, light, etc.)
     - [TaxPayments](#create-tax-payment): Pay taxes
+    - [DarfPayments](#create-darf-payment): Pay DARFs
     - [PaymentPreviews](#preview-payment-information-before-executing-the-payment): Preview all sorts of payments
     - [PaymentRequest](#create-payment-requests-to-be-approved-by-authorized-people-in-a-cost-center): Request a payment approval to a cost center
     - [Webhooks](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
@@ -1436,6 +1437,118 @@ print(log)
 resource and routes, which are all analogous to the TaxPayment resource. The ones we currently support are:
 - DarfPayment, for DARFs
 
+## Create DARF payment
+
+If you want to manually pay DARFs without barcodes, you may create DarfPayments:
+
+```python
+import starkbank
+from datetime import datetime, timedelta
+
+
+payments = starkbank.darfpayment.create([
+    starkbank.DarfPayment(
+        revenue_code="1240",
+        tax_id="012.345.678-90",
+        competence="2020-09-01",
+        reference_number="2340978970",
+        nominal_amount=1234,
+        fine_amount=12,
+        interest_amount=34,
+        due=datetime.now() + timedelta(days=30),
+        scheduled=datetime.now() + timedelta(days=30),
+        tags=["DARF", "making money"],
+        description="take my money",
+    )
+])
+
+for payment in payments:
+    print(payment)
+```
+
+**Note**: Instead of using DarfPayment objects, you can also pass each payment element in dictionary format
+
+## Query DARF payments
+
+To search for DARF payments using filters, run:
+
+```python
+import starkbank
+
+payments = starkbank.darfpayment.query(
+    tags=["darf", "july"]
+)
+
+for payment in payments:
+    print(payment)
+```
+
+## Get DARF payment
+
+You can get a specific DARF payment by its id:
+
+```python
+import starkbank
+
+payment = starkbank.darfpayment.get("5155165527080960")
+
+print(payment)
+```
+
+## Get DARF payment PDF
+
+After its creation, a DARF payment PDF may also be retrieved by its id. 
+
+```python
+import starkbank
+
+pdf = starkbank.darfpayment.pdf("5155165527080960")
+
+with open("darf-payment.pdf", "wb") as file:
+    file.write(pdf)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+## Delete DARF payment
+
+You can also cancel a DARF payment by its id.
+Note that this is not possible if it has been processed already.
+
+```python
+import starkbank
+
+payment = starkbank.darfpayment.delete("5155165527080960")
+
+print(payment)
+```
+
+## Query DARF payment logs
+
+You can search for payment logs by specifying filters. Use this to understand each payment life cycle.
+
+```python
+import starkbank
+
+logs = starkbank.darfpayment.log.query(limit=10)
+
+for log in logs:
+    print(log)
+```
+
+## Get DARF payment log
+
+If you want to get a specific payment log by its id, just run:
+
+```python
+import starkbank
+
+log = starkbank.darfpayment.log.get("1902837198237992")
+
+print(log)
+```
 
 ## Preview payment information before executing the payment
 
