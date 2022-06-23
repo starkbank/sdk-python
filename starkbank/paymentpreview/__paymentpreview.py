@@ -1,11 +1,11 @@
 from ..utils import rest
-from ..utils.api import from_api_json
-from ..utils.checks import check_date
-from ..utils.resource import Resource
+from starkcore.utils.api import from_api_json
+from starkcore.utils.checks import check_date
+from starkcore.utils.resource import Resource
+from .__taxpreview import _sub_resource as _tax_preview_sub_resource
 from .__brcodepreview import _sub_resource as _brcode_preview_sub_resource
 from .__boletopreview import _sub_resource as _boleto_preview_sub_resource
 from .__utilitypreview import _sub_resource as _utility_preview_sub_resource
-from .__taxpreview import _sub_resource as _tax_preview_sub_resource
 
 
 _sub_resource_by_type = {

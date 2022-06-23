@@ -1,6 +1,6 @@
 from ..utils import rest
-from ..utils.checks import check_datetime, check_date
-from ..utils.resource import Resource
+from starkcore.utils.resource import Resource
+from starkcore.utils.checks import check_datetime, check_date
 
 
 class Transaction(Resource):

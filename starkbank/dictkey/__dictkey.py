@@ -1,7 +1,7 @@
-from starkbank.utils.checks import check_date
 from ..utils import rest
-from ..utils.checks import check_datetime
-from ..utils.resource import Resource
+from starkcore.utils.resource import Resource
+from starkcore.utils.checks import check_date
+from starkcore.utils.checks import check_datetime
 
 
 class DictKey(Resource):

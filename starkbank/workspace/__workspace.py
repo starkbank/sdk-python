@@ -1,5 +1,5 @@
 from ..utils import rest
-from ..utils.resource import Resource
+from starkcore.utils.resource import Resource
 
 
 class Workspace(Resource):
@@ -85,7 +85,10 @@ def update(id, username=None, name=None, allowed_tax_ids=None, user=None):
     ## Return:
     - target Workspace with updated attributes
     """
-    return rest.patch_id(resource=_resource, id=id, user=user, username=username, name=name, allowed_tax_ids=allowed_tax_ids)
+    payload = {
+        "allowedTaxIds": allowed_tax_ids
+    }
+    return rest.patch_id(resource=_resource, id=id, user=user, username=username, name=name, payload=payload)
 
 
 def page(cursor=None, limit=None, username=None, ids=None, user=None):

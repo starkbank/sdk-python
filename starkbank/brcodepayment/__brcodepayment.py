@@ -1,6 +1,6 @@
 from ..utils import rest
-from ..utils.checks import check_datetime, check_date
-from ..utils.resource import Resource
+from starkcore.utils.resource import Resource
+from starkcore.utils.checks import check_datetime, check_date
 
 
 class BrcodePayment(Resource):
@@ -158,4 +158,7 @@ def update(id, status=None, user=None):
     ## Return:
     - target BrcodePayment with updated attributes
     """
-    return rest.patch_id(resource=_resource, id=id, user=user, status=status)
+    payload = {
+        "status": status
+    }
+    return rest.patch_id(resource=_resource, id=id, user=user, payload=payload)
