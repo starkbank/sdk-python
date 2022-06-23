@@ -1,5 +1,5 @@
 from ..utils import rest
-from ..utils.resource import SubResource
+from starkcore.utils.resource import SubResource
 
 
 class Institution(SubResource):

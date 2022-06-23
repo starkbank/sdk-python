@@ -1,11 +1,9 @@
-from json import loads, dumps
-from requests import get as get_request
-from ellipticcurve import Ecdsa, Signature, PublicKey
 from ..utils import rest
-from ..utils.api import from_api_json
-from ..utils.request import fetch
-from ..utils.resource import Resource
-from ..utils.checks import check_datetime, check_date
+from starkcore.utils.checks import check_date
+from starkcore.utils.api import from_api_json
+from starkcore.utils.resource import Resource
+from starkcore.utils.checks import check_datetime
+from ..utils.parse import parse_and_verify
 from ..boleto.log.__log import _resource as _boleto_log_resource
 from ..invoice.log.__log import _resource as _invoice_log_resource
 from ..deposit.log.__log import _resource as _deposit_log_resource
@@ -16,8 +14,6 @@ from ..boletoholmes.log.__log import _resource as _boleto_holmes_log_resource
 from ..brcodepayment.log.__log import _resource as _brcode_payment_log_resource
 from ..boletopayment.log.__log import _resource as _boleto_payment_log_resource
 from ..utilitypayment.log.__log import _resource as _utility_payment_log_resource
-from ..error import InvalidSignatureError
-from ..utils import cache
 
 
 _resource_by_subscription = {
@@ -149,14 +145,17 @@ def update(id, is_delivered, user=None):
     ## Return:
     - target Event with updated attributes
     """
-    return rest.patch_id(resource=_resource, id=id, user=user, is_delivered=is_delivered)
+    payload = {
+        "isDelivered": is_delivered
+    }
+    return rest.patch_id(resource=_resource, id=id, user=user, payload=payload)
 
 
 def parse(content, signature, user=None):
     """# Create single notification Event from a content string
     Create a single Event object received from event listening at subscribed user endpoint.
     If the provided digital signature does not check out with the StarkBank public key, a
-    starkbank.exception.InvalidSignatureException will be raised.
+    starkbank.error.InvalidSignatureError will be raised.
     ## Parameters (required):
     - content [string]: response content from request received at user endpoint (not parsed)
     - signature [string]: base-64 digital signature received at response header "Digital-Signature"
@@ -165,41 +164,10 @@ def parse(content, signature, user=None):
     ## Return:
     - Parsed Event object
     """
-    event = from_api_json(_resource, loads(content)["event"])
-
-    try:
-        signature = Signature.fromBase64(signature)
-    except:
-        raise InvalidSignatureError("The provided signature is not valid")
-
-    public_key = _get_public_key(user=user)
-    if _is_valid(content=content, signature=signature, public_key=public_key):
-        return event
-
-    public_key = _get_public_key(user=user, refresh=True)
-    if _is_valid(content=content, signature=signature, public_key=public_key):
-        return event
-
-    raise InvalidSignatureError("The provided signature and content do not match the Stark Bank public key")
-
-
-def _is_valid(content, signature, public_key):
-    if Ecdsa.verify(message=content, signature=signature, publicKey=public_key):
-        return True
-
-    normalized = dumps(loads(content), sort_keys=True)
-    if Ecdsa.verify(message=normalized, signature=signature, publicKey=public_key):
-        return True
-
-    return False
-
-
-def _get_public_key(user, refresh=False):
-    public_key = cache.get("starkbank-public-key")
-    if public_key and not refresh:
-        return public_key
-
-    pem = fetch(method=get_request, path="/public-key", query={"limit": 1}, user=user).json()["publicKeys"][0]["content"]
-    public_key = PublicKey.fromPem(pem)
-    cache["starkbank-public-key"] = public_key
-    return public_key
+    return parse_and_verify(
+        content=content,
+        signature=signature,
+        user=user,
+        resource=_resource,
+        key="event",
+    )

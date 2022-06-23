@@ -1,6 +1,6 @@
 from ..utils import rest
-from ..utils.checks import check_date, check_datetime, check_timedelta, check_datetime_or_date
-from ..utils.resource import Resource
+from starkcore.utils.resource import Resource
+from starkcore.utils.checks import check_date, check_datetime, check_timedelta, check_datetime_or_date
 from .__payment import _sub_resource as _payment_sub_resource
 
 
@@ -174,7 +174,7 @@ def update(id, status=None, amount=None, due=None, expiration=None, user=None):
         "due": check_datetime(due),
         "expiration": check_timedelta(expiration),
     }
-    return rest.patch_id(resource=_resource, id=id, user=user, **payload)
+    return rest.patch_id(resource=_resource, id=id, user=user, payload=payload)
 
 
 def qrcode(id, size=7, user=None):

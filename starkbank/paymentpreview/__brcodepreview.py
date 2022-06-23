@@ -1,4 +1,4 @@
-from ..utils.subresource import SubResource
+from starkcore.utils.subresource import SubResource
 
 
 class BrcodePreview(SubResource):

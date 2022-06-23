@@ -1,6 +1,6 @@
-from starkbank.utils import rest
-from starkbank.utils.resource import Resource
-from starkbank.utils.checks import check_datetime, check_date
+from ...utils import rest
+from starkcore.utils.resource import Resource
+from starkcore.utils.checks import check_datetime, check_date
 
 
 class Attempt(Resource):

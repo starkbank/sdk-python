@@ -1,2 +1,1 @@
-starkbank-ecdsa==2.0.3
-requests==2.23.0
+starkcore==0.0.5
