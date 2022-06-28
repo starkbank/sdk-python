@@ -1,3 +1,4 @@
+import base64
 from ..utils import rest
 from starkcore.utils.resource import Resource
 
@@ -8,8 +9,8 @@ class Workspace(Resource):
     The only property that is shared between your workspaces is that they are linked to your organization,
     which carries your basic informations, such as tax ID, name, etc..
     ## Parameters (required):
-    - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
-    - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. Ex: "Stark Bank Workspace"
+    - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. ex: "starkbankworkspace"
+    - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. ex: "Stark Bank Workspace"
     ## Parameters (optional):
     - allowed_tax_ids [list of strings, default None]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
     ## Attributes:
@@ -31,8 +32,8 @@ def create(username, name, allowed_tax_ids=None, user=None):
     """# Create Workspace
     Send a Workspace for creation in the Stark Bank API
     ## Parameters (required):
-    - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
-    - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. Ex: "Stark Bank Workspace"
+    - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. ex: "starkbankworkspace"
+    - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. ex: "Stark Bank Workspace"
     ## Parameters (optional):
     - allowed_tax_ids [list of strings, default []]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
     - user [Organization object, default None]: Organization object. Not necessary if starkbank.user was set before function call
@@ -63,7 +64,7 @@ def query(limit=None, username=None, ids=None, user=None):
     will be retrieved.
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - username [string, default None]: query by the simplified name that defines the workspace URL. This name is always unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
+    - username [string, default None]: query by the simplified name that defines the workspace URL. This name is always unique across all Stark Bank Workspaces. ex: "starkbankworkspace"
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
@@ -72,22 +73,32 @@ def query(limit=None, username=None, ids=None, user=None):
     return rest.get_stream(resource=_resource, limit=limit, username=username, ids=ids, user=user)
 
 
-def update(id, username=None, name=None, allowed_tax_ids=None, user=None):
+def update(id, picture_type=None, username=None, name=None, allowed_tax_ids=None,  picture=None, user=None):
     """# Update Workspace entity
     Update a Workspace by passing its ID.
     ## Parameters (required):
     - id [string]: Workspace ID. ex: '5656565656565656'
+    ## Parameters (conditionally required):
+    - picture_type [string]: picture MIME type. This parameter will be required if the picture parameter is informed ex: "image/png" or "image/jpeg"
     ## Parameters (optional):
-    - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. Ex: "starkbank-workspace"
-    - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. Ex: "Stark Bank Workspace"
+    - username [string, default None]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. ex: "starkbank-workspace"
+    - name [string, default None]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. ex: "Stark Bank Workspace"
     - allowed_tax_ids [list of strings, default None]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
+    - picture [bytes, default None]: Binary buffer of the picture. ex: open("/path/to/file.png", "rb").read()
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - target Workspace with updated attributes
     """
     payload = {
-        "allowedTaxIds": allowed_tax_ids
+        "allowedTaxIds": allowed_tax_ids,
     }
+
+    if picture:
+        payload["picture"] = "data:{picture_type};base64,{picture}".format(
+            picture_type=picture_type,
+            picture=base64.b64encode(picture).decode('utf-8')
+        )
+
     return rest.patch_id(resource=_resource, id=id, user=user, username=username, name=name, payload=payload)
 
 
@@ -98,7 +109,7 @@ def page(cursor=None, limit=None, username=None, ids=None, user=None):
     ## Parameters (optional):
     - cursor [string, default None]: cursor returned on the previous page function call
     - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-    - username [string, default None]: query by the simplified name that defines the workspace URL. This name is always unique across all Stark Bank Workspaces. Ex: "starkbankworkspace"
+    - username [string, default None]: query by the simplified name that defines the workspace URL. This name is always unique across all Stark Bank Workspaces. ex: "starkbankworkspace"
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:

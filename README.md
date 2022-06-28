@@ -1818,9 +1818,13 @@ The only link between your Workspaces is the Organization that controls them.
 ```python
 import starkbank
 
+picture = open("path/to/picture.png", "rb").read()
+
 workspace = starkbank.workspace.create(
     username="iron-bank-workspace-1",
     name="Iron Bank Workspace 1",
+    picture=picture,
+    picture_type="image/png",
     user=organization,
 )
 

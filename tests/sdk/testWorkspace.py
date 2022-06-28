@@ -52,6 +52,24 @@ class TestWorkspacePage(TestCase):
         self.assertTrue(len(ids) == 4)
 
 
+class TestWorkspaceUpdatePicture(TestCase):
+
+    def test_success(self):
+        (workspaces, cursor) = starkbank.workspace.page(limit=1, user=exampleOrganization)
+        file = open('../utils/logo.png', 'rb')
+        picture = file.read()
+        file.close()
+
+        workspace = starkbank.workspace.update(
+            id=workspaces[0].id,
+            picture=picture,
+            picture_type='image/png',
+            user=starkbank.Organization.replace(exampleOrganization, workspaces[0].id)
+        )
+
+        self.assertEquals(workspace.id, workspaces[0].id)
+
+
 class TestWebhookInfoGet(TestCase):
 
     def test_success(self):
