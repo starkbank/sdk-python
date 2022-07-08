@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- picture and pictureType parameters to Workspace.update method
 ### Fixed
 - nested resource casting
 ### Changed
