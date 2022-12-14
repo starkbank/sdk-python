@@ -24,7 +24,7 @@ class Transfer(Resource):
     - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - description [string, default None]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
     - tags [list of strings, default []]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
-    - rule [list of Transfer.Rules, default []]: list of Transfer.Rule objects for modifying transfer behaviour. ex: [Transfer.Rule(key="resendingLimit", value=5)]
+    - rule [list of Transfer.Rules, default []]: list of Transfer.Rule objects for modifying transfer behavior. ex: [Transfer.Rule(key="resendingLimit", value=5)]
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when the transfer is created. ex: "5656565656565656"
     - fee [integer, default None]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)

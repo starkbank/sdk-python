@@ -110,7 +110,7 @@ class TestBrcodePaymentInfoPatch(TestCase):
 class TestBrcodePaymentPdfGet(TestCase):
 
     def test_success(self):
-        payments = starkbank.brcodepayment.query()
+        payments = starkbank.brcodepayment.query(status="success")
         payment_id = next(payments).id
         pdf = starkbank.brcodepayment.pdf(payment_id)
         self.assertGreater(len(pdf), 1000)
