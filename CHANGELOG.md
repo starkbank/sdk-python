@@ -19,6 +19,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - Transfer.Rule sub-resource
 ### Fixed
 - nested resource casting
+- starkbank.error import
+- starkbank.key import
 ### Changed
 - Use starkcore as a dependency.
 

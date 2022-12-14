@@ -21,7 +21,7 @@ class TestDictKeyInfoGet(TestCase):
         errors = context.exception.errors
         for error in errors:
             print(error)
-            self.assertEqual('invalidDictKey', error.code)
+            self.assertEqual('invalidPixKey', error.code)
         self.assertEqual(1, len(errors))
 
 
