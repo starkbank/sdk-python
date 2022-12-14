@@ -15,7 +15,10 @@ class TestTransferPost(TestCase):
         transfers = starkbank.transfer.create(transfers)
         self.assertEqual(len(transfers), 5)
         for transfer in transfers:
-            print(transfer.id)
+            self.assertIsNotNone(transfer.id)
+            for rule in transfer.rules:
+                if rule.key == "resendingLimit":
+                    self.assertIsNotNone(rule.value)
 
 
 class TestTransferQuery(TestCase):

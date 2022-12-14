@@ -15,6 +15,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Added
 - picture and pictureType parameters to Workspace.update method
+- rules attribute to Transfer resource
+- Transfer.Rule sub-resource
 ### Fixed
 - nested resource casting
 ### Changed

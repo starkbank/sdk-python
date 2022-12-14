@@ -4,6 +4,7 @@ from copy import deepcopy
 from datetime import date, timedelta, datetime
 from random import randint, choice
 from starkbank import Transfer
+from starkbank.transfer import Rule
 from .names.names import get_full_name
 from .taxIdGenerator import TaxIdGenerator
 
@@ -30,6 +31,12 @@ def generateExampleTransfersJson(n=1, randomSchedule=False):
         transfer.account_type = choice(["checking", "savings", "salary", "payment"])
         transfer.account_number = "{}-{}".format(randint(10000, 100000000), randint(0, 9))
         transfer.external_id = str(uuid4())
+        transfer.rules = [
+            Rule(
+                key="resendingLimit",
+                value=randint(0, 10)
+            )
+        ]
         transfer.description = choice([None, "Test description"])
         if randomSchedule:
             transfer.scheduled = choice([date.today(), datetime.utcnow()]) + timedelta(days=randint(0, 10))

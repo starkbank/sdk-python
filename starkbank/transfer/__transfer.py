@@ -1,4 +1,7 @@
 from ..utils import rest
+from .rule.__rule import Rule
+from .rule.__rule import _sub_resource as _rule_resource
+from starkcore.utils.api import from_api_json
 from starkcore.utils.resource import Resource
 from starkcore.utils.checks import check_datetime, check_date, check_datetime_or_date
 
@@ -20,7 +23,8 @@ class Transfer(Resource):
     - external_id [string, default None]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
     - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - description [string, default None]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
-    - tags [list of strings]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
+    - tags [list of strings, default []]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
+    - rule [list of Transfer.Rules, default []]: list of Transfer.Rule objects for modifying transfer behaviour. ex: [Transfer.Rule(key="resendingLimit", value=5)]
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when the transfer is created. ex: "5656565656565656"
     - fee [integer, default None]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
@@ -32,7 +36,7 @@ class Transfer(Resource):
 
     def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, account_type=None,
                  external_id=None, scheduled=None, description=None, transaction_ids=None, fee=None, tags=None,
-                 status=None, id=None, created=None, updated=None):
+                 rules=None, status=None, id=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.tax_id = tax_id
@@ -46,6 +50,7 @@ class Transfer(Resource):
         self.scheduled = check_datetime_or_date(scheduled)
         self.description = description
         self.tags = tags
+        self.rules = _parse_rules(rules)
         self.fee = fee
         self.status = status
         self.created = check_datetime(created)
@@ -54,6 +59,18 @@ class Transfer(Resource):
 
 
 _resource = {"class": Transfer, "name": "Transfer"}
+
+
+def _parse_rules(rules):
+    if rules is None:
+        return None
+    parsed_rules = []
+    for rule in rules:
+        if isinstance(rule, Rule):
+            parsed_rules.append(rule)
+            continue
+        parsed_rules.append(from_api_json(_rule_resource, rule))
+    return parsed_rules
 
 
 def create(transfers, user=None):
