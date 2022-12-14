@@ -375,7 +375,7 @@ print(balance)
 
 ## Create transfers
 
-You can also create transfers in the SDK (TED/Pix).
+You can also create transfers in the SDK (TED/Pix) and configure transfer behavior according to its rules.
 
 ```python
 import starkbank
@@ -400,7 +400,13 @@ transfers = starkbank.transfer.create([
         external_id="my-internal-id-12345",
         tax_id="012.345.678-90",
         name="Jon Snow",
-        scheduled=datetime.utcnow() + timedelta(days=3)
+        scheduled=datetime.utcnow() + timedelta(days=3),
+        rules=[
+            starkbank.transfer.Rule(
+              key="resendingLimit",  # Set maximum number of retries if Transfer fails due to systemic issues at the receiver bank
+              value=5                # Our resending limit is 10 by default
+            ) 
+        ] 
     )
 ])
 
@@ -1921,4 +1927,4 @@ If you have any questions about our SDK, just send us an email.
 We will respond you quickly, pinky promise. We are here to help you integrate with us ASAP.
 We also love feedback, so don't be shy about sharing your thoughts with us.
 
-Email: developers@starkbank.com
+Email: help@starkbank.com
