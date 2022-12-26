@@ -50,7 +50,6 @@ class TestTransactionPage(TestCase):
         self.assertTrue(len(transactionIds) == 4)
 
 
-
 class TestTransactionInfoGet(TestCase):
 
     def test_success(self):

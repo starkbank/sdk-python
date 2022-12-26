@@ -17,6 +17,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - picture and pictureType parameters to Workspace.update method
 - rules attribute to Transfer resource
 - Transfer.Rule sub-resource
+- rules attribute to BrcodePayment resource
+- BrcodePayment.Rule sub-resource
 ### Fixed
 - nested resource casting
 - starkbank.error import

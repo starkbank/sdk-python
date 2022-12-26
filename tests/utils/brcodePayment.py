@@ -1,9 +1,10 @@
 from copy import deepcopy
-from random import choice
+from random import choice, randint
 from hashlib import sha256
 from datetime import date, timedelta
 import starkbank
 from starkbank import BrcodePayment
+from starkbank.brcodepayment import Rule
 from .invoice import generateExampleInvoicesJson
 
 
@@ -25,6 +26,12 @@ def generateExampleBrcodePaymentsJson(n=1, next_day=False):
         payment = deepcopy(example_payment)
         payment.brcode = invoice.brcode
         payment.scheduled = min((date.today() + timedelta(days=1)) if next_day else date.today(), (invoice.due - timedelta(hours=3)).date())
+        payment.rules = [
+            Rule(
+                key="resendingLimit",
+                value=randint(0, 10)
+            )
+        ]
         payment.description = sha256(str(invoice.id).encode('utf-8')).hexdigest()
         payments.append(payment)
     return payments
