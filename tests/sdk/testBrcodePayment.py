@@ -13,7 +13,10 @@ class TestBrcodePaymentPost(TestCase):
         payments = generateExampleBrcodePaymentsJson(n=5, next_day=True)
         payments = starkbank.brcodepayment.create(payments)
         for payment in payments:
-            print(payment)
+            self.assertIsNotNone(payment.id)
+            for rule in payment.rules:
+                if rule.key == "resendingLimit":
+                    self.assertIsNotNone(rule.value)
 
 
 class TestBrcodePaymentQuery(TestCase):

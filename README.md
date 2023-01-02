@@ -532,7 +532,7 @@ You can query institutions registered by the Brazilian Central Bank for Pix and 
 ```python
 import starkbank
 
-institution = starkbank.institution.query(search="stark")
+institutions = starkbank.institution.query(search="stark")
 
 for institution in institutions:
     print(institution)
@@ -991,7 +991,7 @@ print(log)
 
 ## Pay a BR Code
 
-Paying a BR Code is also simple. After extracting the BRCode encoded in the Pix QR Code, you can do the following:
+Paying a BR Code is also simple. After extracting the BR Code encoded in the Pix QR Code, you can do the following:
 
 ```python
 import starkbank
@@ -1003,13 +1003,19 @@ payments = starkbank.brcodepayment.create([
         scheduled="2020-03-13",
         description="this will be fast",
         tags=["pix", "qrcode"],
+        rules=[
+            starkbank.brcodepayment.Rule(
+              key="resendingLimit",  # Set maximum number of retries if Payment fails due to systemic issues at the receiver bank
+              value=5                # Our resending limit is 10 by default
+            ) 
+        ]
     )
 ])
 
 for payment in payments:
     print(payment)
 ```
-
+**Note**: You can also configure payment behavior according to its rules
 **Note**: Instead of using BrcodePayment objects, you can also pass each payment element in dictionary format
 
 ## Get a BR Code payment

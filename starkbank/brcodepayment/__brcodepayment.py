@@ -1,4 +1,7 @@
 from ..utils import rest
+from .rule.__rule import Rule
+from .rule.__rule import _sub_resource as _rule_resource
+from starkcore.utils.api import from_api_json
 from starkcore.utils.resource import Resource
 from starkcore.utils.checks import check_datetime, check_date
 
@@ -18,6 +21,7 @@ class BrcodePayment(Resource):
     ## Parameters (optional):
     - scheduled [datetime.date, datetime.datetime or string, default now]: payment scheduled date or datetime. ex: datetime.datetime(2020, 3, 10, 15, 17, 3)
     - tags [list of strings, default None]: list of strings for tagging
+    - rule [list of BrcodePayment.Rule, default []]: list of BrcodePayment.Rule objects for modifying payment behavior. ex: [Rule(key="resendingLimit", value=5)]
     ## Attributes (return-only):
     - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
     - name [string]: receiver name. ex: "Jon Snow"
@@ -29,19 +33,20 @@ class BrcodePayment(Resource):
     - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, brcode, tax_id, description, amount=None, scheduled=None, tags=None, id=None, name=None,
+    def __init__(self, brcode, tax_id, description, amount=None, scheduled=None, tags=None, rules=None, id=None, name=None,
                  status=None, type=None, transaction_ids=None, fee=None, updated=None, created=None):
         Resource.__init__(self, id=id)
 
         self.brcode = brcode
         self.tax_id = tax_id
         self.description = description
-        self.tags = tags
+        self.amount = amount
         self.scheduled = check_date(scheduled)
+        self.tags = tags
+        self.rules = _parse_rules(rules)
         self.name = name
         self.status = status
         self.type = type
-        self.amount = amount
         self.transaction_ids = transaction_ids
         self.fee = fee
         self.updated = check_datetime(updated)
@@ -49,6 +54,18 @@ class BrcodePayment(Resource):
 
 
 _resource = {"class": BrcodePayment, "name": "BrcodePayment"}
+
+
+def _parse_rules(rules):
+    if rules is None:
+        return None
+    parsed_rules = []
+    for rule in rules:
+        if isinstance(rule, Rule):
+            parsed_rules.append(rule)
+            continue
+        parsed_rules.append(from_api_json(_rule_resource, rule))
+    return parsed_rules
 
 
 def create(payments, user=None):
