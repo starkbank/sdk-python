@@ -66,5 +66,8 @@ from .invoice.__invoice import Invoice
 from . import dictkey
 from .dictkey.__dictkey import DictKey
 
+from . import dynamicbrcode
+from .dynamicbrcode.__dynamicbrcode import DynamicBrcode
+
 from . import deposit
 from .deposit.__deposit import Deposit

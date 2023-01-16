@@ -29,9 +29,10 @@ is as easy as sending a text message to your client!
     - [Balance](#get-balance): Account balance
     - [Transfers](#create-transfers): Wire transfers (TED and manual Pix)
     - [DictKeys](#get-dict-key): Pix Key queries to use with Transfers
-    - [Institutions](#query-bacen-institutions): Instutitions recognized by the Central Bank
-    - [Invoices](#create-invoices): Reconciled receivables (dynamic PIX QR Codes)
-    - [Deposits](#query-deposits): Other cash-ins (static PIX QR Codes, manual PIX, etc)
+    - [Institutions](#query-bacen-institutions): Institutions recognized by the Central Bank
+    - [Invoices](#create-invoices): Reconciled receivables (dynamic Pix QR Codes)
+    - [DynamicBrcode](#create-dynamicbrcodes): Simplified reconciled receivables (dynamic Pix QR Codes)
+    - [Deposits](#query-deposits): Other cash-ins (static Pix QR Codes, DynamicBrcodes, manual Pix, etc)
     - [Boletos](#create-boletos): Boleto receivables
     - [BoletoHolmes](#investigate-a-boleto): Boleto receivables investigator
     - [BrcodePayments](#pay-a-br-code): Pay Pix QR Codes
@@ -733,6 +734,76 @@ import starkbank
 paymentInformation = starkbank.invoice.payment("5155165527080960")
 
 print(paymentInformation)
+```
+
+## Create DynamicBrcodes
+
+You can create simplified dynamic QR Codes to receive money using Pix transactions. 
+When a DynamicBrcode is paid, a Deposit is created with the tags parameter containing the character “dynamic-brcode/” followed by the DynamicBrcode’s uuid "dynamic-brcode/{uuid}" for conciliation.
+
+The differences between an Invoice and the DynamicBrcode are the following:
+
+|                   | Invoice | DynamicBrcode |
+|-------------------|:-------:|:-------------:|
+| Expiration        |    ✓    |       ✓       | 
+| Due, fine and fee |    ✓    |       X       | 
+| Discount          |    ✓    |       X       | 
+| Description       |    ✓    |       X       |
+| Can be updated    |    ✓    |       X       |
+
+**Note:** In order to check if a BR code has expired, you must first calculate its expiration date (add the expiration to the creation date). 
+**Note:** To know if the BR code has been paid, you need to query your Deposits by the tag "dynamic-brcode/{uuid}" to check if it has been paid.
+
+```python
+# coding: utf-8
+import starkbank
+from datetime import timedelta
+
+
+brcodes = starkbank.dynamicbrcode.create([
+    starkbank.DynamicBrcode(
+      amount=23571,  # R$ 235,71 
+      expiration=timedelta(hours=3).total_seconds()
+    ),
+    starkbank.DynamicBrcode(
+      amount=23571,  # R$ 235,71 
+      expiration=timedelta(hours=3).total_seconds()
+    )
+])
+
+for brcode in brcodes:
+    print(brcode)
+```
+
+**Note**: Instead of using DynamicBrcode objects, you can also pass each brcode element in dictionary format
+
+## Get a DynamicBrcode
+
+After its creation, information on a DynamicBrcode may be retrieved by its uuid.
+
+```python
+import starkbank
+
+brcode = starkbank.dynamicbrcode.get("bb9cd43ea6f4403391bf7ef6aa876600")
+
+print(brcode)
+```
+
+## Query DynamicBrcodes
+
+You can get a list of created DynamicBrcodes given some filters.
+
+```python
+import starkbank
+from datetime import datetime
+
+brcodes = starkbank.dynamicbrcode.query(
+    after=datetime(2023, 1, 1),
+    before=datetime(2023, 3, 1)
+)
+
+for brcode in brcodes:
+    print(brcode)
 ```
 
 ## Query deposits
