@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- picture_url attribute to DynamicBrcode resource
 
 ## [2.17.0] - 2023-01-16
 ### Added
