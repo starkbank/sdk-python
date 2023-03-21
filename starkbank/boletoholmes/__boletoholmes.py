@@ -13,11 +13,11 @@ class BoletoHolmes(Resource):
     ## Parameters (optional):
     - tags [list of strings]: list of strings for tagging
     ## Attributes (return-only):
-    - id [string, default None]: unique id returned when holmes is created. ex: "5656565656565656"
-    - status [string, default None]: current holmes status. ex: "solving" or "solved"
-    - result [string, default None]: result of boleto status investigation. ex: "paid" or "cancelled"
-    - created [datetime.datetime, default None]: creation datetime for the holmes. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-    - updated [datetime.datetime, default None]: latest update datetime for the holmes. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - id [string]: unique id returned when holmes is created. ex: "5656565656565656"
+    - status [string]: current holmes status. ex: "solving" or "solved"
+    - result [string]: result of boleto status investigation. ex: "paid" or "cancelled"
+    - created [datetime.datetime]: creation datetime for the holmes. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - updated [datetime.datetime]: latest update datetime for the holmes. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, boleto_id, tags=None, status=None, result=None, created=None, updated=None, id=None):
@@ -95,6 +95,12 @@ def page(cursor=None, limit=None, user=None):
     ## Parameters (optional):
     - cursor [string, default None]: cursor returned on the previous page function call
     - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
+    - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+    - status [string, default None]: filter for status of retrieved objects. ex: "solved"
+    - boleto_id [string, default None]: filter for holmes that investigate a specific boleto by its ID. ex: "5656565656565656"
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - list of BoletoHolmes objects with updated attributes

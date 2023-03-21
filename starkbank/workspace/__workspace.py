@@ -1,4 +1,5 @@
 import base64
+from starkcore.utils.checks import check_datetime
 from ..utils import rest
 from starkcore.utils.resource import Resource
 
@@ -13,16 +14,25 @@ class Workspace(Resource):
     - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. ex: "Stark Bank Workspace"
     ## Parameters (optional):
     - allowed_tax_ids [list of strings, default None]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
-    ## Attributes:
-    - id [string, default None]: unique id returned when the workspace is created. ex: "5656565656565656"
+    ## Attributes (return-only):
+    - id [string]: unique id returned when the workspace is created. ex: "5656565656565656"
+    - status [string]: current Workspace status. Options: "active", "closed", "frozen" or "blocked"
+    - organization_id [string]: unique organization id returned when the organization is created. ex: "5656565656565656"
+    - picture_url [string]: public workspace image (png) URL. ex: "https://storage.googleapis.com/api-ms-workspace-sbx.appspot.com/pictures/workspace/6284441752174592.png?20230208220551"
+    - created [datetime.datetime]: creation datetime of the workspace. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, username, name, allowed_tax_ids=None, id=None):
+    def __init__(self, username, name, allowed_tax_ids=None, id=None, status=None, organization_id=None, picture_url=None,
+                 created=None):
         Resource.__init__(self, id=id)
 
         self.username = username
         self.name = name
         self.allowed_tax_ids = allowed_tax_ids
+        self.status = status
+        self.organization_id = organization_id
+        self.picture_url = picture_url
+        self.created = check_datetime(created)
 
 
 _resource = {"class": Workspace, "name": "Workspace"}
@@ -73,7 +83,7 @@ def query(limit=None, username=None, ids=None, user=None):
     return rest.get_stream(resource=_resource, limit=limit, username=username, ids=ids, user=user)
 
 
-def update(id, picture_type=None, username=None, name=None, allowed_tax_ids=None,  picture=None, user=None):
+def update(id, username=None, name=None, allowed_tax_ids=None, status=None, picture=None, picture_type=None, user=None):
     """# Update Workspace entity
     Update a Workspace by passing its ID.
     ## Parameters (required):
@@ -84,6 +94,7 @@ def update(id, picture_type=None, username=None, name=None, allowed_tax_ids=None
     - username [string, default None]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. ex: "starkbank-workspace"
     - name [string, default None]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. ex: "Stark Bank Workspace"
     - allowed_tax_ids [list of strings, default None]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
+    - status [string, default None]: current Workspace status. Options: "active" or "blocked"
     - picture [bytes, default None]: Binary buffer of the picture. ex: open("/path/to/file.png", "rb").read()
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
@@ -91,6 +102,7 @@ def update(id, picture_type=None, username=None, name=None, allowed_tax_ids=None
     """
     payload = {
         "allowedTaxIds": allowed_tax_ids,
+        "status": status
     }
 
     if picture:

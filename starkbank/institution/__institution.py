@@ -8,7 +8,7 @@ class Institution(SubResource):
     Besides the display name and full name, they also include the STR code (used for TEDs) and the SPI Code
     (used for Pix) for the institutions. Either of these codes may be empty if the institution is not registered on
     that Central Bank service.
-    ## Attributes:
+    ## Attributes (return-only):
     - display_name [string]: short version of the institution name that should be displayed to end users. ex: "Stark Bank"
     - name [string]: full version of the institution name. ex: "Stark Bank S.A."
     - spi_code [string]: SPI code used to identify the institution on Pix transactions. ex: "20018183"

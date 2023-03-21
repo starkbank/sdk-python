@@ -30,9 +30,6 @@ from .boletoholmes.__boletoholmes import BoletoHolmes
 from . import brcodepayment
 from .brcodepayment.__brcodepayment import BrcodePayment
 
-from . import brcodepreview
-from .brcodepreview.__brcodepreview import BrcodePreview
-
 from . import boletopayment
 from .boletopayment.__boletopayment import BoletoPayment
 

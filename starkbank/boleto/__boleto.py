@@ -20,8 +20,8 @@ class Boleto(Resource):
     - zip_code [string]: payer address zip code. ex: 01311-200
     ## Parameters (optional):
     - due [datetime.date or string, default today + 2 days]: Boleto due date in ISO format. ex: 2020-04-30
-    - fine [float, default 0.0]: Boleto fine for overdue payment in %. ex: 2.5
-    - interest [float, default 0.0]: Boleto monthly interest for overdue payment in %. ex: 5.2
+    - fine [float, default 2.0]: Boleto fine for overdue payment in %. ex: 2.5
+    - interest [float, default 1.0]: Boleto monthly interest for overdue payment in %. ex: 5.2
     - overdue_limit [integer, default 59]: limit in days for payment after due date. ex: 7 (max: 59)
     - descriptions [list of dictionaries, default None]: list of dictionaries with "text":string and (optional) "amount":int pairs
     - discounts [list of dictionaries, default None]: list of dictionaries with "percentage":float and "date":datetime.datetime or string pairs
@@ -29,20 +29,21 @@ class Boleto(Resource):
     - receiver_name [string]: receiver (Sacador Avalista) full name. ex: "Anthony Edward Stark"
     - receiver_tax_id [string]: receiver (Sacador Avalista) tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     ## Attributes (return-only):
-    - id [string, default None]: unique id returned when Boleto is created. ex: "5656565656565656"
-    - fee [integer, default None]: fee charged when Boleto is paid. ex: 200 (= R$ 2.00)
-    - line [string, default None]: generated Boleto line for payment. ex: "34191.09008 63571.277308 71444.640008 5 81960000000062"
-    - bar_code [string, default None]: generated Boleto bar-code for payment. ex: "34195819600000000621090063571277307144464000"
-    - status [string, default None]: current Boleto status. ex: "registered" or "paid"
+    - id [string]: unique id returned when Boleto is created. ex: "5656565656565656"
+    - fee [integer]: fee charged when Boleto is paid. ex: 200 (= R$ 2.00)
+    - line [string]: generated Boleto line for payment. ex: "34191.09008 63571.277308 71444.640008 5 81960000000062"
+    - bar_code [string]: generated Boleto bar-code for payment. ex: "34195819600000000621090063571277307144464000"
+    - status [string]: current Boleto status. ex: "registered" or "paid"
     - transaction_ids [list of strings]: ledger transaction ids linked to this boleto. ex: ["19827356981273"]
-    - created [datetime.datetime, default None]: creation datetime for the Boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-    - our_number [string, default None]: Reference number registered at the settlement bank. ex:"10131474"
+    - workspace_id [string]: ID of the Workspace where this Boleto was generated. ex: "4545454545454545"
+    - our_number [string]: Reference number registered at the settlement bank. ex:"10131474"
+    - created [datetime.datetime]: creation datetime for the Boleto. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code,
                  due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, discounts=None,
                  receiver_name=None, receiver_tax_id=None, id=None, fee=None, line=None, bar_code=None, status=None,
-                 transaction_ids=None, created=None, our_number=None):
+                 workspace_id=None, transaction_ids=None, created=None, our_number=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -68,6 +69,7 @@ class Boleto(Resource):
         self.bar_code = bar_code
         self.status = status
         self.transaction_ids = transaction_ids
+        self.workspace_id = workspace_id
         self.created = check_datetime(created)
         self.our_number = our_number
 

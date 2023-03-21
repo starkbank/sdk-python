@@ -24,19 +24,19 @@ class Invoice(Resource):
     - tags [list of strings, default None]: list of strings for tagging
     - descriptions [list of dictionaries, default None]: list of dictionaries with "key":string and (optional) "value":string pairs
     ## Attributes (return-only):
-    - pdf [string, default None]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
-    - link [string, default None]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
-    - nominal_amount [integer, default None]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
-    - fine_amount [integer, default None]: Invoice fine value calculated over nominal_amount. ex: 20000
-    - interest_amount [integer, default None]: Invoice interest value calculated over nominal_amount. ex: 10000
-    - discount_amount [integer, default None]: Invoice discount value calculated over nominal_amount. ex: 3000
-    - id [string, default None]: unique id returned when Invoice is created. ex: "5656565656565656"
-    - brcode [string, default None]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
-    - status [string, default None]: current Invoice status. ex: "registered" or "paid"
-    - fee [integer, default None]: fee charged by this Invoice. ex: 200 (= R$ 2.00)
+    - pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
+    - link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
+    - nominal_amount [integer]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
+    - fine_amount [integer]: Invoice fine value calculated over nominal_amount. ex: 20000
+    - interest_amount [integer]: Invoice interest value calculated over nominal_amount. ex: 10000
+    - discount_amount [integer]: Invoice discount value calculated over nominal_amount. ex: 3000
+    - id [string]: unique id returned when Invoice is created. ex: "5656565656565656"
+    - brcode [string]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
+    - status [string]: current Invoice status. ex: "registered" or "paid"
+    - fee [integer]: fee charged by this Invoice. ex: 200 (= R$ 2.00)
     - transaction_ids [list of strings]: ledger transaction ids linked to this Invoice (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]
-    - created [datetime.datetime, default None]: creation datetime for the Invoice. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-    - updated [datetime.datetime, default None]: latest update datetime for the Invoice. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - created [datetime.datetime]: creation datetime for the Invoice. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - updated [datetime.datetime]: latest update datetime for the Invoice. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, amount, tax_id, name, due=None, expiration=None, fine=None, interest=None, discounts=None,

@@ -35,7 +35,7 @@ class Event(Resource):
     An Event is the notification received from the subscription to the Webhook.
     Events cannot be created, but may be retrieved from the Stark Bank API to
     list all generated updates on entities.
-    ## Attributes:
+    ## Attributes (return-only):
     - id [string]: unique id returned when the event is created. ex: "5656565656565656"
     - log [Log]: a Log object from one of the subscribed services (TransferLog, InvoiceLog, DepositLog, BoletoLog, BoletoHolmesLog, BrcodePaymentLog, BoletoPaymentLog, UtilityPaymentLog, TaxPaymentLog or DarfPaymentLog)
     - created [datetime.datetime]: creation datetime for the notification event. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)

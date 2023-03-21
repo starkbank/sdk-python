@@ -11,7 +11,7 @@ class DarfPayment(Resource):
     ## Parameters (required):
     - description [string]: Text to be displayed in your statement (min. 10 characters). ex: "payment ABC"
     - revenue_code [string]: 4-digit tax code assigned by Federal Revenue. ex: "5948"
-    - tax_id [tax_id]: tax id (formatted or unformatted) of the payer. ex: "12.345.678/0001-95"
+    - tax_id [string]: tax id (formatted or unformatted) of the payer. ex: "12.345.678/0001-95"
     - competence [datetime.date or string]: competence month of the service. ex: datetime.date(2021, 4, 30)
     - nominal_amount [int]: amount due in cents without fee or interest. ex: 23456 (= R$ 234.56)
     - fine_amount [int]: fixed amount due in cents for fines. ex: 234 (= R$ 2.34)
@@ -22,13 +22,13 @@ class DarfPayment(Resource):
     - scheduled [datetime.date or string, default today]: payment scheduled date. ex: datetime.date(2021, 5, 10)
     - tags [list of strings]: list of strings for tagging
     ## Attributes (return-only):
-    - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
-    - status [string, default None]: current payment status. ex: "success" or "failed"
-    - amount [int, default None]: Total amount due calculated from other amounts. ex: 24146 (= R$ 241.46)
-    - fee [integer, default None]: fee charged when the DarfPayment is processed. ex: 0 (= R$ 0.00)
+    - id [string]: unique id returned when payment is created. ex: "5656565656565656"
+    - status [string]: current payment status. ex: "success" or "failed"
+    - amount [int]: Total amount due calculated from other amounts. ex: 24146 (= R$ 241.46)
+    - fee [integer]: fee charged when the DarfPayment is processed. ex: 0 (= R$ 0.00)
     - transaction_ids [list of strings]: ledger transaction ids linked to this DarfPayment. ex: ["19827356981273"]
-    - updated [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-    - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - updated [datetime.datetime]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - created [datetime.datetime]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
     def __init__(self, description, revenue_code, tax_id, competence, nominal_amount, fine_amount, interest_amount,
                  due, reference_number=None, scheduled=None, tags=None, id=None, status=None, amount=None, fee=None,
