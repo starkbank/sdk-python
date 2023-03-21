@@ -31,7 +31,7 @@ class Transfer(Resource):
     - fee [integer]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
     - status [string]: current transfer status. ex: "success" or "failed"
     - transaction_ids [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
-    - metadata [Metadata object]: object used to store additional information about the Transfer object.
+    - metadata [dictionary]: dictionary object used to store additional information about the Transfer object.
     - created [datetime.datetime]: creation datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - updated [datetime.datetime]: latest update datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
@@ -57,7 +57,7 @@ class Transfer(Resource):
         self.fee = fee
         self.status = status
         self.transaction_ids = transaction_ids
-        self.metadata = from_api_json(_metadata_resource, metadata) if metadata else None
+        self.metadata = metadata
         self.created = check_datetime(created)
         self.updated = check_datetime(updated)
 
