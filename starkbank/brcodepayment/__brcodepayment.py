@@ -21,16 +21,16 @@ class BrcodePayment(Resource):
     ## Parameters (optional):
     - scheduled [datetime.date, datetime.datetime or string, default now]: payment scheduled date or datetime. ex: datetime.datetime(2020, 3, 10, 15, 17, 3)
     - tags [list of strings, default None]: list of strings for tagging
-    - rule [list of BrcodePayment.Rule, default []]: list of BrcodePayment.Rule objects for modifying payment behavior. ex: [Rule(key="resendingLimit", value=5)]
+    - rules [list of BrcodePayment.Rule, default []]: list of BrcodePayment.Rule objects for modifying payment behavior. ex: [Rule(key="resendingLimit", value=5)]
     ## Attributes (return-only):
-    - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
+    - id [string]: unique id returned when payment is created. ex: "5656565656565656"
     - name [string]: receiver name. ex: "Jon Snow"
-    - status [string, default None]: current payment status. ex: "success" or "failed"
-    - type [string, default None]: brcode type. ex: "static" or "dynamic"
-    - transaction_ids [list of strings, default None]: ledger transaction ids linked to this payment. ex: ["19827356981273"]
-    - fee [integer, default None]: fee charged by this brcode payment. ex: 50 (= R$ 0.50)
-    - updated [datetime.datetime, default None]: latest update datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-    - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - status [string]: current payment status. ex: "success" or "failed"
+    - type [string]: brcode type. ex: "static" or "dynamic"
+    - transaction_ids [list of strings]: ledger transaction ids linked to this payment. ex: ["19827356981273"]
+    - fee [integer]: fee charged by this brcode payment. ex: 50 (= R$ 0.50)
+    - updated [datetime.datetime]: latest update datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - created [datetime.datetime]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, brcode, tax_id, description, amount=None, scheduled=None, tags=None, rules=None, id=None, name=None,

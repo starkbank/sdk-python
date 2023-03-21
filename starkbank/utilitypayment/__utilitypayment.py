@@ -17,15 +17,18 @@ class UtilityPayment(Resource):
     - scheduled [datetime.date or string, default today]: payment scheduled date. ex: datetime.date(2020, 3, 10)
     - tags [list of strings]: list of strings for tagging
     ## Attributes (return-only):
-    - id [string, default None]: unique id returned when payment is created. ex: "5656565656565656"
-    - status [string, default None]: current payment status. ex: "success" or "failed"
-    - amount [int, default None]: amount automatically calculated from line or bar_code. ex: 23456 (= R$ 234.56)
-    - fee [integer, default None]: fee charged when utility payment is created. ex: 200 (= R$ 2.00)
+    - id [string]: unique id returned when payment is created. ex: "5656565656565656"
+    - status [string]: current payment status. ex: "success" or "failed"
+    - amount [int]: amount automatically calculated from line or bar_code. ex: 23456 (= R$ 234.56)
+    - fee [integer]: fee charged when utility payment is created. ex: 200 (= R$ 2.00)
+    - type [string]: payment type. ex: "utility"
     - transaction_ids [list of strings]: ledger transaction ids linked to this UtilityPayment. ex: ["19827356981273"]
-    - created [datetime.datetime, default None]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - created [datetime.datetime]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - updated [datetime.datetime]: latest update datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, description, line=None, bar_code=None, tags=None, scheduled=None, id=None, amount=None, fee=None, transaction_ids=None, status=None, created=None):
+    def __init__(self, description, line=None, bar_code=None, tags=None, scheduled=None, id=None, type=None,
+                 amount=None, fee=None, transaction_ids=None, status=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.line = line
@@ -36,8 +39,10 @@ class UtilityPayment(Resource):
         self.status = status
         self.amount = amount
         self.fee = fee
+        self.type = type
         self.transaction_ids = transaction_ids
         self.created = check_datetime(created)
+        self.updated = check_datetime(updated)
 
 
 _resource = {"class": UtilityPayment, "name": "UtilityPayment"}

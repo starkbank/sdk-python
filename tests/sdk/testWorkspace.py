@@ -67,10 +67,26 @@ class TestWorkspaceUpdatePicture(TestCase):
             user=starkbank.Organization.replace(exampleOrganization, workspaces[0].id)
         )
 
-        self.assertEquals(workspace.id, workspaces[0].id)
+        self.assertEqual(workspace.id, workspaces[0].id)
 
 
-class TestWebhookInfoGet(TestCase):
+class TestWorkspaceUpdateStatus(TestCase):
+
+    def test_success(self):
+        (workspaces, cursor) = starkbank.workspace.page(limit=1, user=exampleOrganization)
+
+        workspace = starkbank.workspace.update(
+            id=workspaces[0].id,
+            status="blocked",
+            user=starkbank.Organization.replace(exampleOrganization, workspaces[0].id)
+        )
+
+        self.assertEqual(workspace.id, workspaces[0].id)
+        self.assertEqual(workspace.status, "blocked")
+
+        print(workspace)
+
+class TestWorkpsaceInfoGet(TestCase):
 
     def test_success(self):
         workspaces = starkbank.workspace.query(limit=1, user=exampleOrganization)

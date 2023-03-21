@@ -19,7 +19,7 @@ class DynamicBrcode(Resource):
     ## Attributes (return-only):
     - id [string]: id returned on creation, this is the BR code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
     - uuid [string]: unique uuid returned when the DynamicBrcode is created. ex: "4e2eab725ddd495f9c98ffd97440702d"
-    - picture_url [string]: public QR Code (png image) URL. "https://sandbox.api.starkbank.com/v2/dynamic-brcode/d3ebb1bd92024df1ab6e5a353ee799a4.png"
+    - picture_url [string]: public QR Code (png image) URL. ex: "https://sandbox.api.starkbank.com/v2/dynamic-brcode/d3ebb1bd92024df1ab6e5a353ee799a4.png"
     - updated [datetime.datetime]: latest update datetime for the DynamicBrcode. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - created [datetime.datetime]: creation datetime for the DynamicBrcode. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """

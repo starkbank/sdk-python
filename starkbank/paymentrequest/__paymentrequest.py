@@ -30,25 +30,27 @@ class PaymentRequest(Resource):
     - due [datetime.date or string, default today]: Payment target date in ISO format. ex: 2020-04-30
     - tags [list of strings]: list of strings for tagging
     ## Attributes (return-only):
-    - id [string, default None]: unique id returned when a PaymentRequest is created. ex: "5656565656565656"
-    - amount [integer, default None]: PaymentRequest amount. ex: 100000 = R$1.000,00
-    - status [string, default None]: current PaymentRequest status. ex: "pending" or "approved"
-    - actions [list of dictionaries, default None]: list of actions that are affecting this PaymentRequest. ex: [{"type": "member", "id": "56565656565656, "action": "requested"}]
-    - updated [datetime.datetime, default None]: latest update datetime for the PaymentRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-    - created [datetime.datetime, default None]: creation datetime for the PaymentRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - id [string]: unique id returned when a PaymentRequest is created. ex: "5656565656565656"
+    - amount [integer]: PaymentRequest amount. ex: 100000 = R$1.000,00
+    - description [string]: payment request description. ex: "Tony Stark's Suit"
+    - status [string]: current PaymentRequest status. ex: "pending" or "approved"
+    - actions [list of dictionaries]: list of actions that are affecting this PaymentRequest. ex: [{"type": "member", "id": "56565656565656, "action": "requested"}]
+    - updated [datetime.datetime]: latest update datetime for the PaymentRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - created [datetime.datetime]: creation datetime for the PaymentRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, center_id, payment, type=None, due=None, tags=None, id=None, amount=None,
-                 status=None, actions=None, updated=None, created=None):
+                 description=None, status=None, actions=None, updated=None, created=None):
         Resource.__init__(self, id=id)
 
         self.center_id = center_id
         self.due = due
         self.tags = tags
         self.amount = amount
+        self.description = description
         self.status = status
         self.actions = actions
-        self.updated = updated
+        self.updated = check_datetime(updated)
         self.created = check_datetime(created)
 
         self.payment, self.type = _parse_payment(payment=payment, type=type)

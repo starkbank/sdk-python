@@ -8,24 +8,22 @@ class DictKey(Resource):
 
     """# DictKey object
     DictKey represents a PIX key registered in Bacen's DICT system.
-    
     ## Parameters (optional):
     - id [string]: DictKey object unique id. ex: "tony@starkbank.com", "722.461.430-04", "20.018.183/0001-80", "+5511988887777", "b6295ee1-f054-47d1-9e90-ee57b74f60d9"
-    
     ## Attributes (return-only):
-    - type [string, default None]: DICT key type. ex: "email", "cpf", "cnpj", "phone" or "evp"
-    - name [string, default None]: key owner full name. ex: "Tony Stark"
-    - tax_id [string, default None]: key owner tax ID (CNPJ or masked CPF). ex: "***.345.678-**" or "20.018.183/0001-80"
-    - owner_type [string, default None]: DICT key owner type. ex "naturalPerson" or "legalPerson"
-    - bank_name [string, default None]: bank name associated with the DICT key. ex: "Stark Bank"
-    - ispb [string, default None]: bank ISPB associated with the DICT key. ex: "20018183"
-    - branch_code [string, default None]: bank account branch code associated with the DICT key. ex: "9585"
-    - account_number [string, default None]: bank account number associated with the DICT key. ex: "9828282578010513"
-    - account_type [string, default None]: bank account type associated with the DICT key. ex: "checking", "saving", "salary" or "payment"
-    - status [string, default None]: current DICT key status. ex: "created", "registered", "canceled" or "failed"
-    - account_created [datetime.datetime, default None]: creation datetime of the bank account associated with the DICT key. ex: datetime.date(2020, 1, 12, 11, 14, 8)
-    - owned [datetime.datetime, default None]: datetime since when the current owner holds this DICT key. ex: datetime.date(2020, 11, 16, 8, 12, 11)
-    - created [datetime.datetime, default None]: creation datetime for the DICT key. ex: datetime.date(2020, 11, 16, 8, 12, 11)
+    - type [string]: DICT key type. ex: "email", "cpf", "cnpj", "phone" or "evp"
+    - name [string]: key owner full name. ex: "Tony Stark"
+    - tax_id [string]: key owner tax ID (CNPJ or masked CPF). ex: "***.345.678-**" or "20.018.183/0001-80"
+    - owner_type [string]: DICT key owner type. ex "naturalPerson" or "legalPerson"
+    - bank_name [string]: bank name associated with the DICT key. ex: "Stark Bank"
+    - ispb [string]: bank ISPB associated with the DICT key. ex: "20018183"
+    - branch_code [string]: bank account branch code associated with the DICT key. ex: "9585"
+    - account_number [string]: bank account number associated with the DICT key. ex: "9828282578010513"
+    - account_type [string]: bank account type associated with the DICT key. ex: "checking", "saving", "salary" or "payment"
+    - status [string]: current DICT key status. ex: "created", "registered", "canceled" or "failed"
+    - account_created [datetime.datetime]: creation datetime of the bank account associated with the DICT key. ex: datetime.date(2020, 1, 12, 11, 14, 8)
+    - owned [datetime.datetime]: datetime since when the current owner holds this DICT key. ex: datetime.date(2020, 11, 16, 8, 12, 11)
+    - created [datetime.datetime]: creation datetime for the DICT key. ex: datetime.date(2020, 11, 16, 8, 12, 11)
     """
     
     def __init__(self, id=None, type=None, name=None, tax_id=None, owner_type=None, bank_name=None, ispb=None,

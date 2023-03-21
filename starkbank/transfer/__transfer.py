@@ -1,6 +1,7 @@
 from ..utils import rest
 from .rule.__rule import Rule
 from .rule.__rule import _sub_resource as _rule_resource
+from .metadata.__metadata import _sub_resource as _metadata_resource
 from starkcore.utils.api import from_api_json
 from starkcore.utils.resource import Resource
 from starkcore.utils.checks import check_datetime, check_date, check_datetime_or_date
@@ -24,24 +25,26 @@ class Transfer(Resource):
     - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - description [string, default None]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
     - tags [list of strings, default []]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
-    - rule [list of Transfer.Rules, default []]: list of Transfer.Rule objects for modifying transfer behavior. ex: [Transfer.Rule(key="resendingLimit", value=5)]
+    - rules [list of Transfer.Rules, default []]: list of Transfer.Rule objects for modifying transfer behavior. ex: [Transfer.Rule(key="resendingLimit", value=5)]
     ## Attributes (return-only):
-    - id [string, default None]: unique id returned when the transfer is created. ex: "5656565656565656"
-    - fee [integer, default None]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
-    - status [string, default None]: current transfer status. ex: "success" or "failed"
-    - transaction_ids [list of strings, default None]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
-    - created [datetime.datetime, default None]: creation datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-    - updated [datetime.datetime, default None]: latest update datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - id [string]: unique id returned when the transfer is created. ex: "5656565656565656"
+    - fee [integer]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
+    - status [string]: current transfer status. ex: "success" or "failed"
+    - transaction_ids [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
+    - metadata [Metadata object]: object used to store additional information about the Transfer object.
+    - created [datetime.datetime]: creation datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - updated [datetime.datetime]: latest update datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
     def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, account_type=None,
-                 external_id=None, scheduled=None, description=None, transaction_ids=None, fee=None, tags=None,
-                 rules=None, status=None, id=None, created=None, updated=None):
+                 external_id=None, scheduled=None, description=None, transaction_ids=None, metadata=None, 
+                 fee=None, tags=None, rules=None, status=None, id=None, created=None, updated=None
+                ):
         Resource.__init__(self, id=id)
 
-        self.tax_id = tax_id
         self.amount = amount
         self.name = name
+        self.tax_id = tax_id
         self.bank_code = bank_code
         self.branch_code = branch_code
         self.account_number = account_number
@@ -53,9 +56,10 @@ class Transfer(Resource):
         self.rules = _parse_rules(rules)
         self.fee = fee
         self.status = status
+        self.transaction_ids = transaction_ids
+        self.metadata = from_api_json(_metadata_resource, metadata) if metadata else None
         self.created = check_datetime(created)
         self.updated = check_datetime(updated)
-        self.transaction_ids = transaction_ids
 
 
 _resource = {"class": Transfer, "name": "Transfer"}

@@ -743,13 +743,14 @@ When a DynamicBrcode is paid, a Deposit is created with the tags parameter conta
 
 The differences between an Invoice and the DynamicBrcode are the following:
 
-|                   | Invoice | DynamicBrcode |
-|-------------------|:-------:|:-------------:|
-| Expiration        |    ✓    |       ✓       | 
-| Due, fine and fee |    ✓    |       X       | 
-| Discount          |    ✓    |       X       | 
-| Description       |    ✓    |       X       |
-| Can be updated    |    ✓    |       X       |
+|                       | Invoice | DynamicBrcode |
+|-----------------------|:-------:|:-------------:|
+| Expiration            |    ✓    |       ✓       | 
+| Can only be paid once |    ✓    |       ✓       |
+| Due, fine and fee     |    ✓    |       X       | 
+| Discount              |    ✓    |       X       | 
+| Description           |    ✓    |       X       |
+| Can be updated        |    ✓    |       X       |
 
 **Note:** In order to check if a BR code has expired, you must first calculate its expiration date (add the expiration to the creation date). 
 **Note:** To know if the BR code has been paid, you need to query your Deposits by the tag "dynamic-brcode/{uuid}" to check if it has been paid.
@@ -1901,13 +1902,9 @@ The only link between your Workspaces is the Organization that controls them.
 ```python
 import starkbank
 
-picture = open("path/to/picture.png", "rb").read()
-
 workspace = starkbank.workspace.create(
     username="iron-bank-workspace-1",
     name="Iron Bank Workspace 1",
-    picture=picture,
-    picture_type="image/png",
     user=organization,
 )
 
@@ -1935,7 +1932,7 @@ You can get a specific Workspace by its id.
 ```python
 import starkbank
 
-workspace = starkbank.workspace.get("10827361982368179")
+workspace = starkbank.workspace.get("1082736198236817")
 
 print(workspace)
 ```
@@ -1947,11 +1944,32 @@ You can update a specific Workspace by its id.
 ```python
 import starkbank
 
+picture = open("path/to/picture.png", "rb").read()
+
 workspace = starkbank.workspace.update(
-    "10827361982368179",
+    "1082736198236817",
     username="new-username",
     name="New Name",
     allowed_tax_ids=["012.345.678-90"],
+    picture=picture,
+    picture_type="image/png",
+    user=starkbank.Organization.replace(organization, "1082736198236817")
+)
+
+print(workspace)
+```
+
+You can also block a specific Workspace by its id.
+
+```python
+import starkbank
+
+workspace = starkbank.workspace.update(
+    "1082736198236817",
+    username="new-username",
+    name="New Name",
+    status="blocked",
+    user=starkbank.Organization.replace(organization, "1082736198236817")
 )
 
 print(workspace)

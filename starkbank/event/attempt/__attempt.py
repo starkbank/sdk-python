@@ -7,7 +7,7 @@ class Attempt(Resource):
     """# Event.Attempt object
     When an Event delivery fails, an event attempt will be registered.
     It carries information meant to help you debug event reception issues.
-    ## Attributes:
+    ## Attributes (return-only):
     - id [string]: unique id that identifies the delivery attempt. ex: "5656565656565656"
     - code [string]: delivery error code. ex: badHttpStatus, badConnection, timeout
     - message [string]: delivery error full description. ex: "HTTP POST request returned status 404"
