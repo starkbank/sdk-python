@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.18.0] - 2023-03-22
 ### Added
 - metadata attribute to Transfer resource
 - updated and type attribute to UtilityPayment resource
