@@ -1,7 +1,6 @@
 from ..utils import rest
 from .rule.__rule import Rule
 from .rule.__rule import _sub_resource as _rule_resource
-from .metadata.__metadata import _sub_resource as _metadata_resource
 from starkcore.utils.api import from_api_json
 from starkcore.utils.resource import Resource
 from starkcore.utils.checks import check_datetime, check_date, check_datetime_or_date
