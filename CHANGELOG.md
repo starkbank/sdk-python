@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.18.1] - 2023-03-23
 ### Fixed
 - import error in Transfer resource
 
