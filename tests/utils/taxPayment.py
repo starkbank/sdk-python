@@ -18,7 +18,7 @@ example_darf_payment = DarfPayment(
     due=randomFutureDate(),
     scheduled="2020-09-08",
     tags=["tag1", "tag2"],
-    description=f"{datetime.now()}",
+    description=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 )
 
 
