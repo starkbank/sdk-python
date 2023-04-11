@@ -20,7 +20,7 @@ class BrcodePayment(Resource):
     - amount [int, default None]: If the BRCode does not provide an amount, this parameter is mandatory, else it is optional. ex: 23456 (= R$ 234.56)
     ## Parameters (optional):
     - scheduled [datetime.date, datetime.datetime or string, default now]: payment scheduled date or datetime. ex: datetime.datetime(2020, 3, 10, 15, 17, 3)
-    - tags [list of strings, default None]: list of strings for tagging
+    - tags [list of strings, default []]: list of strings for tagging
     - rules [list of BrcodePayment.Rule, default []]: list of BrcodePayment.Rule objects for modifying payment behavior. ex: [Rule(key="resendingLimit", value=5)]
     ## Attributes (return-only):
     - id [string]: unique id returned when payment is created. ex: "5656565656565656"

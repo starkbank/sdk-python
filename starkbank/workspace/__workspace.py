@@ -45,7 +45,7 @@ def create(username, name, allowed_tax_ids=None, user=None):
     - username [string]: Simplified name to define the workspace URL. This name must be unique across all Stark Bank Workspaces. ex: "starkbankworkspace"
     - name [string]: Full name that identifies the Workspace. This name will appear when people access the Workspace on our platform, for example. ex: "Stark Bank Workspace"
     ## Parameters (optional):
-    - allowed_tax_ids [list of strings, default []]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
+    - allowed_tax_ids [list of strings, default None]: list of tax IDs that will be allowed to send Deposits to this Workspace. If empty, all are allowed. ex: ["012.345.678-90", "20.018.183/0001-80"]
     - user [Organization object, default None]: Organization object. Not necessary if starkbank.user was set before function call
     ## Return:
     - Workspace object with updated attributes
