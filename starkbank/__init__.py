@@ -33,6 +33,39 @@ from .brcodepayment.__brcodepayment import BrcodePayment
 from . import boletopayment
 from .boletopayment.__boletopayment import BoletoPayment
 
+from . import corporatetransaction
+from .corporatetransaction.__corporatetransaction import CorporateTransaction
+
+from . import corporateholder
+from .corporateholder.__corporateholder import CorporateHolder
+
+from . import corporatebalance
+from .corporatebalance.__corporatebalance import CorporateBalance
+
+from . import corporatecard
+from .corporatecard.__corporatecard import CorporateCard
+
+from . import corporatepurchase
+from .corporatepurchase.__corporatepurchase import CorporatePurchase
+
+from . import corporateinvoice
+from .corporateinvoice.__corporateinvoice import CorporateInvoice
+
+from . import corporatewithdrawal
+from .corporatewithdrawal.__corporatewithdrawal import CorporateWithdrawal
+
+from . import corporaterule
+from .corporaterule.__corporaterule import CorporateRule
+
+from . import merchantcategory
+from .merchantcategory.__merchantcategory import MerchantCategory
+
+from . import merchantcountry
+from .merchantcountry.__merchantcountry import MerchantCountry
+
+from . import cardmethod
+from .cardmethod.__cardmethod import CardMethod
+
 from . import utilitypayment
 from .utilitypayment.__utilitypayment import UtilityPayment
 

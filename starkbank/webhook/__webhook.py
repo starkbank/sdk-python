@@ -5,7 +5,7 @@ from starkcore.utils.resource import Resource
 class Webhook(Resource):
     """# Webhook subscription object
     A Webhook is used to subscribe to notification events on a user-selected endpoint.
-    Currently available services for subscription are transfer, boleto, boleto-holmes,
+    Currently, available services for subscription are transfer, boleto, boleto-holmes,
     boleto-payment, brcode-payment, utility-payment, deposit and invoice.
     ## Parameters (required):
     - url [string]: Url that will be notified when an event occurs.
@@ -52,8 +52,8 @@ def get(id, user=None):
 
 
 def query(limit=None, user=None):
-    """# Retrieve Webhook subcriptions
-    Receive a generator of Webhook subcription objects previously created in the Stark Bank API
+    """# Retrieve Webhook subscriptions
+    Receive a generator of Webhook subscription objects previously created in the Stark Bank API
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
@@ -64,8 +64,8 @@ def query(limit=None, user=None):
 
 
 def page(cursor=None, limit=None, user=None):
-    """# Retrieve paged Webhooks
-    Receive a list of up to 100 Webhook objects previously created in the Stark Bank API and the cursor to the next page.
+    """# Retrieve paged Webhook subscriptions
+    Receive a list of up to 100 Webhook subscription objects previously created in the Stark Bank API and the cursor to the next page.
     Use this function instead of query if you want to manually page your requests.
     ## Parameters (optional):
     - cursor [string, default None]: cursor returned on the previous page function call

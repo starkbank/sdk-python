@@ -42,6 +42,13 @@ is as easy as sending a text message to your client!
     - [DarfPayments](#create-darf-payment): Pay DARFs
     - [PaymentPreviews](#preview-payment-information-before-executing-the-payment): Preview all sorts of payments
     - [PaymentRequest](#create-payment-requests-to-be-approved-by-authorized-people-in-a-cost-center): Request a payment approval to a cost center
+    - [CorporateHolders](#create-corporateholders): Manage cardholders
+    - [CorporateCards](#create-corporatecards): Create virtual and/or physical cards
+    - [CorporateInvoices](#create-corporateinvoices): Add money to your corporate balance
+    - [CorporateWithdrawals](#create-corporatewithdrawals): Send money back to your Workspace from your corporate balance
+    - [CorporateBalance](#get-your-corporatebalance): View your corporate balance
+    - [CorporateTransactions](#query-corporatetransactions): View the transactions that have affected your corporate balance
+    - [CorporateEnums](#corporate-enums): Query enums related to the corporate purchases, such as merchant categories, countries and card purchase methods
     - [Webhooks](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage webhook events
     - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
@@ -1715,10 +1722,442 @@ To search for payment requests, run:
 ```python
 import starkbank
 
-requests = starkbank.paymentrequest.query(center_id=center_id, limit=10)
+requests = starkbank.paymentrequest.query(center_id="123456789", limit=10)
 
 for request in requests:
     print(request)
+```
+
+## Corporate
+
+## Create CorporateHolders
+
+You can create card holders to which your cards will be bound.
+They support spending rules that will apply to all underlying cards.
+
+```python
+import starkbank
+
+holders = starkbank.corporateholder.create([
+    starkbank.CorporateHolder(
+        name="Iron Bank S.A.",
+        tags=[
+            "Traveler Employee"
+        ],
+        rules=[
+            {
+                "name": "General USD",
+                "interval": "day",
+                "amount": 100000,
+                "currencyCode": "USD",
+                "categories": [
+                    starkbank.MerchantCategory(type="services"),
+                    starkbank.MerchantCategory(code="fastFoodRestaurants")
+                ],
+                "countries": [
+                    starkbank.MerchantCountry(code="USA")
+                ],
+                "methods": [
+                    starkbank.CardMethod(code="token")
+                ]
+            }
+        ]
+    )
+])
+
+for holder in holders:
+    print(holder)
+```
+
+**Note**: Instead of using CorporateHolder objects, you can also pass each element in dictionary format
+
+## Query CorporateHolders
+
+You can query multiple holders according to filters.
+
+```python
+import starkbank
+
+holders = starkbank.corporateholder.query()
+
+for holder in holders:
+    print(holder)
+```
+
+## Cancel a CorporateHolder
+
+To cancel a single Corporate Holder by its id, run:
+
+```python
+import starkbank
+
+holder = starkbank.corporateholder.cancel("5155165527080960")
+
+print(holder)
+```
+
+## Get a CorporateHolder
+
+To get a single Corporate Holder by its id, run:
+
+```python
+import starkbank
+
+holder = starkbank.corporateholder.get("5155165527080960")
+
+print(holder)
+```
+
+## Query CorporateHolder logs
+
+You can query holder logs to better understand holder life cycles.
+
+```python
+import starkbank
+
+logs = starkbank.corporateholder.log.query(limit=50)
+
+for log in logs:
+    print(log.id)
+```
+
+## Get a CorporateHolder log
+
+You can also get a specific log by its id.
+
+```python
+import starkbank
+
+log = starkbank.corporateholder.log.get("5155165527080960")
+
+print(log)
+```
+
+## Create CorporateCard
+
+You can issue cards with specific spending rules.
+
+```python
+import starkbank
+
+card = starkbank.corporatecard.create(
+    starkbank.CorporateCard(
+        holder_id="5155165527080960"
+    )
+)
+
+print(card)
+```
+
+## Query CorporateCards
+
+You can get a list of created cards given some filters.
+
+```python
+import starkbank
+from datetime import date
+
+cards = starkbank.corporatecard.query(
+    after=date(2020, 1, 1),
+    before=date(2020, 3, 1)
+)
+
+for card in cards:
+    print(card)
+```
+
+## Get a CorporateCard
+
+After its creation, information on a card may be retrieved by its id.
+
+```python
+import starkbank
+
+card = starkbank.corporatecard.get("5155165527080960")
+
+print(card)
+```
+
+## Update a CorporateCard
+
+You can update a specific card by its id.
+
+```python
+import starkbank
+
+card = starkbank.corporatecard.update("5155165527080960", status="blocked")
+
+print(card)
+```
+
+## Cancel a CorporateCard
+
+You can also cancel a card by its id.
+
+```python
+import starkbank
+
+card = starkbank.corporatecard.cancel("5155165527080960")
+
+print(card)
+```
+
+## Query CorporateCard logs
+
+Logs are pretty important to understand the life cycle of a card.
+
+```python
+import starkbank
+
+logs = starkbank.corporatecard.log.query(limit=150)
+
+for log in logs:
+    print(log)
+```
+
+## Get a CorporateCard log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
+log = starkbank.corporatecard.log.get("5155165527080960")
+
+print(log)
+```
+
+## Query CorporatePurchases
+
+You can get a list of created purchases given some filters.
+
+```python
+import starkbank
+from datetime import date
+
+purchases = starkbank.corporatepurchase.query(
+    after=date(2020, 1, 1),
+    before=date(2020, 3, 1)
+)
+
+for purchase in purchases:
+    print(purchase)
+```
+
+## Get a CorporatePurchase
+
+After its creation, information on a purchase may be retrieved by its id. 
+
+```python
+import starkbank
+
+purchase = starkbank.corporatepurchase.get("5155165527080960")
+
+print(purchase)
+```
+
+## Query CorporatePurchase logs
+
+Logs are pretty important to understand the life cycle of a purchase.
+
+```python
+import starkbank
+
+logs = starkbank.corporatepurchase.log.query(limit=150)
+
+for log in logs:
+    print(log)
+```
+
+## Get a CorporatePurchase log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
+log = starkbank.corporatepurchase.log.get("5155165527080960")
+
+print(log)
+```
+
+## Create CorporateInvoices
+
+You can create Pix invoices to transfer money from accounts you have in any bank to your Corporate balance,
+allowing you to run your corporate operation.
+
+```python
+import starkbank
+
+invoice = starkbank.corporateinvoice.create(
+    invoice=starkbank.CorporateInvoice(
+        amount=1000
+    )
+)
+
+print(invoice)
+```
+
+**Note**: Instead of using CorporateInvoice objects, you can also pass each element in dictionary format
+
+## Query CorporateInvoices
+
+You can get a list of created invoices given some filters.
+
+```python
+import starkbank
+from datetime import date
+
+invoices = starkbank.corporateinvoice.query(
+    after=date(2020, 1, 1),
+    before=date(2020, 3, 1)
+)
+
+for invoice in invoices:
+    print(invoice)
+```
+
+## Create CorporateWithdrawals
+
+You can create withdrawals to send cash back from your Corporate balance to your Banking balance
+by using the Withdrawal resource.
+
+```python
+import starkbank
+
+withdrawal = starkbank.corporatewithdrawal.create(
+    withdrawal=starkbank.CorporateWithdrawal(
+        amount=10000,
+        external_id="123",
+        description="Sending back"
+    )
+)
+
+print(withdrawal)
+```
+
+**Note**: Instead of using CorporateWithdrawal objects, you can also pass each element in dictionary format
+
+## Get a CorporateWithdrawal
+
+After its creation, information on a withdrawal may be retrieved by its id.
+
+```python
+import starkbank
+
+withdrawal = starkbank.corporatewithdrawal.get("5155165527080960")
+
+print(withdrawal)
+```
+
+## Query CorporateWithdrawals
+
+You can get a list of created withdrawals given some filters.
+
+```python
+import starkbank
+from datetime import date
+
+withdrawals = starkbank.corporatewithdrawal.query(
+    after=date(2020, 1, 1),
+    before=date(2020, 3, 1)
+)
+
+for withdrawal in withdrawals:
+    print(withdrawal)
+```
+
+## Get your CorporateBalance
+
+To know how much money you have available to run authorizations, run:
+
+```python
+import starkbank
+
+balance = starkbank.corporatebalance.get()
+
+print(balance)
+```
+
+## Query CorporateTransactions
+
+To understand your balance changes (corporate statement), you can query
+transactions. Note that our system creates transactions for you when
+you make purchases, withdrawals, receive corporate invoice payments, for example.
+
+```python
+import starkbank
+from datetime import date
+
+transactions = starkbank.corporatetransaction.query(
+    after=date(2020, 1, 1),
+    before=date(2020, 3, 1)
+)
+for transaction in transactions:
+    print(transaction)
+```
+
+## Get a CorporateTransaction
+
+You can get a specific transaction by its id:
+
+```python
+import starkbank
+
+transaction = starkbank.corporatetransaction.get("5155165527080960")
+
+print(transaction)
+```
+
+## Corporate Enums
+
+### Query MerchantCategories
+
+You can query any merchant categories using this resource.
+You may also use MerchantCategories to define specific category filters in CorporateRules.
+Either codes (which represents specific MCCs) or types (code groups) will be accepted as filters.
+
+```python
+import starkbank
+
+categories = starkbank.merchantcategory.query(
+    search="food",
+)
+
+for category in categories:
+    print(category)
+```
+
+### Query MerchantCountries
+
+You can query any merchant countries using this resource.
+You may also use MerchantCountries to define specific country filters in CorporateRules.
+
+```python
+import starkbank
+
+countries = starkbank.merchantcountry.query(
+    search="brazil",
+)
+
+for country in countries:
+    print(country)
+```
+
+### Query CardMethods
+
+You can query available card methods using this resource.
+You may also use CardMethods to define specific purchase method filters in CorporateRules.
+
+```python
+import starkbank
+
+methods = starkbank.cardmethod.query(
+    search="token",
+)
+
+for method in methods:
+    print(method)
 ```
 
 ## Create a webhook subscription
@@ -1736,9 +2175,9 @@ webhook = starkbank.webhook.create(
 print(webhook)
 ```
 
-## Query webhooks
+## Query webhook subscriptions 
 
-To search for registered webhooks, run:
+To search for registered webhook subscriptions, run:
 
 ```python
 import starkbank
@@ -1749,9 +2188,9 @@ for webhook in webhooks:
     print(webhook)
 ```
 
-## Get a webhook
+## Get a webhook subscription
 
-You can get a specific webhook by its id.
+You can get a specific webhook subscription by its id.
 
 ```python
 import starkbank
@@ -1761,9 +2200,9 @@ webhook = starkbank.webhook.get("10827361982368179")
 print(webhook)
 ```
 
-## Delete a webhook
+## Delete a webhook subscription
 
-You can also delete a specific webhook by its id.
+You can also delete a specific webhook subscription by its id.
 
 ```python
 import starkbank

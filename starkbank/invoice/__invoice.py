@@ -20,9 +20,9 @@ class Invoice(Resource):
     - expiration [integer or datetime.timedelta, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
     - fine [float, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
     - interest [float, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
-    - discounts [list of dictionaries, default None]: list of dictionaries with "percentage":float and "due":datetime.datetime or string pairs
-    - tags [list of strings, default None]: list of strings for tagging
-    - descriptions [list of dictionaries, default None]: list of dictionaries with "key":string and (optional) "value":string pairs
+    - discounts [list of dictionaries, default []]: list of dictionaries with "percentage":float and "due":datetime.datetime or string pairs
+    - tags [list of strings, default []]: list of strings for tagging
+    - descriptions [list of dictionaries, default []]: list of dictionaries with "key":string and (optional) "value":string pairs
     ## Attributes (return-only):
     - pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
     - link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
