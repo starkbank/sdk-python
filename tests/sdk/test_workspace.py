@@ -56,7 +56,7 @@ class TestWorkspaceUpdatePicture(TestCase):
 
     def test_success(self):
         (workspaces, cursor) = starkbank.workspace.page(limit=1, user=exampleOrganization)
-        file = open('../utils/logo.png', 'rb')
+        file = open('tests/utils/logo.png', 'rb')
         picture = file.read()
         file.close()
 

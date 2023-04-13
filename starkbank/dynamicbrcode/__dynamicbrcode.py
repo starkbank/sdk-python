@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from ..utils import rest
 from starkcore.utils.resource import Resource
 from starkcore.utils.checks import check_datetime, check_date, check_timedelta

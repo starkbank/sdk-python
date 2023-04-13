@@ -8,7 +8,7 @@ starkbank.user = exampleProject
 class TestCorporateCardLogQuery(TestCase):
 
     def test_success(self):
-        logs = starkbank.corporatecard.log.query(limit=10)
+        logs = starkbank.corporatecard.log.query(limit=5)
         for log in logs:
             self.assertEqual(log.id, str(log.id))
 
