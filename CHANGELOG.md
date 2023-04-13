@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.19.1] - 2023-04-13
 ### Fixed
 - starkcore version import  
 
