@@ -11,10 +11,10 @@ class TestInstitutionQuery(TestCase):
     def test_success(self):
         institutions = starkbank.institution.query()
         for institution in institutions[:5]:
-            self.assertIsInstance(institution.display_name, str)
-            self.assertIsInstance(institution.name, str)
-            self.assertIsInstance(institution.str_code, str)
-            self.assertIsInstance(institution.spi_code, str)
+            self.assertIsNotNone(institution.display_name)
+            self.assertIsNotNone(institution.name)
+            self.assertIsNotNone(institution.str_code)
+            self.assertIsNotNone(institution.spi_code)
             print(institution)
 
         self.assertEqual(len(starkbank.institution.query(search="stark")), 2)

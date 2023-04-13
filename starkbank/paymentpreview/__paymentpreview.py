@@ -31,7 +31,7 @@ class PaymentPreview(Resource):
     """
 
     def __init__(self, id, scheduled=None, type=None, payment=None):
-        super().__init__(id)
+        Resource.__init__(self, id=id)
         self.scheduled = check_date(scheduled)
         self.type = type
         self.payment = payment
