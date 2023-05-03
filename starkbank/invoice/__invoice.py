@@ -1,7 +1,10 @@
 from ..utils import rest
 from starkcore.utils.resource import Resource
+from starkcore.utils.api import from_api_json
 from starkcore.utils.checks import check_date, check_datetime, check_timedelta, check_datetime_or_date
 from .__payment import _sub_resource as _payment_sub_resource
+from .rule.__rule import Rule
+from .rule.__rule import _sub_resource as _rule_resource
 
 
 class Invoice(Resource):
@@ -21,6 +24,7 @@ class Invoice(Resource):
     - fine [float, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
     - interest [float, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
     - discounts [list of dictionaries, default []]: list of dictionaries with "percentage":float and "due":datetime.datetime or string pairs
+    - rules [list of Invoice.Rules, default []]: list of Invoice.Rule objects for modifying invoice behavior. ex: [Invoice.Rule(key="allowedTaxIds", value=[ "012.345.678-90", "45.059.493/0001-73" ])]
     - tags [list of strings, default []]: list of strings for tagging
     - descriptions [list of dictionaries, default []]: list of dictionaries with "key":string and (optional) "value":string pairs
     ## Attributes (return-only):
@@ -40,7 +44,7 @@ class Invoice(Resource):
     """
 
     def __init__(self, amount, tax_id, name, due=None, expiration=None, fine=None, interest=None, discounts=None,
-                 tags=None, descriptions=None, pdf=None, link=None, nominal_amount=None, fine_amount=None,
+                 rules=None, tags=None, descriptions=None, pdf=None, link=None, nominal_amount=None, fine_amount=None,
                  interest_amount=None, discount_amount=None, id=None, brcode=None, status=None, fee=None,
                  transaction_ids=None, created=None, updated=None):
         Resource.__init__(self, id=id)
@@ -57,6 +61,7 @@ class Invoice(Resource):
         self.fine = fine
         self.interest = interest
         self.discounts = discounts
+        self.rules = _parse_rules(rules)
         self.tags = tags
         self.pdf = pdf
         self.link = link
@@ -70,6 +75,18 @@ class Invoice(Resource):
 
 
 _resource = {"class": Invoice, "name": "Invoice"}
+
+
+def _parse_rules(rules):
+    if rules is None:
+        return None
+    parsed_rules = []
+    for rule in rules:
+        if isinstance(rule, Rule):
+            parsed_rules.append(rule)
+            continue
+        parsed_rules.append(from_api_json(_rule_resource, rule))
+    return parsed_rules
 
 
 def create(invoices, user=None):

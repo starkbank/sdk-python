@@ -15,16 +15,18 @@ class Log(Resource):
     ## Attributes (return-only):
     - id [string]: unique id returned when the log is created. ex: "5656565656565656"
     - purchase [CorporatePurchase]: CorporatePurchase entity to which the log refers to.
+    - description [string]: purchase descriptions. ex: "my_description"
     - corporate_transaction_id [string]: transaction ID related to the CorporateCard.
     - errors [list of StarkCore.Error]: list of errors linked to this CorporatePurchase event.
     - type [string]: type of the CorporatePurchase event which triggered the log creation. ex: "approved", "canceled", "confirmed", "denied", "reversed", "voided"
     - created [datetime.datetime]: creation datetime for the log. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, id, purchase, corporate_transaction_id, errors, type, created):
+    def __init__(self, id, purchase, description, corporate_transaction_id, errors, type, created):
         Resource.__init__(self, id=id)
 
         self.purchase = from_api_json(_corporate_purchase_resource, purchase)
+        self.description = description
         self.corporate_transaction_id = corporate_transaction_id
         self.errors = _parse_errors(errors)
         self.type = type

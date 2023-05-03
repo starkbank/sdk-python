@@ -1,5 +1,6 @@
 import os
 from copy import deepcopy
+from uuid import uuid4
 import starkbank.corporateholder
 from starkbank import CorporateHolder
 from .names.names import get_full_name
@@ -7,7 +8,7 @@ from .rule import generateExampleRuleJson
 
 
 example_holder = CorporateHolder(
-    name="Iron Bank S.A.",
+    name="Iron Bank S.A." + str(uuid4()),
     tags=[
         "Traveler Employee"
     ],
