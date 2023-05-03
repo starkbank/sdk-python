@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.20.0] - 2023-05-03
 ### Added
 - purpose attribute to CorporateRule resource
 - rules attribute to Invoice resource
