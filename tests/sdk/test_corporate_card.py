@@ -74,7 +74,9 @@ class TestCorporateCardUpdate(TestCase):
             name="Patch Rule",
             interval="day",
             amount=989898,
-            currency_code="USD"
+            currency_code="USD",
+            schedule="every monday, wednesday from 00:00 to 23:59 in America/Sao_Paulo",
+            purposes=["purchase", "withdrawal"]
         )]
         update_card = starkbank.corporatecard.update(card.id, status="blocked", rules=patch_rule)
         self.assertEqual(update_card.status, "blocked")

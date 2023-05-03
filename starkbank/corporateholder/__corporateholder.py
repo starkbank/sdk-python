@@ -131,7 +131,7 @@ def page(cursor=None, limit=None, after=None, before=None, ids=None, status=None
 
 def update(id, center_id=None, permissions=None, status=None, name=None, rules=None, tags=None, user=None):
     """# Update CorporateHolder entity
-    Update a CorporateHolder by passing its id, if it hasn't been paid yet.
+    Update a CorporateHolder by passing its id.
     ## Parameters (required):
     - id [string]: CorporateHolder id. ex: '5656565656565656'
     ## Parameters (optional):

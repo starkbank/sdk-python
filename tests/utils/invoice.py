@@ -3,6 +3,7 @@ from copy import deepcopy
 from random import randint
 from datetime import timedelta, datetime
 from starkbank import Invoice
+from starkbank.invoice import Rule
 from .names.names import get_full_name
 from .taxIdGenerator import TaxIdGenerator
 from .date import randomDatetimeBetween, randomFutureDatetime
@@ -44,6 +45,12 @@ def generateExampleInvoicesJson(n=1, amount=None, useRandomFutureDueDate=True, i
             invoiceAmount = int(amount)
         example_invoice.name = get_full_name()
         example_invoice.amount = invoiceAmount
+        example_invoice.rules = [
+            Rule(
+                key="allowedTaxIds",
+                value=[ "012.345.678-90" ]
+            )
+        ]
         if useRandomFutureDueDate:
             example_invoice.due = randomFutureDatetime(days=200)
             for discount in example_invoice.discounts:

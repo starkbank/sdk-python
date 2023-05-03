@@ -1,3 +1,4 @@
+from uuid import uuid4
 import starkbank
 from unittest import TestCase, main
 from datetime import date, timedelta
@@ -52,8 +53,9 @@ class TestCorporateHolderPostPatchAndDelete(TestCase):
     def test_success(self):
         holders = starkbank.corporateholder.create(generateExampleHoldersJson(n=1), expand=["rules"])
         holder_id = holders[0].id
-        holder = starkbank.corporateholder.update(id=holder_id, name="Updated Name")
-        self.assertEqual("Updated Name", holder.name)
+        holder_name = "Updated Name" + str(uuid4())
+        holder = starkbank.corporateholder.update(id=holder_id, name=holder_name)
+        self.assertEqual(holder_name, holder.name)
         holder = starkbank.corporateholder.cancel(id=holder_id)
         self.assertEqual("canceled", holder.status)
 

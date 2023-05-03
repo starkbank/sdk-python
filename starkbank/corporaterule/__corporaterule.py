@@ -14,6 +14,7 @@ class CorporateRule(Resource):
     # Parameters (optional):
     - interval [string, default "lifetime"]: interval after which the rule amount counter will be reset to 0. ex: "instant", "day", "week", "month", "year" or "lifetime"
     - schedule [string, default None]: schedule time for user to spend. ex: "every monday, wednesday from 00:00 to 23:59 in America/Sao_Paulo"
+    - purposes [list of string, default []]: list of strings representing the allowed purposes for card purchases, you can use this to restrict ATM withdrawals. ex: ["purchase", "withdrawal"]
     - currency_code [string, default "BRL"]: code of the currency that the rule amount refers to. ex: "BRL" or "USD"
     - categories [list of MerchantCategories, default []]: merchant categories accepted by the rule. ex: [MerchantCategory(code="fastFoodRestaurants")]
     - countries [list of MerchantCountries, default []]: countries accepted by the rule. ex: [MerchantCountry(code="BRA")]
@@ -25,7 +26,7 @@ class CorporateRule(Resource):
     - currency_name [string]: currency name. ex: "Brazilian Real"
     """
 
-    def __init__(self, name, amount, id=None, interval=None, schedule=None, currency_code=None, categories=None, countries=None,
+    def __init__(self, name, amount, id=None, interval=None, schedule=None, purposes=None, currency_code=None, categories=None, countries=None,
                  methods=None, counter_amount=None, currency_symbol=None, currency_name=None):
         Resource.__init__(self, id=id)
 
@@ -33,6 +34,7 @@ class CorporateRule(Resource):
         self.amount = amount
         self.interval = interval
         self.schedule = schedule
+        self.purposes = purposes
         self.currency_code = currency_code
         self.categories = _parse_categories(categories)
         self.countries = _parse_countries(countries)

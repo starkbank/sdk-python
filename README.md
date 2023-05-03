@@ -571,7 +571,13 @@ invoices = starkbank.invoice.create([
         expiration=timedelta(hours=3).total_seconds(),
         fine=5,  # 5%
         interest=2.5,  # 2.5% per month
-        tags=["immediate"]
+        tags=["immediate"],
+        rules=[
+            starkbank.transfer.Rule(
+                key="allowedTaxIds",        # Set TaxIds allowed to receive this Invoice
+                value=[ "012.345.678-90" ]
+            ) 
+        ] 
     ),
     starkbank.Invoice(
         amount=23571,  # R$ 235,71 
