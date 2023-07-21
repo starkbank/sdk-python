@@ -573,7 +573,7 @@ invoices = starkbank.invoice.create([
         interest=2.5,  # 2.5% per month
         tags=["immediate"],
         rules=[
-            starkbank.transfer.Rule(
+            starkbank.invoice.Rule(
                 key="allowedTaxIds",        # Set TaxIds allowed to receive this Invoice
                 value=[ "012.345.678-90" ]
             ) 
