@@ -395,6 +395,7 @@ transfers = starkbank.transfer.create([
         bank_code="033",  # TED
         branch_code="0001",
         account_number="10000-0",
+        account_type="salary",
         tax_id="012.345.678-90",
         name="Tony Stark",
         tags=["iron", "suit"]

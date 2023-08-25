@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- set Transfer account_type parameter as required 
 
 ## [2.20.0] - 2023-05-03
 ### Added
