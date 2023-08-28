@@ -18,8 +18,8 @@ class Transfer(Resource):
     - bank_code [string]: code of the receiver bank institution in Brazil. If an ISPB (8 digits) is informed, a PIX transfer will be created, else a TED will be issued. ex: "20018183" or "341"
     - branch_code [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
     - account_number [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
+    - account_type [string]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
     ## Parameters (optional):
-    - account_type [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
     - external_id [string, default None]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
     - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - description [string, default None]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
@@ -35,7 +35,7 @@ class Transfer(Resource):
     - updated [datetime.datetime]: latest update datetime for the transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, account_type=None,
+    def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, account_type,
                  external_id=None, scheduled=None, description=None, transaction_ids=None, metadata=None, 
                  fee=None, tags=None, rules=None, status=None, id=None, created=None, updated=None
                 ):
