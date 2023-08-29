@@ -15,7 +15,8 @@ example_transfer = Transfer(
     tax_id="01234567890",
     bank_code=choice(["18236120", "60701190"]),
     branch_code="0001",
-    account_number="10000-0"
+    account_number="10000-0",
+    account_type="checking"
 )
 
 
