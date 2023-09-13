@@ -13,8 +13,12 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Removed
+- account_Created, created, owned attributes
 
-## [2.21.0] - 2023-08-06
+### Fixed
+- unmasked branch_code, account_number attributes
+
 ### Changed
 - Transfer account_type parameter to required 
 

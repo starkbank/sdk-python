@@ -17,18 +17,15 @@ class DictKey(Resource):
     - owner_type [string]: DICT key owner type. ex "naturalPerson" or "legalPerson"
     - bank_name [string]: bank name associated with the DICT key. ex: "Stark Bank"
     - ispb [string]: bank ISPB associated with the DICT key. ex: "20018183"
-    - branch_code [string]: bank account branch code associated with the DICT key. ex: "9585"
-    - account_number [string]: bank account number associated with the DICT key. ex: "9828282578010513"
+    - branch_code [string]: bank account branch code associated with the DICT key. ex: "ZW5jcnlwdGVkLWJyYW5jaC1jb2Rl"
+    - account_number [string]: bank account number associated with the DICT key. ex: "ZW5jcnlwdGVkLWFjY291bnQtbnVtYmVy"
     - account_type [string]: bank account type associated with the DICT key. ex: "checking", "saving", "salary" or "payment"
     - status [string]: current DICT key status. ex: "created", "registered", "canceled" or "failed"
-    - account_created [datetime.datetime]: creation datetime of the bank account associated with the DICT key. ex: datetime.date(2020, 1, 12, 11, 14, 8)
-    - owned [datetime.datetime]: datetime since when the current owner holds this DICT key. ex: datetime.date(2020, 11, 16, 8, 12, 11)
-    - created [datetime.datetime]: creation datetime for the DICT key. ex: datetime.date(2020, 11, 16, 8, 12, 11)
     """
     
-    def __init__(self, id=None, type=None, name=None, tax_id=None, owner_type=None, bank_name=None, ispb=None,
-                 branch_code=None, account_number=None, account_type=None, status=None, account_created=None,
-                 owned=None, created=None):
+    def __init__(self, id=None, type=None, name=None, tax_id=None, owner_type=None, bank_name=None, 
+                   ispb=None, branch_code=None, account_number=None, account_type=None, status=None
+                 ):
         Resource.__init__(self, id=id)
 
         self.type = type
@@ -41,9 +38,6 @@ class DictKey(Resource):
         self.account_number = account_number
         self.account_type = account_type
         self.status = status
-        self.account_created = check_datetime(account_created)
-        self.owned = check_datetime(owned)
-        self.created = check_datetime(created)
 
 
 _resource = {"class": DictKey, "name": "DictKey"}
