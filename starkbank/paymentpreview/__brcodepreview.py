@@ -21,8 +21,8 @@ class BrcodePreview(SubResource):
     - reconciliation_id [string]: Reconciliation ID linked to this payment. ex: "txId", "payment-123"
     """
 
-    def __init__(self, status, name, tax_id, bank_code, account_type, allow_change, amount,
-                 nominal_amount, interest_amount, fine_amount, reduction_amount, discount_amount, reconciliation_id):
+    def __init__(self, status, name, tax_id, bank_code, account_type, allow_change, amount, nominal_amount,
+                 interest_amount, fine_amount, reduction_amount, discount_amount, reconciliation_id):
         self.status = status
         self.name = name
         self.tax_id = tax_id

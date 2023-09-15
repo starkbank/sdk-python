@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Removed 
+- account_number, branch_code attributes to PaymentPreview resource
 
 ## [2.21.0] - 2023-08-06
 ### Changed
