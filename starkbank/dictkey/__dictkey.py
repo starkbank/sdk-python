@@ -19,7 +19,7 @@ class DictKey(Resource):
     - ispb [string]: bank ISPB associated with the DICT key. ex: "20018183"
     - branch_code [string]: encrypted bank account branch code associated with the DICT key. ex: "ZW5jcnlwdGVkLWJyYW5jaC1jb2Rl"
     - account_number [string]: encrypted bank account number associated with the DICT key. ex: "ZW5jcnlwdGVkLWFjY291bnQtbnVtYmVy"
-    - account_type [string]: bank account type associated with the DICT key. ex: "checking", "saving", "salary" or "payment"
+    - account_type [string]: bank account type associated with the DICT key. ex: "checking", "savings", "salary" or "payment"
     - status [string]: current DICT key status. ex: "created", "registered", "canceled" or "failed"
     """
     
