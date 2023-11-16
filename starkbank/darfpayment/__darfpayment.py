@@ -27,7 +27,7 @@ class DarfPayment(Resource):
     - amount [int]: Total amount due calculated from other amounts. ex: 24146 (= R$ 241.46)
     - fee [integer]: fee charged when the DarfPayment is processed. ex: 0 (= R$ 0.00)
     - transaction_ids [list of strings]: ledger transaction ids linked to this DarfPayment. ex: ["19827356981273"]
-    - updated [datetime.datetime]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - updated [datetime.datetime]: update datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - created [datetime.datetime]: creation datetime for the payment. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
     def __init__(self, description, revenue_code, tax_id, competence, nominal_amount, fine_amount, interest_amount,

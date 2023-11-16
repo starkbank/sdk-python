@@ -101,3 +101,9 @@ from .dynamicbrcode.__dynamicbrcode import DynamicBrcode
 
 from . import deposit
 from .deposit.__deposit import Deposit
+
+from . import split
+from .split.__split import Split
+
+from . import splitreceiver
+from .splitreceiver.__splitreceiver import SplitReceiver
