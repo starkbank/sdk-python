@@ -852,6 +852,21 @@ deposit = starkbank.deposit.get("5155165527080960")
 print(deposit)
 ```
 
+## Update a deposit
+
+Update a deposit by passing its id to be partially or fully reversed.
+
+```python
+import starkbank
+
+deposit = starkbank.deposit.update(
+    "5155165527080960",
+    amount=0,
+)
+
+print(deposit)
+```
+
 ## Query deposit logs
 
 Logs are pretty important to understand the life cycle of a deposit.
@@ -2437,7 +2452,7 @@ With this function, you can manually set events retrieved from the API as
 ```python
 import starkbank
 
-event = starkbank.event.update(id="129837198237192", is_delivered=True)
+event = starkbank.event.update("129837198237192", is_delivered=True)
 
 print(event)
 ```
