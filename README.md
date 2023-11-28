@@ -49,6 +49,8 @@ is as easy as sending a text message to your client!
     - [CorporateBalance](#get-your-corporatebalance): View your corporate balance
     - [CorporateTransactions](#query-corporatetransactions): View the transactions that have affected your corporate balance
     - [CorporateEnums](#corporate-enums): Query enums related to the corporate purchases, such as merchant categories, countries and card purchase methods
+    - [Split](#query-splits): Split received Invoice payments between different receivers
+    - [SplitReceiver](#create-splitreceivers): Receiver of an Invoice split
     - [Webhooks](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage webhook events
     - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
@@ -2165,6 +2167,135 @@ methods = starkbank.cardmethod.query(
 
 for method in methods:
     print(method)
+```
+
+## Split
+
+Split an Invoice between different receivers.
+
+## Query Splits
+
+You can get a list of created Splits given some filters.
+
+```python
+import starkbank
+
+splits = starkbank.split.query(limit=10)
+
+for split in splits:
+    print(split)
+```
+
+## Get a Split
+
+To get a single Split by its id, run:
+
+```python
+import starkbank
+
+split = starkbank.split.get("5155165527080960")
+
+print(split)
+```
+
+## Query Split Logs
+
+You can query Split logs to check additional information.
+
+```python
+import starkbank
+
+logs = starkbank.split.log.query(
+    split_ids=["5155165527080960", "76551659167801921"],
+)
+
+for log in logs:
+    print(log)
+```
+
+## Get a Split Log
+
+You can also get a Split log by specifying its id.
+
+```python
+import starkbank
+
+log = starkbank.split.log.get("5155165527080960")
+
+print(log)
+```
+
+## Create SplitReceivers
+
+You can create receivers to an Invoice Split by using the SplitReceiver resource.
+
+```python
+import starkbank
+
+receiver = starkbank.splitreceiver.create(
+      receiver=starkbank.SplitReceiver(
+        name="Daenerys Targaryen Stormborn",
+        tax_id="594.739.480-42",
+        bank_code="341",
+        branch_code="2201",
+        account_number="76543-8",
+        account_type="salary"
+    )
+)
+
+print(receiver)
+```
+
+## Query SplitReceivers
+
+To take a look at the SplitReceivers created to your workspace, just run the following:
+
+```python
+import starkbank
+
+receivers = starkbank.splitreceiver.query(limit=10)
+
+for receiver in receivers:
+    print(receiver)
+```
+
+## Get a Split Receiver
+
+To get a single SplitReceiver by its id, run:
+
+```python
+import starkbank
+
+receiver = starkbank.splitreceiver.get("5155165527080960")
+
+print(receiver)
+```
+
+## Query SplitReceiver Logs
+
+You can query SplitReceiver logs to check additional information
+
+```python
+import starkbank
+
+logs = starkbank.splitreceiver.log.query(
+    receiver_ids =["5155165527080960", "76551659167801921"],
+)
+
+for log in logs:
+    print(log)
+```
+
+## Get a SplitReceiver Log
+
+You can also get a SplitReceiver Log by specifying its id.
+
+```python
+import starkbank
+
+log = starkbank.splitreceiver.log.get("5155165527080960")
+
+print(log)
 ```
 
 ## Create a webhook subscription

@@ -2,7 +2,8 @@
 from copy import deepcopy
 from random import randint
 from datetime import timedelta, datetime
-from starkbank import Invoice
+from starkbank import splitreceiver
+from starkbank import Invoice, Split
 from starkbank.invoice import Rule
 from .names.names import get_full_name
 from .taxIdGenerator import TaxIdGenerator
@@ -36,8 +37,13 @@ example_invoice = Invoice(
 )
 
 
-def generateExampleInvoicesJson(n=1, amount=None, useRandomFutureDueDate=True, immediate=True):
+def generateExampleInvoicesJson(n=1, amount=None, useRandomFutureDueDate=True, useSplit=False, immediate=True):
     invoices = []
+    receivers = []
+    receivers_length = 0
+    if useSplit:
+        receivers_length = 2
+        receivers = list(splitreceiver.query(limit=receivers_length, tags="sdk-receiver"))
     for _ in range(n):
         if amount is None:
             invoiceAmount = randint(205, 300)
@@ -59,6 +65,15 @@ def generateExampleInvoicesJson(n=1, amount=None, useRandomFutureDueDate=True, i
                     discount["due"] = discount["due"].date()
             if not immediate:
                 example_invoice.due = example_invoice.due.date()
+        if useSplit:
+            example_invoice.rules = None
+            example_invoice.discounts = []
+            amount_steps = sorted([0] + [randint(0, example_invoice.amount - receivers_length) for _ in receivers])
+            receiver_amounts = [amount_steps[i+1] - amount_steps[i] + 1 for i in range(len(receivers))]
+            example_invoice.splits = [
+                Split(amount=receiver_amount, receiver_id=receiver.id)
+                for receiver, receiver_amount in zip(receivers, receiver_amounts)
+            ]
         example_invoice.tax_id = TaxIdGenerator.taxId()
         invoices.append(deepcopy(example_invoice))
     return invoices

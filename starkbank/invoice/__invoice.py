@@ -5,6 +5,7 @@ from starkcore.utils.checks import check_date, check_datetime, check_timedelta, 
 from .__payment import _sub_resource as _payment_sub_resource
 from .rule.__rule import Rule
 from .rule.__rule import _sub_resource as _rule_resource
+from ..split.__split import _resource as _split_resource, Split
 
 
 class Invoice(Resource):
@@ -25,6 +26,7 @@ class Invoice(Resource):
     - interest [float, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
     - discounts [list of dictionaries, default []]: list of dictionaries with "percentage":float and "due":datetime.datetime or string pairs
     - rules [list of Invoice.Rules, default []]: list of Invoice.Rule objects for modifying invoice behavior. ex: [Invoice.Rule(key="allowedTaxIds", value=[ "012.345.678-90", "45.059.493/0001-73" ])]
+    - splits [list of Split.Splits, default []]: list of Split.Splits objects to indicate payment receivers. ex: [Invoice.Split(amount=141, receiverId="5706627130851328")]
     - tags [list of strings, default []]: list of strings for tagging
     - descriptions [list of dictionaries, default []]: list of dictionaries with "key":string and (optional) "value":string pairs
     ## Attributes (return-only):
@@ -45,7 +47,7 @@ class Invoice(Resource):
 
     def __init__(self, amount, tax_id, name, due=None, expiration=None, fine=None, interest=None, discounts=None,
                  rules=None, tags=None, descriptions=None, pdf=None, link=None, nominal_amount=None, fine_amount=None,
-                 interest_amount=None, discount_amount=None, id=None, brcode=None, status=None, fee=None,
+                 interest_amount=None, discount_amount=None, id=None, brcode=None, status=None, fee=None, splits=None,
                  transaction_ids=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
@@ -62,6 +64,7 @@ class Invoice(Resource):
         self.interest = interest
         self.discounts = discounts
         self.rules = _parse_rules(rules)
+        self.splits = _parse_splits(splits)
         self.tags = tags
         self.pdf = pdf
         self.link = link
@@ -87,6 +90,18 @@ def _parse_rules(rules):
             continue
         parsed_rules.append(from_api_json(_rule_resource, rule))
     return parsed_rules
+
+
+def _parse_splits(splits):
+    if splits is None:
+        return None
+    parsed_splits = []
+    for split in splits:
+        if isinstance(split, Split):
+            parsed_splits.append(split)
+            continue
+        parsed_splits.append(from_api_json(_split_resource, split))
+    return parsed_splits
 
 
 def create(invoices, user=None):

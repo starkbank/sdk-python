@@ -13,6 +13,11 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- Split resource 
+- SplitLog resource
+- SplitReceiver resource
+- SplitReceiverLog resource
 
 ## [2.22.0] - 2023-09-18
 ### Removed 
