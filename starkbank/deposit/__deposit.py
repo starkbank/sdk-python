@@ -119,3 +119,20 @@ def page(cursor=None, limit=None, after=None, before=None, status=None, sort=Non
         ids=ids,
         user=user,
     )
+
+
+def update(id, amount=None, user=None):
+    """# Update Deposit entity
+    Update the Deposit by passing its id to be partially or fully reversed.
+    ## Parameters (required):
+    - id [string]: Deposit id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - amount [string, default None]: The new amount of the Deposit. If the amount = 0 the Deposit will be fully reversed
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - target Deposit with updated attributes
+    """
+    payload = {
+        "amount": amount,
+    }
+    return rest.patch_id(resource=_resource, id=id, user=user, payload=payload)

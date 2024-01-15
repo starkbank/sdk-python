@@ -18,6 +18,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - SplitLog resource
 - SplitReceiver resource
 - SplitReceiverLog resource
+- update function to Deposit resource
 
 ## [2.22.0] - 2023-09-18
 ### Removed 
