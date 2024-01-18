@@ -1,9 +1,9 @@
 import starkbank
 from unittest import TestCase, main
 from datetime import date, timedelta
-from tests.utils.holder import generateExampleHoldersJson
 from tests.utils.user import exampleProject
 from tests.utils.card import generateExampleCardJson
+from tests.utils.holder import generateExampleHoldersJson
 
 starkbank.user = exampleProject
 
