@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.23.0] - 2024-01-22
 ### Added
 - Split resource 
 - SplitLog resource
