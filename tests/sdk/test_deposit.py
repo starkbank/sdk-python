@@ -47,5 +47,21 @@ class TestDepositInfoGet(TestCase):
         print(deposit)
 
 
+class TestDepositInfoPatch(TestCase):
+
+    def test_success_amount(self):
+        deposits = starkbank.deposit.query(status="created", limit=1)
+        deposit_amount = 0
+        for deposit in deposits:
+            self.assertIsNotNone(deposit.id)
+            updated_deposit = starkbank.deposit.update(
+                deposit.id,
+                amount=deposit_amount,
+            )
+            print(updated_deposit)
+            self.assertEqual(updated_deposit.amount, deposit_amount)
+
+
 if __name__ == '__main__':
     main()
+

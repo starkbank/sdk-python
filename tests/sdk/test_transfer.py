@@ -1,8 +1,8 @@
 import starkbank
-from datetime import timedelta, date
 from unittest import TestCase, main
-from tests.utils.transfer import generateExampleTransfersJson
+from datetime import timedelta, date
 from tests.utils.user import exampleProject
+from tests.utils.transfer import generateExampleTransfersJson
 
 
 starkbank.user = exampleProject
