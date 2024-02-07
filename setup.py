@@ -1,7 +1,7 @@
 from re import search
 from setuptools import setup, find_packages
 
-with open('README.md') as f:
+with open('README.md', encoding="utf-8") as f:
     README = f.read()
 
 with open('starkbank/__init__.py') as f:

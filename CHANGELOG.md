@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed 
+- README import on setup file
 
 ## [2.23.0] - 2024-01-22
 ### Added
