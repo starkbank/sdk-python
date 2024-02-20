@@ -38,5 +38,14 @@ class TestDepositLogInfoGet(TestCase):
         print(log)
 
 
+class TestDepositLogPdfGet(TestCase):
+
+    def test_success(self):
+        logs = starkbank.deposit.log.query(types="reversed", limit=1)
+        log_id = next(logs).id
+        pdf = starkbank.deposit.log.pdf(log_id)
+        self.assertGreater(len(pdf), 1000)
+
+
 if __name__ == '__main__':
     main()

@@ -94,3 +94,15 @@ def page(cursor=None, limit=None, after=None, before=None, types=None, deposit_i
         deposit_ids=deposit_ids,
         user=user,
     )
+
+def pdf(id, user=None):
+    """# Retrieve a reversed Deposit.Log pdf file
+    Receive a reversed Deposit.Log pdf receipt file generated in the Stark Bank API by its id.
+    ## Parameters (required):
+    - id [string]: object unique id. ex: "5656565656565656"
+    ## Parameters (optional):
+    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
+    ## Return:
+    - Deposit pdf file
+    """
+    return rest.get_content(resource=_resource, id=id, user=user, sub_resource_name="pdf")
