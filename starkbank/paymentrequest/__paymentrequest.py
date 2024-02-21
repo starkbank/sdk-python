@@ -7,13 +7,15 @@ from ..transaction.__transaction import Transaction
 from ..brcodepayment.__brcodepayment import BrcodePayment
 from ..boletopayment.__boletopayment import BoletoPayment
 from ..utilitypayment.__utilitypayment import UtilityPayment
+from ..darfpayment.__darfpayment import DarfPayment
+from ..taxpayment.__taxpayment import TaxPayment
 from ..transfer.__transfer import _resource as _transfer_resource
 from ..transaction.__transaction import _resource as _transaction_resource
 from ..boletopayment.__boletopayment import _resource as _boleto_payment_resource
 from ..brcodepayment.__brcodepayment import _resource as _brcode_payment_resource
 from ..utilitypayment.__utilitypayment import _resource as _utility_payment_resource
-
-
+from ..darfpayment.__darfpayment import _resource as _darf_payment_resource
+from ..taxpayment.__taxpayment import _resource as _tax_payment_resource
 class PaymentRequest(Resource):
     """# PaymentRequest object
     A PaymentRequest is an indirect request to access a specific cash-out service
@@ -23,7 +25,7 @@ class PaymentRequest(Resource):
     cost center page.
     ## Parameters (required):
     - center_id [string]: target cost center ID. ex: "5656565656565656"
-    - payment [Transfer, BoletoPayment, UtilityPayment, BrcodePayment, Transaction or dictionary]: payment entity that should be approved and executed.
+    - payment [Transfer, BoletoPayment, UtilityPayment, BrcodePayment, Transaction, DarfPayment, TaxPayment or dictionary]: payment entity that should be approved and executed.
     ## Parameters (conditionally required):
     - type [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer", "boleto-payment"
     ## Parameters (optional):
@@ -65,6 +67,8 @@ def _parse_payment(payment, type):
                 "boleto-payment": _boleto_payment_resource,
                 "brcode-payment": _brcode_payment_resource,
                 "utility-payment": _utility_payment_resource,
+                "darf-payment": _darf_payment_resource,
+                "tax-payment": _tax_payment_resource,
             }[type], payment)), type
         except KeyError:
             return payment, type
@@ -82,8 +86,10 @@ def _parse_payment(payment, type):
         return payment, "boleto-payment"
     if isinstance(payment, UtilityPayment):
         return payment, "utility-payment"
-    if isinstance(payment, BrcodePayment):
-        return payment, "brcode-payment"
+    if isinstance(payment, DarfPayment):
+        return payment, "darf-payment"
+    if isinstance(payment, TaxPayment):
+        return payment, "tax-payment"
 
     raise Exception(
         "payment must be either "
@@ -93,7 +99,8 @@ def _parse_payment(payment, type):
         ", a starkbank.BrcodePayment"
         ", a starkbank.BoletoPayment"
         ", a starkbank.UtilityPayment"
-        " or a starkbank.BrcodePayment"
+        ", a starkbank.TaxPayment"
+        " or a starkbank.DarfPayment"
         ", but not a {}".format(type(payment))
     )
 

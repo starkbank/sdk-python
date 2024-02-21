@@ -12,9 +12,9 @@ starkbank.user = exampleProject
 class TestPaymentRequestPost(TestCase):
 
     def test_success(self):
-        requests = generateExamplePaymentRequestsJson(n=5)
+        requests = generateExamplePaymentRequestsJson(n=7)
         requests = starkbank.paymentrequest.create(requests)
-        self.assertEqual(len(requests), 5)
+        self.assertEqual(len(requests), 7)
         for request in requests:
             print(request)
 
