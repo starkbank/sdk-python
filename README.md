@@ -892,6 +892,25 @@ log = starkbank.deposit.log.get("5155165527080960")
 print(log)
 ```
 
+## Get a reversed deposit log PDF
+
+Whenever an Deposit is successfully reversed, a reversed log will be created. 
+To retrieve a specific reversal receipt, you can request the corresponding log PDF:
+
+```python
+import starkbank
+
+pdf = starkbank.deposit.log.pdf("5155165527080960")
+
+with open("deposit-reversal.pdf", "wb") as file:
+    file.write(pdf)
+```
+
+Be careful not to accidentally enforce any encoding on the raw pdf content,
+as it may yield abnormal results in the final file, such as missing images
+and strange characters.
+
+
 ## Create boletos
 
 You can create boletos to charge customers or to receive money from accounts
