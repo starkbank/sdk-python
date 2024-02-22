@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.24.0] - 2024-02-22
 ### Added
 - function to deposit.log resource get Deposit reversal receipt
 - TaxPayment and DarfPayment as PaymentRequest options
