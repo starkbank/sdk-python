@@ -13,6 +13,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- SplitProfile resource
+- update starkCore version
 
 ## [2.24.0] - 2024-02-22
 ### Added
