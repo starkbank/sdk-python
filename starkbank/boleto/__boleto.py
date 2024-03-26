@@ -1,8 +1,8 @@
 from ..utils import rest
 from starkcore.utils.api import from_api_json
+from starkcore.utils.resource import Resource
 from starkcore.utils.checks import check_date, check_datetime
 from ..split.__split import _resource as _split_resource, Split
-
 
 class Boleto(Resource):
     """# Boleto object
