@@ -1,8 +1,12 @@
 from re import search
 from setuptools import setup, find_packages
 
-with open('README.md', encoding="utf-8") as f:
-    README = f.read()
+try:
+    with open('README.md', encoding="utf-8") as f:
+        README = f.read()
+except:
+    with open('README.md') as f:
+        README = f.read()
 
 with open('starkbank/__init__.py') as f:
     version = search(r'version = \"(.*)\"', f.read()).group(1)

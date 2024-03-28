@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- setup.py install
 
 ## [2.25.0] - 2024-03-13
 ### Added
