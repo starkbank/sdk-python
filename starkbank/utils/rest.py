@@ -14,4 +14,7 @@ delete_id = set_relay(rest.delete_id)
 get_raw = set_relay(rest.get_raw)
 post_raw = set_relay(rest.post_raw)
 patch_id = set_relay(rest.patch_id)
-put_multi = set_relay(rest.put_multi)
+put_raw = set_relay(rest.put_raw)
+patch_raw = set_relay(rest.patch_raw)
+delete_raw = set_relay(rest.delete_raw)
+
