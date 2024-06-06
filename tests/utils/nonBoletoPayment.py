@@ -25,7 +25,7 @@ def replaceBarcode(barcode, replacement, position):
     return barcode[:position] + replacement + barcode[position + length:]
 
 
-def generateExampleNonBoletoPaymentsJson(n=1, amount=None, next_day=False, is_tax=False):
+def generateExampleNonBoletoPaymentsJson(n=1, amount=None, next_day=None, is_tax=False):
     example_payment = example_tax_payment if is_tax else example_utility_payment
     payments = []
     for _ in range(n):

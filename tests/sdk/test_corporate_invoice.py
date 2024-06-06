@@ -12,6 +12,7 @@ class TestCorporateInvoiceQuery(TestCase):
 
     def test_success(self):
         invoices = starkbank.corporateinvoice.query(
+            limit=1,
             after=date.today() - timedelta(days=100),
             before=date.today(),
         )
