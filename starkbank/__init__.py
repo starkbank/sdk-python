@@ -110,3 +110,6 @@ from .splitreceiver.__splitreceiver import SplitReceiver
 
 from . import splitprofile
 from .splitprofile.__splitprofile import SplitProfile
+
+from . import request
+
