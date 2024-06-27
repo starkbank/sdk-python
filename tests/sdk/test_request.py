@@ -12,25 +12,30 @@ starkbank.user = exampleProject
 class TestJokerGet(TestCase):
 
     def test_get(self):
-        example_id = starkbank.request.get(
-            path=f'/invoice/',
-            query={"limit": 1, "status": "paid"},
-        )["invoices"][0]["id"]
+        try:
+            example_id = starkbank.request.get(
+                path=f'/invoice/',
+                query={"limit": 1, "status": "paid"},
+            )
 
-        request = starkbank.request.get(
-            path=f'/invoice/{example_id}',
-            user=exampleProject
-        )
-        self.assertEqual(request["invoice"]["id"], example_id)
+            request = starkbank.request.get(
+                path=f'/invoice/{example_id.json()["invoices"][0]["id"]}',
+                user=exampleProject
+            )
+            if request.status != 200:
+                raise Exception(request.content)
+            self.assertEqual(request.json()["invoice"]["id"], example_id.json()["invoices"][0]["id"])
+        except Exception:
+            raise Exception
 
     def test_get_pdf(self):
         example_id = starkbank.request.get(
             path=f'/invoice/',
             query={"limit": 10, "status": "paid"}
-        )["invoices"][0]["id"]
+        ).json()["invoices"][0]["id"]
         pdf = starkbank.request.get(
             path=f'/invoice/{example_id}/pdf',
-        )
+        ).content
 
         self.assertGreater(len(pdf), 1000)
 
@@ -38,23 +43,22 @@ class TestJokerGet(TestCase):
         example_id = starkbank.request.get(
             path=f'/invoice/',
             query={"limit": 10, "status": "paid"}
-        )["invoices"][0]["id"]
+        ).json()["invoices"][0]["id"]
 
         qrcode = starkbank.request.get(
             path=f'/invoice/{example_id}/qrcode',
             query={"size": 15},
-        )
+        ).content
         self.assertGreater(len(qrcode), 1000)
 
     def test_get_reversal_receipt(self):
         example_id = starkbank.request.get(
             path=f'/deposit/log/',
             query={"limit": 1, "types": "reversed"}
-        )
-        example_id = example_id["logs"][0]["id"]
+        ).json()["logs"][0]["id"]
         reversal_pdf = starkbank.request.get(
             path=f'/deposit/log/{example_id}/pdf/',
-        )
+        ).content
         self.assertGreater(len(reversal_pdf), 1000)
 
     def test_get_page(self):
@@ -68,7 +72,7 @@ class TestJokerGet(TestCase):
                 "before": before.strftime("%Y-%m-%d"),
                 "status": "paid"
             }
-        )
+        ).json()
         for item in request["invoices"]:
             self.assertTrue(after.date() <= datetime.strptime(item["created"], "%Y-%m-%dT%H:%M:%S.%f%z").date() <= (before + timedelta(hours=3)).date())
         self.assertEqual(10, len(request["invoices"]))
@@ -89,7 +93,7 @@ class TestJokerGet(TestCase):
                     "status": "paid",
                     "cursor": cursor
                 }
-            )
+            ).json()
             cursor = request["cursor"]
             total_items += len(request["invoices"])
             for item in request["invoices"]:
@@ -114,7 +118,7 @@ class TestJokerPost(TestCase):
         request = starkbank.request.post(
             path=f'/invoice/',
             body=data,
-        )
+        ).json()
         print(request)
 
 
@@ -124,18 +128,18 @@ class TestJokerPatch(TestCase):
         initial_state = starkbank.request.get(
             path=f'/invoice/',
             query={"limit": 1, "status": "paid"}
-        )
+        ).json()
         example_id = initial_state["invoices"][0]["id"]
         amount = initial_state["invoices"][0]["amount"]
 
         starkbank.request.patch(
             path=f'/invoice/{example_id}/',
             body={"amount": amount - amount},
-        )
+        ).json()
 
         final_state = starkbank.request.get(
             path=f'/invoice/{example_id}',
-        )
+        ).json()
         self.assertEqual(final_state["invoice"]["amount"],0)
 
 
@@ -155,7 +159,7 @@ class TestJokerPut(TestCase):
             body=data,
         )
 
-        result = starkbank.request.get(path=f'/split-profile/')
+        result = starkbank.request.get(path=f'/split-profile/').json()
 
         self.assertEqual(result["profiles"][0]["delay"], 0)
         self.assertEqual(result["profiles"][0]["interval"], "day")
@@ -185,15 +189,15 @@ class TestJokerDelete(TestCase):
         create = starkbank.request.post(
             path=f'/transfer/',
             body=data,
-        )
+        ).json()
 
         starkbank.request.delete(
             path=f'/transfer/{create["transfers"][0]["id"]}',
-        )
+        ).json()
 
         final_status = starkbank.request.get(
             path=f'/transfer/{create["transfers"][0]["id"]}',
-        )["transfer"]["status"]
+        ).json()["transfer"]["status"]
 
         self.assertEqual(final_status, 'canceled')
 

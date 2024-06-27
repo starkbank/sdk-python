@@ -2605,7 +2605,7 @@ import starkbank
 example_id = "5155165527080960"
 request = starkbank.request.get(
     path=f"/invoice/{example_id}"
-)
+).json()
 
 print(request)
 ```
@@ -2618,7 +2618,7 @@ import starkbank
 example_id = "5699165527090460"
 request = starkbank.request.get(
     path=f"/invoice/log/{example_id}",
-)
+).json()
 
 print(request)
 ```
@@ -2631,7 +2631,7 @@ import starkbank
 request = starkbank.request.get(
     path="/invoice",
     query={"limit": 10, "status": "paid"},
-)
+).json()
 
 for item in request["invoices"]:
     print(item)
@@ -2645,7 +2645,7 @@ import starkbank
 request = starkbank.request.get(
     path="/invoice/log",
     query={"limit": 10, "status": "paid"},
-)
+).json()
 
 for item in request["invoices"]:
     print(item)
@@ -2659,7 +2659,7 @@ import starkbank
 example_id = "5155165527080960"
 pdf = starkbank.request.get(
     path=f"/invoice/{example_id}/pdf",
-)
+).content
 with open("request.pdf", "wb") as file:
     file.write(pdf)
 ```
@@ -2692,11 +2692,11 @@ data={
 request = starkbank.request.post(
     path="/invoice",
     body=data,
-)
+).json()
 print(request)
 ```
 
-## patch
+## PATCH
 
 You can perform a PATCH request to any StarkBank route.
 
@@ -2708,7 +2708,7 @@ example_id = "5155165527080960"
 request = starkbank.request.patch(
     path=f"/invoice/{example_id}",
     body={"amount": 0},
-)
+).json()
 print(request)
 ```
 
@@ -2731,7 +2731,7 @@ data = {
 request = starkbank.request.put(
     path="/split-profile",
     body=data,
-)
+).json()
 print(request)
 ```
 ## DELETE
@@ -2745,7 +2745,7 @@ import starkbank
 example_id = "5155165527080960"
 request = starkbank.request.delete(
     path=f"/transfer/{example_id}",
-)
+).json()
 print(request)        
 ```
 # Handling errors
