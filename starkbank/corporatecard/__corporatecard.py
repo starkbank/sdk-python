@@ -77,7 +77,7 @@ def create(card, expand=None, user=None):
     - CorporateCard object with updated attributes
     """
     path = "{endpoint}/{sub_resource}".format(endpoint=endpoint(_resource), sub_resource="token")
-    json = rest.post_raw(path=path, payload=api_json(card), expand=expand, user=user)
+    json = rest.post_raw(path=path, payload=api_json(card), query={"expand": expand}, user=user).json()
     return from_api_json(_resource, json[last_name(_resource)])
 
 

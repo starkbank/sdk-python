@@ -3,9 +3,11 @@ from copy import deepcopy
 from uuid import uuid4
 import starkbank.corporateholder
 from starkbank import CorporateHolder
+from tests.utils.user import exampleProject
 from .names.names import get_full_name
 from .rule import generateExampleRuleJson
 
+owner_id = os.environ["SANDBOX_ID"] if "SANDBOX_ID" in os.environ else exampleProject.id
 
 example_holder = CorporateHolder(
     name="Iron Bank S.A." + str(uuid4()),
@@ -14,12 +16,11 @@ example_holder = CorporateHolder(
     ],
     permissions=[
         starkbank.corporateholder.Permission(
-            owner_id=os.environ["SANDBOX_ID"],
+            owner_id=owner_id,
             owner_type="project"
         )
     ]
 )
-
 
 def generateExampleHoldersJson(n=1):
     holders = []

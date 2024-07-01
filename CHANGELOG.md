@@ -17,6 +17,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - request methods
 ### Changed
 - core version
+### Fixed
+- request prefix param
 
 ## [2.25.1] - 2024-04-01
 ### Fixed
