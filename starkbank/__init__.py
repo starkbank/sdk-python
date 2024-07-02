@@ -1,4 +1,4 @@
-version = "2.25.1"
+version = "2.26.0"
 
 user = None
 language = "en-US"
