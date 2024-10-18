@@ -5,7 +5,7 @@ language = "en-US"
 timeout = 15
 request_methods_prefix = "Joker"
 
-from starkcore import Organization, Project
+from starkcore import Organization, Project, MarketplaceApp
 
 from . import error
 from . import key
@@ -94,6 +94,11 @@ from .paymentrequest.__paymentrequest import PaymentRequest
 from . import invoice
 from .invoice.__invoice import Invoice
 
+from . import marketplaceappauthorization
+from .marketplaceappauthorization.__marketplaceappauthorization import (
+    MarketplaceAppAuthorization,
+)
+
 from . import dictkey
 from .dictkey.__dictkey import DictKey
 
@@ -113,4 +118,3 @@ from . import splitprofile
 from .splitprofile.__splitprofile import SplitProfile
 
 from . import request
-

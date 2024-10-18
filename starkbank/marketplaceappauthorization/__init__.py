@@ -1,0 +1,1 @@
+from .__marketplaceappauthorization import query
