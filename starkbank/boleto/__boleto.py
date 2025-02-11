@@ -4,7 +4,7 @@ from starkcore.utils.checks import check_date, check_datetime
 
 
 class Boleto(Resource):
-    """# Boleto object
+    """# Boleto object // 
     When you initialize a Boleto, the entity will not be automatically
     sent to the Stark Bank API. The 'create' function sends the objects
     to the Stark Bank API and returns the list of created objects.
