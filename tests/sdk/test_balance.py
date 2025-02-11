@@ -12,7 +12,9 @@ class TestBalanceGet(TestCase):
 
         # debug
         print("--- project ---")
-        print("-".join([exampleProject.id, "sarapatela"]))
+        array = [exampleProject.id, "sarapatela"]
+        print("-".join(array))
+        print(array[0].replace("$", ""))
         print("--- end project ---")
 
         balance = starkbank.balance.get(user=exampleProject)
