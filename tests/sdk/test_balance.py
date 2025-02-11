@@ -9,6 +9,12 @@ starkbank.user = exampleProject
 class TestBalanceGet(TestCase):
 
     def test_success(self):
+
+        # debug
+        print("--- project ---")
+        print(exampleProject)
+        print("--- end project ---")
+
         balance = starkbank.balance.get(user=exampleProject)
         print(balance)
         self.assertIsInstance(balance.amount, int)
