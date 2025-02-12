@@ -55,3 +55,67 @@ def generateExampleNonBoletoPaymentsJson(n=1, amount=None, next_day=None, is_tax
         payment.tags = randomTags
         payments.append(payment)
     return payments
+
+
+def generateExampleUtilityPaymentJson(n=1, amount=None, next_day=None):
+    utilitesExamples = [
+        {
+            'code': '158',
+            'segment': '4',
+            'name': 'CLARO RJ',
+            'time': '19H',
+        },
+        {
+            'code': '1143',
+            'segment': '2',
+            'name': 'PM ITAJU',
+            'time': '15H',
+        },
+        {
+            'code': '19',
+            'segment': '2',
+            'name': 'COPASA CIA DE SANEAMENTO DE MINAS GERAIS',
+            'time': '15H',
+        },
+        {
+            'code': '47',
+            'segment': '3',
+            'name': 'AMAZONAS ENERGIA ANTIGA ELETRONORTE',
+            'time': '15H',
+        },
+        {
+            'code': '74',
+            'segment': '2',
+            'name': 'SUPERINTENDENCIA DE  AGUA E ESGOTO DE ITUIUTABA',
+            'time': '15H',
+        }
+    ]
+    example_payment = example_utility_payment
+    payments = []
+    for _ in range(n):
+        barcode = example_payment.bar_code
+        randomBusiness = choice(utilitesExamples)
+        randomAmount = amount if amount else str(randint(100, 100000)).zfill(11)
+        randomTags = [choice(example_payment.tags) for _ in range(randrange(0, 4))]
+        barcode = replaceBarcode(
+            barcode=barcode,
+            replacement=randomBusiness["segment"],
+            position=1,
+        )
+        barcode = replaceBarcode(
+            barcode=barcode,
+            replacement=randomAmount,
+            position=4,
+        )
+        barcode = replaceBarcode(
+            barcode=barcode,
+            replacement=randomBusiness["code"].zfill(4),
+            position=15,
+        )
+        payment = deepcopy(example_payment)
+        payment.bar_code = barcode
+        payment.scheduled = str(date.today() + timedelta(days=1) if next_day else date.today())
+        payment.description = sha256(str(randomAmount).encode('utf-8')).hexdigest()
+        payment.tags = randomTags
+        payments.append(payment)
+    return payments

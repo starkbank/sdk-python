@@ -1,7 +1,7 @@
 import starkbank
 from unittest import TestCase, main
 from tests.utils.user import exampleProject
-from tests.utils.utilityPayment import generateExampleUtilityPaymentsJson
+from tests.utils.utilityPayment import generateExampleUtilityPaymentJson
 
 
 starkbank.user = exampleProject
@@ -52,7 +52,7 @@ class TestUtilityPaymentPdfGet(TestCase):
 class TestUtilityPaymentDelete(TestCase):
 
     def test_success(self):
-        payments = generateExampleUtilityPaymentsJson(n=1, next_day=True)
+        payments = generateExampleUtilityPaymentJson(n=1, next_day=True)
         payments = starkbank.utilitypayment.create(payments)
         starkbank.utilitypayment.delete(payments[0].id)
 
