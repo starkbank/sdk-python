@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.26.1] - 2025-02-18
 ### Fixed
 - pytest tests
 
