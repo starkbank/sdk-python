@@ -1,4 +1,5 @@
 import starkbank
+from datetime import date, timedelta
 from unittest import TestCase, main
 from tests.utils.user import exampleProject
 from tests.utils.utilityPayment import generateExampleUtilityPaymentsJson
@@ -52,7 +53,12 @@ class TestUtilityPaymentPdfGet(TestCase):
 class TestUtilityPaymentDelete(TestCase):
 
     def test_success(self):
-        payments = generateExampleUtilityPaymentsJson(n=1, next_day=True)
+        payments = [starkbank.UtilityPayment(
+            description="e6cba87f05fd73aa49306864ab0098f58e7c43f8a9403475a9f10ac605b6ed87",
+            scheduled=str(date.today() + timedelta(days=1)),
+            tags=["utility", "payment"],
+            line="83640000001 1 08740138007 0 61053026111 0 08067159411 9"
+        )]
         payments = starkbank.utilitypayment.create(payments)
         starkbank.utilitypayment.delete(payments[0].id)
 

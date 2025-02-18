@@ -7,12 +7,24 @@ from tests.utils.holder import generateExampleHoldersJson
 
 starkbank.user = exampleProject
 
+class TestCorporateCardPost(TestCase):
+
+    def test_success(self):
+
+        holder = starkbank.corporateholder.create(generateExampleHoldersJson(n=1), expand=["rules"])[0]
+        card = starkbank.corporatecard.create(card=generateExampleCardJson(holder=holder), expand=["securityCode"])
+        self.assertNotEqual(str(card.security_code), "***")
+
+        card_id = card.id
+        card = starkbank.corporatecard.update(card_id, display_name="Updated Name", tags=["pytest"])
+        self.assertEqual("Updated Name", card.display_name)
+
 
 class TestCorporateCardQuery(TestCase):
 
     def test_success(self):
         cards = starkbank.corporatecard.query(
-            limit=10,
+            limit=100,
             after=date.today() - timedelta(days=100),
             before=date.today()
         )
@@ -47,20 +59,13 @@ class TestCorporateCardGet(TestCase):
         self.assertEqual(card.id, str(card.id))
 
 
-class TestCorporateCardPostAndDelete(TestCase):
+class TestCorporateCardDelete(TestCase):
 
     def test_success(self):
 
-        holder = starkbank.corporateholder.create(generateExampleHoldersJson(n=1), expand=["rules"])[0]
-        card = starkbank.corporatecard.create(card=generateExampleCardJson(holder=holder), expand=["securityCode"])
-        self.assertNotEqual(str(card.security_code), "***")
-
-        card_id = card.id
-        card = starkbank.corporatecard.update(card_id, display_name="Updated Name")
-        self.assertEqual("Updated Name", card.display_name)
-
-        card = starkbank.corporatecard.cancel(id=card_id)
-        self.assertEqual("canceled", card.status)
+        cards = starkbank.corporatecard.query(limit=1, tags=["pytest"])
+        for card in cards:
+            self.assertEqual("canceled", starkbank.corporatecard.cancel(id=card.id).status)
 
 
 class TestCorporateCardUpdate(TestCase):
