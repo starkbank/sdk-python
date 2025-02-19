@@ -49,6 +49,8 @@ is as easy as sending a text message to your client!
     - [CorporateBalance](#get-your-corporatebalance): View your corporate balance
     - [CorporateTransactions](#query-corporatetransactions): View the transactions that have affected your corporate balance
     - [CorporateEnums](#corporate-enums): Query enums related to the corporate purchases, such as merchant categories, countries and card purchase methods
+    - [MerchantSession](#merchant-session): The Merchant Session allows you to create a session prior to a purchase. Sessions are essential for defining the parameters of a purchase, including funding type, expiration, 3DS, and more.
+    - [MerchantPurchase](#merchant-purchase): The Merchant Purchase section allows users to retrieve detailed information of the purchases.
     - [Split](#query-splits): Split received Invoice payments between different receivers
     - [SplitReceiver](#create-splitreceivers): Receiver of an Invoice split
     - [Webhooks](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
@@ -2331,6 +2333,113 @@ import starkbank
 log = starkbank.splitreceiver.log.get("5155165527080960")
 
 print(log)
+```
+## Merchant Session
+
+The Merchant Session allows you to create a session prior to a purchase.
+Sessions are essential for defining the parameters of a purchase, including funding type, expiration, 3DS, and more.
+
+## Create a MerchantSession
+
+```python
+import starkbank
+
+merchant_session = starkbank.merchantsession.create({
+    "allowedFundingTypes": [
+        "debit",
+        "credit"
+    ],
+    "allowedInstallments": [
+        {
+            "totalAmount": 0,
+            "count": 1
+        },
+        {
+            "totalAmount": 120,
+            "count": 2
+        },
+        {
+            "totalAmount": 180,
+            "count": 12
+        }
+    ],
+    "expiration": 3600,
+    "challengeMode": "disabled",
+    "tags": [
+        "yourTags"
+    ]
+})
+
+print(merchant_session)
+```
+
+You can create a MerchantPurchase through a MerchantSession by passing its UUID.
+**Note**: This method must be implemented in your front-end to ensure that sensitive card data does not pass through the back-end of the integration.
+
+### Create a MerchantSession Purchase
+
+```python
+import starkbank
+
+merchant_session_purchase = starkbank.merchantsession.purchase(
+  uuid="0bb894a2697d41d99fe02cad2c00c9bc",
+  amount=180,
+  installment_count=12,
+  card_expiration="2035-01",
+  card_number="5448280000000007",
+  card_security_code="123",
+  holder_name="Holder Name",
+  holder_email="holdeName@email.com",
+  holder_phone="11111111111",
+  funding_type="credit",
+  billing_country_code="BRA",
+  billing_city="São Paulo",
+  billing_state_code="SP",
+  billing_street_line1="Rua do Holder Name, 123",
+  billing_street_line2="",
+  billing_zip_code="11111-111",
+  metadata={
+    "extraData": "extraData",
+    "language": "pt-BR",
+    "timezoneOffset": 3,
+    "userAgent": "Postman",
+    "userIp": "255.255.255.255"
+  }
+)
+
+print(merchant_session_purchase)
+```
+### Query MerchantSessions
+```python
+import starkbank
+
+merchant_sessions = starkbank.merchantsession.query(limit=3)
+for merchant_session in merchant_sessions:
+    print(merchant_session)
+```
+### Get a MerchantSession
+```python
+import starkbank
+
+merchant_session = starkbank.merchantsession.get('5950134772826112')
+print(merchant_session)
+```
+## Merchant Purchase
+The Merchant Purchase section allows users to retrieve detailed information of the purchases.
+### Query MerchantPurchases
+```python
+import starkbank
+
+merchant_purchases = starkbank.merchantpurchase.query(limit=3)
+for merchant_purchase in merchant_purchases:
+    print(merchant_purchase)
+```
+### Get a MerchantPurchase
+```python
+import starkbank
+
+merchant_purchase = starkbank.merchantpurchase.get('5950134772826112')
+print(merchant_purchase)
 ```
 
 ## Create a webhook subscription

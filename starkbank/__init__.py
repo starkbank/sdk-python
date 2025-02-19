@@ -58,11 +58,23 @@ from .corporatewithdrawal.__corporatewithdrawal import CorporateWithdrawal
 from . import corporaterule
 from .corporaterule.__corporaterule import CorporateRule
 
+from . import merchantcard
+from .merchantcard.__merchantcard import MerchantCard
+
 from . import merchantcategory
 from .merchantcategory.__merchantcategory import MerchantCategory
 
 from . import merchantcountry
 from .merchantcountry.__merchantcountry import MerchantCountry
+
+from . import merchantinstallment
+from .merchantinstallment.__merchantinstallment import MerchantInstallment
+
+from . import merchantpurchase
+from .merchantpurchase.__merchantpurchase import MerchantPurchase
+
+from . import merchantsession
+from .merchantsession.__merchantsession import MerchantSession
 
 from . import cardmethod
 from .cardmethod.__cardmethod import CardMethod
