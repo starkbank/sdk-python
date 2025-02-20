@@ -1,8 +1,9 @@
 # coding: utf-8
-
-from ..utils import rest
 from starkcore.utils.resource import Resource
+from starkcore.utils.api import from_api_json
 from starkcore.utils.checks import check_datetime, check_date, check_timedelta
+from ..utils import rest
+from .rule.__rule import _sub_resource as _rule_resource, Rule
 
 
 class DynamicBrcode(Resource):
@@ -18,6 +19,7 @@ class DynamicBrcode(Resource):
     ## Parameters (optional):
     - expiration [integer or datetime.timedelta, default 3600 (1 hour)]: time interval in seconds between due date and expiration date. ex 123456789
     - tags [list of strings, default []]: list of strings for tagging, these will be passed to the respective Deposit resource when paid
+    - rules [list of DynamicBrcode.Rules, default []]: list of DynamicBrcode.Rule objects for modifying invoice behavior. ex: [DynamicBrcode.Rule(key="allowedTaxIds", value=[ "012.345.678-90", "45.059.493/0001-73" ])]
     ## Attributes (return-only):
     - id [string]: id returned on creation, this is the BR code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
     - uuid [string]: unique uuid returned when the DynamicBrcode is created. ex: "4e2eab725ddd495f9c98ffd97440702d"
@@ -26,19 +28,32 @@ class DynamicBrcode(Resource):
     - created [datetime.datetime]: creation datetime for the DynamicBrcode. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, expiration=None, tags=None, id=None, uuid=None, picture_url=None, updated=None, created=None):
+    def __init__(self, amount, expiration=None, tags=None, rules=None, id=None, uuid=None, picture_url=None,
+                 updated=None, created=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
         self.expiration = check_timedelta(expiration)
+        self.rules = _parse_rules(rules)
         self.tags = tags
         self.uuid = uuid
         self.picture_url = picture_url
         self.updated = check_datetime(updated)
         self.created = check_datetime(created)
 
-
 _resource = {"class": DynamicBrcode, "name": "DynamicBrcode"}
+
+
+def _parse_rules(rules):
+    if rules is None:
+        return None
+    parsed_rules = []
+    for rule in rules:
+        if isinstance(rule, Rule):
+            parsed_rules.append(rule)
+            continue
+        parsed_rules.append(from_api_json(_rule_resource, rule))
+    return parsed_rules
 
 
 def create(brcodes, user=None):
