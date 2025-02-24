@@ -19,6 +19,7 @@ class DynamicBrcode(Resource):
     ## Parameters (optional):
     - expiration [integer or datetime.timedelta, default 3600 (1 hour)]: time interval in seconds between due date and expiration date. ex 123456789
     - tags [list of strings, default []]: list of strings for tagging, these will be passed to the respective Deposit resource when paid
+    - display_description [string, default None]: optional description to be shown in the payer bank interface. ex: "Payment for service #1234"
     - rules [list of DynamicBrcode.Rules, default []]: list of DynamicBrcode.Rule objects for modifying invoice behavior. ex: [DynamicBrcode.Rule(key="allowedTaxIds", value=[ "012.345.678-90", "45.059.493/0001-73" ])]
     ## Attributes (return-only):
     - id [string]: id returned on creation, this is the BR code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
@@ -28,12 +29,13 @@ class DynamicBrcode(Resource):
     - created [datetime.datetime]: creation datetime for the DynamicBrcode. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, expiration=None, tags=None, rules=None, id=None, uuid=None, picture_url=None,
-                 updated=None, created=None):
+    def __init__(self, amount, expiration=None, tags=None, display_description=None, rules=None, id=None, uuid=None,
+                 picture_url=None, updated=None, created=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
         self.expiration = check_timedelta(expiration)
+        self.display_description = display_description
         self.rules = _parse_rules(rules)
         self.tags = tags
         self.uuid = uuid

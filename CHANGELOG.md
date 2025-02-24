@@ -14,7 +14,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
-- Rule parameter on DynamicBrcode resource
+- rule parameter on DynamicBrcode resource
+- display_description parameter on DynamicBrcode resource
 
 ### Added
 - MerchantSession and MerchantSessionPurchase resources

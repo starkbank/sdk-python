@@ -10,6 +10,7 @@ example_brcode = DynamicBrcode(
     tags=[
         "python-SDK/test"
     ],
+    display_description="Payment for service #1234",
     rules=[
         Rule(
             key="allowedTaxIds",
