@@ -49,6 +49,10 @@ is as easy as sending a text message to your client!
     - [CorporateBalance](#get-your-corporatebalance): View your corporate balance
     - [CorporateTransactions](#query-corporatetransactions): View the transactions that have affected your corporate balance
     - [CorporateEnums](#corporate-enums): Query enums related to the corporate purchases, such as merchant categories, countries and card purchase methods
+    - [MerchantCard](#query-merchantcards): Stores information about approved purchase cards for reuse
+    - [MerchantSession](#create-a-merchantsession): Manages a session to create a purchase with a new card
+    - [MerchantPurchase](#create-a-merchantpurchase): Allows a merchant to charge their customers using debit or credit cards
+    - [MerchantInstallment](#query-merchantinstallments): Tracks the lifecycle of purchase installments
     - [Split](#query-splits): Split received Invoice payments between different receivers
     - [SplitReceiver](#create-splitreceivers): Receiver of an Invoice split
     - [Webhooks](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
@@ -2331,6 +2335,210 @@ import starkbank
 log = starkbank.splitreceiver.log.get("5155165527080960")
 
 print(log)
+```
+
+## Query MerchantCards
+
+Get a list of merchant cards in chunks of at most 100. If you need smaller chunks, use the limit parameter.
+
+```python
+import starkbank
+
+merchant_cards = starkbank.merchantcard.query(limit=3)
+for merchant_card in merchant_cards:
+    print(merchant_card)
+```
+
+## Get a MerchantCard
+
+Retrieve detailed information about a specific card by its id.
+
+```python
+import starkbank
+
+merchantcard = starkbank.merchantcard.get('5950134772826112')
+print(merchantcard)
+```
+
+## Create a MerchantSession
+
+The Merchant Session allows you to create a session prior to a purchase.
+Sessions are essential for defining the parameters of a purchase, including funding type, expiration, 3DS, and more.
+
+```python
+import starkbank
+
+merchant_session = starkbank.merchantsession.create({
+    "allowedFundingTypes": [
+        "debit",
+        "credit"
+    ],
+    "allowedInstallments": [
+        {
+            "totalAmount": 0,
+            "count": 1
+        },
+        {
+            "totalAmount": 12000,
+            "count": 2
+        },
+        {
+            "totalAmount": 18000,
+            "count": 12
+        }
+    ],
+    "expiration": 3600,
+    "challengeMode": "disabled",
+    "tags": [
+        "your-tags"
+    ]
+})
+
+print(merchant_session)
+```
+
+You can create a MerchantPurchase through a MerchantSession by passing its UUID.
+**Note**: This method must be implemented in your front-end to ensure that sensitive card data does not pass through the back-end of the integration.
+
+## Create a MerchantSession Purchase
+
+This route can be used to create a Merchant Purchase directly from the payer's client application.
+The UUID of a Merchant Session that was previously created by the merchant is necessary to access this route.
+
+```python
+import starkbank
+
+merchant_session_purchase = starkbank.merchantsession.purchase(
+      uuid="0bb894a2697d41d99fe02cad2c00c9bc",
+      amount=18000,
+      installment_count=12,
+      card_expiration="2035-01",
+      card_number="5448280000000007",
+      card_security_code="123",
+      holder_name="Margaery Tyrell",
+      holder_email="margaery.tyrell@email.com",
+      holder_phone="11998663456",
+      funding_type="credit",
+      billing_country_code="BRA",
+      billing_city="São Paulo",
+      billing_state_code="SP",
+      billing_street_line1="Rua do Jardim de cima, 123",
+      billing_street_line2="1 andar",
+      billing_zip_code="11111-111",
+      metadata={
+        "extraData": "extraData",
+        "language": "pt-BR",
+        "timezoneOffset": 3,
+        "userAgent": "Mozilla",
+        "userIp": "255.255.255.255"
+      }
+    )
+
+print(merchant_session_purchase)
+```
+
+## Query MerchantSessions
+
+Get a list of merchant sessions in chunks of at most 100. If you need smaller chunks, use the limit parameter.
+
+```python
+import starkbank
+
+merchant_sessions = starkbank.merchantsession.query(limit=3)
+for merchant_session in merchant_sessions:
+    print(merchant_session)
+```
+
+## Get a MerchantSession
+
+Retrieve detailed information about a specific session by its id.
+
+```python
+import starkbank
+
+merchant_session = starkbank.merchantsession.get('5950134772826112')
+print(merchant_session)
+```
+
+## Create a MerchantPurchase
+
+The Merchant Purchase resource can be used to charge customers with credit or debit cards.
+If a card hasn't been used before, a Merchant Session Purchase must be created and approved with that specific card before it can be used directly in a Merchant Purchase.
+
+```python
+import starkbank
+
+merchant_purchase = starkbank.merchantpurchase.create(
+    starkbank.MerchantPurchase(
+        amount=10000,
+        installment_count=5,
+        card_id="6295415968235520",
+        funding_type="credit",
+        challenge_mode="disabled",
+        billing_city="Sao Paulo",
+        billing_country_code="BRA",
+        billing_state_code="SP",
+        billing_street_line_1="Rua Casterly Rock, 2000",
+        billing_street_line_2="1 andar",
+        billing_zip_code="11111-111",
+        holder_email="tywin.lannister@gmail.com",
+        holder_phone="11985923451",
+        metadata={
+            "userAgent": "userAgent",
+            "userIp": "255.255.255.255",
+            "language": "pt-BR",
+            "timezoneOffset": 3,
+            "extraData": "extraData"
+        },
+        tags=["teste"]
+    )
+)
+```
+
+## Query MerchantPurchases
+
+Get a list of merchant purchases in chunks of at most 100. If you need smaller chunks, use the limit parameter.
+
+```python
+import starkbank
+
+merchant_purchases = starkbank.merchantpurchase.query(limit=3)
+for merchant_purchase in merchant_purchases:
+    print(merchant_purchase)
+```
+
+## Get a MerchantPurchase
+
+Retrieve detailed information about a specific purchase by its id.
+
+```python
+import starkbank
+
+merchant_purchase = starkbank.merchantpurchase.get('5950134772826112')
+print(merchant_purchase)
+```
+
+## Query MerchantInstallments
+
+Get a list of merchant installments in chunks of at most 100. If you need smaller chunks, use the limit parameter.
+
+```python
+import starkbank
+
+merchant_installments = starkbank.merchantinstallment.query(limit=3)
+for merchant_installment in merchant_installments:
+    print(merchant_installment)
+```
+
+## Get a MerchantInstallment
+
+Retrieve detailed information about a specific installment by its id.
+
+```python
+import starkbank
+
+merchant_installment = starkbank.merchantinstallment.get('5950134772826112')
+print(merchant_installment)
 ```
 
 ## Create a webhook subscription
