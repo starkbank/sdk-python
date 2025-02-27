@@ -2,6 +2,7 @@ import starkbank
 from unittest import TestCase, main
 from tests.utils.user import exampleProject
 
+
 starkbank.user = exampleProject
 
 
@@ -16,7 +17,7 @@ class TestCorporateCardLogQuery(TestCase):
 class TestCorporateCardLogGet(TestCase):
 
     def test_success(self):
-        logs = starkbank.corporatecard.log.query(limit=1)
+        logs = starkbank.corporatecard.log.query(limit=1, types=["created"])
         log = starkbank.corporatecard.log.get(id=next(logs).id)
         self.assertEqual(log.id, str(log.id))
 
