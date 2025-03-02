@@ -8,6 +8,22 @@ from starkcore.error import InvalidSignatureError
 starkbank.user = exampleProject
 
 
+class TestCorporatePurchasePage(TestCase):
+
+    def test_success(self):
+        cursor = None
+        ids = []
+        for _ in range(2):
+            purchases, cursor = starkbank.corporatepurchase.page(limit=2, cursor=cursor)
+            for purchase in purchases:
+                print(purchase)
+                self.assertFalse(purchase.id in ids)
+                ids.append(purchase.id)
+            if cursor is None:
+                break
+        self.assertTrue(len(ids) == 4)
+
+
 class TestCorporatePurchaseQuery(TestCase):
 
     def test_success(self):
