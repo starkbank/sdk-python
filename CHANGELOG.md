@@ -13,10 +13,13 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.28.0] - 2025-03-02
 ### Added
 - rule parameter on DynamicBrcode resource
 - display_description parameter on DynamicBrcode resource
 
+## [2.27.0] - 2025-02-27
 ### Added
 - MerchantSession and MerchantSessionPurchase resources
 
