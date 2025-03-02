@@ -2,13 +2,20 @@
 from copy import deepcopy
 from random import randint
 from starkbank import DynamicBrcode
-
+from starkbank.dynamicbrcode import Rule
 
 example_brcode = DynamicBrcode(
     amount=400000,
     expiration=3600,
     tags=[
         "python-SDK/test"
+    ],
+    display_description="Payment for service #1234",
+    rules=[
+        Rule(
+            key="allowedTaxIds",
+            value=["012.345.678-90"]
+        )
     ]
 )
 
