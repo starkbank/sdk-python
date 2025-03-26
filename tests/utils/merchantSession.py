@@ -1,6 +1,26 @@
 # coding: utf-8
+import starkbank
 from copy import deepcopy
 from starkbank import MerchantSession
+from starkbank.merchantsession import AllowedInstallment
+
+
+def generate_example_merchant_session(tags, challenge_mode):
+    allowed_installments = [
+        AllowedInstallment(total_amount=5000, count=1),
+        AllowedInstallment(total_amount=5500, count=2),
+    ]
+    merchant_session = starkbank.merchantsession.create(
+        MerchantSession(
+            allowed_funding_types=["debit", "credit"],
+            allowed_installments=allowed_installments,
+            expiration=3600,
+            challenge_mode=challenge_mode,
+            tags=tags,
+        )
+    )
+
+    return merchant_session
 
 
 def json_to_merchant_session(json_data):
@@ -15,29 +35,15 @@ def json_to_merchant_session(json_data):
 
 def generate_example_merchant_session_json(challengeMode):
     merchant_session_json = {
-        "allowedFundingTypes": [
-            "debit",
-            "credit"
-        ],
+        "allowedFundingTypes": ["debit", "credit"],
         "allowedInstallments": [
-            {
-                "totalAmount": 0,
-                "count": 1
-            },
-            {
-                "totalAmount": 120,
-                "count": 2
-            },
-            {
-                "totalAmount": 180,
-                "count": 12
-            }
+            {"totalAmount": 0, "count": 1},
+            {"totalAmount": 120, "count": 2},
+            {"totalAmount": 180, "count": 12},
         ],
         "expiration": 3600,
         "challengeMode": challengeMode,
-        "tags": [
-            "yourTags"
-        ]
+        "tags": ["yourTags"],
     }
     return deepcopy(json_to_merchant_session(merchant_session_json))
 
@@ -77,8 +83,7 @@ def generate_example_merchant_session_purchase_challenge_mode_enabled_json():
             "userIp": "255.255.255.255",
             "language": "pt-BR",
             "timezoneOffset": 3,
-            "extraData": "extraData"
-        }
+            "extraData": "extraData",
+        },
     }
     return deepcopy(merchant_session_purchase_json)
-

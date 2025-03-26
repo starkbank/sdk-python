@@ -32,7 +32,7 @@ def get(id, user=None):
     return rest.get_id(resource=_resource, id=id, user=user)
 
 
-def query(limit=None, after=None, before=None, status=None, tags=None, ids=None, user=None):
+def query(limit=None, after=None, before=None, status=None, tags=None, ids=None, user=None, purchase_ids=None):
     return rest.get_stream(
         resource=_resource,
         limit=limit,
@@ -42,10 +42,11 @@ def query(limit=None, after=None, before=None, status=None, tags=None, ids=None,
         tags=tags,
         ids=ids,
         user=user,
+        purchase_ids=purchase_ids,
     )
 
 
-def page(cursor=None, limit=None, after=None, before=None, status=None, tags=None, ids=None, user=None):
+def page(cursor=None, limit=None, after=None, before=None, status=None, tags=None, ids=None, user=None, purchase_ids=None):
     return rest.get_page(
         resource=_resource,
         cursor=cursor,
@@ -56,5 +57,6 @@ def page(cursor=None, limit=None, after=None, before=None, status=None, tags=Non
         tags=tags,
         ids=ids,
         user=user,
+        purchase_ids=purchase_ids,
     )
 
