@@ -13,6 +13,15 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- Support for filtering by `card_ids` and `types` in `query` and `page` functions for `merchantcard/log`.
+- Support for filtering by `purchase_ids` in `query` and `page` functions for `merchantinstallment`.
+- Support for filtering by `installment_ids` and `types` in `query` and `page` functions for `merchantinstallment/log`.
+- Support for filtering by `purchase_ids` and `types` in `query` and `page` functions for `merchantpurchase/log`.
+- Support for filtering by `session_ids` and `types` in `query` and `page` functions for `merchantsession/log`.
+
+### Changed
+- Removed filters for `status`, `tags`, and `ids` from `query` and `page` functions in `merchantcard/log`, `merchantinstallment`, `merchantinstallment/log`, `merchantpurchase/log`, and `merchantsession/log`.
 
 ## [2.28.0] - 2025-03-02
 ### Added
