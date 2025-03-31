@@ -14,14 +14,14 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
-- Support for filtering by `card_ids` and `types` in `query` and `page` functions for `merchantcard/log`.
-- Support for filtering by `purchase_ids` in `query` and `page` functions for `merchantinstallment`.
-- Support for filtering by `installment_ids` and `types` in `query` and `page` functions for `merchantinstallment/log`.
-- Support for filtering by `purchase_ids` and `types` in `query` and `page` functions for `merchantpurchase/log`.
-- Support for filtering by `session_ids` and `types` in `query` and `page` functions for `merchantsession/log`.
+- support for filtering by 'card_ids' and 'types' in 'query' and 'page' functions for 'MerchantCardLog'
+- support for filtering by 'purchase_ids' in 'query' and 'page' functions for 'MerchantInstallment'
+- support for filtering by 'installment_ids' and 'types' in 'query' and 'page' functions for 'MerchantInstallmentLog'
+- support for filtering by 'purchase_ids' and 'types' in 'query' and 'page' functions for 'MerchantPurchaseLog'
+- support for filtering by 'session_ids' and 'types' in 'query' and 'page' functions for 'MerchantSessionLog'
 
-### Changed
-- Removed filters for `status`, `tags`, and `ids` from `query` and `page` functions in `merchantcard/log`, `merchantinstallment`, `merchantinstallment/log`, `merchantpurchase/log`, and `merchantsession/log`.
+### Removed
+- filters for 'status', 'tags' and 'ids' from 'query' and 'page' functions in 'MerchantCardLog', 'MerchantInstallment', 'MerchantInstallmentLog', 'MerchantPurchaseLog' and 'MerchantSessionLog'
 
 ## [2.28.0] - 2025-03-02
 ### Added
