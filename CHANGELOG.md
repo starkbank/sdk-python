@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.28.1] - 2025-04-02
 ### Added
 - support for filtering by 'card_ids' and 'types' in 'query' and 'page' functions for 'MerchantCardLog'
 - support for filtering by 'purchase_ids' in 'query' and 'page' functions for 'MerchantInstallment'
