@@ -14,6 +14,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 
+### Fixed
+- BrcodePreview statuses to "created", "paid", "canceled" or "expired".
+
 ## [2.28.1] - 2025-04-02
 ### Added
 - support for filtering by 'card_ids' and 'types' in 'query' and 'page' functions for 'MerchantCardLog'
