@@ -14,6 +14,14 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 
+## [2.29.0] - 2024-01-09
+### Added
+- InvoicePullRequest resource for requesting payments from subscriptions
+- InvoicePullRequest.Log sub-resource
+- InvoicePullSubscription resource for creating recurring payment subscriptions  
+- InvoicePullSubscription.Log sub-resource
+- Support for Automatic Pix feature including manual and automatic payment collection
+
 ## [2.28.1] - 2025-04-02
 ### Added
 - support for filtering by 'card_ids' and 'types' in 'query' and 'page' functions for 'MerchantCardLog'

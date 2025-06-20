@@ -1,4 +1,4 @@
-version = "2.28.1"
+version = "2.29.0"
 
 user = None
 language = "en-US"
@@ -105,6 +105,12 @@ from .paymentrequest.__paymentrequest import PaymentRequest
 
 from . import invoice
 from .invoice.__invoice import Invoice
+
+from . import invoicepullrequest
+from .invoicepullrequest.__invoicepullrequest import InvoicePullRequest
+
+from . import invoicepullsubscription
+from .invoicepullsubscription.__invoicepullsubscription import InvoicePullSubscription
 
 from . import dictkey
 from .dictkey.__dictkey import DictKey
