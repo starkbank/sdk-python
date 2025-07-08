@@ -31,6 +31,8 @@ is as easy as sending a text message to your client!
     - [DictKeys](#get-dict-key): Pix Key queries to use with Transfers
     - [Institutions](#query-bacen-institutions): Institutions recognized by the Central Bank
     - [Invoices](#create-invoices): Reconciled receivables (dynamic Pix QR Codes)
+    - [InvoicePullRequests](#create-invoicepullrequests): Request payments from subscriptions
+    - [InvoicePullSubscriptions](#create-invoicepullsubscriptions): Create recurring payment subscriptions
     - [DynamicBrcode](#create-dynamicbrcodes): Simplified reconciled receivables (dynamic Pix QR Codes)
     - [Deposits](#query-deposits): Other cash-ins (static Pix QR Codes, DynamicBrcodes, manual Pix, etc)
     - [Boletos](#create-boletos): Boleto receivables
@@ -755,6 +757,192 @@ import starkbank
 paymentInformation = starkbank.invoice.payment("5155165527080960")
 
 print(paymentInformation)
+```
+
+## Create InvoicePullRequests
+
+Invoice Pull Requests allow you to request payments from existing subscriptions with specific payment schedules.
+
+```python
+import starkbank
+from datetime import datetime, timedelta
+
+requests = starkbank.invoicepullrequest.create([
+    starkbank.InvoicePullRequest(
+        subscription_id="5656565656565656",  # Active subscription ID
+        invoice_id="4545454545454545",      # Valid invoice ID
+        due=datetime.utcnow() + timedelta(days=3),  # Min 2 days in future
+        attempt_type="default",  # Options: "default", "retry"
+        display_description="Monthly subscription payment",
+        tags=["subscription", "monthly"],
+        external_id="unique-external-id-001"
+    )
+])
+
+for request in requests:
+    print(request)
+```
+
+**Note**: Instead of using InvoicePullRequest objects, you can also pass each request element in dictionary format
+
+## Get an InvoicePullRequest
+
+After its creation, information on an InvoicePullRequest may be retrieved by its id.
+
+```python
+import starkbank
+
+request = starkbank.invoicepullrequest.get("5155165527080960")
+
+print(request)
+```
+
+## Query InvoicePullRequests
+
+You can query multiple InvoicePullRequests according to filters.
+
+```python
+import starkbank
+from datetime import datetime
+
+requests = starkbank.invoicepullrequest.query(
+    status=["pending", "scheduled"],
+    subscription_ids=["5656565656565656"],
+    after=datetime(2020, 1, 1),
+    before=datetime(2020, 3, 1)
+)
+
+for request in requests:
+    print(request)
+```
+
+## Cancel an InvoicePullRequest
+
+You can cancel an InvoicePullRequest that is in "pending" or "scheduled" status.
+
+```python
+import starkbank
+
+request = starkbank.invoicepullrequest.cancel("5155165527080960")
+
+print(request)
+```
+
+## Query InvoicePullRequest logs
+
+Logs help you understand the life cycle of an InvoicePullRequest.
+
+```python
+import starkbank
+
+logs = starkbank.invoicepullrequest.log.query(
+    request_ids=["5155165527080960"],
+    limit=50
+)
+
+for log in logs:
+    print(log)
+```
+
+## Get an InvoicePullRequest log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
+log = starkbank.invoicepullrequest.log.get("5155165527080960")
+
+print(log)
+```
+
+## Create InvoicePullSubscriptions
+
+Invoice Pull Subscriptions allow you to create recurring payment agreements with your customers. These subscriptions define the payment schedule, amounts, and collection methods.
+
+```python
+import starkbank
+from datetime import datetime, timedelta
+
+subscriptions = starkbank.invoicepullsubscription.create([
+    starkbank.InvoicePullSubscription(
+        start=datetime.today() + timedelta(days=1),
+        interval="month",  # Options: "week", "month", "quarter", "semester", "year"
+        pull_mode="manual",  # Options: "manual", "automatic"
+        pull_retry_limit=3,  # Options: 0, 3
+        type="qrcode",  # Options: "push", "qrcode", "qrcodeAndPayment", "paymentAndOrQrcode"
+        amount=5000,  # R$ 50.00 in cents
+        display_description="Monthly subscription",
+        reference_code="SUB-2024-001",
+        name="John Doe",
+        tax_id="01234567890",
+        tags=["subscription", "monthly", "premium"],
+        external_id="unique-subscription-001"
+    )
+])
+
+for subscription in subscriptions:
+    print(subscription)
+```
+
+**Note**: Instead of using InvoicePullSubscription objects, you can also pass each subscription element in dictionary format
+
+## Get an InvoicePullSubscription
+
+After its creation, information on an InvoicePullSubscription may be retrieved by its id.
+
+```python
+import starkbank
+
+subscription = starkbank.invoicepullsubscription.get("5155165527080960")
+
+print(subscription)
+```
+
+## Query InvoicePullSubscriptions
+
+You can query multiple InvoicePullSubscriptions according to filters.
+
+```python
+import starkbank
+from datetime import datetime
+
+subscriptions = starkbank.invoicepullsubscription.query(
+    status=["active"],
+    after=datetime(2020, 1, 1),
+    before=datetime(2020, 3, 1)
+)
+
+for subscription in subscriptions:
+    print(subscription)
+```
+
+## Query InvoicePullSubscription logs
+
+Logs help you understand the life cycle of an InvoicePullSubscription.
+
+```python
+import starkbank
+
+logs = starkbank.invoicepullsubscription.log.query(
+    subscription_ids=["5155165527080960"],
+    limit=50
+)
+
+for log in logs:
+    print(log)
+```
+
+## Get an InvoicePullSubscription log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
+log = starkbank.invoicepullsubscription.log.get("5155165527080960")
+
+print(log)
 ```
 
 ## Create DynamicBrcodes
@@ -2550,7 +2738,7 @@ import starkbank
 
 webhook = starkbank.webhook.create(
     url="https://webhook.site/dd784f26-1d6a-4ca6-81cb-fda0267761ec",
-    subscriptions=["transfer", "boleto", "boleto-payment", "boleto-holmes", "brcode-payment", "utility-payment", "deposit", "invoice"],
+    subscriptions=["transfer", "boleto", "boleto-payment", "boleto-holmes", "brcode-payment", "utility-payment", "deposit", "invoice", "invoice-pull-request", "invoice-pull-subscription"],
 )
 
 print(webhook)
@@ -2632,6 +2820,12 @@ elif event.subscription == "deposit":
 
 elif event.subscription == "invoice":
     print(event.log.invoice)
+
+elif event.subscription == "invoice-pull-request":
+    print(event.log.request)
+
+elif event.subscription == "invoice-pull-subscription":
+    print(event.log.subscription)
 ```
 
 ## Query webhook events

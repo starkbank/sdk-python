@@ -13,6 +13,12 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- InvoicePullRequest resource for requesting payments from subscriptions
+- InvoicePullRequest.Log sub-resource
+- InvoicePullSubscription resource for creating recurring payment subscriptions  
+- InvoicePullSubscription.Log sub-resource
+- Support for Automatic Pix feature including manual and automatic payment collection
 
 ## [2.28.1] - 2025-04-02
 ### Added
