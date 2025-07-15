@@ -28,7 +28,6 @@ class TestPaymentPreviewCreate(TestCase):
         ]
 
         for preview in starkbank.paymentpreview.create(previews=previews):
-            print(preview)
             paymentClass = {
                 "brcode-payment": BrcodePreview,
                 "boleto-payment": BoletoPreview,

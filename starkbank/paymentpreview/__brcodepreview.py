@@ -19,10 +19,11 @@ class BrcodePreview(SubResource):
     - reduction_amount [integer]: Current value reduction value in cents that this payment is expecting. ex: 123 (= R$1,23)
     - discount_amount [integer]: Current discount value in cents that this payment is expecting. ex: 123 (= R$1,23)
     - reconciliation_id [string]: Reconciliation ID linked to this payment. ex: "txId", "payment-123"
+    - description [string]: Payment description informed by the receiver. ex: "Payment for service #1234"
     """
 
     def __init__(self, status, name, tax_id, bank_code, account_type, allow_change, amount, nominal_amount,
-                 interest_amount, fine_amount, reduction_amount, discount_amount, reconciliation_id):
+                 interest_amount, fine_amount, reduction_amount, discount_amount, reconciliation_id, description):
         self.status = status
         self.name = name
         self.tax_id = tax_id
@@ -36,6 +37,7 @@ class BrcodePreview(SubResource):
         self.reduction_amount = reduction_amount
         self.discount_amount = discount_amount
         self.reconciliation_id = reconciliation_id
+        self.description = description
 
 
 _sub_resource = {"class": BrcodePreview, "name": "BrcodePreview"}
