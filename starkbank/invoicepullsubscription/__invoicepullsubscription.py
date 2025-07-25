@@ -49,10 +49,10 @@ class InvoicePullSubscription(Resource):
         self.amount = amount
         self.amount_min_limit = amount_min_limit
         self.display_description = display_description
-        self.due = due
+        self.due = None if due == "" else check_datetime_or_date(due)
         self.external_id = external_id
         self.reference_code = reference_code
-        self.end = check_datetime_or_date(end)
+        self.end = None if end == "" else check_datetime_or_date(end)
         self.data = data
         self.name = name
         self.tax_id = tax_id
