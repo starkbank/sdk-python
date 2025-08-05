@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.30.1] - 2025-08-05
 ### Fixed
 - end and due attributes to InvoicePullSubscription
 
