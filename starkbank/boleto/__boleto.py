@@ -1,7 +1,8 @@
 from ..utils import rest
+from starkcore.utils.api import from_api_json
 from starkcore.utils.resource import Resource
 from starkcore.utils.checks import check_date, check_datetime
-
+from ..split.__split import _resource as _split_resource, Split
 
 class Boleto(Resource):
     """# Boleto object
@@ -43,7 +44,7 @@ class Boleto(Resource):
     def __init__(self, amount, name, tax_id, street_line_1, street_line_2, district, city, state_code, zip_code,
                  due=None, fine=None, interest=None, overdue_limit=None, tags=None, descriptions=None, discounts=None,
                  receiver_name=None, receiver_tax_id=None, id=None, fee=None, line=None, bar_code=None, status=None,
-                 workspace_id=None, transaction_ids=None, created=None, our_number=None):
+                 workspace_id=None, transaction_ids=None, created=None, our_number=None, splits=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -72,9 +73,21 @@ class Boleto(Resource):
         self.workspace_id = workspace_id
         self.created = check_datetime(created)
         self.our_number = our_number
+        self.splits = _parse_splits(splits)
 
 
 _resource = {"class": Boleto, "name": "Boleto"}
+
+def _parse_splits(splits):
+    if splits is None:
+        return None
+    parsed_splits = []
+    for split in splits:
+        if isinstance(split, Split):
+            parsed_splits.append(split)
+            continue
+        parsed_splits.append(from_api_json(_split_resource, split))
+    return parsed_splits
 
 
 def create(boletos, user=None):
