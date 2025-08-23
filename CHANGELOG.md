@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- dynamicBrCode and brCodePreview docstring
 
 ## [2.30.1] - 2025-08-05
 ### Fixed

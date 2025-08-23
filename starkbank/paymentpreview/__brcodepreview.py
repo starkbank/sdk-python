@@ -6,7 +6,7 @@ class BrcodePreview(SubResource):
     """# BrcodePreview object
     A BrcodePreview is used to get information from a BR Code you received before confirming the payment.
     ## Attributes (return-only):
-    - status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
+    - status [string]: Payment status. ex: "created", "paid", "canceled" or "expired"
     - name [string]: Payment receiver name. ex: "Tony Stark"
     - tax_id [string]: Payment receiver tax ID. ex: "012.345.678-90"
     - bank_code [string]: Payment receiver bank code. ex: "20018183"
