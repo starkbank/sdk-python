@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Changed
+- The create method from the Transaction resource is now deprecated
 ### Fixed
 - workspace name and username patch
 
