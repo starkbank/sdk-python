@@ -102,7 +102,9 @@ def update(id, username=None, name=None, allowed_tax_ids=None, status=None, pict
     """
     payload = {
         "allowedTaxIds": allowed_tax_ids,
-        "status": status
+        "status": status,
+        "name": name,
+        "username": username,
     }
 
     if picture:
