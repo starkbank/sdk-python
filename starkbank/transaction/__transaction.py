@@ -1,6 +1,7 @@
 from ..utils import rest
 from starkcore.utils.resource import Resource
 from starkcore.utils.checks import check_datetime, check_date
+from starkbank.error import StarkError
 
 
 class Transaction(Resource):
@@ -47,6 +48,9 @@ _resource = {"class": Transaction, "name": "Transaction"}
 
 
 def create(transactions, user=None):
+    """
+    Deprecated: Function deprecated since v2.31.0
+    """
     """# Create Transactions
     Send a list of Transaction objects for creation in the Stark Bank API
     ## Parameters (required):
@@ -56,7 +60,7 @@ def create(transactions, user=None):
     ## Return:
     - list of Transaction objects with updated attributes
     """
-    return rest.post_multi(resource=_resource, entities=transactions, user=user)
+    raise StarkError([{"code": "deprecated", "message": "Function deprecated since v2.31.0"}])
 
 
 def get(id, user=None):
