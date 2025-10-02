@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- brcode attribute from InvoicePullSubscription
 
 ## [2.31.0] - 2025-09-30
 ### Changed
