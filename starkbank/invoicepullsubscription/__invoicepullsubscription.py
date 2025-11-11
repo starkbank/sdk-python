@@ -38,7 +38,7 @@ class InvoicePullSubscription(Resource):
 
     def __init__(self, start, interval, pull_mode, pull_retry_limit, type, amount=None, amount_min_limit=None,
                  display_description=None, due=None, external_id=None, reference_code=None, end=None, data=None,
-                 name=None, tax_id=None, tags=None, id=None, status=None, bacen_id=None, created=None, updated=None):
+                 name=None, tax_id=None, tags=None, id=None, status=None, bacen_id=None, brcode=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.start = check_datetime_or_date(start)
@@ -59,6 +59,7 @@ class InvoicePullSubscription(Resource):
         self.tags = tags
         self.status = status
         self.bacen_id = bacen_id
+        self.brcode = brcode
         self.created = check_datetime(created)
         self.updated = check_datetime(updated)
 
