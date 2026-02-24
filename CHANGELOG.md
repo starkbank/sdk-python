@@ -13,6 +13,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- MarketplaceApp user type
+### Changed
+- starkcore to v0.6.0
 
 ## [2.32.0] - 2025-11-24
 ### Added
