@@ -5,7 +5,7 @@ language = "en-US"
 timeout = 15
 request_methods_prefix = "Joker"
 
-from starkcore import Organization, Project
+from starkcore import Organization, Project, MarketplaceApp
 
 from . import error
 from . import key
