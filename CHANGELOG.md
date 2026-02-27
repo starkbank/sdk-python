@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- holder_id attribute to MerchantSession
 
 ## [2.32.1] - 2026-02-24
 ### Added
