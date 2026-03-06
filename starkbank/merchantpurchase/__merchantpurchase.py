@@ -9,7 +9,7 @@ class MerchantPurchase(Resource):
     """
 
     def __init__(self, amount, card_id, funding_type, installment_count, id=None, card_expiration=None,
-                 card_number=None, card_security_code=None,holder_name=None, holder_email=None, holder_phone=None,
+                 card_number=None, card_security_code=None,holder_name=None, holder_email=None, holder_phone=None, holder_id=None,
                  billing_country_code=None, billing_city=None,billing_state_code=None, billing_street_line_1=None,
                  billing_street_line_2=None, billing_zip_code=None, metadata=None, card_ending=None,
                  challenge_mode=None, challenge_url=None, created=None, currency_code=None, end_to_end_id=None,
@@ -24,6 +24,7 @@ class MerchantPurchase(Resource):
         self.holder_name = holder_name
         self.holder_email = holder_email
         self.holder_phone = holder_phone
+        self.holder_id = holder_id
         self.funding_type = funding_type
         self.billing_country_code = billing_country_code
         self.billing_city = billing_city

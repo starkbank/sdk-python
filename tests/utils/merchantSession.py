@@ -30,6 +30,8 @@ def json_to_merchant_session(json_data):
         challenge_mode=json_data.get("challengeMode"),
         expiration=json_data.get("expiration"),
         tags=json_data.get("tags"),
+        holder_id=json_data.get("holderId"),
+        soft_descriptor=json_data.get("softDescriptor"),
     )
 
 
@@ -37,20 +39,22 @@ def generate_example_merchant_session_json(challengeMode):
     merchant_session_json = {
         "allowedFundingTypes": ["debit", "credit"],
         "allowedInstallments": [
-            {"totalAmount": 0, "count": 1},
-            {"totalAmount": 120, "count": 2},
-            {"totalAmount": 180, "count": 12},
+            {"totalAmount": 500, "count": 1},
+            {"totalAmount": 1000, "count": 2},
+            {"totalAmount": 6000, "count": 12},
         ],
         "expiration": 3600,
         "challengeMode": challengeMode,
         "tags": ["yourTags"],
+        "holderId": "5656565665",
+        "softDescriptor": "softDescriptor",
     }
     return deepcopy(json_to_merchant_session(merchant_session_json))
 
 
 def generate_example_merchant_session_purchase_challenge_mode_disabled_json():
     merchant_session_purchase_json = {
-        "amount": 180,
+        "amount": 6000,
         "installmentCount": 12,
         "cardExpiration": "2035-01",
         "cardNumber": "5277696455399733",
@@ -63,7 +67,7 @@ def generate_example_merchant_session_purchase_challenge_mode_disabled_json():
 
 def generate_example_merchant_session_purchase_challenge_mode_enabled_json():
     merchant_session_purchase_json = {
-        "amount": 180,
+        "amount": 6000,
         "installmentCount": 12,
         "cardExpiration": "2035-01",
         "cardNumber": "5277696455399733",
