@@ -14,6 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- holder_id query parameter to MerchantPurchase and MerchantSession
 - holder_id and soft_descriptor attributes to MerchantSession
 - holder_id attribute to MerchantPurchase
 
