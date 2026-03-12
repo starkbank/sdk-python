@@ -13,7 +13,7 @@ class MerchantSession(Resource):
     """
 
     def __init__(self, allowed_funding_types, allowed_installments, expiration, id=None, allowed_ips=None,
-                 challenge_mode=None, created=None, status=None, tags=None, updated=None, uuid=None):
+                 challenge_mode=None, created=None, status=None, tags=None, updated=None, uuid=None, holder_id=None, soft_descriptor=None):
         Resource.__init__(self, id=id)
 
         self.allowed_funding_types = allowed_funding_types
@@ -26,7 +26,8 @@ class MerchantSession(Resource):
         self.created = check_datetime(created)
         self.updated = check_datetime(updated)
         self.uuid = uuid
-
+        self.holder_id = holder_id
+        self.soft_descriptor = soft_descriptor
 
 _resource = {"class": MerchantSession, "name": "MerchantSession"}
 
@@ -51,7 +52,7 @@ def get(id, user=None):
     return rest.get_id(resource=_resource, id=id, user=user)
 
 
-def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):
+def query(limit=None, status=None, tags=None, ids=None, after=None, before=None, holder_id=None, user=None):
     return rest.get_stream(
         resource=_resource,
         limit=limit,
@@ -60,11 +61,12 @@ def query(limit=None, status=None, tags=None, ids=None, after=None, before=None,
         status=status,
         tags=tags,
         ids=ids,
+        holder_id=holder_id,
         user=user,
     )
 
 
-def page(cursor=None, limit=None, status=None, tags=None, ids=None, after=None, before=None, user=None):
+def page(cursor=None, limit=None, status=None, tags=None, ids=None, after=None, before=None, holder_id=None, user=None):
     return rest.get_page(
         resource=_resource,
         cursor=cursor,
@@ -74,6 +76,7 @@ def page(cursor=None, limit=None, status=None, tags=None, ids=None, after=None, 
         status=status,
         tags=tags,
         ids=ids,
+        holder_id=holder_id,
         user=user,
     )
 

@@ -9,9 +9,9 @@ class MerchantPurchase(Resource):
     """
 
     def __init__(self, amount, card_id, funding_type, installment_count, id=None, card_expiration=None,
-                 card_number=None, card_security_code=None,holder_name=None, holder_email=None, holder_phone=None,
+                 card_number=None, card_security_code=None,holder_name=None, holder_email=None, holder_phone=None, holder_id=None,
                  billing_country_code=None, billing_city=None,billing_state_code=None, billing_street_line_1=None,
-                 billing_street_line_2=None, billing_zip_code=None, metadata=None, card_ending=None,
+                 billing_street_line_2=None, billing_zip_code=None, metadata=None, card_ending=None, soft_descriptor=None,
                  challenge_mode=None, challenge_url=None, created=None, currency_code=None, end_to_end_id=None,
                  fee=None, network=None, source=None, status=None, tags=None, updated=None):
         Resource.__init__(self, id=id)
@@ -24,6 +24,7 @@ class MerchantPurchase(Resource):
         self.holder_name = holder_name
         self.holder_email = holder_email
         self.holder_phone = holder_phone
+        self.holder_id = holder_id
         self.funding_type = funding_type
         self.billing_country_code = billing_country_code
         self.billing_city = billing_city
@@ -34,6 +35,7 @@ class MerchantPurchase(Resource):
         self.metadata = metadata
         self.card_ending = card_ending
         self.card_id = card_id
+        self.soft_descriptor = soft_descriptor
         self.challenge_mode = challenge_mode
         self.challenge_url = challenge_url
         self.currency_code = currency_code
@@ -58,7 +60,7 @@ def get(id, user=None):
     return rest.get_id(resource=_resource, id=id, user=user)
 
 
-def query(limit=None, after=None, before=None, status=None, tags=None, ids=None, user=None):
+def query(limit=None, after=None, before=None, status=None, tags=None, ids=None, holder_id=None, user=None):
     return rest.get_stream(
         resource=_resource,
         limit=limit,
@@ -67,11 +69,12 @@ def query(limit=None, after=None, before=None, status=None, tags=None, ids=None,
         status=status,
         tags=tags,
         ids=ids,
+        holder_id=holder_id,
         user=user,
     )
 
 
-def page(cursor=None, limit=None, after=None, before=None, status=None, tags=None, ids=None, user=None):
+def page(cursor=None, limit=None, after=None, before=None, status=None, tags=None, ids=None, holder_id=None, user=None):
     return rest.get_page(
         resource=_resource,
         cursor=cursor,
@@ -81,6 +84,7 @@ def page(cursor=None, limit=None, after=None, before=None, status=None, tags=Non
         status=status,
         tags=tags,
         ids=ids,
+        holder_id=holder_id,
         user=user,
     )
 
