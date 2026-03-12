@@ -57,6 +57,7 @@ def json_to_merchant_purchase(json_data):
         billing_zip_code=json_data.get("billingZipCode"),
         metadata=json_data.get("metadata"),
         card_id=json_data.get("cardId"),
+        soft_descriptor=json_data.get("softDescriptor"),
     )
 
 
@@ -105,6 +106,7 @@ def generate_example_merchant_purchase_json(card_id):
         "holderEmail": "holdeName@email.com",
         "holderPhone": "11111111111",
         "holderId": "565656555656",
+        "softDescriptor": "Soft Descriptor",
         "metadata": {
             "userAgent": "userAgent",
             "userIp": "255.255.255.255",

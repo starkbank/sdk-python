@@ -11,7 +11,7 @@ class MerchantPurchase(Resource):
     def __init__(self, amount, card_id, funding_type, installment_count, id=None, card_expiration=None,
                  card_number=None, card_security_code=None,holder_name=None, holder_email=None, holder_phone=None, holder_id=None,
                  billing_country_code=None, billing_city=None,billing_state_code=None, billing_street_line_1=None,
-                 billing_street_line_2=None, billing_zip_code=None, metadata=None, card_ending=None,
+                 billing_street_line_2=None, billing_zip_code=None, metadata=None, card_ending=None, soft_descriptor=None,
                  challenge_mode=None, challenge_url=None, created=None, currency_code=None, end_to_end_id=None,
                  fee=None, network=None, source=None, status=None, tags=None, updated=None):
         Resource.__init__(self, id=id)
@@ -35,6 +35,7 @@ class MerchantPurchase(Resource):
         self.metadata = metadata
         self.card_ending = card_ending
         self.card_id = card_id
+        self.soft_descriptor = soft_descriptor
         self.challenge_mode = challenge_mode
         self.challenge_url = challenge_url
         self.currency_code = currency_code

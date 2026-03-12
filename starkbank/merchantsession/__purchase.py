@@ -12,7 +12,7 @@ class Purchase(Resource):
                  billing_city=None, billing_state_code=None, billing_street_line_1=None, billing_street_line_2=None,
                  billing_zip_code=None, metadata=None, card_ending=None, card_id=None, challenge_mode=None,
                  challenge_url=None, created=None, currency_code=None, end_to_end_id=None, fee=None, network=None,
-                 source=None, status=None, tags=None, updated=None):
+                 soft_descriptor=None, source=None, status=None, tags=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -40,6 +40,7 @@ class Purchase(Resource):
         self.end_to_end_id = end_to_end_id
         self.fee = fee
         self.network = network
+        self.soft_descriptor = soft_descriptor
         self.source = source
         self.status = status
         self.tags = tags
