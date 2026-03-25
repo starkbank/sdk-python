@@ -47,6 +47,7 @@ def json_to_merchant_purchase(json_data):
         holder_name=json_data.get("holderName"),
         holder_email=json_data.get("holderEmail"),
         holder_phone=json_data.get("holderPhone"),
+        holder_id=json_data.get("holderId"),
         funding_type=json_data.get("fundingType"),
         billing_country_code=json_data.get("billingCountryCode"),
         billing_city=json_data.get("billingCity"),
@@ -56,6 +57,7 @@ def json_to_merchant_purchase(json_data):
         billing_zip_code=json_data.get("billingZipCode"),
         metadata=json_data.get("metadata"),
         card_id=json_data.get("cardId"),
+        soft_descriptor=json_data.get("softDescriptor"),
     )
 
 
@@ -68,6 +70,7 @@ json_data = {
     "holderName": "Holder Name",
     "holderEmail": "holdeName@email.com",
     "holderPhone": "11111111111",
+    "holderId": "565656555656", 
     "fundingType": "credit",
     "billingCountryCode": "BRA",
     "billingCity": "São Paulo",
@@ -102,6 +105,8 @@ def generate_example_merchant_purchase_json(card_id):
         "billingZipCode": "11111-111",
         "holderEmail": "holdeName@email.com",
         "holderPhone": "11111111111",
+        "holderId": "565656555656",
+        "softDescriptor": "Soft Descriptor",
         "metadata": {
             "userAgent": "userAgent",
             "userIp": "255.255.255.255",

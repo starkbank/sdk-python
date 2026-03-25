@@ -8,11 +8,11 @@ class Purchase(Resource):
     """
 
     def __init__(self, amount, card_expiration, card_number, card_security_code, holder_name, funding_type, id=None,
-                 holder_email=None, holder_phone=None, installment_count=None, billing_country_code=None,
+                 holder_email=None, holder_phone=None, holder_id=None, installment_count=None, billing_country_code=None,
                  billing_city=None, billing_state_code=None, billing_street_line_1=None, billing_street_line_2=None,
                  billing_zip_code=None, metadata=None, card_ending=None, card_id=None, challenge_mode=None,
                  challenge_url=None, created=None, currency_code=None, end_to_end_id=None, fee=None, network=None,
-                 source=None, status=None, tags=None, updated=None):
+                 soft_descriptor=None, source=None, status=None, tags=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
@@ -23,6 +23,7 @@ class Purchase(Resource):
         self.funding_type = funding_type
         self.holder_email = holder_email
         self.holder_phone = holder_phone
+        self.holder_id = holder_id
         self.installment_count = installment_count
         self.billing_country_code = billing_country_code
         self.billing_city = billing_city
@@ -39,6 +40,7 @@ class Purchase(Resource):
         self.end_to_end_id = end_to_end_id
         self.fee = fee
         self.network = network
+        self.soft_descriptor = soft_descriptor
         self.source = source
         self.status = status
         self.tags = tags
