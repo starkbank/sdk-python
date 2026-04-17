@@ -130,5 +130,11 @@ from .splitreceiver.__splitreceiver import SplitReceiver
 from . import splitprofile
 from .splitprofile.__splitprofile import SplitProfile
 
+from . import verifiedaccount
+from .verifiedaccount.__verifiedaccount import VerifiedAccount
+
+from . import verifiedtransfer
+from .verifiedtransfer.__verifiedtransfer import VerifiedTransfer
+
 from . import request
 

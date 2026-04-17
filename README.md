@@ -44,6 +44,8 @@ is as easy as sending a text message to your client!
     - [DarfPayments](#create-darf-payment): Pay DARFs
     - [PaymentPreviews](#preview-payment-information-before-executing-the-payment): Preview all sorts of payments
     - [PaymentRequest](#create-payment-requests-to-be-approved-by-authorized-people-in-a-cost-center): Request a payment approval to a cost center
+    - [VerifiedAccount](#create-verifiedaccounts): Verify bank account details before initiating transfers
+    - [VerifiedTransfer](#create-verifiedtransfers): Create transfers to previously verified accounts
     - [CorporateHolders](#create-corporateholders): Manage cardholders
     - [CorporateCards](#create-corporatecards): Create virtual and/or physical cards
     - [CorporateInvoices](#create-corporateinvoices): Add money to your corporate balance
@@ -1963,6 +1965,142 @@ requests = starkbank.paymentrequest.query(center_id="123456789", limit=10)
 for request in requests:
     print(request)
 ```
+
+## Create VerifiedAccounts
+
+You can create VerifiedAccount objects to verify bank account details before initiating transfers.
+Verification can be done using bank account details or a Pix key.
+
+```python
+import starkbank
+
+# Verifying with bank details
+verified_accounts = starkbank.verifiedaccount.create([
+    starkbank.VerifiedAccount(
+        tax_id="012.345.678-90",
+        name="Anthony Edward Stark",
+        bank_code="20018183",
+        branch_code="1357-9",
+        number="876543-2",
+        type="checking",
+        tags=["employees", "monthly"]
+    ),
+])
+
+for account in verified_accounts:
+    print(account)
+```
+
+```python
+import starkbank
+
+# Verifying with Pix key
+verified_accounts = starkbank.verifiedaccount.create([
+    starkbank.VerifiedAccount(
+        tax_id="012.345.678-90",
+        key_id="tony@starkbank.com",
+    ),
+])
+
+for account in verified_accounts:
+    print(account)
+```
+
+**Note**: Instead of using VerifiedAccount objects, you can also pass each element in dictionary format
+
+## Query VerifiedAccounts
+
+You can query multiple VerifiedAccounts according to filters.
+
+```python
+import starkbank
+
+accounts = starkbank.verifiedaccount.query(
+    limit=10,
+    status="active",
+    tags=["employees"]
+)
+
+for account in accounts:
+    print(account)
+```
+
+## Get a VerifiedAccount
+
+To get a single VerifiedAccount by its id, run:
+
+```python
+import starkbank
+
+account = starkbank.verifiedaccount.get("5155165527080960")
+
+print(account)
+```
+
+## Cancel a VerifiedAccount
+
+To cancel a VerifiedAccount by its id, run:
+
+```python
+import starkbank
+
+account = starkbank.verifiedaccount.cancel("5155165527080960")
+
+print(account)
+```
+
+## Query VerifiedAccount logs
+
+You can query VerifiedAccount logs to better understand VerifiedAccount life cycles.
+
+```python
+import starkbank
+
+logs = starkbank.verifiedaccount.log.query(limit=50)
+
+for log in logs:
+    print(log.id)
+```
+
+## Get a VerifiedAccount log
+
+You can also get a specific log by its id.
+
+```python
+import starkbank
+
+log = starkbank.verifiedaccount.log.get("5155165527080960")
+
+print(log)
+```
+
+## Create VerifiedTransfers
+
+You can create VerifiedTransfer objects to send funds to a previously verified account.
+
+```python
+import starkbank
+
+verified_transfers = starkbank.verifiedtransfer.create([
+    starkbank.VerifiedTransfer(
+        amount=1234,
+        account_id="5656565656565656",
+        description="Payment for service #1234",
+        tags=["employees", "monthly"],
+        rules=[
+            starkbank.transfer.Rule(
+                key="resendingLimit",
+                value=5
+            )
+        ]
+    ),
+])
+
+for transfer in verified_transfers:
+    print(transfer)
+```
+
+**Note**: Instead of using VerifiedTransfer objects, you can also pass each element in dictionary format
 
 ## Corporate
 
