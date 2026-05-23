@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- CorporatePurchase page method
 
 ## [2.34.0] - 2026-05-07
 ### Changed
