@@ -103,6 +103,9 @@ from .paymentpreview.__paymentpreview import PaymentPreview
 from . import paymentrequest
 from .paymentrequest.__paymentrequest import PaymentRequest
 
+from . import paymentlink
+from .paymentlink.__paymentlink import PaymentLink
+
 from . import invoice
 from .invoice.__invoice import Invoice
 

@@ -44,6 +44,7 @@ is as easy as sending a text message to your client!
     - [DarfPayments](#create-darf-payment): Pay DARFs
     - [PaymentPreviews](#preview-payment-information-before-executing-the-payment): Preview all sorts of payments
     - [PaymentRequest](#create-payment-requests-to-be-approved-by-authorized-people-in-a-cost-center): Request a payment approval to a cost center
+    - [PaymentLinks](#create-paymentlinks): Shareable links to collect payments with credit/debit cards
     - [CorporateHolders](#create-corporateholders): Manage cardholders
     - [CorporateCards](#create-corporatecards): Create virtual and/or physical cards
     - [CorporateInvoices](#create-corporateinvoices): Add money to your corporate balance
@@ -1962,6 +1963,177 @@ requests = starkbank.paymentrequest.query(center_id="123456789", limit=10)
 
 for request in requests:
     print(request)
+```
+
+## Create PaymentLinks
+
+You can create shareable PaymentLinks to collect payments from your customers using credit or debit cards.
+
+```python
+import starkbank
+
+links = starkbank.paymentlink.create([
+    starkbank.PaymentLink(
+        name="Assinatura Premium",
+        amount=15000,  # R$ 150.00 in cents
+        usage_mode="single",
+        allowed_methods=["credit", "debit"],
+        allowed_installments=[
+            starkbank.paymentlink.AllowedInstallment(count=1, total_amount=15000),
+            starkbank.paymentlink.AllowedInstallment(count=2, total_amount=15750),
+            starkbank.paymentlink.AllowedInstallment(count=3, total_amount=16500),
+        ],
+        expiration=36000,  # 10 hours in seconds
+        description="Plano trinta dias",
+        success_url="https://merchant.com/obrigado",
+        tags=["campanha-abril", "plano-premium"],
+        items=[
+            starkbank.paymentlink.Item(
+                code="PREM-001",
+                description="Plano Premium Mensal",
+                quantity=1,
+                unit_price=15000,
+                total_price=15000,
+                discount=0,
+            ),
+        ],
+        metadata={
+            "customerId": "5678901234567890",
+            "orderId": "ORD-2026-001",
+        },
+    )
+])
+
+for link in links:
+    print(link)
+```
+
+**Note**: Instead of using PaymentLink objects, you can also pass each link element in dictionary format
+
+## Get a PaymentLink
+
+After its creation, information on a PaymentLink may be retrieved by its id.
+
+```python
+import starkbank
+
+link = starkbank.paymentlink.get("5155165527080960")
+
+print(link)
+```
+
+## Query PaymentLinks
+
+You can query multiple PaymentLinks according to filters.
+
+```python
+import starkbank
+from datetime import datetime
+
+links = starkbank.paymentlink.query(
+    status="active",
+    after=datetime(2020, 1, 1),
+    before=datetime(2020, 3, 1),
+)
+
+for link in links:
+    print(link)
+```
+
+## Update a PaymentLink
+
+You can cancel an active PaymentLink by passing 'canceling' in the status.
+
+```python
+import starkbank
+
+link = starkbank.paymentlink.update("5155165527080960", status="canceling")
+
+print(link)
+```
+
+## Query PaymentLink logs
+
+Logs help you understand the life cycle of a PaymentLink.
+
+```python
+import starkbank
+
+logs = starkbank.paymentlink.log.query(
+    payment_link_ids=["5155165527080960"],
+    limit=50,
+)
+
+for log in logs:
+    print(log)
+```
+
+## Get a PaymentLink log
+
+You can get a single log by its id.
+
+```python
+import starkbank
+
+log = starkbank.paymentlink.log.get("5155165527080960")
+
+print(log)
+```
+
+## Query PaymentLink attempts
+
+You can query payment attempts made against a PaymentLink.
+
+```python
+import starkbank
+
+attempts = starkbank.paymentlink.attempt.query(
+    payment_link_ids=["5155165527080960"],
+    limit=50,
+)
+
+for attempt in attempts:
+    print(attempt)
+```
+
+## Get a PaymentLink attempt
+
+You can get a single PaymentLink attempt by its id.
+
+```python
+import starkbank
+
+attempt = starkbank.paymentlink.attempt.get("5155165527080960")
+
+print(attempt)
+```
+
+## Query PaymentLink attempt logs
+
+You can query logs of payment attempts made against a PaymentLink.
+
+```python
+import starkbank
+
+logs = starkbank.paymentlink.attempt.log.query(
+    payment_link_attempt_ids=["5155165527080960"],
+    limit=50,
+)
+
+for log in logs:
+    print(log)
+```
+
+## Get a PaymentLink attempt log
+
+You can get a single PaymentLink attempt log by its id.
+
+```python
+import starkbank
+
+log = starkbank.paymentlink.attempt.log.get("5155165527080960")
+
+print(log)
 ```
 
 ## Corporate
