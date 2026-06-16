@@ -2577,6 +2577,7 @@ merchant_session = starkbank.merchantsession.create({
     ],
     "expiration": 3600,
     "challengeMode": "disabled",
+    "confirmationMode": "automatic",
     "tags": [
         "your-tags"
     ]
@@ -2584,6 +2585,8 @@ merchant_session = starkbank.merchantsession.create({
 
 print(merchant_session)
 ```
+
+Set `confirmationMode` to `"manual"` to create a pre-authorization session: the resulting purchase is approved but only captured once you explicitly confirm it (see [Confirm a MerchantPurchase](#confirm-a-merchantpurchase)). Manual confirmation is available only for credit funding types.
 
 You can create a MerchantPurchase through a MerchantSession by passing its UUID.
 **Note**: This method must be implemented in your front-end to ensure that sensitive card data does not pass through the back-end of the integration.
@@ -2683,6 +2686,8 @@ merchant_purchase = starkbank.merchantpurchase.create(
 )
 ```
 
+You may also pass `confirmation_mode="manual"` here to create a pre-authorization (credit only); the purchase is captured later via [Confirm a MerchantPurchase](#confirm-a-merchantpurchase). It defaults to `"automatic"`.
+
 ## Query MerchantPurchases
 
 Get a list of merchant purchases in chunks of at most 100. If you need smaller chunks, use the limit parameter.
@@ -2703,6 +2708,34 @@ Retrieve detailed information about a specific purchase by its id.
 import starkbank
 
 merchant_purchase = starkbank.merchantpurchase.get('5950134772826112')
+print(merchant_purchase)
+```
+
+## Confirm a MerchantPurchase
+
+When a purchase is created in `manual` confirmation mode (pre-authorization), it stays approved but uncaptured until you confirm it. Confirm it by updating its status to `confirmed`:
+
+```python
+import starkbank
+
+merchant_purchase = starkbank.merchantpurchase.update(
+    id="5950134772826112",
+    status="confirmed",
+    amount=10000,
+)
+print(merchant_purchase)
+```
+
+You can also use `update` to reverse a confirmed purchase (`status="reversed"`) or cancel an approved one (`status="canceled"`).
+
+## Cancel a MerchantPurchase
+
+Cancel an approved purchase or fully reverse a confirmed one. The operation is inferred from the purchase's current status:
+
+```python
+import starkbank
+
+merchant_purchase = starkbank.merchantpurchase.delete('5950134772826112')
 print(merchant_purchase)
 ```
 
