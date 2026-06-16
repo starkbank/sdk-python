@@ -28,6 +28,7 @@ def json_to_merchant_session(json_data):
         allowed_funding_types=json_data.get("allowedFundingTypes"),
         allowed_installments=json_data.get("allowedInstallments"),
         challenge_mode=json_data.get("challengeMode"),
+        confirmation_mode=json_data.get("confirmationMode"),
         expiration=json_data.get("expiration"),
         tags=json_data.get("tags"),
         holder_id=json_data.get("holderId"),
@@ -45,6 +46,24 @@ def generate_example_merchant_session_json(challengeMode):
         ],
         "expiration": 3600,
         "challengeMode": challengeMode,
+        "tags": ["yourTags"],
+        "holderId": "5656565665",
+        "softDescriptor": "softDescriptor",
+    }
+    return deepcopy(json_to_merchant_session(merchant_session_json))
+
+
+def generate_example_manual_confirmation_merchant_session_json():
+    merchant_session_json = {
+        "allowedFundingTypes": ["credit"],
+        "allowedInstallments": [
+            {"totalAmount": 500, "count": 1},
+            {"totalAmount": 1000, "count": 2},
+            {"totalAmount": 6000, "count": 12},
+        ],
+        "expiration": 3600,
+        "challengeMode": "disabled",
+        "confirmationMode": "manual",
         "tags": ["yourTags"],
         "holderId": "5656565665",
         "softDescriptor": "softDescriptor",

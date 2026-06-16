@@ -61,6 +61,15 @@ class TestMerchantPurchaseUpdate(TestCase):
             self.assertIsInstance(merchant_purchase.id, str)
 
 
+class TestMerchantPurchaseDelete(TestCase):
+
+    def test_success(self):
+        merchant_purchases = starkbank.merchantpurchase.query(limit=1, status="approved")
+        for merchant_purchase in merchant_purchases:
+            merchant_purchase = starkbank.merchantpurchase.delete(merchant_purchase.id)
+            self.assertIsInstance(merchant_purchase.id, str)
+
+
 if __name__ == '__main__':
     main()
 

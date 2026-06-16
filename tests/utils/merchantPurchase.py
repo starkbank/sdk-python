@@ -58,6 +58,7 @@ def json_to_merchant_purchase(json_data):
         metadata=json_data.get("metadata"),
         card_id=json_data.get("cardId"),
         soft_descriptor=json_data.get("softDescriptor"),
+        confirmation_mode=json_data.get("confirmationMode"),
     )
 
 
