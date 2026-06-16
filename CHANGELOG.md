@@ -13,6 +13,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- confirmation_mode attribute to MerchantSession, MerchantPurchase and MerchantSession.Purchase resources
+- delete method to MerchantPurchase resource
 
 ## [2.35.0] - 2026-06-29
 ### Added
