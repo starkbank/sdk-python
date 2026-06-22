@@ -23,6 +23,7 @@ class Transfer(Resource):
     - external_id [string, default None]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
     - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     - description [string, default None]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
+    - display_description [string, default None]: optional description to be shown in the receiver bank interface. ex: 'Payment for service #1234'
     - tags [list of strings, default []]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
     - rules [list of Transfer.Rules, default []]: list of Transfer.Rule objects for modifying transfer behavior. ex: [Transfer.Rule(key="resendingLimit", value=5)]
     ## Attributes (return-only):
@@ -36,7 +37,7 @@ class Transfer(Resource):
     """
 
     def __init__(self, amount, name, tax_id, bank_code, branch_code, account_number, account_type,
-                 external_id=None, scheduled=None, description=None, transaction_ids=None, metadata=None, 
+                 external_id=None, scheduled=None, description=None, display_description=None, transaction_ids=None, metadata=None, 
                  fee=None, tags=None, rules=None, status=None, id=None, created=None, updated=None
                 ):
         Resource.__init__(self, id=id)
@@ -51,6 +52,7 @@ class Transfer(Resource):
         self.external_id = external_id
         self.scheduled = check_datetime_or_date(scheduled)
         self.description = description
+        self.display_description = display_description
         self.tags = tags
         self.rules = _parse_rules(rules)
         self.fee = fee

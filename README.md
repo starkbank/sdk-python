@@ -419,6 +419,7 @@ transfers = starkbank.transfer.create([
         tax_id="012.345.678-90",
         name="Jon Snow",
         scheduled=datetime.utcnow() + timedelta(days=3),
+        display_description="Payment for service #1234",
         rules=[
             starkbank.transfer.Rule(
               key="resendingLimit",  # Set maximum number of retries if Transfer fails due to systemic issues at the receiver bank
