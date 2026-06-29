@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.35.0] - 2026-06-29
 ### Added
 - display_description attribute to Transfer resource
 
