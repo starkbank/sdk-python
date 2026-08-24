@@ -2,6 +2,7 @@ import starkbank
 from unittest import TestCase, main
 from tests.utils.user import exampleProject
 from tests.utils.merchantSession import generate_example_merchant_session_json, \
+    generate_example_manual_confirmation_merchant_session_json, \
     generate_example_merchant_session_purchase_challenge_mode_disabled_json, \
     generate_example_merchant_session_purchase_challenge_mode_enabled_json
 
@@ -13,6 +14,14 @@ class TestMerchantSessionCreate(TestCase):
 
     def test_success(self):
         merchant_session_json = generate_example_merchant_session_json("disabled")
+        merchant_session = starkbank.merchantsession.create(merchant_session_json)
+        self.assertIsNotNone(merchant_session.id)
+
+
+class TestMerchantSessionCreateManualConfirmation(TestCase):
+
+    def test_success(self):
+        merchant_session_json = generate_example_manual_confirmation_merchant_session_json()
         merchant_session = starkbank.merchantsession.create(merchant_session_json)
         self.assertIsNotNone(merchant_session.id)
 

@@ -13,7 +13,8 @@ class MerchantSession(Resource):
     """
 
     def __init__(self, allowed_funding_types, allowed_installments, expiration, id=None, allowed_ips=None,
-                 challenge_mode=None, created=None, status=None, tags=None, updated=None, uuid=None, holder_id=None, soft_descriptor=None):
+                 challenge_mode=None, created=None, status=None, tags=None, updated=None, uuid=None, holder_id=None,
+                 soft_descriptor=None, confirmation_mode=None):
         Resource.__init__(self, id=id)
 
         self.allowed_funding_types = allowed_funding_types
@@ -28,6 +29,7 @@ class MerchantSession(Resource):
         self.uuid = uuid
         self.holder_id = holder_id
         self.soft_descriptor = soft_descriptor
+        self.confirmation_mode = confirmation_mode
 
 _resource = {"class": MerchantSession, "name": "MerchantSession"}
 
