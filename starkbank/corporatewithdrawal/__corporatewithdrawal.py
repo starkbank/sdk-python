@@ -9,7 +9,7 @@ class CorporateWithdrawal(Resource):
     Banking balance.
     ## Parameters (required):
     - amount [integer]: CorporateWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
-    - external_id [string] CorporateWithdrawal external ID. ex: "12345"
+    - external_id [string]: CorporateWithdrawal external ID. ex: "12345"
     ## Parameters (optional):
     - tags [list of strings, default []]: list of strings for tagging. ex: ["tony", "stark"]
     ## Attributes (return-only):
@@ -68,8 +68,8 @@ def query(external_ids=None, after=None, before=None, limit=None, tags=None, use
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
     - external_ids [list of strings, default None]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call.
     ## Return:
@@ -93,8 +93,8 @@ def page(external_ids=None, after=None, before=None, limit=None, tags=None, curs
     ## Parameters (optional):
     - cursor [string, default None]: cursor returned on the previous page function call
     - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
-    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - external_ids [list of strings, default None]: external IDs. ex: ["5656565656565656", "4545454545454545"]
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call.

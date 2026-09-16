@@ -99,8 +99,8 @@ def query(limit=None, status=None, invoice_ids=None, external_ids=None, tags=Non
     Receive a generator of InvoicePullSubscription objects previously created in the Stark Bank API
     ## Parameters (optional):
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - status [list of strings, default None]: filter for status of retrieved objects. ex: ["active", "canceled"]
     - invoice_ids [list of strings, default None]: list of Invoice ids linked to the subscriptions. ex: ["5656565656565656", "4545454545454545"]
     - external_ids [list of strings, default None]: list of external_ids to filter retrieved objects. ex: ["my-external-id-1", "my-external-id-2"]
@@ -132,8 +132,8 @@ def page(cursor=None, limit=None, status=None, invoice_ids=None, external_ids=No
     ## Parameters (optional):
     - cursor [string, default None]: cursor returned on the previous page function call
     - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - status [list of strings, default None]: filter for status of retrieved objects. ex: ["active", "canceled"]
     - invoice_ids [list of strings, default None]: list of Invoice ids linked to the subscriptions. ex: ["5656565656565656", "4545454545454545"]
     - external_ids [list of strings, default None]: list of external_ids to filter retrieved objects. ex: ["my-external-id-1", "my-external-id-2"]

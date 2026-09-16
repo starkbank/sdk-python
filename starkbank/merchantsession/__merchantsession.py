@@ -96,8 +96,8 @@ def query(limit=None, status=None, tags=None, ids=None, after=None, before=None,
     - status [string, default None]: filter for status of retrieved objects. ex: "created"
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - holder_id [string, default None]: filter for sessions belonging to a specific card holder. ex: "5656565656565656"
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
@@ -126,8 +126,8 @@ def page(cursor=None, limit=None, status=None, tags=None, ids=None, after=None, 
     - status [string, default None]: filter for status of retrieved objects. ex: "created"
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - holder_id [string, default None]: filter for sessions belonging to a specific card holder. ex: "5656565656565656"
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
