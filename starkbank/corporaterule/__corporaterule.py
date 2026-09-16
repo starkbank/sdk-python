@@ -8,10 +8,10 @@ from starkbank.merchantcategory.__merchantcategory import _resource as _category
 class CorporateRule(Resource):
     """CorporateRule object
     The CorporateRule object displays the spending rules of CorporateCards and CorporateHolders created in your Workspace.
-    # Parameters (required):
+    ## Parameters (required):
     - name [string]: rule name. ex: "Travel" or "Food"
     - amount [integer]: maximum amount that can be spent in the informed interval. ex: 200000 (= R$ 2000.00)
-    # Parameters (optional):
+    ## Parameters (optional):
     - interval [string, default "lifetime"]: interval after which the rule amount counter will be reset to 0. ex: "instant", "day", "week", "month", "year" or "lifetime"
     - schedule [string, default None]: schedule time for user to spend. ex: "every monday, wednesday from 00:00 to 23:59 in America/Sao_Paulo"
     - purposes [list of string, default []]: list of strings representing the allowed purposes for card purchases, you can use this to restrict ATM withdrawals. ex: ["purchase", "withdrawal"]
@@ -19,7 +19,7 @@ class CorporateRule(Resource):
     - categories [list of MerchantCategories, default []]: merchant categories accepted by the rule. ex: [MerchantCategory(code="fastFoodRestaurants")]
     - countries [list of MerchantCountries, default []]: countries accepted by the rule. ex: [MerchantCountry(code="BRA")]
     - methods [list of CardMethods, default []]: card purchase methods accepted by the rule. ex: [CardMethod(code="magstripe")]
-    # Attributes (expanded return-only):
+    ## Attributes (return-only):
     - id [string]: unique id returned when a CorporateRule is created, used to update a specific CorporateRule. ex: "5656565656565656"
     - counter_amount [integer]: current rule spent amount. ex: 1000
     - currency_symbol [string]: currency symbol. ex: "R$"

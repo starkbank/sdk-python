@@ -101,8 +101,8 @@ def query(ids=None, limit=None, after=None, before=None, merchant_category_types
     ## Parameters (optional):
     - ids [list of strings, default None]: purchase IDs
     - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - merchant_category_types [list of strings, default None]: merchant category type. ex: "health"
     - holder_ids [list of strings, default None]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
     - card_ids [list of strings, default None]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
@@ -133,8 +133,8 @@ def page(merchant_category_types=None, holder_ids=None, card_ids=None, status=No
     ## Parameters (optional):
     - cursor [string, default None]: cursor returned on the previous page function call
     - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
-    - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-    - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+    - after [datetime.date or string, default None]: date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
+    - before [datetime.date or string, default None]: date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - merchant_category_types [list of strings, default None]: merchant category type. ex: "health"
     - holder_ids [list of strings, default None]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
     - card_ids [list of strings, default None]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
