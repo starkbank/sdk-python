@@ -1878,6 +1878,119 @@ log = starkbank.darfpayment.log.get("1902837198237992")
 print(log)
 ```
 
+## Create VerifiedAccounts
+
+You can create VerifiedAccounts to confirm that a bank account or Pix key belongs to a given tax ID before sending a transfer.
+
+```python
+import starkbank
+
+accounts = starkbank.verifiedaccount.create([
+    starkbank.VerifiedAccount(
+        tax_id="012.345.678-90",
+        name="Tony Stark",
+        bank_code="341",
+        branch_code="2201",
+        number="76543-8",
+        type="checking",
+        tags=["iron", "suit"],
+    ),
+    starkbank.VerifiedAccount(
+        tax_id="012.345.678-90",
+        key_id="tony@starkbank.com",
+        tags=["iron", "suit"],
+    ),
+])
+
+for account in accounts:
+    print(account)
+```
+
+## Get a VerifiedAccount
+
+You can get a specific VerifiedAccount by its id:
+
+```python
+import starkbank
+
+account = starkbank.verifiedaccount.get("5155165527080960")
+
+print(account)
+```
+
+## Cancel a VerifiedAccount
+
+You can cancel a VerifiedAccount by its id:
+
+```python
+import starkbank
+
+account = starkbank.verifiedaccount.cancel("5155165527080960")
+
+print(account)
+```
+
+## Query VerifiedAccounts
+
+To search for VerifiedAccounts using filters, run:
+
+```python
+import starkbank
+
+accounts = starkbank.verifiedaccount.query(
+    limit=10,
+    status="active",
+    tags=["iron", "suit"],
+)
+
+for account in accounts:
+    print(account)
+```
+
+## Query VerifiedAccount logs
+
+You can search for VerifiedAccount logs by specifying filters:
+
+```python
+import starkbank
+
+logs = starkbank.verifiedaccount.log.query(limit=10)
+
+for log in logs:
+    print(log)
+```
+
+## Get a VerifiedAccount log
+
+If you want to get a specific VerifiedAccount log by its id, just run:
+
+```python
+import starkbank
+
+log = starkbank.verifiedaccount.log.get("1902837198237992")
+
+print(log)
+```
+
+## Create VerifiedTransfers
+
+You can send a transfer to a previously verified account by creating a VerifiedTransfer:
+
+```python
+import starkbank
+
+transfers = starkbank.verifiedtransfer.create([
+    starkbank.VerifiedTransfer(
+        amount=1000,
+        account_id="5155165527080960",
+        tags=["iron", "suit"],
+    ),
+])
+
+for transfer in transfers:
+    print(transfer)
+```
+
 ## Preview payment information before executing the payment
 
 You can preview multiple types of payment to confirm any information before actually paying.
