@@ -1,5 +1,6 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# Pull requests get the checks that can pass without a live workspace. The
+# sandbox suite needs the CI project's credentials and an allowed IP, so it
+# runs on a schedule in sandbox-suite.yml instead of blocking every review.
 
 name: Python application
 
@@ -12,29 +13,25 @@ on:
 permissions:
   contents: read
 
-env:
-  SANDBOX_CENTER_ID: ${{ secrets.SANDBOX_CENTER_ID }}
-  SANDBOX_ID: ${{ secrets.SANDBOX_ID }}
-  SANDBOX_ORGANIZATION_ID: ${{ secrets.SANDBOX_ORGANIZATION_ID }}
-  SANDBOX_ORGANIZATION_PRIVATE_KEY: ${{ secrets.SANDBOX_ORGANIZATION_PRIVATE_KEY }}
-  SANDBOX_PRIVATE_KEY: ${{ secrets.SANDBOX_PRIVATE_KEY }}
-
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: "3.10"
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest
+        pip install flake8
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Test with pytest
-      run: |
-        pytest
+    - name: Compile every module
+      run: python -m compileall -q starkbank tests
+    - name: Import the package
+      run: python -c "import starkbank"
+    - name: Syntax errors and undefined names
+      run: flake8 starkbank --count --select=E9,F63,F7,F82 --show-source --statistics
