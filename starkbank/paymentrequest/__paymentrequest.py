@@ -25,12 +25,12 @@ class PaymentRequest(Resource):
     cost center page.
     ## Parameters (required):
     - center_id [string]: target cost center ID. ex: "5656565656565656"
-    - payment [Transfer, BoletoPayment, UtilityPayment, BrcodePayment, Transaction, DarfPayment, TaxPayment or dictionary]: payment entity that should be approved and executed.
+    - payment [Transfer, BoletoPayment, UtilityPayment, BrcodePayment, Transaction, DarfPayment, TaxPayment or dictionary]: payment entity that should be approved and executed. Do not set a "scheduled" value on this entity -- the PaymentRequest's own due date serves that purpose.
     ## Parameters (conditionally required):
     - type [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer", "boleto-payment"
     ## Parameters (optional):
-    - due [datetime.date or string, default today]: Payment target date in ISO format. ex: 2020-04-30
-    - tags [list of strings]: list of strings for tagging
+    - due [datetime.date or string, default today]: suggested payment target date in ISO format; the cost center's controllers may alter it during approval. ex: 2020-04-30
+    - tags [list of strings, default None]: list of strings for tagging. All tags will be converted to lowercase.
     ## Attributes (return-only):
     - id [string]: unique id returned when a PaymentRequest is created. ex: "5656565656565656"
     - amount [integer]: PaymentRequest amount. ex: 100000 = R$1.000,00

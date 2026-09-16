@@ -20,7 +20,7 @@ class BrcodePayment(Resource):
     - amount [int, default None]: If the BRCode does not provide an amount, this parameter is mandatory, else it is optional. ex: 23456 (= R$ 234.56)
     ## Parameters (optional):
     - scheduled [datetime.date, datetime.datetime or string, default now]: payment scheduled date or datetime. ex: datetime.datetime(2020, 3, 10, 15, 17, 3)
-    - tags [list of strings, default []]: list of strings for tagging
+    - tags [list of strings, default []]: list of strings for tagging. All tags will be converted to lowercase.
     - rules [list of BrcodePayment.Rule, default []]: list of BrcodePayment.Rule objects for modifying payment behavior. ex: [Rule(key="resendingLimit", value=5)]
     ## Attributes (return-only):
     - id [string]: unique id returned when payment is created. ex: "5656565656565656"
@@ -70,7 +70,7 @@ def _parse_rules(rules):
 
 def create(payments, user=None):
     """# Create BrcodePayments
-    Send a list of BrcodePayment objects for creation in the Stark Bank API
+    Send a list of BrcodePayment objects for creation in the Stark Bank API. Because processing is asynchronous, the amount attribute of a freshly created BrcodePayment will initially be zero.
     ## Parameters (required):
     - payments [list of BrcodePayment objects]: list of BrcodePayment objects to be created in the API
     ## Parameters (optional):
@@ -96,7 +96,7 @@ def get(id, user=None):
 
 def pdf(id, user=None):
     """# Retrieve a specific BrcodePayment pdf file
-    Receive a single BrcodePayment pdf receipt file generated in the Stark Bank API by its id.
+    Receive a single BrcodePayment pdf receipt file generated in the Stark Bank API by its id. Only valid for brcode payments with "success", "processing" or "created" status.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):

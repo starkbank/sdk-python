@@ -19,11 +19,11 @@ class InvoicePullSubscription(Resource):
     - amount_min_limit [integer, 0 None]: subscription minimum amount in cents. Required if an amount is not informed. Minimum = 1 (R$ 0.01). ex: 100 (= R$ 1.00)
     ## Parameters (optional):
     - display_description [string, default None]: Invoice description to be shown to the payer. ex: "Subscription payment"
-    - due [datetime.timedelta or integer, default None]: subscription invoice due offset. Available only for type "push". ex: timedelta(days=7)
+    - due [datetime.date, datetime.datetime or string, default None]: date by which the payer must approve or deny the subscription; defaults to 2 days after creation if not informed. Applies to every subscription type. ex: "2022-04-08"
     - external_id [string, default None]: string that must be unique among all your InvoicePullSubscriptions. Duplicated external_ids will cause failures. ex: "my-external-id"
     - reference_code [string, default None]: reference code for reconciliation. ex: "REF123456"
     - end [datetime.date or string, default None]: subscription end date. ex: "2023-04-01"
-    - data [dictionary, default None]: additional data for the subscription based on type
+    - data [dictionary, default None]: additional data for the subscription, required for types "push" (payer's account details), "qrcodeAndPayment" and "paymentAndOrQrcode" (immediate payment parameters); not required for type "qrcode"
     - name [string, default None]: subscription debtor name. ex: "Iron Bank S.A."
     - tax_id [string, default None]: subscription debtor tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     - tags [list of strings, default []]: list of strings for tagging
@@ -161,7 +161,7 @@ def page(cursor=None, limit=None, status=None, invoice_ids=None, external_ids=No
 
 def cancel(id, user=None):
     """# Cancel an InvoicePullSubscription entity
-    Cancel an InvoicePullSubscription entity previously created in the Stark Bank API
+    Cancel an InvoicePullSubscription entity previously created in the Stark Bank API. The subscription must currently be in "active" status to be canceled.
     ## Parameters (required):
     - id [string]: InvoicePullSubscription unique id. ex: '5656565656565656'
     ## Parameters (optional):

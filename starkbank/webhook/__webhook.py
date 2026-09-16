@@ -6,7 +6,8 @@ class Webhook(Resource):
     """# Webhook subscription object
     A Webhook is used to subscribe to notification events on a user-selected endpoint.
     Currently, available services for subscription are transfer, boleto, boleto-holmes,
-    boleto-payment, brcode-payment, utility-payment, deposit and invoice.
+    boleto-payment, brcode-payment, utility-payment, deposit, darf-payment, payment-request and invoice.
+    Events are delivered with a digital signature (the 'Digital-Signature' response header), verifiable with starkbank.event.parse(). If your endpoint does not return HTTP 200, delivery is retried up to three times, at 5, 30 and 120 minute intervals, after which the event is no longer resent -- use starkbank.event.query(is_delivered=False) daily to catch anything missed. A Webhook only receives events from the API version it was registered under.
     ## Parameters (required):
     - url [string]: Url that will be notified when an event occurs.
     - subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "invoice", "deposit"]
@@ -85,7 +86,7 @@ def page(cursor=None, limit=None, user=None):
 
 def delete(id, user=None):
     """# Delete a Webhook subscription entity
-    Delete a Webhook subscription entity previously created in the Stark Bank API
+    Delete a Webhook subscription entity previously created in the Stark Bank API. This action cannot be undone.
     ## Parameters (required):
     - id [string]: Webhook unique id. ex: "5656565656565656"
     ## Parameters (optional):

@@ -17,7 +17,7 @@ class BoletoPayment(Resource):
     ## Parameters (optional):
     - amount [int, default None]: amount to be paid. If none is informed, the current boleto value will be used. ex: 23456 (= R$ 234.56)
     - scheduled [datetime.date or string, default today]: payment scheduled date. ex: datetime.date(2020, 3, 10)
-    - tags [list of strings]: list of strings for tagging
+    - tags [list of strings, default None]: list of strings for tagging. All tags will be converted to lowercase.
     ## Attributes (return-only):
     - id [string]: unique id returned when payment is created. ex: "5656565656565656"
     - status [string]: current payment status. ex: "success" or "failed"
@@ -74,7 +74,7 @@ def get(id, user=None):
 def pdf(id, user=None):
     """# Retrieve a specific BoletoPayment pdf file
     Receive a single BoletoPayment pdf file generated in the Stark Bank API by its id.
-    Only valid for boleto payments with "success" status.
+    Only valid for boleto payments with "success", "processing" or "created" status.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
@@ -143,7 +143,7 @@ def page(cursor=None, limit=None, after=None, before=None, tags=None, ids=None, 
 
 def delete(id, user=None):
     """# Delete a BoletoPayment entity
-    Delete a BoletoPayment entity previously created in the Stark Bank API
+    Cancel a BoletoPayment entity previously created in the Stark Bank API. This only cancels payments that have not yet started processing; payments already processed can still be deleted, but the payment itself is not reversed.
     ## Parameters (required):
     - id [string]: BoletoPayment unique id. ex: "5656565656565656"
     ## Parameters (optional):

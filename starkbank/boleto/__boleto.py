@@ -23,11 +23,11 @@ class Boleto(Resource):
     - fine [float, default 2.0]: Boleto fine for overdue payment in %. ex: 2.5
     - interest [float, default 1.0]: Boleto monthly interest for overdue payment in %. ex: 5.2
     - overdue_limit [integer, default 59]: limit in days for payment after due date. ex: 7 (max: 59)
-    - descriptions [list of dictionaries, default None]: list of dictionaries with "text":string and (optional) "amount":int pairs
-    - discounts [list of dictionaries, default None]: list of dictionaries with "percentage":float and "date":datetime.datetime or string pairs
+    - descriptions [list of dictionaries, default None]: list of up to 15 dictionaries with "text":string and (optional) "amount":int pairs. If the "booklet" PDF layout is used, only the text of the first description is shown, filling the installment cell.
+    - discounts [list of dictionaries, default None]: list of up to 2 dictionaries with "percentage":float and "date":datetime.datetime or string pairs
     - tags [list of strings]: list of strings for tagging
-    - receiver_name [string]: receiver (Sacador Avalista) full name. ex: "Anthony Edward Stark"
-    - receiver_tax_id [string]: receiver (Sacador Avalista) tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+    - receiver_name [string, default None]: receiver (Sacador Avalista) full name. If omitted, the workspace owner's name is used. Must be informed together with receiver_tax_id. ex: "Anthony Edward Stark"
+    - receiver_tax_id [string, default None]: receiver (Sacador Avalista) tax ID. If omitted, the workspace owner's tax ID is used. Must be informed together with receiver_name. ex: "01234567890" or "20.018.183/0001-80"
     ## Attributes (return-only):
     - id [string]: unique id returned when Boleto is created. ex: "5656565656565656"
     - fee [integer]: fee charged when Boleto is paid. ex: 200 (= R$ 2.00)
@@ -79,7 +79,7 @@ _resource = {"class": Boleto, "name": "Boleto"}
 
 def create(boletos, user=None):
     """# Create Boletos
-    Send a list of Boleto objects for creation in the Stark Bank API
+    Send a list of Boleto objects for creation in the Stark Bank API. You can create up to 100 Boletos per call. If a Boleto is paid after its due date with fine, interest or a discount applied, its amount attribute is updated to reflect the amount actually paid.
     ## Parameters (required):
     - boletos [list of Boleto objects]: list of Boleto objects to be created in the API
     ## Parameters (optional):
@@ -105,7 +105,7 @@ def get(id, user=None):
 
 def pdf(id, layout=None, hidden_fields=None, user=None):
     """# Retrieve a specific Boleto pdf file
-    Receive a single Boleto pdf file generated in the Stark Bank API by its id.
+    Receive a single Boleto pdf file generated in the Stark Bank API by its id. This route is public and needs no authentication, but repeated requests for invalid ids will get your IP blocked from this route.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
@@ -176,7 +176,7 @@ def page(cursor=None, limit=None, status=None, tags=None, ids=None, after=None, 
 
 def delete(id, user=None):
     """# Delete a Boleto entity
-    Delete a Boleto entity previously created in the Stark Bank API
+    Delete a Boleto entity previously created in the Stark Bank API. A cancellation request is sent to CIP; once canceled, the Boleto can no longer be paid. This action cannot be undone.
     ## Parameters (required):
     - id [string]: Boleto unique id. ex: "5656565656565656"
     ## Parameters (optional):

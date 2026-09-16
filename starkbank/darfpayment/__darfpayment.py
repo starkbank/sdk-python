@@ -20,7 +20,7 @@ class DarfPayment(Resource):
     ## Parameters (optional):
     - reference_number [string]: number assigned to the region of the tax. ex: "08.1.17.00-4"
     - scheduled [datetime.date or string, default today]: payment scheduled date. ex: datetime.date(2021, 5, 10)
-    - tags [list of strings]: list of strings for tagging
+    - tags [list of strings, default None]: list of strings for tagging. All tags will be converted to lowercase.
     ## Attributes (return-only):
     - id [string]: unique id returned when payment is created. ex: "5656565656565656"
     - status [string]: current payment status. ex: "success" or "failed"
@@ -86,7 +86,7 @@ def get(id, user=None):
 def pdf(id, user=None):
     """# Retrieve a specific DarfPayment pdf file
     Receive a single DarfPayment pdf file generated in the Stark Bank API by passing its id.
-    Only valid for darf payments with "success" status.
+    Only valid for darf payments with "success", "processing" or "created" status.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
@@ -155,7 +155,7 @@ def page(cursor=None, limit=None, after=None, before=None, tags=None, ids=None, 
 
 def delete(id, user=None):
     """# Delete a DarfPayment entity
-    Delete a DarfPayment entity previously created in the Stark Bank API
+    Delete a DarfPayment entity previously created in the Stark Bank API. This only cancels payments that have not yet started processing; payments already processed can still be deleted, but are not reversed.
     ## Parameters (required):
     - id [string]: DarfPayment unique id. ex: "5656565656565656"
     ## Parameters (optional):
