@@ -122,7 +122,7 @@ def page(cursor=None, limit=None, after=None, before=None, is_delivered=None, us
 
 def delete(id, user=None):
     """# Delete a webhook Event entity
-    Delete a of notification Event entity previously created in the Stark Bank API by its ID
+    Delete a notification Event entity previously created in the Stark Bank API by its ID. This action cannot be undone.
     ## Parameters (required):
     - id [string]: Event unique id. ex: "5656565656565656"
     ## Parameters (optional):
@@ -138,7 +138,7 @@ def update(id, is_delivered, user=None):
     Update notification Event by passing id.
     If is_delivered is True, the event will no longer be returned on queries with is_delivered=False.
     ## Parameters (required):
-    - id [list of strings]: Event unique ids. ex: "5656565656565656"
+    - id [string]: Event unique id. ex: "5656565656565656"
     - is_delivered [bool]: If True and event hasn't been delivered already, event will be set as delivered. ex: True
     ## Parameters (optional):
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call

@@ -16,19 +16,19 @@ class Invoice(Resource):
     To create scheduled Invoices, which will display the discount, interest, etc. on the final users banking interface,
     use dates instead of datetimes on the "due" and "discounts" fields.
     ## Parameters (required):
-    - amount [integer]: Invoice value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
+    - amount [integer]: Invoice value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34). If amount = 0, the Invoice will accept any amount paid by the customer; otherwise, only the exact amount will be accepted. When paid, this attribute is updated with the amount actually paid.
     - tax_id [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     - name [string]: payer name. ex: "Iron Bank S.A."
     ## Parameters (optional):
     - due [datetime.datetime or datetime.date or string, default now + 2 days]: Invoice due date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00" for immediate invoices and "2020-10-28" for scheduled invoices
-    - expiration [integer or datetime.timedelta, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
+    - expiration [integer or datetime.timedelta, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. After the expiration, the Invoice can no longer be paid. ex 123456789
     - fine [float, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
     - interest [float, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
-    - discounts [list of dictionaries, default []]: list of dictionaries with "percentage":float and "due":datetime.datetime or string pairs
+    - discounts [list of dictionaries, default []]: list of up to 5 dictionaries with "percentage":float and "due":datetime.datetime or string pairs
     - rules [list of Invoice.Rules, default []]: list of Invoice.Rule objects for modifying invoice behavior. ex: [Invoice.Rule(key="allowedTaxIds", value=[ "012.345.678-90", "45.059.493/0001-73" ])]
     - splits [list of Split.Splits, default []]: list of Split.Splits objects to indicate payment receivers. ex: [Invoice.Split(amount=141, receiverId="5706627130851328")]
-    - tags [list of strings, default []]: list of strings for tagging
-    - descriptions [list of dictionaries, default []]: list of dictionaries with "key":string and (optional) "value":string pairs
+    - tags [list of strings, default []]: list of strings for tagging. All tags will be converted to lowercase.
+    - descriptions [list of dictionaries, default []]: list of up to 15 dictionaries with "key":string and (optional) "value":string pairs
     ## Attributes (return-only):
     - pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
     - link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
@@ -106,7 +106,7 @@ def _parse_splits(splits):
 
 def create(invoices, user=None):
     """# Create Invoices
-    Send a list of Invoice objects for creation in the Stark Bank API
+    Send a list of Invoice objects for creation in the Stark Bank API. You can create up to 100 Invoices per call.
     ## Parameters (required):
     - invoices [list of Invoice objects]: list of Invoice objects to be created in the API
     ## Parameters (optional):
@@ -188,12 +188,12 @@ def page(cursor=None, limit=None, status=None, tags=None, ids=None, after=None, 
 
 def update(id, status=None, amount=None, due=None, expiration=None, user=None):
     """# Update Invoice entity
-    Update an Invoice by passing id, if it hasn't been paid yet.
+    Update an Invoice by passing its id. If the invoice hasn't been paid yet, you can adjust parameters such as the amount, due date and expiration; if it has already been paid, you may only decrease the amount, which triggers a payment reversal.
     ## Parameters (required):
     - id [string]: Invoice id. ex: '5656565656565656'
     ## Parameters (optional):
     - status [string]: You may cancel the invoice by passing 'canceled' in the status
-    - amount [string]: Nominal amount charged by the invoice. ex: 100 (R$1.00)
+    - amount [string, default None]: new amount to be charged. If the Invoice has already been paid, this is the final amount after reversal. ex: 100 (R$1.00)
     - due [datetime.datetime or string, default now + 2 days]: Invoice due date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00"
     - expiration [integer or datetime.timedelta, default None]: time interval in seconds between the due date and the expiration date. ex 123456789
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call

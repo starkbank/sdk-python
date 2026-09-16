@@ -7,7 +7,7 @@ from starkcore.utils.checks import check_datetime
 class DictKey(Resource):
 
     """# DictKey object
-    DictKey represents a PIX key registered in Bacen's DICT system.
+    DictKey represents a PIX key registered in Bacen's DICT system. An EVP (random) DictKey is automatically created for every new Workspace, since an active DICT key is required for the Invoice service to work.
     ## Parameters (optional):
     - id [string]: DictKey object unique id. ex: "tony@starkbank.com", "722.461.430-04", "20.018.183/0001-80", "+5511988887777", "b6295ee1-f054-47d1-9e90-ee57b74f60d9"
     ## Attributes (return-only):
@@ -44,7 +44,7 @@ _resource = {"class": DictKey, "name": "DictKey"}
 
 def get(id, user=None):
     """# Retrieve a specific DictKey
-    Receive a single DictKey object by its id
+    Receive a single DictKey object by its id. This includes keys you do not own, and can be used to check a key before creating a Transfer to it. Avoid looking up keys without following up with a transfer: Bacen blocks accounts that make too many standalone lookups in a short time, and invalid-key lookups count toward the block too. The returned encrypted branch_code/account_number can be passed straight into a Transfer without decrypting them.
     ## Parameters (required):
     - id [string]: DictKey object unique id and PIX key itself. ex: "tony@starkbank.com", "722.461.430-04", "20.018.183/0001-80", "+5511988887777", "b6295ee1-f054-47d1-9e90-ee57b74f60d9"
     ## Parameters (optional):

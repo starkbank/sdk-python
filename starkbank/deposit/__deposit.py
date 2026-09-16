@@ -126,8 +126,8 @@ def update(id, amount=None, user=None):
     Update the Deposit by passing its id to be partially or fully reversed.
     ## Parameters (required):
     - id [string]: Deposit id. ex: "5656565656565656"
+    - amount [integer]: the new amount of the Deposit, in cents. Required -- pass 0 to fully reverse the Deposit.
     ## Parameters (optional):
-    - amount [string, default None]: The new amount of the Deposit. If the amount = 0 the Deposit will be fully reversed
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
     - target Deposit with updated attributes

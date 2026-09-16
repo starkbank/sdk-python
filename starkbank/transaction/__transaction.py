@@ -48,17 +48,8 @@ _resource = {"class": Transaction, "name": "Transaction"}
 
 
 def create(transactions, user=None):
-    """
-    Deprecated: Function deprecated since v2.31.0
-    """
-    """# Create Transactions
-    Send a list of Transaction objects for creation in the Stark Bank API
-    ## Parameters (required):
-    - transactions [list of Transaction objects]: list of Transaction objects to be created in the API
-    ## Parameters (optional):
-    - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
-    ## Return:
-    - list of Transaction objects with updated attributes
+    """# [DEPRECATED] Create Transactions
+    This function is deprecated since v2.31.0 and always raises a StarkError. Transactions are now created only indirectly, as a side effect of other operations (such as transfer or charge-payment).
     """
     raise StarkError([{"code": "deprecated", "message": "Function deprecated since v2.31.0"}])
 

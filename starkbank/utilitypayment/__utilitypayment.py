@@ -15,7 +15,7 @@ class UtilityPayment(Resource):
     - description [string]: Text to be displayed in your statement (min. 10 characters). ex: "payment ABC"
     ## Parameters (optional):
     - scheduled [datetime.date or string, default today]: payment scheduled date. ex: datetime.date(2020, 3, 10)
-    - tags [list of strings]: list of strings for tagging
+    - tags [list of strings, default None]: list of strings for tagging. All tags will be converted to lowercase.
     ## Attributes (return-only):
     - id [string]: unique id returned when payment is created. ex: "5656565656565656"
     - status [string]: current payment status. ex: "success" or "failed"
@@ -77,7 +77,7 @@ def get(id, user=None):
 def pdf(id, user=None):
     """# Retrieve a specific UtilityPayment pdf file
     Receive a single UtilityPayment pdf file generated in the Stark Bank API by its id.
-    Only valid for utility payments with "success" status.
+    Only valid for utility payments with "success", "processing" or "created" status.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):
@@ -146,7 +146,7 @@ def page(cursor=None, limit=None, after=None, before=None, tags=None, ids=None, 
 
 def delete(id, user=None):
     """# Delete a UtilityPayment entity
-    Delete a UtilityPayment entity previously created in the Stark Bank API
+    Delete a UtilityPayment entity previously created in the Stark Bank API. This only cancels payments that have not yet started processing; payments already processed can still be deleted, but are not reversed.
     ## Parameters (required):
     - id [string]: UtilityPayment unique id. ex: "5656565656565656"
     ## Parameters (optional):

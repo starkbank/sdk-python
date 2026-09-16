@@ -18,13 +18,13 @@ class Transfer(Resource):
     - bank_code [string]: code of the receiver bank institution in Brazil. If an ISPB (8 digits) is informed, a PIX transfer will be created, else a TED will be issued. ex: "20018183" or "341"
     - branch_code [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
     - account_number [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
-    - account_type [string]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
     ## Parameters (optional):
+    - account_type [string, default "checking"]: Receiver bank account type. Only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
     - external_id [string, default None]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
-    - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+    - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. Ted transfers scheduled for today are accepted until 16:00 (BRT) and pushed to the next business day afterwards; Pix transfers are available 24/7 and may be scheduled for any date and time.
     - description [string, default None]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
     - display_description [string, default None]: optional description to be shown in the receiver bank interface. ex: 'Payment for service #1234'
-    - tags [list of strings, default []]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
+    - tags [list of strings, default []]: list of strings for reference when searching for transfers. All tags will be converted to lowercase. ex: ["employees", "monthly"]
     - rules [list of Transfer.Rules, default []]: list of Transfer.Rule objects for modifying transfer behavior. ex: [Transfer.Rule(key="resendingLimit", value=5)]
     ## Attributes (return-only):
     - id [string]: unique id returned when the transfer is created. ex: "5656565656565656"
@@ -106,7 +106,7 @@ def get(id, user=None):
 
 def delete(id, user=None):
     """# Delete a Transfer entity
-    Delete a Transfer entity previously created in the Stark Bank API
+    Cancel a scheduled Transfer entity, previously created in the Stark Bank API, before it starts being processed. Canceled transfers still appear in later queries.
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
     ## Parameters (optional):

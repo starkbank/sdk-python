@@ -8,7 +8,18 @@ from .rule.__rule import _sub_resource as _rule_resource, Rule
 
 class DynamicBrcode(Resource):
     """# DynamicBrcode object
-    Check out our API Documentation at https://starkbank.com/docs/api#dynamic-brcode
+    When you initialize a DynamicBrcode, the entity will not be automatically sent to the Stark Bank API. The 'create' function sends the objects to the Stark Bank API and returns the list of created objects. When a Dynamic Brcode is paid, a Deposit is created with a tag containing "dynamic-brcode/{uuid}" for conciliation.
+    ## Parameters (required):
+    - amount [integer]: amount in cents to be received. ex: 100 (= R$ 1.00)
+    ## Parameters (optional):
+    - expiration [integer or datetime.timedelta, default 3600 (1 hour)]: time interval in seconds counted from creation until the brcode expires. After expiration, the brcode cannot be paid anymore.
+    - display_description [string, default None]: description shown in the payer's bank interface. ex: "Payment for service #1234"
+    - rules [list of DynamicBrcode.Rule, default []]: list of DynamicBrcode.Rule objects for modifying brcode behavior.
+    - tags [list of strings, default []]: list of strings for tagging. All tags will be converted to lowercase.
+    ## Attributes (return-only):
+    - id / uuid [string]: unique ids returned when the DynamicBrcode is created.
+    - picture_url [string]: public QR Code image URL.
+    - updated / created [datetime.datetime]: update/creation datetimes.
     """
 
     def __init__(self, amount, expiration=None, tags=None, display_description=None, rules=None, id=None, uuid=None,

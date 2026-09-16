@@ -2265,8 +2265,7 @@ import starkbank
 withdrawal = starkbank.corporatewithdrawal.create(
     withdrawal=starkbank.CorporateWithdrawal(
         amount=10000,
-        external_id="123",
-        description="Sending back"
+        external_id="123"
     )
 )
 

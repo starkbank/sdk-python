@@ -80,7 +80,7 @@ def query(limit=None, after=None, before=None, transaction_ids=None, status=None
 
 def page(cursor=None, after=None, before=None, tags=None, ids=None, receiver_ids=None, status=None, limit=None, user=None):
     """# Retrieve paged Split Profiles
-    Receive a list of up to 100 Split Profiles objects previously created in the Stark Bank API and the cursor to the next page.
+    Receive a list of up to 100 SplitProfile objects previously created in the Stark Bank API and the cursor to the next page.
     Use this function instead of query if you want to manually page your requests.
     ## Parameters (optional):
     - cursor [string, default None]: cursor returned on the previous page function call
@@ -89,12 +89,11 @@ def page(cursor=None, after=None, before=None, tags=None, ids=None, receiver_ids
     - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
     - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
     - ids [list of strings, default None]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-    - receiver_ids [list of strings, default None]: list of receiver ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - status [string, default None]: filter for status of retrieved objects. ex: "success"
     - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkbank.user was set before function call
     ## Return:
-    - list of Split objects with updated attributes
-    - cursor to retrieve the next page of Split objects
+    - list of SplitProfile objects with updated attributes
+    - cursor to retrieve the next page of SplitProfile objects
     """
     return rest.get_page(
         resource=_resource,
