@@ -42,6 +42,8 @@ is as easy as sending a text message to your client!
     - [UtilityPayments](#create-utility-payments): Pay Utility bills (water, light, etc.)
     - [TaxPayments](#create-tax-payment): Pay taxes
     - [DarfPayments](#create-darf-payment): Pay DARFs
+    - [VerifiedAccounts](#create-verifiedaccounts): Confirm that a bank account or Pix key belongs to a tax ID
+    - [VerifiedTransfers](#create-verifiedtransfers): Transfer to a previously verified account
     - [PaymentPreviews](#preview-payment-information-before-executing-the-payment): Preview all sorts of payments
     - [PaymentRequest](#create-payment-requests-to-be-approved-by-authorized-people-in-a-cost-center): Request a payment approval to a cost center
     - [CorporateHolders](#create-corporateholders): Manage cardholders

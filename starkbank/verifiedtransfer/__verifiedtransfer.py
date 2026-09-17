@@ -15,7 +15,6 @@ class VerifiedTransfer(Resource):
     - amount [integer]: transfer value in cents. ex: 1234 (= R$ 12.34)
     - account_id [string]: receiver's VerifiedAccount ID. ex: "5656565656565656"
     ## Parameters (optional):
-    - account_type [string, default "checking"]: receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
     - external_id [string, default None]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
     - scheduled [datetime.date, datetime.datetime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: "2020-11-12T00:14:22.806+00:00" or "2020-11-30"
     - description [string, default None]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
@@ -32,14 +31,13 @@ class VerifiedTransfer(Resource):
     - updated [datetime.datetime]: latest update datetime for the verified transfer. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
     """
 
-    def __init__(self, amount, account_id, account_type=None, external_id=None, scheduled=None, description=None,
+    def __init__(self, amount, account_id, external_id=None, scheduled=None, description=None,
                  display_description=None, tags=None, rules=None, id=None, fee=None, status=None,
                  transaction_ids=None, metadata=None, created=None, updated=None):
         Resource.__init__(self, id=id)
 
         self.amount = amount
         self.account_id = account_id
-        self.account_type = account_type
         self.external_id = external_id
         self.scheduled = check_datetime_or_date(scheduled)
         self.description = description

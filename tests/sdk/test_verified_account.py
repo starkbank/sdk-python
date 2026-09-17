@@ -37,7 +37,7 @@ class TestVerifiedAccountCreateAndGet(TestCase):
 class TestVerifiedAccountCreateAndCancel(TestCase):
 
     def test_success(self):
-        accounts = starkbank.verifiedaccount.create([generateExamplePixKeyVerifiedAccountJson()])
+        accounts = starkbank.verifiedaccount.create([generateExampleBankInfoVerifiedAccountJson()])
         created = accounts[0]
         self.assertIsNotNone(created.id)
         canceled = starkbank.verifiedaccount.cancel(created.id)

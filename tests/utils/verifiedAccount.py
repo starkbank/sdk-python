@@ -1,9 +1,10 @@
 from starkbank import VerifiedAccount
+from tests.utils.taxIdGenerator import TaxIdGenerator
 
 
 def generateExampleBankInfoVerifiedAccountJson():
     return VerifiedAccount(
-        tax_id="911.544.440-66",
+        tax_id=TaxIdGenerator.cpf(),
         name="Daenerys Targaryen Stormborn",
         bank_code="341",
         branch_code="2201",
