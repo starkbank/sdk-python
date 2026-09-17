@@ -121,6 +121,12 @@ from .dynamicbrcode.__dynamicbrcode import DynamicBrcode
 from . import deposit
 from .deposit.__deposit import Deposit
 
+from . import verifiedaccount
+from .verifiedaccount.__verifiedaccount import VerifiedAccount
+
+from . import verifiedtransfer
+from .verifiedtransfer.__verifiedtransfer import VerifiedTransfer
+
 from . import split
 from .split.__split import Split
 
