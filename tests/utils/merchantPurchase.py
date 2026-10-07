@@ -1,40 +1,6 @@
 # coding: utf-8
-import starkbank
 from copy import deepcopy
 from starkbank import MerchantPurchase
-from tests.utils.card import randomCreditCard
-
-
-def generate_example_merchant_purchase(merchant_session):
-    credit_card = randomCreditCard()
-    merchant_purchase = starkbank.merchantsession.purchase(
-        uuid=merchant_session.uuid,
-        purchase=starkbank.merchantsession.Purchase(
-            amount=5500,
-            holder_name="Rhaenyra Targaryen",
-            holder_email="rhaenyra.targaryen@gmail.com",
-            holder_phone="11223344556",
-            funding_type="credit",
-            billing_country_code="BRA",
-            billing_city="Sao Paulo",
-            billing_state_code="SP",
-            billing_street_line_1="Rua Casterly Rock, 2000",
-            billing_street_line_2="1 andar",
-            billing_zip_code="01450-000",
-            metadata={
-                "userAgent": "Mozilla",
-                "userIp": "255.255.255.255",
-                "language": "pt-BR",
-                "timezoneOffset": 3,
-                "extraData": "extraData",
-            },
-            card_expiration=credit_card["expiration"],
-            card_number=credit_card["card_number"],
-            card_security_code=credit_card["card_security_code"],
-            installment_count=2,
-        ),
-    )
-    return merchant_purchase
 
 
 def json_to_merchant_purchase(json_data):

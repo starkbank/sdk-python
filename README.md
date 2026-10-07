@@ -2700,45 +2700,9 @@ merchant_session = starkbank.merchantsession.create({
 print(merchant_session)
 ```
 
-You can create a MerchantPurchase through a MerchantSession by passing its UUID.
-**Note**: This method must be implemented in your front-end to ensure that sensitive card data does not pass through the back-end of the integration.
+With the MerchantSession's UUID, your front-end must send the card data directly to the Stark Bank API through the `POST /v2/merchant-session/:uuid/purchase` route, so that sensitive card data never passes through the back-end of your integration.
 
-## Create a MerchantSession Purchase
-
-This route can be used to create a Merchant Purchase directly from the payer's client application.
-The UUID of a Merchant Session that was previously created by the merchant is necessary to access this route.
-
-```python
-import starkbank
-
-merchant_session_purchase = starkbank.merchantsession.purchase(
-      uuid="0bb894a2697d41d99fe02cad2c00c9bc",
-      amount=18000,
-      installment_count=12,
-      card_expiration="2035-01",
-      card_number="5448280000000007",
-      card_security_code="123",
-      holder_name="Margaery Tyrell",
-      holder_email="margaery.tyrell@email.com",
-      holder_phone="11998663456",
-      funding_type="credit",
-      billing_country_code="BRA",
-      billing_city="São Paulo",
-      billing_state_code="SP",
-      billing_street_line1="Rua do Jardim de cima, 123",
-      billing_street_line2="1 andar",
-      billing_zip_code="11111-111",
-      metadata={
-        "extraData": "extraData",
-        "language": "pt-BR",
-        "timezoneOffset": 3,
-        "userAgent": "Mozilla",
-        "userIp": "255.255.255.255"
-      }
-    )
-
-print(merchant_session_purchase)
-```
+**Note**: `starkbank.merchantsession.purchase` is deprecated since v2.36.0 and raises an error when called.
 
 ## Query MerchantSessions
 

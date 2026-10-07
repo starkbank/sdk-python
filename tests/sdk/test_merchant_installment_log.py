@@ -2,8 +2,7 @@ import datetime
 import starkbank
 from unittest import TestCase, main
 from tests.utils.pooling import wait_for_query
-from tests.utils.merchantSession import generate_example_merchant_session
-from tests.utils.merchantPurchase import generate_example_merchant_purchase
+from tests.utils.merchantPurchase import generate_example_merchant_purchase_json
 
 
 from tests.utils.user import exampleProject
@@ -18,14 +17,10 @@ class TestMerchantInstallmentQueryLog(TestCase):
         self.merchant_installment_ids = []
         self.before_date = datetime.date.today()
         self.after_date = self.before_date - datetime.timedelta(days=2)
-        merchant_tags = ["test_merchat_installment_query_log"]
-
-        merchant_session = generate_example_merchant_session(
-            tags=merchant_tags, challenge_mode="disabled"
-        )
-        self.merchant_purchase = generate_example_merchant_purchase(
-            merchant_session=merchant_session
-        )
+        confirmed_purchase = next(starkbank.merchantpurchase.query(status="confirmed", limit=1))
+        merchant_purchase = generate_example_merchant_purchase_json(card_id=confirmed_purchase.card_id)
+        merchant_purchase.installment_count = 2
+        self.merchant_purchase = starkbank.merchantpurchase.create(merchant_purchase)
         merchant_installments = wait_for_query(
             starkbank.merchantinstallment.query,
             purchase_ids=[self.merchant_purchase.id],

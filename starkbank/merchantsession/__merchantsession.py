@@ -4,7 +4,7 @@ from starkcore.utils.api import from_api_json
 from .allowedinstallment.__allowedinstallment import AllowedInstallment
 from .allowedinstallment.__allowedinstallment import _sub_resource as _allowed_installments_sub_resource
 from starkcore.utils.checks import check_date, check_datetime
-from .__purchase import _resource as purchase_resource
+from starkbank.error import StarkError
 
 
 class MerchantSession(Resource):
@@ -149,6 +149,9 @@ def page(cursor=None, limit=None, status=None, tags=None, ids=None, after=None, 
 
 
 def purchase(uuid, purchase, user=None):
+    """
+    Deprecated: Function deprecated since v2.36.0
+    """
     """# Create a MerchantSession Purchase
     Send a MerchantPurchase object linked to a previously created MerchantSession, identified by its uuid, for creation in the Stark Bank API.
     Depending on the MerchantSession's allowed_funding_types and 3DS configuration, the billing and card holder fields on the MerchantPurchase
@@ -162,5 +165,5 @@ def purchase(uuid, purchase, user=None):
     ## Return:
     - MerchantPurchase object with updated attributes
     """
-    return rest.post_sub_resource(resource=_resource, id=uuid, sub_resource=purchase_resource, entity=purchase, user=user)
+    raise StarkError([{"code": "deprecated", "message": "Function deprecated since v2.36.0"}])
 
