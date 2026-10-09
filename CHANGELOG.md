@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.36.0] - 2026-10-09
 ### Deprecated
 - MerchantSession.purchase function, since card data must be sent directly from the front-end to the Stark Bank API
 
