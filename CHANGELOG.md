@@ -16,6 +16,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Added
 - VerifiedAccount resource with create, get, cancel, query and page methods, and VerifiedAccount.Log sub-resource
 - VerifiedTransfer resource with create method, reusing transfer.Rule
+### Deprecated
+- MerchantSession.purchase function, since card data must be sent directly from the front-end to the Stark Bank API
 ### Fixed
 - Docstrings
 
