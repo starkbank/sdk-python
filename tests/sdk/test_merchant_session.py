@@ -1,9 +1,9 @@
 import starkbank
 from unittest import TestCase, main
 from tests.utils.user import exampleProject
+from starkbank.error import StarkError
 from tests.utils.merchantSession import generate_example_merchant_session_json, \
-    generate_example_merchant_session_purchase_challenge_mode_disabled_json, \
-    generate_example_merchant_session_purchase_challenge_mode_enabled_json
+    generate_example_merchant_session_purchase_challenge_mode_disabled_json
 
 
 starkbank.user = exampleProject
@@ -49,31 +49,17 @@ class TestMerchantSessionPage(TestCase):
         self.assertEqual(len(ids), 10)
 
 
-class TestMerchantSessionPurchaseChallengeModeDisabled(TestCase):
+class TestMerchantSessionPurchase(TestCase):
 
-    def test_success(self):
-        merchant_session = starkbank.merchantsession.create(generate_example_merchant_session_json("disabled"))
-        merchant_session_purchase_json = generate_example_merchant_session_purchase_challenge_mode_disabled_json()
-        merchant_session_purchase = starkbank.merchantsession.purchase(
-            uuid=merchant_session.uuid,
-            purchase=merchant_session_purchase_json
-        )
-        self.assertIsNotNone(merchant_session_purchase.id)
+    def test_deprecated_error(self):
+        with self.assertRaises(StarkError) as cm:
+            starkbank.merchantsession.purchase(
+                uuid="0bb894a2697d41d99fe02cad2c00c9bc",
+                purchase=generate_example_merchant_session_purchase_challenge_mode_disabled_json()
+            )
 
-
-class TestMerchantSessionPurchaseChallengeModeEnabled(TestCase):
-
-    def test_success(self):
-        merchant_session_json = generate_example_merchant_session_json("enabled")
-        merchant_session = starkbank.merchantsession.create(merchant_session_json)
-
-        merchant_session_purchase_json = generate_example_merchant_session_purchase_challenge_mode_enabled_json()
-        purchase = starkbank.merchantsession.purchase(
-            uuid=merchant_session.uuid,
-            purchase=merchant_session_purchase_json
-        )
-
-        self.assertIsNotNone(purchase.id)
+        exception = cm.exception
+        self.assertIn("Function deprecated since v2.36.0", str(exception))
 
 
 if __name__ == '__main__':

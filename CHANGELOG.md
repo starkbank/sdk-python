@@ -19,6 +19,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Fixed
 - Docstrings
 
+## [2.36.0] - 2026-10-13
+### Deprecated
+- MerchantSession.purchase function, since card data must be sent directly from the front-end to the Stark Bank API
+
 ## [2.35.0] - 2026-06-29
 ### Added
 - display_description attribute to Transfer resource
