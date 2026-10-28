@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [2.37.0] - 2026-10-28
 ### Added
 - VerifiedAccount resource with create, get, cancel, query and page methods, and VerifiedAccount.Log sub-resource
 - VerifiedTransfer resource with create method, reusing transfer.Rule
