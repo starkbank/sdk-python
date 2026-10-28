@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- PaymentLink resource
 
 ## [2.37.0] - 2026-10-28
 ### Added
