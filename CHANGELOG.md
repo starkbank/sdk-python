@@ -13,6 +13,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- FixedInvestment resource with create, get, query, page, patch and position methods, FixedInvestment.Log sub-resource and FixedInvestment.Position
+### Changed
+- starkcore to v0.9.0
 
 ## [2.37.0] - 2026-10-28
 ### Added

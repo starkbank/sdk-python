@@ -44,6 +44,7 @@ is as easy as sending a text message to your client!
     - [DarfPayments](#create-darf-payment): Pay DARFs
     - [VerifiedAccounts](#create-verifiedaccounts): Confirm that a bank account or Pix key belongs to a tax ID
     - [VerifiedTransfers](#create-verifiedtransfers): Transfer to a previously verified account
+    - [FixedInvestments](#create-fixedinvestments): Apply your balance in a CDI-indexed digital fixed income product
     - [PaymentPreviews](#preview-payment-information-before-executing-the-payment): Preview all sorts of payments
     - [PaymentRequest](#create-payment-requests-to-be-approved-by-authorized-people-in-a-cost-center): Request a payment approval to a cost center
     - [CorporateHolders](#create-corporateholders): Manage cardholders
@@ -1991,6 +1992,116 @@ transfers = starkbank.verifiedtransfer.create([
 
 for transfer in transfers:
     print(transfer)
+```
+
+## Create FixedInvestments
+
+You can apply your account balance in a CDI-indexed digital fixed income product by creating FixedInvestments.
+Investments can only be created on business days, from 10 AM to 4 PM, Brasília time (GMT-3), and the minimum amount is R$ 1,000.00.
+
+```python
+import starkbank
+
+investments = starkbank.fixedinvestment.create([
+    starkbank.FixedInvestment(
+        amount=100000,
+        type="deposit",
+        tags=["reserve"],
+    ),
+])
+
+for investment in investments:
+    print(investment)
+```
+
+## Query FixedInvestments
+
+You can query multiple FixedInvestments according to filters:
+
+```python
+import starkbank
+
+investments = starkbank.fixedinvestment.query(
+    after="2026-11-01",
+    before="2026-11-30",
+    status=["active", "voided"],
+    limit=10,
+)
+
+for investment in investments:
+    print(investment)
+```
+
+## Get a FixedInvestment
+
+After its creation, information on a FixedInvestment may be retrieved by its id:
+
+```python
+import starkbank
+
+investment = starkbank.fixedinvestment.get("5747122364219392")
+
+print(investment)
+```
+
+## Withdraw from FixedInvestments
+
+You can withdraw from one or more FixedInvestments by setting the amount that remains in each of them. The difference is withdrawn.
+Send 0 to withdraw everything. A partial withdrawal must withdraw at least R$ 1,000.00 and leave at least R$ 1,000.00 in the investment.
+
+```python
+import starkbank
+
+investments = starkbank.fixedinvestment.patch([
+    {"id": "5747122364219392", "amount": 500000},
+    {"id": "4876029183098880", "amount": 0},
+])
+
+for investment in investments:
+    print(investment)
+```
+
+## Get the FixedInvestment position
+
+You can get the consolidated position of your FixedInvestments between two dates:
+
+```python
+import starkbank
+
+position = starkbank.fixedinvestment.position(
+    after="2026-11-26",
+    before="2027-11-26",
+)
+
+print(position)
+```
+
+## Query FixedInvestment logs
+
+Logs are pretty important to understand the life cycle of a FixedInvestment:
+
+```python
+import starkbank
+
+logs = starkbank.fixedinvestment.log.query(
+    investment_ids=["5747122364219392"],
+    limit=10,
+)
+
+for log in logs:
+    print(log)
+```
+
+## Get a FixedInvestment log
+
+You can get a single FixedInvestment log by its id:
+
+```python
+import starkbank
+
+log = starkbank.fixedinvestment.log.get("5188438454173696")
+
+print(log)
 ```
 
 ## Preview payment information before executing the payment
